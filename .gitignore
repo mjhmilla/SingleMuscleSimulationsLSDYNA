@@ -1,0 +1,15 @@
+binout
+d3*
+elout
+glstat
+lspost
+matsum
+messag*
+musout*
+nodout
+rcforc
+spcforc
+status.out
+*.csv
+*.swp
+*.msg
