@@ -11,9 +11,9 @@ flag_runSimulations               = 0;
 flag_postProcessSimulationData    = 1;
 
 
-%matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
-matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
-                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
+matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
+%matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
+%                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
 
 addpath(matlabScriptPath);
 
@@ -54,10 +54,10 @@ subPlotPanel = [];
 plotConfigGeneric;  
 
 simulationColorA = [0,0,1].*(0.9)+[1,1,1].*(0.1);
-simulationColorB = [0,0,1].*(0.1)+[1,1,1].*(0.9);
+simulationColorB = [0,0,1].*(0.5)+[1,1,1].*(0.5);
 
-dataColorA = [0,0,0].*(0.9)+[1,1,1].*(0.1);
-dataColorB = [0,0,0].*(0.1)+[1,1,1].*(0.9);
+dataColorA = [0,0,0].*(0.5)+[1,1,1].*(0.5);
+dataColorB = [0,0,0].*(0.2)+[1,1,1].*(0.8);
 
 %%
 % Run each simulation and extract the desired output data

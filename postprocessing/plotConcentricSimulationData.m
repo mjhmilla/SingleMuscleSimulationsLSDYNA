@@ -35,7 +35,10 @@ if(flag_addReferenceData==1)
         [val,idx]=max(referenceData(indexReference).data(:,2));
         text(referenceData(indexReference).data(idx,1),...
              referenceData(indexReference).data(idx,2),...
-             seriesName);
+             seriesName,...
+             'FontSize',6,...
+             'VerticalAlignment','bottom',...
+             'HorizontalAlignment','center');
 
 
         box off;
@@ -58,11 +61,11 @@ if(flag_addSimulationData)
 
     data      = data((data(:,2)~=0),:);
     data(:,1) = data(:,1)-data(1,1);
-    indexStart = find(data(:,2) > 0,1)-1;
-    x = data(indexStart:end,1)-data(indexStart,1);
-    y = data(indexStart:end,2);   
+    %indexStart = find(data(:,2) > 0,1)-1;
+    %x = data(indexStart:end,1)-data(indexStart,1);
+    %y = data(indexStart:end,2);   
 
-    plot(x,y,...
+    plot(data(:,1),data(:,2),...
          'Color', simulationColor,...
          'DisplayName','');
     hold on;
@@ -70,7 +73,8 @@ if(flag_addSimulationData)
 end
 
 xlim([0,0.16]);
-
+set(gca, 'XTick', [0:0.02:0.16]);
+set(gca, 'YTick', [0:0.02:0.12]);
 xlabel('Time (s)');
 ylabel('Velocity (m/s)');
 title('Guenther, Schmitt, Wank (2007) Fig. 6')
