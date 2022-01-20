@@ -1,4 +1,4 @@
-function figH = plotConcentricSimulationData(figH,lsdynaBinout,lsdynaMuscle, ...
+function figH = plotIsometricSimulationData(figH,lsdynaBinout,lsdynaMuscle, ...
                       indexColumn,...
                       subPlotLayout,subPlotRows,subPlotColumns,...                      
                       simulationFile,indexSimulation, totalSimulations,... 
@@ -23,7 +23,7 @@ if(flag_addReferenceData==1)
         tag = 'guenther';
         idxA=strfind(fileName,tag)+length(tag);
         idxB=strfind(fileName,'.')-1;
-        seriesName = [fileName(idxA:idxB),'g'];
+        seriesName = ['$$\tilde{\ell}^{M}=$$',fileName(idxA),'.',fileName((idxA+1):idxB)];
 
 
         plot(referenceData(indexReference).data(:,1),...
@@ -33,8 +33,16 @@ if(flag_addReferenceData==1)
         hold on;
         
 
-        [val,idx]=max(referenceData(indexReference).data(:,2));
-        
+        %[val,idx]=max(referenceData(indexReference).data(:,2));
+        val = Inf;
+        idx = 0;
+        for z=1:1:length(referenceData(indexReference).data(:,1))
+           if( abs(referenceData(indexReference).data(z,1) - 1.0) < val)
+              idx=z; 
+              val = abs(referenceData(indexReference).data(z,1) - 1.0);
+           end
+        end
+
         plot(referenceData(indexReference).data(idx,1),...
              referenceData(indexReference).data(idx,2),...
              'o','Color',referenceColor,...
@@ -43,7 +51,6 @@ if(flag_addReferenceData==1)
              'MarkerFaceColor', [1,1,1]);
         hold on;
         
-        
         text(referenceData(indexReference).data(idx,1),...
              referenceData(indexReference).data(idx,2),...
              seriesName,...
@@ -51,6 +58,7 @@ if(flag_addReferenceData==1)
              'VerticalAlignment','bottom',...
              'HorizontalAlignment','center');
         hold on;
+
 
 
         box off;
@@ -65,28 +73,22 @@ if(flag_addSimulationData)
     simulationColor = (1-n).*simulationColorA + (n).*simulationColorB;
 
     
-    tag = 'concentric_';
+    tag = 'isometric_';
     idxA=strfind(simulationFile,tag)+length(tag);
     seriesName = ['Sim: ',simulationFile(idxA:end)];
-
-    data = [lsdynaBinout.nodout.time',lsdynaBinout.nodout.z_velocity];
-
-    data      = data((data(:,2)~=0),:);
-    data(:,1) = data(:,1)-data(1,1);
-    %indexStart = find(data(:,2) > 0,1)-1;
-    %x = data(indexStart:end,1)-data(indexStart,1);
-    %y = data(indexStart:end,2);   
-
-    plot(data(:,1),data(:,2),...
+ 
+    plot(lsdynaBinout.elout.beam.time',...
+         lsdynaBinout.elout.beam.axial,...
          'Color', simulationColor,...
          'DisplayName','');
     hold on;
     box off;    
 end
 
-xlim([0,0.16]);
-set(gca, 'XTick', [0:0.02:0.16]);
-set(gca, 'YTick', [0:0.02:0.12]);
+xlim([0,1.5]);
+ylim([0,45]);
+set(gca, 'XTick', [0:0.1:1.5]);
+set(gca, 'YTick', [0:5:45]);
 xlabel('Time (s)');
-ylabel('Velocity (m/s)');
-title('Guenther, Schmitt, Wank (2007) Fig. 6')
+ylabel('Force (N)');
+title('Guenther, Schmitt, Wank (2007) Fig. 7')
