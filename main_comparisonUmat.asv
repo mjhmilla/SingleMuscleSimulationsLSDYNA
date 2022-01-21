@@ -23,42 +23,38 @@ addpath(matlabScriptPath);
 %% path to exp. reference
 referenceDataPath= fullfile(matlabScriptPath,'ReferenceExperiments/');
 
-simulationInformation(1) = struct('type',[],'musclePropertyFile',[],...
+simulationInformation(4) = struct('type',[],'musclePropertyFile',[],...
                                   'optimalFiberLength','',...
                                   'maximumIsometricForce','',...
-                                  'tendonSlackLength','',...
-                                  'parametersInMuscleCard',0);
+                                  'tendonSlackLength','');
 idx=1;
-% simulationInformation(idx).type               = 'quickrelease';
-% simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
-% simulationInformation(idx).optimalFiberLength     = 'lCEopt';
-% simulationInformation(idx).maximumIsometricForce  = 'Fmax';
-% simulationInformation(idx).tendonSlackLength      = 'lSEE0';
-% simulationInformation(idx).parametersInMuscleCard = 1;
-% 
-% idx=idx+1;
-% simulationInformation(idx).type               = 'isometric';
-% simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
-% simulationInformation(idx).optimalFiberLength     = 'lCEopt';
-% simulationInformation(idx).maximumIsometricForce  = 'Fmax';
-% simulationInformation(idx).tendonSlackLength      = 'lSEE0';
-% simulationInformation(idx).parametersInMuscleCard = 1;
-% 
-% idx=idx+1;
-% simulationInformation(idx).type               = 'concentric';
-% simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
-% simulationInformation(idx).optimalFiberLength     = 'lCEopt';
-% simulationInformation(idx).maximumIsometricForce  = 'Fmax';
-% simulationInformation(idx).tendonSlackLength      = 'lSEE0';
-% simulationInformation(idx).parametersInMuscleCard = 1;
+simulationInformation(idx).type               = 'quickrelease';
+simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
+simulationInformation(idx).optimalFiberLength     = 'lCEopt';
+simulationInformation(idx).maximumIsometricForce  = 'Fmax';
+simulationInformation(idx).tendonSlackLength      = 'lSEE0';
 
-%idx=idx+1;
-simulationInformation(idx).type                   = 'eccentric';
-simulationInformation(idx).musclePropertyFile     = 'eccentric.k';
-simulationInformation(idx).optimalFiberLength     = 'lopt';
-simulationInformation(idx).maximumIsometricForce  = 'fiso';
-simulationInformation(idx).tendonSlackLength      = 'ltslk';
-simulationInformation(idx).parametersInMuscleCard = 0;
+idx=idx+1;
+simulationInformation(idx).type               = 'isometric';
+simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
+simulationInformation(idx).optimalFiberLength     = 'lCEopt';
+simulationInformation(idx).maximumIsometricForce  = 'Fmax';
+simulationInformation(idx).tendonSlackLength      = 'lSEE0';
+
+idx=idx+1;
+simulationInformation(idx).type               = 'concentric';
+simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
+simulationInformation(idx).optimalFiberLength     = 'lCEopt';
+simulationInformation(idx).maximumIsometricForce  = 'Fmax';
+simulationInformation(idx).tendonSlackLength      = 'lSEE0';
+
+idx=idx+1;
+simulationInformation(idx).type               = 'concentric';
+simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
+simulationInformation(idx).optimalFiberLength     = 'lCEopt';
+simulationInformation(idx).maximumIsometricForce  = 'Fmax';
+simulationInformation(idx).tendonSlackLength      = 'lSEE0';
+
 
 %simulationInformation(1).type               = 'concentric';
 %simulationInformation(1).musclePropertyFile = 'matpiglet.k';
@@ -88,7 +84,7 @@ addpath(postprocessingDirectoryTree);
 %% Plot configuration
 
 numberOfHorizontalPlotColumnsGeneric = 3;
-numberOfVerticalPlotRowsGeneric      = 13;
+numberOfVerticalPlotRowsGeneric      = 10;
 plotWidth         = 6;
 plotHeight        = 6;        
 plotHorizMarginCm = 1.5;
@@ -239,37 +235,18 @@ if(flag_postProcessSimulationData==1)
               cd(simulationTypePath);
 
               %% Load the muscle properties
-              lceOpt=NaN;
-              fiso=NaN;
-              ltslk=NaN;
-              if(simulationInformation(idx).parametersInMuscleCard==1)
-                  lceOpt = ...
-                      getMuscleCardFieldValue(...
-                        simulationInformation(indexSimulationType).musclePropertyFile,...
-                        simulationInformation(indexSimulationType).optimalFiberLength);
-                  fiso = ...
-                      getMuscleCardFieldValue(...
-                        simulationInformation(indexSimulationType).musclePropertyFile,...
-                        simulationInformation(indexSimulationType).maximumIsometricForce);
-                  ltslk = ...
-                      getMuscleCardFieldValue(...
-                        simulationInformation(indexSimulationType).musclePropertyFile,...
-                        simulationInformation(indexSimulationType).tendonSlackLength); 
-              else
-                  lceOpt = ...
-                      getParameterFieldValue(...
-                        simulationInformation(indexSimulationType).musclePropertyFile,...
-                        simulationInformation(indexSimulationType).optimalFiberLength);
-                  fiso = ...
-                      getParameterFieldValue(...
-                        simulationInformation(indexSimulationType).musclePropertyFile,...
-                        simulationInformation(indexSimulationType).maximumIsometricForce);
-                  ltslk = ...
-                      getParameterFieldValue(...
-                        simulationInformation(indexSimulationType).musclePropertyFile,...
-                        simulationInformation(indexSimulationType).tendonSlackLength);                   
-
-              end
+              lceOpt = ...
+                  getKFileFieldValue(...
+                    simulationInformation(indexSimulationType).musclePropertyFile,...
+                    simulationInformation(indexSimulationType).optimalFiberLength);
+              fiso = ...
+                  getKFileFieldValue(...
+                    simulationInformation(indexSimulationType).musclePropertyFile,...
+                    simulationInformation(indexSimulationType).maximumIsometricForce);
+              ltslk = ...
+                  getKFileFieldValue(...
+                    simulationInformation(indexSimulationType).musclePropertyFile,...
+                    simulationInformation(indexSimulationType).tendonSlackLength); 
 
 
               cd(simulationDirectories(indexSimulationTrial).name);

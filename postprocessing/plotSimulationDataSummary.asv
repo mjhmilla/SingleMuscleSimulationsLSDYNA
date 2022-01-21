@@ -328,9 +328,9 @@ text( 1.05, n*0.5, seriesNumber,...
       'Color', musoutColor);
 hold on;
 
-xlabel('Norm. Length ($$\ell^{T}/\ell^{T}_{s}$$)');
-ylabel('Norm. Force ($$f^{T}/f^{M}_{\circ}$$)');
-title('Contractile Element: $$\tilde{f}^{T}-\tilde{\ell}^{T}$$');
+xlabel('Norm. Length ($$\ell^{M}/\ell^{M}_{\circ}$$)');
+ylabel('Norm. Force ($$f^{PE}/f^{M}_{\circ}$$)');
+title('Contractile Element: $$\tilde{f}^{PE}-\tilde{\ell}^{M}$$');
 
 box off;
 
