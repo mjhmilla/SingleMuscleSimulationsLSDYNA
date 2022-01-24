@@ -19,13 +19,14 @@ $#    name expression
 R rampLenS &rampLenE-&rampLen
 R   lCEopt &lopt*cos(&alphaRad)
 R     Fmax &fiso*cos(&alphaRad)
-RrampTimeS &stimTimes+1.0
-RrampTimeD (&rampLenE-&rampLenS)/&rampVel
 RrampTimeE &rampTimeS+&rampTimeD
+RrampTimeS 2.35+(&rampLenE-&ranLen)/&rampVel 
+RrampTimeD (&rampLenE-&rampLenS)/&rampVel
 RstimTimeE &rampTimeE+4.5
 R       kt 30.0*&fiso/&ltslk
-R pathLenS &lopt*cos(&alphaRad)+(&fiso*cos(&alphaRad))/&kt+&ltslk+&rampLenS
-R pathLenE &pathLenS+(&rampLenE-&rampLenS)  
+R pathLenO &lopt*cos(&alphaRad)+(&fiso*cos(&alphaRad))/&kt+&ltslk
+R pathLenS &pathLenO+&rampLenS
+R pathLenE &pathLenO+&rampLenE  
 R    timeE &rampTimeE+3.0
 $
 *TITLE
