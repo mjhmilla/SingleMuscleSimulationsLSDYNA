@@ -5,9 +5,9 @@ $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout     0.001                                     
+R    dtout      0.01                                     
 R rampLenE     0.009
-RstimTimeS       1.0
+RstimTimeS      0.95
 R     lopt 0.0428571
 R     fiso 21.506061
 R alphaRad 0.1221730
@@ -19,15 +19,15 @@ $#    name expression
 R rampLenS &rampLenE-&rampLen
 R   lCEopt &lopt*cos(&alphaRad)
 R     Fmax &fiso*cos(&alphaRad)
+RrampTimeS 2.38+(&rampLenE-&ranLen)/&rampVel 
+RrampTimeD (&rampLen)/&rampVel
 RrampTimeE &rampTimeS+&rampTimeD
-RrampTimeS 2.35+(&rampLenE-&ranLen)/&rampVel 
-RrampTimeD (&rampLenE-&rampLenS)/&rampVel
-RstimTimeE &rampTimeE+4.5
+RstimTimeE &rampTimeE+5.0
 R       kt 30.0*&fiso/&ltslk
 R pathLenO &lopt*cos(&alphaRad)+(&fiso*cos(&alphaRad))/&kt+&ltslk
 R pathLenS &pathLenO+&rampLenS
 R pathLenE &pathLenO+&rampLenE  
-R    timeE &rampTimeE+3.0
+R    timeE &simTimeE+5.0
 $
 *TITLE
 $#                                                                         title
