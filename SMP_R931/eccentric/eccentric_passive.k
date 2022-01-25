@@ -87,8 +87,8 @@ catsoleus.k
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
-                 0.0                 0.0
-              &timeE                 0.0
+                 0.0                0.00
+              &timeE                0.00
 *ELEMENT_BEAM
 $#   eid     pid      n1      n2      n3     rt1     rr1     rt2     rr2   local
        1       2       1       2       0       0       0       0       0       2

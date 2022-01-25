@@ -111,5 +111,5 @@ $
 *NODE
 $#   nid               x               y               z      tc      rc
        1             0.0             0.0             0.0       7       7
-       2             0.0             0.0      -&pathLenS       7       7
+       2             0.0             0.0      -&pathLenE       7       7
 *END

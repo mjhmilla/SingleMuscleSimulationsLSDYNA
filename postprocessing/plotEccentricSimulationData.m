@@ -239,30 +239,11 @@ if(flag_addSimulationData)
     indexRowB = indexRowA+1;
 
     %Get the reference length PATHLEN0 stored in the d3hsp file
-    fid = fopen(d3hspFileName);
-    line=fgetl(fid);
-    [msg,err]=ferror(fid);
+    pathLen = getParameterValueFromD3HSPFile(d3hspFileName,'PATHLENO');
+    m2mm=1000;
+
     
-    while contains(line,'PATHLENO')==0 && err~=-1
-       line=fgetl(fid); 
-       [msg,err]=ferror(fid);
-    end
-    fclose(fid);
-    assert(contains(line,'PATHLENO'));
-    tag  = 'PATHLENO';
-    idx0 = strfind(line,tag)+length(tag);
-    idx1=idx0+1;
-    numberText='';
-    while idx1 < length(line)
-       if( line(idx1-1) ~= ' ' && line(idx1) == ' ')
-           numberText=line(idx0:idx1);
-           break;
-       end
-       idx1=idx1+1;
-    end
-    assert(length(numberText) > 0);
-    pathLen = str2double(numberText);
-    m2mm = 1000;
+
     
     subplot('Position',reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));
  
@@ -281,50 +262,63 @@ if(flag_addSimulationData)
         changeInLength=changeInLength.*(m2mm); %m to mm
         dl = round(changeInLength(end,1)-changeInLength(1,1),0);
         
-        [valMax,idxMax] = max(lsdynaBinout.elout.beam.axial);
+        indexStimulation = getColumnIndex('stim_tot',lsdynaMuscle.columnNames);
+        maxStim = max(lsdynaMuscle.data(:,indexStimulation));
+        
+        
+                   
 
-        dt = 1;
-      
-        t0 = lsdynaBinout.elout.beam.time(1,idxMax);
-        t1 = 2;
-        f0 = valMax;
-        f1 = 30+ ((dl-3)/6)*5;
 
-        plot([t0,t1],...
-             [f0,f1],...
-             'Color',simulationColor);
-        hold on;
+        if(dl > 2 && maxStim > 0.5)
+            rampTimeS = getParameterValueFromD3HSPFile(d3hspFileName,'RAMPTIMES');        
+            t0=rampTimeS+0.1;
+            f0 = interp1(lsdynaBinout.elout.beam.time', ...
+                       lsdynaBinout.elout.beam.axial,...
+                       t0);                        
+            dt = 1;
 
-        plot(t0,f0,...
-             'o','Color',simulationColor,...
-             'MarkerSize',2,...
-             'MarkerFaceColor',[1,1,1]);
-        hold on;
+            t1 = 2;
+            f1 = 38 - ((dl-3)/6)*5;
 
-        text(t1,f1,['Sim: ',num2str(dl)],...
-             'Color',simulationColor,...
-             'HorizontalAlignment','right',...
-             'VerticalAlignment','middle');
-        hold on;
+            plot([t0,t1],...
+                 [f0,f1],...
+                 'Color',simulationColor);
+            hold on;
+            
+            plot(t0,f0,...
+                 'o','Color',simulationColor,...
+                 'MarkerSize',2,...
+                 'MarkerFaceColor',[1,1,1]);
+            hold on;
 
-    subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
+            text(t1,f1,['Sim: ',num2str(dl)],...
+                 'Color',simulationColor,...
+                 'HorizontalAlignment','right',...
+                 'VerticalAlignment','middle');
+            hold on;
+        end
+    
  
 
+    subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
+        
         plot(lsdynaBinout.elout.beam.time',...
-             changeInLengthFromOptimal.*m2mm,...
-             'Color', simulationColor,...
-             'LineWidth',1.0);
+         changeInLengthFromOptimal.*m2mm,...
+         'Color', simulationColor,...
+         'LineWidth',1.0);
         hold on;
 
-        text(2.3+(9/rampSpeed(1,indexRamp))-dl/rampSpeed(1,indexRamp)+0.25,...
-             changeInLengthFromOptimal(1,1).*m2mm,...
-             ['Sim: ', num2str(dl)],...
-             'Color',simulationColor,...
-             'VerticalAlignment','bottom', ...
-             'HorizontalAlignment','left');
-        hold on;
-
+        if(dl > 2 && maxStim > 0.5)
+            text(2.3+(9/rampSpeed(1,indexRamp))-dl/rampSpeed(1,indexRamp)+0.25,...
+                 changeInLengthFromOptimal(1,1).*m2mm,...
+                 ['Sim: ', num2str(dl)],...
+                 'Color',simulationColor,...
+                 'VerticalAlignment','bottom', ...
+                 'HorizontalAlignment','left');
+            hold on;
+        end
 
         box off;            
+
 end
 

@@ -11,9 +11,9 @@ flag_runSimulations               = 0;
 flag_postProcessSimulationData    = 1;
 
 
-%matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
-matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
-                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
+matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
+%matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
+%                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
 
 addpath(matlabScriptPath);
 
