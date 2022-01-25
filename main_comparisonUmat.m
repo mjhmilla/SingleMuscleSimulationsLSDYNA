@@ -11,9 +11,9 @@ flag_runSimulations               = 0;
 flag_postProcessSimulationData    = 1;
 
 
-%matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
-matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
-                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
+matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
+%matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
+%                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
 
 addpath(matlabScriptPath);
 
@@ -306,7 +306,8 @@ if(flag_postProcessSimulationData==1)
               [binout,status] = binoutreader('dynaOutputFile','binout');
 
 
-              
+              %% Load the d3hsp file which contains parameters
+              d3hspFileName = 'd3hsp';
 
 
               %% Add to the generic plots
@@ -336,7 +337,8 @@ if(flag_postProcessSimulationData==1)
                       end
                       indexColumn=1;
                       figSpecific =...
-                          plotEccentricSimulationData(figSpecific,binout,musout,...
+                          plotEccentricSimulationData(figSpecific,...
+                              binout,musout,d3hspFileName,...
                               indexColumn,subPlotPanelSpecific,...
                               numberOfVerticalPlotRowsSpecific,...
                               numberOfHorizontalPlotColumnsSpecific,...                              

@@ -1,4 +1,5 @@
-function figH = plotEccentricSimulationData(figH,lsdynaBinout,lsdynaMuscle, ...
+function figH = plotEccentricSimulationData(figH,...
+                      lsdynaBinout,lsdynaMuscle,d3hspFileName, ...
                       indexColumn,...
                       subPlotLayout,subPlotRows,subPlotColumns,...                      
                       simulationFile,indexSimulation, totalSimulations,... 
@@ -177,18 +178,20 @@ if(flag_addReferenceData==1)
                      trialLabel);
                 hold on;
 
-                subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
+                if( isPassiveColumn(1,indexForceColumn)==0)
+                    subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
 
-                plot(data.data(:,indexTime), data.data(:,indexLengthColumn),...
-                     'Color',referenceColor,'LineWidth',2);
-                hold on;            
-                
-                text(0.25,...
-                     data.data(1,indexLengthColumn),...
-                     ['Exp: ', num2str(dl)],...
-                     'VerticalAlignment','bottom',...
-                     'HorizontalAlignment','left');
-                hold on;
+                    plot(data.data(:,indexTime), data.data(:,indexLengthColumn),...
+                         'Color',referenceColor,'LineWidth',2);
+                    hold on;            
+
+                    text(0.25,...
+                         data.data(1,indexLengthColumn),...
+                         ['Exp: ', num2str(dl)],...
+                         'VerticalAlignment','bottom',...
+                         'HorizontalAlignment','left');
+                    hold on;
+                end
                 if(isPassiveColumn(1,indexForceColumn)==0 ...
                         && isIsometricColumn(1,indexForceColumn)==0)
                     trialCount=trialCount+1;
@@ -235,6 +238,32 @@ if(flag_addSimulationData)
     indexRowA = (indexRamp-1)*2+1;
     indexRowB = indexRowA+1;
 
+    %Get the reference length PATHLEN0 stored in the d3hsp file
+    fid = fopen(d3hspFileName);
+    line=fgetl(fid);
+    [msg,err]=ferror(fid);
+    
+    while contains(line,'PATHLENO')==0 && err~=-1
+       line=fgetl(fid); 
+       [msg,err]=ferror(fid);
+    end
+    fclose(fid);
+    assert(contains(line,'PATHLENO'));
+    tag  = 'PATHLENO';
+    idx0 = strfind(line,tag)+length(tag);
+    idx1=idx0+1;
+    numberText='';
+    while idx1 < length(line)
+       if( line(idx1-1) ~= ' ' && line(idx1) == ' ')
+           numberText=line(idx0:idx1);
+           break;
+       end
+       idx1=idx1+1;
+    end
+    assert(length(numberText) > 0);
+    pathLen = str2double(numberText);
+    m2mm = 1000;
+    
     subplot('Position',reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));
  
         plot(lsdynaBinout.elout.beam.time',...
@@ -246,7 +275,10 @@ if(flag_addSimulationData)
 
         changeInLength = -( lsdynaBinout.nodout.z_coordinate ...
                            -lsdynaBinout.nodout.z_coordinate(1,1));
-        changeInLength=changeInLength.*(1000); %m to mm
+                       
+        changeInLengthFromOptimal = -(lsdynaBinout.nodout.z_coordinate+pathLen);
+                       
+        changeInLength=changeInLength.*(m2mm); %m to mm
         dl = round(changeInLength(end,1)-changeInLength(1,1),0);
         
         [valMax,idxMax] = max(lsdynaBinout.elout.beam.axial);
@@ -254,9 +286,9 @@ if(flag_addSimulationData)
         dt = 1;
       
         t0 = lsdynaBinout.elout.beam.time(1,idxMax);
-        t1 = 1;
+        t1 = 2;
         f0 = valMax;
-        f1 = 30+n*20;
+        f1 = 30+ ((dl-3)/6)*5;
 
         plot([t0,t1],...
              [f0,f1],...
@@ -269,7 +301,7 @@ if(flag_addSimulationData)
              'MarkerFaceColor',[1,1,1]);
         hold on;
 
-        text(t1,f1,num2str(dl),...
+        text(t1,f1,['Sim: ',num2str(dl)],...
              'Color',simulationColor,...
              'HorizontalAlignment','right',...
              'VerticalAlignment','middle');
@@ -279,13 +311,13 @@ if(flag_addSimulationData)
  
 
         plot(lsdynaBinout.elout.beam.time',...
-             changeInLength,...
+             changeInLengthFromOptimal.*m2mm,...
              'Color', simulationColor,...
              'LineWidth',1.0);
         hold on;
 
         text(2.3+(9/rampSpeed(1,indexRamp))-dl/rampSpeed(1,indexRamp)+0.25,...
-             changeInLength(1,1),...
+             changeInLengthFromOptimal(1,1).*m2mm,...
              ['Sim: ', num2str(dl)],...
              'Color',simulationColor,...
              'VerticalAlignment','bottom', ...
