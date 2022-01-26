@@ -7,13 +7,26 @@ close all;
 %%
 % User-defined script variables
 %%
-flag_runSimulations               = 0;
-flag_postProcessSimulationData    = 1;
 
-flag_runIsometricSimulations      = 0;
-flag_runConcentricSimulations     = 0;
-flag_runQuickReleaseSimulations   = 0;
-flag_runEccentricSimulations      = 1;
+
+flag_preProcessSimulationData     = 1; 
+%Setting this to 1 will perform any preprocessing needed of the enabled 
+%experiments. At the moment this is limited to generating the random perturbation
+%signals used in the impedance experiments.
+
+flag_postProcessSimulationData    = 0;
+%Setting this to 1 will generate plots of the enabled experiments
+
+flag_runSimulations               = 0;
+%Setting this to 1 will run the simulations that have been enabled
+
+
+flag_enableIsometricExperiment          = 0;
+flag_enableConcentricExperiment         = 0;
+flag_enableQuickReleaseExperiment       = 0;
+flag_enableEccentricExperiment          = 0;
+flag_enableImpedanceExperiment          = 1;
+    
 
 
 %matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
@@ -22,15 +35,20 @@ matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
 lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/SMP_R931/lsdyna';
 
 addpath(matlabScriptPath);
+cd(matlabScriptPath);
 
 
 %% path to exp. reference
 referenceDataPath= fullfile(matlabScriptPath,'ReferenceExperiments/');
 
-numberOfSimulations = flag_runIsometricSimulations ...
-                     +flag_runConcentricSimulations ... 
-                     +flag_runQuickReleaseSimulations...
-                     +flag_runEccentricSimulations;
+numberOfSimulations = flag_enableIsometricExperiment ...
+                     +flag_enableConcentricExperiment ... 
+                     +flag_enableQuickReleaseExperiment...
+                     +flag_enableEccentricExperiment...
+                     +flag_enableImpedanceExperiment;
+if(numberOfSimulations==0)
+    numberOfSimulations=1;
+end
 
 simulationInformation(numberOfSimulations) = ...
     struct('type',[],'musclePropertyFile',[],...
@@ -40,7 +58,7 @@ simulationInformation(numberOfSimulations) = ...
           'parametersInMuscleCard',0);
 idx=0;
 
-if(flag_runIsometricSimulations==1)
+if(flag_enableIsometricExperiment==1)
   idx=idx+1;
   simulationInformation(idx).type               = 'isometric';
   simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
@@ -50,7 +68,7 @@ if(flag_runIsometricSimulations==1)
   simulationInformation(idx).parametersInMuscleCard = 1;
 end
 
-if(flag_runConcentricSimulations==1)
+if(flag_enableConcentricExperiment==1)
   idx=idx+1;
   simulationInformation(idx).type               = 'concentric';
   simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
@@ -60,7 +78,7 @@ if(flag_runConcentricSimulations==1)
   simulationInformation(idx).parametersInMuscleCard = 1;
 end 
 
-if(flag_runQuickReleaseSimulations==1)
+if(flag_enableQuickReleaseExperiment==1)
   idx=idx+1;
   simulationInformation(idx).type               = 'quickrelease';
   simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
@@ -70,10 +88,20 @@ if(flag_runQuickReleaseSimulations==1)
   simulationInformation(idx).parametersInMuscleCard = 1;
 end 
 
-if(flag_runEccentricSimulations==1)
+if(flag_enableEccentricExperiment==1)
   idx=idx+1;
   simulationInformation(idx).type                   = 'eccentric';
   simulationInformation(idx).musclePropertyFile     = 'eccentric.k';
+  simulationInformation(idx).optimalFiberLength     = 'lopt';
+  simulationInformation(idx).maximumIsometricForce  = 'fiso';
+  simulationInformation(idx).tendonSlackLength      = 'ltslk';
+  simulationInformation(idx).parametersInMuscleCard = 0;
+end 
+
+if(flag_enableImpedanceExperiment==1)
+  idx=idx+1;
+  simulationInformation(idx).type                   = 'impedance';
+  simulationInformation(idx).musclePropertyFile     = 'impedance.k';
   simulationInformation(idx).optimalFiberLength     = 'lopt';
   simulationInformation(idx).maximumIsometricForce  = 'fiso';
   simulationInformation(idx).tendonSlackLength      = 'ltslk';
@@ -90,6 +118,11 @@ deltaPoints  = 1; % every 2nd/3rd/...
 
 %% paths
 outputFolder            = 'output';
+structFolder            = 'output/structs/';
+
+preprocessingDirectoryTree = genpath('preprocessing');
+addpath(preprocessingDirectoryTree);
+
 postprocessingDirectoryTree = genpath('postprocessing');
 addpath(postprocessingDirectoryTree);
 
@@ -131,80 +164,104 @@ binoutColorB = dataColorB;
 musoutColorA = [1,0,0].*(1)+[0,0,1].*(0.);
 musoutColorB = [1,0,0].*(0)+[0,0,1].*(1);
 
-%%
-% Run each simulation and extract the desired output data
-%%
-for indexRelease = 1:length(Releases)
 
-    Release = cell2mat(Releases(indexRelease));
-    switch Release
-        case 'SMP_R931'
-            lsdynaBin = lsdynaBin_SMP_931;
-            
-        otherwise
-            error('Release not specified yet')
-    end
-    simulationReleasePath = fullfile(matlabScriptPath,Release);
-    
-    
-    for indexSimulationType = 1:length(simulationInformation)
-        simulationType = simulationInformation(indexSimulationType).type;
-        simulationTypePath = fullfile(simulationReleasePath,simulationType);
+%% Preprocessing
+if(flag_preProcessSimulationData==1)
 
-        cd(simulationTypePath);
-        simulationDirectories = dir;
-        simulationDirectories = ...
-          simulationDirectories([simulationDirectories.isdir]==true);
+  for indexRelease = 1:length(Releases)
 
-        for indexSimulationTrial=3:deltaPoints:length(simulationDirectories)
-            
-            cd(simulationDirectories(indexSimulationTrial).name);
-            
-            %% generate output signals                        
-            if(flag_runSimulations==1)
-                system(['rm -f *.csv d3* matsum musout* messag* glstat',...
-                         ' nodout spcforc lspost*']);
-                system([lsdynaBin,' i=',...
-                        simulationDirectories(indexSimulationTrial).name,...
-                        '.k']);
+        Release = cell2mat(Releases(indexRelease));
+        simulationReleasePath = fullfile(matlabScriptPath,Release);
+                
+        for indexSimulationType = 1:length(simulationInformation)
+            simulationType = simulationInformation(indexSimulationType).type;
+
+
+            switch simulationType
+                case 'impedance'
+                    %Generate the perturbation signals
+                    mm2m = 0.001;
+                    sampleFrequency = 333; % Sampling frequency
+                    paddingPoints   = round(0.2*sampleFrequency);
+                    samplePoints    = 2048;% Number of points in the random sequence
+                    totalPoints     = samplePoints;
+                    amplitudeMM     = [0.4, 0.8, 1.6]'; %Amplitude scaling in mm
+                    bandwidthHz     = [ 15,  35,  90]'; %bandwidth in Hz;
+                    flag_usingOctave= 0;
+                    flag_generateRandomBaselineSignal    = 0; %Only needs to be done once
+                    flag_processRandomBaselineSignal     = 0; %Only needs to be done once               
+                    inputFunctions = getPerturbationWaveforms(...
+                                        amplitudeMM,...
+                                        bandwidthHz,...
+                                        samplePoints,...
+                                        paddingPoints,...
+                                        sampleFrequency,...
+                                        structFolder, ...
+                                        flag_generateRandomBaselineSignal,...
+                                        flag_processRandomBaselineSignal,...
+                                        flag_usingOctave); 
+                    excitationSeries = [0.05, 0.5, 1.];
+                    impedanceFolder = [simulationReleasePath,'/',simulationType];
+                    success = writeImpedanceSimulationFiles(...
+                                excitationSeries,...
+                                inputFunctions,...
+                                impedanceFolder);
+
+                    
+
+                otherwise
+                    disp(['Preprocessing not required: ', simulationType]);
             end
+
             
-            %if(flag_postProcessSimulationData==1)
-            %    system('lspp43 c=ausw.cfile -nographics');
-            %end
-            
-            %% import output signal
-%             data=[];
-%             switch simulationType
-%                 case 'eccentric'
-%                     %signal = 'con_vel_nod2.csv';
-%                     [output, status] = binoutreader('dynaOutputFile','binout');
-%                     data  = [output.nodout.time',output.elout.beam.axial];                
-%                 case 'isometric'
-%                     %signal = 'forc.csv';
-%                     [output, status] = binoutreader('dynaOutputFile','binout');
-%                     data  = [output.elout.beam.time',output.elout.beam.axial];
-%                 case 'concentric'
-%                     %signal = 'con_vel_nod2.csv';
-%                     [output, status] = binoutreader('dynaOutputFile','binout');
-%                     data  = [output.nodout.time',output.nodout.z_velocity];
-%                 case 'quickrelease'
-%                     %signal = 'quick_release_crossplot.csv';
-%                     [output, status] = binoutreader('dynaOutputFile','binout');
-%                     data  = [output.nodout.z_velocity,output.elout.beam.axial];
-%                 otherwise
-%                     error('Check validation type - does not match any of them')
-%             end
-%             Validation.(Release).(simulationType)(indexSimulationTrial-2).data = data;
-%             Validation.(Release).(simulationType)(indexSimulationTrial-2).name = simulationDirectories(indexSimulationTrial).name;            
-%                                                
-            cd(simulationTypePath);
         end
-    end
+  end
+
+end
+
+%% Simulation
+
+if(flag_runSimulations==1)
+  for indexRelease = 1:length(Releases)
+
+      Release = cell2mat(Releases(indexRelease));
+      switch Release
+          case 'SMP_R931'
+              lsdynaBin = lsdynaBin_SMP_931;
+              
+          otherwise
+              error('Release not specified yet')
+      end
+      simulationReleasePath = fullfile(matlabScriptPath,Release);
+      
+      
+      for indexSimulationType = 1:length(simulationInformation)
+          simulationType = simulationInformation(indexSimulationType).type;
+          simulationTypePath = fullfile(simulationReleasePath,simulationType);
+
+          cd(simulationTypePath);
+          simulationDirectories = dir;
+          simulationDirectories = ...
+            simulationDirectories([simulationDirectories.isdir]==true);
+
+          for indexSimulationTrial=3:deltaPoints:length(simulationDirectories)
+              
+              cd(simulationDirectories(indexSimulationTrial).name);
+              
+              %% generate output signals                        
+              system(['rm -f *.csv d3* matsum musout* messag* glstat',...
+                       ' nodout spcforc lspost*']);
+              system([lsdynaBin,' i=',...
+                      simulationDirectories(indexSimulationTrial).name,...
+                      '.k']);
+              
+              cd(simulationTypePath);
+          end
+      end
+  end
 end
 
 %% PostProcessing 
-
 if(flag_postProcessSimulationData==1)
 
 
@@ -444,87 +501,7 @@ if(flag_postProcessSimulationData==1)
 
 end
 
-% simulationTypeList = fieldnames(Validation.(Release));
-% for indexSimulationType = 1:length( simulationTypeList)
-%     simulationType = cell2mat(simulationTypeList(indexSimulationType));
-%     figure(indexSimulationType);
-%     hold on;
-%     clear h;
-%     for dataPoints = 1:deltaPoints:length(Validation.(Release).(simulationType)) % only every 2nd point
-%         dataSet = Validation.(Release).(simulationType)(dataPoints);
-%         switch(simulationType)
-%             case 'eccentric'
-%                 x = dataSet.data(find(dataSet.data(:,1), 1 )-1:end,1);
-%                 y = dataSet.data(find(dataSet.data(:,1), 1 )-1:end,2);
-%                 h(dataPoints)= ...
-%                     plot(x,y,...
-%                         'DisplayName',dataSet.name);
-%                 %axis([0 12 0 35]);
-%                 set(gca,'XTick',[1:1:12])
-%                 ylabel('Force (N)','interpreter','latex'); 
-%                 xlabel('Time (s)','interpreter','latex');
-%             case 'quickrelease'
-%                 x = dataSet.data(find(dataSet.data(:,1), 1 )-1:end,1);
-%                 y = dataSet.data(find(dataSet.data(:,1), 1 )-1:end,2);
-%                 h(dataPoints)= ...
-%                     plot(x,y,...
-%                         'DisplayName',dataSet.name);
-%                 axis([0 0.5 0 30]);
-%                 set(gca,'XTick',0:0.10:0.5)
-%                 ylabel('muscle force in N','interpreter','latex'); 
-%                 xlabel('contraction velocity in $\frac{m}{s}$','interpreter','latex');
-%                         
-%             case 'concentric'
-%                 % starttime = time of lift-off
-%                 %dataSet.data      = dataSet.data((dataSet.data(:,2)~=0),:);
-%                 %dataSet.data(:,1) = dataSet.data(:,1)-dataSet.data(1,1);
-%                 indexStart = find(dataSet.data(:,2) > 0,1)-1;
-%                 x = dataSet.data(indexStart:end,1)-dataSet.data(indexStart,1);
-%                 y = dataSet.data(indexStart:end,2);
-%                 
-%                 h(dataPoints)=...
-%                     plot(   x,y,...
-%                             'DisplayName',dataSet.name);
-%                 set(groot, 'defaultAxesTickLabelInterpreter','latex'); 
-%                 set(groot, 'defaultLegendInterpreter','latex');
-%                 grid on
-%                 axis([0 0.2 0 0.12]);
-%                 set(gca,'XTick',0:0.05:0.2)
-%                 set(gca,'YTick',0:0.02:0.12)
-%                 ylabel('velocity in $\frac{m}{s}$','interpreter','latex'); 
-%                 xlabel('time in s','interpreter','latex');
-%                 
-%             case 'isometric'
-%                 
-%                 h(dataPoints)=...
-%                     plot(   dataSet.data(:,1),...
-%                             dataSet.data(:,2),...
-%                             'DisplayName',dataSet.name);
-%                         
-%                 set(groot, 'defaultAxesTickLabelInterpreter','latex'); 
-%                 set(groot, 'defaultLegendInterpreter','latex');
-%                 grid on
-%                 axis([0 1.5 0 40]);
-%                 set(gca,'XTick',0:0.2:1.5)
-%                 set(gca,'YTick',0:10:40)
-%                 ylabel('muscle force in N','interpreter','latex'); 
-%                 xlabel('time in s','interpreter','latex');
-%                 
-%             otherwise
-%                 error('Plot error: validation type does not match ')
-%         end
-%         
-%     end
 
-%     %% Reference
-%     contRef = dir(fullfile(referenceDataPath,simulationType,'*.dat'));
-%     for refId = 1:deltaPoints:length(contRef) %only every 2nd point
-%         refData = importdata(fullfile(contRef(refId).folder,contRef(refId).name));
-%         plot(refData.data(:,1),refData.data(:,2),'--k','DisplayName',['Ref' contRef(refId).name]);
-%     end
-%     %legend([h])
-    
-% end
 
 rmpath(matlabScriptPath);
 
