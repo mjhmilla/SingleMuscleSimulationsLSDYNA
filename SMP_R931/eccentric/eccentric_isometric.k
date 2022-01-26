@@ -9,7 +9,7 @@ R    dtout      0.01
 R rampLenE     0.009
 RstimTimeS      0.95
 R     lopt 0.0428571
-R     fiso 21.506061
+R     fiso 24.364617
 R alphaRad 0.1221730
 R    ltslk 0.0304511
 R       et  0.045833

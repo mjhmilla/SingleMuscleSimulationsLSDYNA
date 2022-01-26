@@ -9,7 +9,7 @@ R    dtout      0.01
 R rampLenE     0.009
 RstimTimeS      0.95
 R     lopt 0.0428571
-R     fiso 21.506061
+R     fiso 24.364617
 R alphaRad 0.1221730
 R    ltslk 0.0304511
 R       et  0.045833
@@ -37,9 +37,15 @@ $#  endtim    endcyc     dtmin    endeng    endmas
     &timeE         0       0.0       0.01.000000E8
 *CONTROL_TIMESTEP
 $#  dtinit    tssfac      isdo    tslimt     dt2ms      lctm     erode     ms1st
-       0.00.89999998         0       0.0       0.0         0         0         0
+       0.00.89999998         0       0.0       0.0         5         0         0
 $#  dt2msf   dt2mslc     imscl    unused    unused     rmscl     
        0.0         0         0                           0.0
+*DEFINE_CURVE
+$#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
+         5         0       1.0       1.0       0.0       0.0         0         0
+$#                a1                  o1  
+                 0.0              0.0001
+              &timeE              0.0001      
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 $                                                                              $
 $                             DATABASE (OUTPUT)                                $

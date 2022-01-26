@@ -7,7 +7,7 @@ close all;
 %%
 % User-defined script variables
 %%
-flag_runSimulations               = 0;
+flag_runSimulations               = 1;
 flag_postProcessSimulationData    = 1;
 
 
