@@ -10,67 +10,75 @@ close all;
 flag_runSimulations               = 0;
 flag_postProcessSimulationData    = 1;
 
+flag_runIsometricSimulations      = 0;
+flag_runConcentricSimulations     = 0;
+flag_runQuickReleaseSimulations   = 0;
+flag_runEccentricSimulations      = 1;
+
 
 %matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
 matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
                     '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
+lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/SMP_R931/lsdyna';
 
 addpath(matlabScriptPath);
 
-%binoutreaderPath='/home/itm/institut/tools/matlab/Apps/LS_Dyna/';
-%addpath(binoutreaderPath);
 
 %% path to exp. reference
 referenceDataPath= fullfile(matlabScriptPath,'ReferenceExperiments/');
 
-simulationInformation(1) = struct('type',[],'musclePropertyFile',[],...
-                                  'optimalFiberLength','',...
-                                  'maximumIsometricForce','',...
-                                  'tendonSlackLength','',...
-                                  'parametersInMuscleCard',0);
-idx=1;
-% simulationInformation(idx).type               = 'quickrelease';
-% simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
-% simulationInformation(idx).optimalFiberLength     = 'lCEopt';
-% simulationInformation(idx).maximumIsometricForce  = 'Fmax';
-% simulationInformation(idx).tendonSlackLength      = 'lSEE0';
-% simulationInformation(idx).parametersInMuscleCard = 1;
-% 
-% idx=idx+1;
-% simulationInformation(idx).type               = 'isometric';
-% simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
-% simulationInformation(idx).optimalFiberLength     = 'lCEopt';
-% simulationInformation(idx).maximumIsometricForce  = 'Fmax';
-% simulationInformation(idx).tendonSlackLength      = 'lSEE0';
-% simulationInformation(idx).parametersInMuscleCard = 1;
-% 
-% idx=idx+1;
-% simulationInformation(idx).type               = 'concentric';
-% simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
-% simulationInformation(idx).optimalFiberLength     = 'lCEopt';
-% simulationInformation(idx).maximumIsometricForce  = 'Fmax';
-% simulationInformation(idx).tendonSlackLength      = 'lSEE0';
-% simulationInformation(idx).parametersInMuscleCard = 1;
+numberOfSimulations = flag_runIsometricSimulations ...
+                     +flag_runConcentricSimulations ... 
+                     +flag_runQuickReleaseSimulations...
+                     +flag_runEccentricSimulations;
 
-%idx=idx+1;
-simulationInformation(idx).type                   = 'eccentric';
-simulationInformation(idx).musclePropertyFile     = 'eccentric.k';
-simulationInformation(idx).optimalFiberLength     = 'lopt';
-simulationInformation(idx).maximumIsometricForce  = 'fiso';
-simulationInformation(idx).tendonSlackLength      = 'ltslk';
-simulationInformation(idx).parametersInMuscleCard = 0;
+simulationInformation(numberOfSimulations) = ...
+    struct('type',[],'musclePropertyFile',[],...
+          'optimalFiberLength','',...
+          'maximumIsometricForce','',...
+          'tendonSlackLength','',...
+          'parametersInMuscleCard',0);
+idx=0;
 
-%simulationInformation(1).type               = 'concentric';
-%simulationInformation(1).musclePropertyFile = 'matpiglet.k';
-%simulationInformation(1).muscleProperties   = {'lCEopt','Fmax'};
+if(flag_runIsometricSimulations==1)
+  idx=idx+1;
+  simulationInformation(idx).type               = 'isometric';
+  simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
+  simulationInformation(idx).optimalFiberLength     = 'lCEopt';
+  simulationInformation(idx).maximumIsometricForce  = 'Fmax';
+  simulationInformation(idx).tendonSlackLength      = 'lSEE0';
+  simulationInformation(idx).parametersInMuscleCard = 1;
+end
 
-%simulationInformation(1).type               = 'isometric';
-%simulationInformation(1).musclePropertyFile = 'matpiglet.k';
-%simulationInformation(1).muscleProperties   = {'lCEopt','Fmax'};
+if(flag_runConcentricSimulations==1)
+  idx=idx+1;
+  simulationInformation(idx).type               = 'concentric';
+  simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
+  simulationInformation(idx).optimalFiberLength     = 'lCEopt';
+  simulationInformation(idx).maximumIsometricForce  = 'Fmax';
+  simulationInformation(idx).tendonSlackLength      = 'lSEE0';
+  simulationInformation(idx).parametersInMuscleCard = 1;
+end 
 
-%simulationInformation(1).type               = 'eccentric';
-%simulationInformation(1).musclePropertyFile = 'matpiglet.k';
-%simulationInformation(1).muscleProperties   = {'lCEopt','Fmax'};
+if(flag_runQuickReleaseSimulations==1)
+  idx=idx+1;
+  simulationInformation(idx).type               = 'quickrelease';
+  simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
+  simulationInformation(idx).optimalFiberLength     = 'lCEopt';
+  simulationInformation(idx).maximumIsometricForce  = 'Fmax';
+  simulationInformation(idx).tendonSlackLength      = 'lSEE0';
+  simulationInformation(idx).parametersInMuscleCard = 1;
+end 
+
+if(flag_runEccentricSimulations==1)
+  idx=idx+1;
+  simulationInformation(idx).type                   = 'eccentric';
+  simulationInformation(idx).musclePropertyFile     = 'eccentric.k';
+  simulationInformation(idx).optimalFiberLength     = 'lopt';
+  simulationInformation(idx).maximumIsometricForce  = 'fiso';
+  simulationInformation(idx).tendonSlackLength      = 'ltslk';
+  simulationInformation(idx).parametersInMuscleCard = 0;
+end 
 
 
 % Define which Releases shall be tested
@@ -131,7 +139,7 @@ for indexRelease = 1:length(Releases)
     Release = cell2mat(Releases(indexRelease));
     switch Release
         case 'SMP_R931'
-            lsdynaBin = '/scratch/tmp/mmillard/SMP_R931/lsdyna';
+            lsdynaBin = lsdynaBin_SMP_931;
             
         otherwise
             error('Release not specified yet')
