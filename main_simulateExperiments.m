@@ -9,7 +9,7 @@ close all;
 %%
 
 
-flag_preProcessSimulationData     = 1; 
+flag_preProcessSimulationData     = 0; 
 %Setting this to 1 will perform any preprocessing needed of the enabled 
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
@@ -17,7 +17,7 @@ flag_preProcessSimulationData     = 1;
 flag_postProcessSimulationData    = 0;
 %Setting this to 1 will generate plots of the enabled experiments
 
-flag_runSimulations               = 0;
+flag_runSimulations               = 1;
 %Setting this to 1 will run the simulations that have been enabled
 
 
