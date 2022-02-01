@@ -14,10 +14,10 @@ flag_preProcessSimulationData     = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations               = 0;
+flag_runSimulations               = 1;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData    = 1;
+flag_postProcessSimulationData    = 0;
 %Setting this to 1 will generate plots of the enabled experiments
 
 
@@ -30,9 +30,9 @@ flag_enableImpedanceExperiment          = 1;
     
 
 
-%matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
-matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
-                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
+matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
+%matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
+%                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
 lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/SMP_R931/lsdyna';
 
 addpath(matlabScriptPath);
