@@ -1,17 +1,17 @@
 function [success] = calcSignalGainAndPhase(...
                         tendonForce,...
-                        normFiberLength,...
+                        nominalLength,...
                         nominalForce,...
                         activation,...
                         amplitudeMM,...
                         bandwidthHz,...
                         inputFunctions)
 
-%                        numberOfSimulations,...
+
 success = 0;
 
+assert(size(tendonForce,2)==1)
 samplePoints=inputFunctions.samples;
-
 
 % flag_plotStiffnessDamping,...
 % flag_plotDetailedSpectrumData,...
@@ -21,7 +21,7 @@ samplePoints=inputFunctions.samples;
 %outputFolder
 flag_usingOctave=0;
                         
-numberOfSimulations=1;
+numberOfSimulations=length(activation)*length(amplitudeMM)*length(bandwidthHz);
 freqSimData = struct('force',  zeros(samplePoints, numberOfSimulations),...
                      'cxx',   zeros(samplePoints*2-1, numberOfSimulations),...
                      'cxy',   zeros(samplePoints*2-1, numberOfSimulations),...
@@ -45,7 +45,7 @@ freqSimData = struct('force',  zeros(samplePoints, numberOfSimulations),...
                      'forceKD',       zeros(samplePoints,numberOfSimulations),...
                      'amplitudeMM',   zeros(1,numberOfSimulations),...
                      'bandwidthHz',   zeros(1,numberOfSimulations),...
-                     'normFiberLength', zeros(1,numberOfSimulations),...
+                     'nominalLength', zeros(1,numberOfSimulations),...
                      'activation',      zeros(1,numberOfSimulations),...
                      'nominalForceDesired', zeros(1,numberOfSimulations),...
                      'nominalForce'      ,zeros(1,numberOfSimulations)); 
@@ -91,26 +91,21 @@ forceNorm = 1;
 %                    simSeriesFiles{idxModel}(1,(z+length(tag)):end)];
 
 
-  for idxNormFiberLength = 1:1:length(normFiberLength)
+  for idxNormFiberLength = 1:1:length(nominalLength)
     for idxActivation = 1:1:length(activation)      
       for i=1:1:length(amplitudeMM)        
         for j=1:1:length(bandwidthHz)
 
-          here=0;
-          if(idx==21)
-            here=1;
-          end
           % Save all of the configuration data
           freqSimData.amplitudeMM(1,idx)      = amplitudeMM(i);
           freqSimData.bandwidthHz(1,idx)      = bandwidthHz(j);
-          freqSimData.normFiberLength(1,idx)  = normFiberLength(idxNormFiberLength);
-          freqSimData.activation(1,idx)       = benchRecord.activation(1,idx);
+          freqSimData.nominalLength(1,idx)    = nominalLength(idxNormFiberLength);
+          freqSimData.activation(1,idx)       = activation(1,idx);
           
           freqSimData.nominalForceDesired(1,idx) = nominalForce(1,idxActivation);
           
           idxMidPadding = round(0.5*inputFunctions.padding);
-          freqSimData.nominalForce(1,idx)     = ...
-            benchRecord.tendonForce(idxMidPadding,idx);
+          freqSimData.nominalForce(1,idx)     = nominalForce(1,idxActivation);
 
 
           idxWave = getSignalIndex(amplitudeMM(i),bandwidthHz(j),...
@@ -131,11 +126,11 @@ forceNorm = 1;
 
           x  = inputFunctions.x(   inputFunctions.idxSignal, idxWave)...
                             ./lengthNorm;
-          y  = tendonForce(inputFunctions.idxSignal, idx)...
+          y  = tendonForce(inputFunctions.idxSignal, 1)...
                             ./forceNorm;
           yo = y(round(inputFunctions.padding*0.5),1);
           y  = y - yo;
-          freqSimData.force(:,idx)  =  benchRecord.tendonForce(:, idx);
+          freqSimData.force(:,idx)  =  tendonForce(:, 1);
 
 
 
@@ -169,7 +164,7 @@ forceNorm = 1;
           %freqSimData.phase(:,idx)  =...
           %  -angle(freqSimData.fxy(:,idx)./freqSimData.fxx(:,idx));
 
-          axy                       = abs(  freqSimData.fxy(:,idx));
+          axy = abs(  freqSimData.fxy(:,idx));
           freqSimData.coherenceSq(:,idx) = ...
               (axy.*axy) ...
               ./ abs( (freqSimData.fxx(:,idx).*freqSimData.fyy(:,idx)) );
@@ -221,10 +216,7 @@ forceNorm = 1;
                     freqSimData.gain(indexCorrFreqRange,idx),...
                     freqSimData.phase(indexCorrFreqRange,idx),...
                     argScaling,objScaling);
-          if(idxModel==1 && idx==16)
-            err0=errFcn0(x0);
-            here=1;
-          end
+
 
           paramOpt  = []; 
           fval      = [];
@@ -310,7 +302,7 @@ forceNorm = 1;
           modelGain  =    abs(modelResponseFreq);
           modelPhase =  angle(modelResponseFreq);
 
-          freqSimData.gainKD(:,idx) = modelGain;
+          freqSimData.gainKD(:,idx)  = modelGain;
           freqSimData.phaseKD(:,idx) = modelPhase;
 
           gVar  = var(freqSimData.gain(indexCorrFreqRange,idx));

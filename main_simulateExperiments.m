@@ -7,17 +7,15 @@ close all;
 %%
 % User-defined script variables
 %%
-disp('Delete impedance subfolders');
-disp('Re-run preprocessing');
 flag_preProcessSimulationData     = 0; 
 %Setting this to 1 will perform any preprocessing needed of the enabled 
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations               = 1;
+flag_runSimulations               = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData    = 0;
+flag_postProcessSimulationData    = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
 
@@ -30,9 +28,9 @@ flag_enableImpedanceExperiment          = 1;
     
 
 
-matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
-%matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
-%                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
+%matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
+matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
+                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
 lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/SMP_R931/lsdyna';
 
 addpath(matlabScriptPath);
@@ -128,8 +126,8 @@ totalPoints     = samplePoints;
 amplitudeMM     = [0.4, 0.8, 1.6]'; %Amplitude scaling in mm
 bandwidthHz     = [ 15,  35,  90]'; %bandwidth in Hz;
 
-flag_generateRandomBaselineSignal    = 1; %Only needs to be done once
-flag_processRandomBaselineSignal     = 1; %Only needs to be done once               
+flag_generateRandomBaselineSignal    = 0; %Only needs to be done once
+flag_processRandomBaselineSignal     = 0; %Only needs to be done once               
 
 
 signalFileEnding = sprintf('_%sHz_%s',num2str(round(sampleFrequency,0)),...
@@ -273,6 +271,7 @@ if(flag_postProcessSimulationData==1)
   figGeneric  = figure;
   figSpecific = figure;      
   
+  %load inputFunctions
   load([structFolder,signalFileName]);
 
   for indexRelease = 1:length(Releases)
@@ -334,7 +333,7 @@ if(flag_postProcessSimulationData==1)
                 numberOfVerticalPlotRowsSpecific      = 5; 
                 
                 sampleTimeK = getParameterFieldValue('impedance.k','dtsignal');
-                assert(abs(sampleTimeK-sampleTime)<sqrt(eqs));
+                assert(abs(sampleTimeK-sampleTime)<sqrt(eps));
           end
 
 
@@ -539,9 +538,7 @@ if(flag_postProcessSimulationData==1)
                       else
                         flag_addReferenceData = 0;
                       end
-
-                      
-
+                     
                       figSpecific =...
                           plotImpedanceSimulationData(figSpecific,...
                               inputFunctions,...
