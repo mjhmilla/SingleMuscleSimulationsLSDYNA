@@ -1,4 +1,4 @@
-function val = getMuscleCardFieldValue(fileName, fieldName)
+function val = getLsdynaCardFieldValue(fileName, fieldName)
 
 val = NaN;
 

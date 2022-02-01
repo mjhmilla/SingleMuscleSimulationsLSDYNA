@@ -7,11 +7,11 @@ function [inputFunctions] = getPerturbationWaveforms( ...
                               workingFolder,...
                               flag_generateRandomInput,...
                               flag_processInputFunctions,...
+                              baseSignalFileName,...
+                              signalFileName,...
                               flag_usingOctave)
 
-signalFileEnding = sprintf('_%sHz_%s',num2str(sampleFrequency),...
-                                 num2str(samplePoints));
-         
+
 numberOfFunctions = length(amplitudeMM)*length(bandwidthHz);                          
                                   
 totalPoints=samplePoints;
@@ -48,10 +48,10 @@ if(flag_generateRandomInput==1)
   xo((samplePoints-paddingPoints):1:samplePoints) = 0;
 
   inputFunctions.xo = xo;  
-  save([workingFolder,'baseFunction',signalFileEnding,'.mat'],'xo');
+  save([workingFolder,baseSignalFileName],'xo');
 
 else
-  tmp = load([workingFolder,'baseFunction',signalFileEnding,'.mat']);
+  tmp = load([workingFolder,baseSignalFileName]);
   inputFunctions.xo=tmp.xo;
 end
 
@@ -154,11 +154,11 @@ if(flag_processInputFunctions == 1)
       idx=idx+1;
     end
   end
-  save([workingFolder,'systemIdInputFunctions',signalFileEnding,'.mat'],...
+  save([workingFolder,signalFileName],...
           'inputFunctions');
 
 else
-  tmp=load([workingFolder,'systemIdInputFunctions',signalFileEnding,'.mat']);  
+  tmp=load([workingFolder,signalFileName]);  
   inputFunctions = tmp.inputFunctions;
   
   %Check to make sure that the loaded functions are consistent with 

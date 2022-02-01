@@ -5,20 +5,26 @@ $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout      0.01                                     
+R    dtout 0.003
+R dtsignal 0.003                                   
 R     lopt 0.0428571
 R     fiso 21.506061
 R alphaRad 0.1221730
 R    ltslk 0.0304511
 R       et  0.045833
-R     freq     333.0
 R   points    2048.0
 *PARAMETER_EXPRESSION
 $#    name expression
+R     freq 1/&dtsignal
 R   lCEopt &lopt*cos(&alphaRad)
 R     Fmax &fiso*cos(&alphaRad)
 R       kt 30.0*&fiso/&ltslk
-R pathLenO &lopt*cos(&alphaRad)+(&fiso*cos(&alphaRad))/&kt+&ltslk
+R   fceNom (&Fmax)*&stim
+R   lceNom &lCEopt)
+R  fceNomN &fceNom/&Fmax
+R  lceNomN &lceNom/&lCEopt
+R pathLenO &lceNom+&fceNom/&kt+&ltslk
+R pathLenN &pathLenO
 R    timeE &points/&freq
 *TITLE
 $#                                                                         title
@@ -35,8 +41,8 @@ $#  dt2msf   dt2mslc     imscl    unused    unused     rmscl
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          5         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
-                 0.0               0.001
-              &timeE               0.001       
+                 0.0             0.00001
+              &timeE             0.00001       
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 $                                                                              $
 $                             DATABASE (OUTPUT)                                $
@@ -94,6 +100,6 @@ $#  typeid       dof       vad      lcid        sf       vid     death     birth
          2         3         2         4       1.0
 *NODE
 $#   nid               x               y               z      tc      rc
-       1             0.0             0.0      -&pathLenO       7       7
+       1             0.0             0.0      -&pathLenN       7       7
        2             0.0             0.0             0.0       7       7
 *END

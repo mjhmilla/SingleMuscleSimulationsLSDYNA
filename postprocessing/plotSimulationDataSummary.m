@@ -53,12 +53,12 @@ plot(lsdynaBinout.nodout.time',...
 hold on;
 
 
-text( 1.20, 0.0+n*0.5, seriesNumber,...
+text( 0.80, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', binoutColor);
 hold on;
 
-text( 1.05, 0.0+n*0.5, seriesNumber,...
+text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', musoutColor);
 hold on;
@@ -71,6 +71,15 @@ hold on;
 plot(lsdynaMuscle.data(:,indexMusoutTime),...
      lsdynaMuscle.data(:,indexMusoutLmtc),...
      'Color',musoutColor);
+
+axis tight;
+yl = ylim;
+yminDes = 0;
+ymaxDes = (optimalFiberLength*1.6+tendonSlackLength*1.2);
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
+
 
 xlabel('Time (s)');
 ylabel('Length (m)');
@@ -93,16 +102,23 @@ plot(lsdynaMuscle.data(:,indexMusoutTime),...
      'Color',musoutColor);
 hold on;
 
-text( 1.20, n*0.5, seriesNumber,...
+text( 0.80, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', binoutColor);
 hold on;
 
-text( 1.05, n*0.5, seriesNumber,...
+text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', musoutColor);
 hold on;
 
+axis tight;
+yl = ylim;
+yminDes = -0.05*maximumIsometricForce;
+ymaxDes = maximumIsometricForce*1.5;
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
 
 xlabel('Time (s)');
 ylabel('Force (N)');
@@ -119,10 +135,18 @@ plot(lsdynaMuscle.data(:,indexMusoutTime),...
      'Color',musoutColor);
 hold on;
 
-text( 1.05, n*0.5, seriesNumber,...
+text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', musoutColor);
 hold on;
+
+axis tight;
+yl = ylim;
+yminDes = 0;
+ymaxDes = 1.6;
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
 
 xlabel('Time (s)');
 ylabel('Norm. Length ($$\ell^{M}/\ell^{M}_{\circ}$$)');
@@ -141,10 +165,19 @@ plot(lsdynaMuscle.data(:,indexMusoutTime),...
      'Color',musoutColor);
 hold on;
 
-text( 1.05, n*0.5, seriesNumber,...
+text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', musoutColor);
 hold on;
+
+
+axis tight;
+yl = ylim;
+yminDes = (tendonSlackLength*0.9/optimalFiberLength);
+ymaxDes = (tendonSlackLength*1.2/optimalFiberLength);
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
 
 xlabel('Time (s)');
 ylabel('Norm. Length ($$\ell^{T}/\ell^{M}_{\circ}$$)');
@@ -160,10 +193,20 @@ plot(lsdynaMuscle.data(:,indexMusoutTime),...
      'Color',musoutColor);
 hold on;
 
-text( 1.05, n*0.5, seriesNumber,...
+text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', musoutColor);
 hold on;
+
+
+axis tight;
+yl = ylim;
+yminDes = -10;
+ymaxDes =  10;
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
+
 
 xlabel('Time (s)');
 ylabel('Norm. Velocity ($$\dot{\ell}^{M}/\ell^{M}_{\circ}$$)');
@@ -182,10 +225,21 @@ plot(lsdynaMuscle.data(:,indexMusoutTime),...
      'Color',musoutColor);
 hold on;
 
-text( 1.05, n*0.5, seriesNumber,...
+text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', musoutColor);
 hold on;
+
+
+
+axis tight;
+yl = ylim;
+yminDes = -10;
+ymaxDes =  10;
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
+
 
 xlabel('Time (s)');
 ylabel('Norm. Velocity ($$\dot{\ell}^{T}/\ell^{M}_{o}$$)');
@@ -202,10 +256,20 @@ plot(lsdynaMuscle.data(:,indexMusoutTime),...
      'Color',musoutColor);
 hold on;
 
-text( 1.05, n*0.5, seriesNumber,...
+text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', musoutColor);
 hold on;
+
+
+axis tight;
+yl = ylim;
+yminDes = -5;
+ymaxDes = 110;
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
+
 
 xlabel('Time (s)');
 ylabel('Activation (0-1)');
@@ -221,10 +285,20 @@ plot(lsdynaMuscle.data(:,indexMusoutTime),...
      'Color',musoutColor);
 hold on;
 
-text( 1.05, n*0.5, seriesNumber,...
+text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', musoutColor);
 hold on;
+
+axis tight;
+yl = ylim;
+yminDes = -0.05;
+ymaxDes = 1.80;
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
+
+
 
 xlabel('Time (s)');
 ylabel('Norm. Force ($$f^{M}/f^{M}_{\circ}$$)');
@@ -240,10 +314,20 @@ plot(lsdynaMuscle.data(:,indexMusoutTime),...
      'Color',musoutColor);
 hold on;
 
-text( 1.05, n*0.5, seriesNumber,...
+text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', musoutColor);
 hold on;
+
+
+axis tight;
+yl = ylim;
+yminDes = -0.05;
+ymaxDes = 1.80;
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
+
 
 xlabel('Time (s)');
 ylabel('Norm. Force ($$f^{PE}/f^{M}_{\circ}$$)');
@@ -261,10 +345,20 @@ plot(lsdynaMuscle.data(:,indexMusoutTime),...
      'Color',musoutColor);
 hold on;
 
-text( 1.05, n*0.5, seriesNumber,...
+text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', musoutColor);
 hold on;
+
+axis tight;
+yl = ylim;
+yminDes = -0.05;
+ymaxDes = 1.80;
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
+
+
 
 xlabel('Time (s)');
 ylabel('Norm. Force ($$f^{T}/f^{M}_{\circ}$$)');
@@ -281,10 +375,27 @@ plot(lsdynaMuscle.data(:,indexMusoutLce)./optimalFiberLength,...
      'Color',musoutColor);
 hold on;
 
-text( 1.05, n*0.5, seriesNumber,...
+text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', musoutColor);
 hold on;
+
+
+axis tight;
+xl = xlim;
+xminDes = 0.5;
+xmaxDes = 1.60;
+xmin = min(xminDes, min(xl));
+xmax = max(xmaxDes,max(xl));
+xlim([xmin,xmax]);
+
+yl = ylim;
+yminDes = -0.05;
+ymaxDes = 1.80;
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
+
 
 xlabel('Norm. Length ($$\ell^{M}/\ell^{M}_{\circ}$$)');
 ylabel('Norm. Force ($$f^{M}/f^{M}_{\circ}$$)');
@@ -300,10 +411,27 @@ plot(lsdynaMuscle.data(:,indexMusoutLce)./optimalFiberLength,...
      'Color',musoutColor);
 hold on;
 
-text( 1.05, n*0.5, seriesNumber,...
+text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', musoutColor);
 hold on;
+
+axis tight;
+xl = xlim;
+xminDes = 0.5;
+xmaxDes = 1.60;
+xmin = min(xminDes, min(xl));
+xmax = max(xmaxDes,max(xl));
+xlim([xmin,xmax]);
+
+yl = ylim;
+yminDes = -0.05;
+ymaxDes = 1.80;
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
+
+
 
 xlabel('Norm. Length ($$\ell^{M}/\ell^{M}_{\circ}$$)');
 ylabel('Norm. Force ($$f^{PE}/f^{M}_{\circ}$$)');
@@ -323,10 +451,27 @@ plot(ltN,...
      'Color',musoutColor);
 hold on;
 
-text( 1.05, n*0.5, seriesNumber,...
+text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
       'Color', musoutColor);
 hold on;
+
+
+axis tight;
+xl = xlim;
+xminDes = 0.9;
+xmaxDes = 1.20;
+xmin = min(xminDes, min(xl));
+xmax = max(xmaxDes,max(xl));
+xlim([xmin,xmax]);
+
+yl = ylim;
+yminDes = -0.05;
+ymaxDes = 1.80;
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
+
 
 xlabel('Norm. Length ($$\ell^{T}/\ell^{T}_{s}$$)');
 ylabel('Norm. Force ($$f^{T}/f^{M}_{\circ}$$)');

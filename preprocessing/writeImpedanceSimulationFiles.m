@@ -74,6 +74,18 @@ for indexExcitation=1:1:length(excitationSeries)
                 end
             end
             fclose(fid);
+
+
+            fid = fopen('getConfiguration.m','w');
+            fprintf(fid,'function config = getConfiguration()\n');
+            fprintf(fid,['config=struct(''amplitudeMM'',%e,''bandwidthHz'',',...
+                '%e,...\n''excitation'',%e,''indexWaveform'',%i);\n'],...
+                inputFunctions.amplitudeMM(1,indexWaveform),...
+                inputFunctions.bandwidthHz(1,indexWaveform),...
+                excitationSeries(1,indexExcitation),...
+                indexWaveform);
+            fclose(fid);
+            
             cd(impedanceFolder);
 
 

@@ -7,18 +7,19 @@ close all;
 %%
 % User-defined script variables
 %%
-
-
+disp('Delete impedance subfolders');
+disp('Re-run preprocessing');
 flag_preProcessSimulationData     = 0; 
 %Setting this to 1 will perform any preprocessing needed of the enabled 
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
+flag_runSimulations               = 1;
+%Setting this to 1 will run the simulations that have been enabled
+
 flag_postProcessSimulationData    = 0;
 %Setting this to 1 will generate plots of the enabled experiments
 
-flag_runSimulations               = 1;
-%Setting this to 1 will run the simulations that have been enabled
 
 
 flag_enableIsometricExperiment          = 0;
@@ -29,9 +30,9 @@ flag_enableImpedanceExperiment          = 1;
     
 
 
-%matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
-matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
-                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
+matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
+%matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
+%                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
 lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/SMP_R931/lsdyna';
 
 addpath(matlabScriptPath);
@@ -116,6 +117,25 @@ Releases    =  {'SMP_R931'};
 % Define if all all datapoints are used or only some of them?
 deltaPoints  = 1; % every 2nd/3rd/...
 
+%% Impedance experiment evaluation
+
+mm2m = 0.001;
+sampleFrequency = 1/0.003; % Sampling frequency
+paddingPoints   = round(0.5*sampleFrequency);
+samplePoints    = 2048;% Number of points in the random sequence
+totalPoints     = samplePoints;
+amplitudeMM     = [0.4, 0.8, 1.6]'; %Amplitude scaling in mm
+bandwidthHz     = [ 15,  35,  90]'; %bandwidth in Hz;
+
+flag_generateRandomBaselineSignal    = 1; %Only needs to be done once
+flag_processRandomBaselineSignal     = 1; %Only needs to be done once               
+
+
+signalFileEnding = sprintf('_%sHz_%s',num2str(round(sampleFrequency,0)),...
+                                 num2str(samplePoints));
+signalFileName      = [ 'systemIdInputFunctions',signalFileEnding,'.mat'];
+baseSignalFileName  = [ 'baseFunction',signalFileEnding,'.mat'];
+
 %% paths
 outputFolder            = 'output';
 structFolder            = 'output/structs/';
@@ -127,29 +147,12 @@ postprocessingDirectoryTree = genpath('postprocessing');
 addpath(postprocessingDirectoryTree);
 
 %% Plot configuration
-
-numberOfHorizontalPlotColumnsGeneric = 3;
-numberOfVerticalPlotRowsGeneric      = 13;
 plotWidth         = 6;
 plotHeight        = 6;        
 plotHorizMarginCm = 1.5;
-plotVertMarginCm  = 2.;                  
+plotVertMarginCm  = 2.;  
 
 
-[subPlotPanelGeneric, pageWidthGeneric,pageHeightGeneric]= ...
-    plotConfigGeneric(  numberOfHorizontalPlotColumnsGeneric,...
-                        numberOfVerticalPlotRowsGeneric,...
-                        plotWidth,plotHeight,...
-                        plotHorizMarginCm,plotVertMarginCm);
-
-numberOfHorizontalPlotColumnsSpecific = 2;
-numberOfVerticalPlotRowsSpecific      = 6;
-
-[subPlotPanelSpecific, pageWidthSpecific,pageHeightSpecific]= ...
-    plotConfigGeneric(  numberOfHorizontalPlotColumnsSpecific,...
-                        numberOfVerticalPlotRowsSpecific,...
-                        plotWidth,plotHeight,...
-                        plotHorizMarginCm,plotVertMarginCm);
 
 
 simulationColorA = [0,0,1].*(0.9)+[1,1,1].*(0.1);
@@ -180,16 +183,7 @@ if(flag_preProcessSimulationData==1)
             switch simulationType
                 case 'impedance'
                     %Generate the perturbation signals
-                    mm2m = 0.001;
-                    sampleFrequency = 333; % Sampling frequency
-                    paddingPoints   = round(0.2*sampleFrequency);
-                    samplePoints    = 2048;% Number of points in the random sequence
-                    totalPoints     = samplePoints;
-                    amplitudeMM     = [0.4, 0.8, 1.6]'; %Amplitude scaling in mm
-                    bandwidthHz     = [ 15,  35,  90]'; %bandwidth in Hz;
                     flag_usingOctave= 0;
-                    flag_generateRandomBaselineSignal    = 0; %Only needs to be done once
-                    flag_processRandomBaselineSignal     = 0; %Only needs to be done once               
                     inputFunctions = getPerturbationWaveforms(...
                                         amplitudeMM,...
                                         bandwidthHz,...
@@ -199,15 +193,25 @@ if(flag_preProcessSimulationData==1)
                                         structFolder, ...
                                         flag_generateRandomBaselineSignal,...
                                         flag_processRandomBaselineSignal,...
+                                        baseSignalFileName,...
+                                        signalFileName,...
                                         flag_usingOctave); 
-                    excitationSeries = [0.05, 0.5, 1.];
+
+                    %The ugly number (0.234238575712566) should yield 5N
+                    excitationSeries = [0.05, 0.234238575712566, 0.5, 1.];
                     impedanceFolder = [simulationReleasePath,'/',simulationType];
-                    success = writeImpedanceSimulationFiles(...
+
+                    [success] = writeImpedanceSimulationFiles(...
                                 excitationSeries,...
                                 inputFunctions,...
                                 impedanceFolder);
 
-                    
+                    [success] = plotPerturbationWaveforms( inputFunctions,...
+                                                plotWidth,...
+                                                plotHeight,...
+                                                plotHorizMarginCm,...
+                                                plotVertMarginCm,...
+                                                [outputFolder,'/',Release]);
 
                 otherwise
                     disp(['Preprocessing not required: ', simulationType]);
@@ -268,9 +272,14 @@ if(flag_postProcessSimulationData==1)
   figGeneric  = figure;
   figSpecific = figure;      
   
+  load([structFolder,signalFileName]);
+
   for indexRelease = 1:length(Releases)
 
+
       Release = cell2mat(Releases(indexRelease));
+      simulationReleasePath = fullfile(matlabScriptPath,Release);
+        
 
       for indexSimulationType = 1:length(simulationInformation)
           
@@ -279,6 +288,7 @@ if(flag_postProcessSimulationData==1)
           clf(figSpecific);
           flag_figSpecificDirty=0;
 
+        
           simulationType   = simulationInformation(indexSimulationType).type;
           simulationTypePath  ...
             = fullfile(simulationReleasePath,simulationType);
@@ -291,6 +301,44 @@ if(flag_postProcessSimulationData==1)
           %Set the path for the reference data
           referenceDataFolder = [referenceDataPath,simulationType];
 
+          numberOfHorizontalPlotColumnsGeneric = length(simulationDirectories)-3+1;
+          numberOfVerticalPlotRowsGeneric      = 13;
+                                        
+          [subPlotPanelGeneric, pageWidthGeneric,pageHeightGeneric]= ...
+                plotConfigGeneric(  numberOfHorizontalPlotColumnsGeneric,...
+                                    numberOfVerticalPlotRowsGeneric,...
+                                    plotWidth,plotHeight,...
+                                    plotHorizMarginCm,plotVertMarginCm); 
+
+          
+          numberOfHorizontalPlotColumnsSpecific = 1;
+          numberOfVerticalPlotRowsSpecific      = 1;
+          switch (simulationType)
+              case 'eccentric'
+                numberOfHorizontalPlotColumnsSpecific = 2;
+                numberOfVerticalPlotRowsSpecific      = 6;
+              case 'isometric'
+                numberOfHorizontalPlotColumnsSpecific = 1;
+                numberOfVerticalPlotRowsSpecific      = 1;
+              case 'concentric'
+                numberOfHorizontalPlotColumnsSpecific = 1;
+                numberOfVerticalPlotRowsSpecific      = 1;
+              case 'quickrelease'
+                numberOfHorizontalPlotColumnsSpecific = 1;
+                numberOfVerticalPlotRowsSpecific      = 1;                 
+              case 'impedance'
+                numberOfHorizontalPlotColumnsSpecific = ...
+                    length(simulationDirectories)-3+1;
+                numberOfVerticalPlotRowsSpecific      = 5;                  
+          end
+
+
+          [subPlotPanelSpecific, pageWidthSpecific,pageHeightSpecific]= ...
+                plotConfigGeneric(  numberOfHorizontalPlotColumnsSpecific,...
+                                    numberOfVerticalPlotRowsSpecific,...
+                                    plotWidth,plotHeight,...
+                                    plotHorizMarginCm,plotVertMarginCm);
+
           for indexSimulationTrial=3:deltaPoints:length(simulationDirectories)
               cd(simulationTypePath);
 
@@ -298,17 +346,17 @@ if(flag_postProcessSimulationData==1)
               lceOpt=NaN;
               fiso=NaN;
               ltslk=NaN;
-              if(simulationInformation(idx).parametersInMuscleCard==1)
+              if(simulationInformation(indexSimulationType).parametersInMuscleCard==1)
                   lceOpt = ...
-                      getMuscleCardFieldValue(...
+                      getLsdynaCardFieldValue(...
                         simulationInformation(indexSimulationType).musclePropertyFile,...
                         simulationInformation(indexSimulationType).optimalFiberLength);
                   fiso = ...
-                      getMuscleCardFieldValue(...
+                      getLsdynaCardFieldValue(...
                         simulationInformation(indexSimulationType).musclePropertyFile,...
                         simulationInformation(indexSimulationType).maximumIsometricForce);
                   ltslk = ...
-                      getMuscleCardFieldValue(...
+                      getLsdynaCardFieldValue(...
                         simulationInformation(indexSimulationType).musclePropertyFile,...
                         simulationInformation(indexSimulationType).tendonSlackLength); 
               else
@@ -326,6 +374,9 @@ if(flag_postProcessSimulationData==1)
                         simulationInformation(indexSimulationType).tendonSlackLength);                   
 
               end
+              assert(~isnan(lceOpt));
+              assert(~isnan(fiso));
+              assert(~isnan(ltslk));
 
 
               cd(simulationDirectories(indexSimulationTrial).name);
@@ -376,7 +427,7 @@ if(flag_postProcessSimulationData==1)
 
 
               %% Add to the generic plots
-              indexColumn = 1;
+              indexColumn = (indexSimulationTrial-3)+1;
               if(flag_figGenericDirty==0)
                 flag_figGenericDirty=1;
               end
@@ -474,7 +525,29 @@ if(flag_postProcessSimulationData==1)
                               referenceDataFolder,...
                               flag_addReferenceData,flag_addSimulationData,...
                               simulationColorA,simulationColorB,...
-                              dataColorA,dataColorB);                          
+                              dataColorA,dataColorB);   
+                  case 'impedance'
+                      flag_addSimulationData=1;
+                      if(flag_figSpecificDirty==0)
+                        flag_addReferenceData=1;
+                        flag_figSpecificDirty=1;
+                      else
+                        flag_addReferenceData = 0;
+                      end
+                      figSpecific =...
+                          plotImpedanceSimulationData(figSpecific,...
+                              inputFunctions,...
+                              binout,musout,d3hspFileName,...
+                              indexColumn,subPlotPanelSpecific,...
+                              numberOfVerticalPlotRowsSpecific,...
+                              numberOfHorizontalPlotColumnsSpecific,...                              
+                              simulationDirectories(indexSimulationTrial).name,...
+                              indexSimulationTrial, length(simulationDirectories),...
+                              referenceDataFolder,...         
+                              lceOpt,fiso,ltslk,...
+                              flag_addReferenceData,flag_addSimulationData,...
+                              simulationColorA,simulationColorB,...
+                              dataColorA,dataColorB);
               end
 
           end

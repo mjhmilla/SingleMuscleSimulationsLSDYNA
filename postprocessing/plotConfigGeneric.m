@@ -5,8 +5,10 @@ function [subPlotPanel,pageWidth,pageHeight]  = plotConfigGeneric(numberOfHorizo
                                           plotHorizMarginCm,...
                                           plotVertMarginCm)
 
-pageWidth         = numberOfHorizontalPlotColumns*(plotWidth+plotHorizMarginCm*2);
-pageHeight        = numberOfVerticalPlotRows*(plotHeight+plotVertMarginCm*2);
+pageWidth   = numberOfHorizontalPlotColumns*(plotWidth+plotHorizMarginCm)...
+                +2*plotHorizMarginCm;
+pageHeight  = numberOfVerticalPlotRows*(plotHeight+plotVertMarginCm)...
+                +2*plotVertMarginCm;
 
 plotWidth  = plotWidth/pageWidth;
 plotHeight = plotHeight/pageHeight;
