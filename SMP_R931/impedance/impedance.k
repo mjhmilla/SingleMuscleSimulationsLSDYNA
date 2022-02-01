@@ -20,7 +20,7 @@ R   lCEopt &lopt*cos(&alphaRad)
 R     Fmax &fiso*cos(&alphaRad)
 R       kt 30.0*&fiso/&ltslk
 R   fceNom (&Fmax)*&stim
-R   lceNom &lCEopt)
+R   lceNom &lCEopt
 R  fceNomN &fceNom/&Fmax
 R  lceNomN &lceNom/&lCEopt
 R pathLenO &lceNom+&fceNom/&kt+&ltslk
@@ -41,8 +41,8 @@ $#  dt2msf   dt2mslc     imscl    unused    unused     rmscl
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          5         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
-                 0.0             0.00001
-              &timeE             0.00001       
+                 0.0              0.0001
+              &timeE              0.0001       
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 $                                                                              $
 $                             DATABASE (OUTPUT)                                $
