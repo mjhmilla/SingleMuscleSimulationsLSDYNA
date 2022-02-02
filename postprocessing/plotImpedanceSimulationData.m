@@ -7,9 +7,7 @@ function figH = plotImpedanceSimulationData(figH,...
                       referenceDataFolder,...   
                       optimalFiberLength, maximumIsometricForce, tendonSlackLength,...
                       flag_addReferenceData,...
-                      flag_addSimulationData,...
-                      simulationColorA, simulationColorB, ...
-                      referenceColorA, referenceColorB)
+                      flag_addSimulationData)
 
 figure(figH);
 
@@ -39,7 +37,7 @@ indexMusoutLceDot   = getColumnIndex('dot_l_ce',lsdynaMuscle.columnNames);
 % Add the simulation data
 if(flag_addSimulationData)
     n = (indexSimulation-1)/(totalSimulations-1);
-    simulationColor = (1-n).*simulationColorA + (n).*simulationColorB;
+    %simulationColor = (1-n).*simulationColorA + (n).*simulationColorB;
     
     assert(length(lsdynaBinout.nodout.time) ...
          ==length(lsdynaBinout.elout.beam.time));
@@ -73,14 +71,14 @@ if(flag_addSimulationData)
         referenceForce = 5;
         forceError = abs(referenceForce-nominalForce)/referenceForce;
         if( forceError < 0.1)
-            simulationColor = [0,0,0];
-            if(config.bandwidthHz==15)
-                simulationColor=simulationColorA;
-            end
-            if(config.bandwidthHz==90)
-                simulationColor=simulationColorB;
-            end
-            springDamperColor=[1,1,1].*0.5;
+%             simulationColor = [0,0,0];
+%             if(config.bandwidthHz==15)
+%                 simulationColor=simulationColorA;
+%             end
+%             if(config.bandwidthHz==90)
+%                 simulationColor=simulationColorB;
+%             end
+%             springDamperColor=[1,1,1].*0.5;
             
             figH = plotFrequencyResponse(...
                                   figH,...
@@ -92,11 +90,7 @@ if(flag_addSimulationData)
                                   subPlotLayout,...
                                   referenceDataFolder,...
                                   flag_addReferenceData,...
-                                  flag_addSimulationData,...                      
-                                  simulationColor,...
-                                  springDamperColor,...
-                                  referenceColorA, ...
-                                  referenceColorB); 
+                                  flag_addSimulationData); 
         end
 
 

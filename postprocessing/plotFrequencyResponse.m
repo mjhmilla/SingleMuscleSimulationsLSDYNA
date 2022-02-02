@@ -8,11 +8,7 @@ function figH = plotFrequencyResponse(...
                       subPlotLayout,...
                       referenceDataFolder,...                      
                       flag_addReferenceData,...
-                      flag_addSimulationData,...                      
-                      simulationColor, ...
-                      springDamperColor,...
-                      referenceColorA, ...
-                      referenceColorB)
+                      flag_addSimulationData)
                       
 figure(figH);
 
@@ -26,13 +22,31 @@ samplePoints    = inputFunctions.samples;
 paddingPoints   = inputFunctions.padding;
 sampleFrequency = inputFunctions.sampleFrequency;
 
-numberOfSamplesInChunk = 0.5*sampleFrequency;
+timeDelta              = 0.5;
+numberOfSamplesInChunk = timeDelta*sampleFrequency;
 
 idxChunkStart   = paddingPoints - round(0.25*numberOfSamplesInChunk,0);
 idxChunkEnd     = paddingPoints + round(0.75*numberOfSamplesInChunk,0);
 idxChunk        = [idxChunkStart:1:idxChunkEnd];
 
 
+simulationSpringDamperColor =[1,1,1].*0.5;
+simulationModelColor        =[1,1,1].*0.9;
+
+switch simConfig.bandwidthHz
+    case 15
+        simulationSpringDamperColor =[1,0,0];
+        simulationModelColor        =[1,0,0].*0.5 + [1,1,1].*0.5;
+        
+    case 35
+        simulationSpringDamperColor =[0.5,0,1].*0.5;
+        simulationModelColor        =[0.5,0,1].*0.5 + [1,1,1].*0.5;
+        
+    case 90
+        simulationSpringDamperColor =[0,0,1];
+        simulationModelColor        =[0,0,1].*0.5 + [1,1,1].*0.5;
+        
+end
 
 
 %%
@@ -209,48 +223,61 @@ if(flag_addSimulationData==1)
 
   assert(length(frequencyAnalysisSimulationData.vafTime)==1);    
 
-  if(simConfig.amplitudeMM==1.6 && simConfig.frequencyHz == 15)
+  spring            = frequencyAnalysisSimulationData.stiffness(1,1)./1000;
+  damper            = frequencyAnalysisSimulationData.damping(1,1)./1000;
+  kLabel            = sprintf('%1.1f',spring);
+  dLabel            = sprintf('%1.3f',damper);    
+  kLabel            = ['  K: ',kLabel,'N/mm'];
+  dLabel            = ['  $$\beta$$: ',dLabel,'N/(mm/s)'];
+  vafTime           = frequencyAnalysisSimulationData.vafTime(1,1);
+  vafLabel          = [' VAF ', sprintf('%d',(round(vafTime*100))),'\%'];
+  amplitudeLabel    = sprintf('%1.1fmm',simConfig.amplitudeMM);
+  frequencyLabel    = sprintf('%1.0fHz',simConfig.bandwidthHz);  
+  
+  simTextShort   = 'Sim';
+  simTextAmpFreq = ['Sim: ',amplitudeLabel, frequencyLabel];  
+  simTextVaf     = ['Sim: ',vafLabel];
+  
+  simTextKDAmpFreq = ['K-$$\beta$$: ',amplitudeLabel, frequencyLabel];
+  
+  labelXNorm = 1+0.075;
+  labelLineXNorm = 1+[0.0,0.05];
+  
+  m2mm=1000;
+  rad2Deg = (180/pi);
+  
+  if(simConfig.amplitudeMM==1.6 && simConfig.bandwidthHz == 15)
     
       subplot('Position', reshape(subPlotLayout(idxForce,indexColumn,:),1,4));       
                                                  
       yo = nominalForce;
-    
-      spring = frequencyAnalysisSimulationData.stiffness(1,1)./1000;
-      damper = frequencyAnalysisSimulationData.damping(1,1)./1000;
-      kLabel = sprintf('%1.1f',spring);
-      dLabel = sprintf('%1.3f',damper);
-    
-      kLabel = ['  K: ',kLabel,'N/mm'];
-      dLabel = ['  $$\beta$$: ',dLabel,'N/(mm/s)'];
-      vafTime = frequencyAnalysisSimulationData.vafTime(1,1);
-      vafLabel = [' VAF ', sprintf('%d',(round(vafTime*100))),'\%'];
-    
-      amplitudeLabel    = sprintf('%1.1fmm',simConfig.amplitudeMM);
-      frequencyLabel    = sprintf('%1.0fHz',simConfig.frequencyHz);
-    
+        
       pidKD = plot( inputFunctions.time(idxChunk,1),...
                     frequencyAnalysisSimulationData.forceKD(idxChunk,1)+yo,...
-                    'Color',springDamperColor,...
-                    'LineWidth',2);
-      hold on;
-    
-    
-      pidMdl = plot(inputFunctions.time(idxChunk,1),...
-                    frequencyAnalysisSimulationData.force(idxChunk,1),...
-                    'Color',simulationColor,...
+                    'Color',simulationSpringDamperColor,...
                     'LineWidth',1);
+      hold on;
+      
+      pidMdl0 = plot(inputFunctions.time(idxChunk,1),...
+                    frequencyAnalysisSimulationData.force(idxChunk,1),...
+                    'Color',[1,1,1],...
+                    'LineWidth',2);
+      hold on;        
+      
+      pidMdl1 = plot(inputFunctions.time(idxChunk,1),...
+                    frequencyAnalysisSimulationData.force(idxChunk,1),...
+                    'Color',simulationModelColor,...
+                    'LineWidth',0.75);
       hold on;  
     
-      simText = ['Sim'];
-    
-            
 
-    
+
       box off;
       set(gca,'color','none')
     
       tmin = inputFunctions.time(idxChunk(1),1  )-0.01;
       tmax = inputFunctions.time(idxChunk(end),1)+0.01;
+      timeTicks = round([inputFunctions.time(paddingPoints,1):(timeDelta/5):inputFunctions.time(max(idxChunk),1)],2);
       xlim([tmin,...
             tmax]);
       %ylim([0,plotForceMax]);
@@ -261,29 +288,156 @@ if(flag_addSimulationData==1)
       set(gca,'color','none')
 
 
-      plot([0.05,0.1].*(tmax-tmin)+tmin,...
-           [0.9,0.9].*(fmax-0)+0,...
-           'Color',simulationColor);
+      plot(labelLineXNorm.*(tmax-tmin)+tmin,...
+           [0.55,0.55].*(fmax-0)+0,...
+           'Color',simulationModelColor);
 
-      text( 0.15,0.9,simText,'Units','normalized' );        
+      text( labelXNorm,0.45,simTextVaf,'Units','normalized' );        
       hold on;    
 
-      plot([0.05,0.1].*(tmax-tmin)+tmin,...
-           [0.8,0.8].*(fmax-0)+0,...
-           'Color',springDamperColor);
+      plot(labelLineXNorm.*(tmax-tmin)+tmin,...
+           [0.35,0.35].*(fmax-0)+0,...
+           'Color',simulationSpringDamperColor);
 
-      text( 0.15,0.8,kLabel,'Units','normalized');        
+      text( labelXNorm,0.35,kLabel,'Units','normalized');        
       hold on;
     
-      text( 0.15,0.7,dLabel,'Units','normalized');        
+      text( labelXNorm,0.25,dLabel,'Units','normalized');        
       hold on;
-      text( 0.15,0.6,vafLabel);        
-      hold on;      
+      %text( labelXNorm,0.15,vafLabel,'Units','normalized');        
+      %hold on;      
       
       ylabel('Force (N)');
       xlabel('Time (s)');
       title(['A. Time domain response (',amplitudeLabel,' ',frequencyLabel,')']);
   end
+  
+  %%Gain
+  subplot('Position', reshape(subPlotLayout(idxGain,indexColumn,:),1,4));       
+  
+    idxMin = find(frequencyAnalysisSimulationData.freqHz >= 4 ,1, 'first' );
+    idxMax = find(frequencyAnalysisSimulationData.freqHz <= simConfig.bandwidthHz ,1, 'last' );
+    plot( frequencyAnalysisSimulationData.freqHz(idxMin:1:idxMax,1),...
+          frequencyAnalysisSimulationData.gain(idxMin:1:idxMax,1)./m2mm,...
+          '.', 'Color', simulationModelColor);
+    hold on;  
+  
+    plot(   frequencyAnalysisSimulationData.freqHz(idxMin:1:idxMax,1),...
+            frequencyAnalysisSimulationData.gainKD(idxMin:1:idxMax,1)./m2mm,...
+            '-', 'Color', [1,1,1],...
+            'LineWidth', 2);
+    hold on;  
+  
+    plot(   frequencyAnalysisSimulationData.freqHz(idxMin:1:idxMax,1),...
+            frequencyAnalysisSimulationData.gainKD(idxMin:1:idxMax,1)./m2mm,...
+            '-', 'Color', simulationSpringDamperColor,...
+            'LineWidth', 0.75);
+    hold on
+    
+    yPosNorm = 0.;
+    switch simConfig.bandwidthHz
+        case 15
+            yPosNorm = 0.9;            
+        case 90
+            yPosNorm = 0.7;
+    end
+    
+    text(labelXNorm, yPosNorm, simTextAmpFreq,'Units','normalized');
+    hold on;    
+    plot(mean(labelLineXNorm),yPosNorm,'.','Color',simulationModelColor);
+    hold on;
+    text(labelXNorm, yPosNorm-0.1, simTextKDAmpFreq,'Units','normalized');
+    hold on;
+    plot(labelLineXNorm,yPosNorm-0.1,'-','Color',simulationSpringDamperColor);
+    hold on;
+    
+    if(simConfig.bandwidthHz==90)
+        xticks([4,15,90]);
+        maxGainKD = max(frequencyAnalysisSimulationData.gainKD(idxMin:1:idxMax,1)./m2mm);
+        yticks([0,round(maxGainKD,1)]);
+        
+        xlim([0,90.1]);
+        ylim([0, maxGainKD*1.1]);
+        
+        xlabel('Frequency (Hz)');
+        ylabel('Gain (N/mm)');
+        
+        h = get(gca,'Children');
+        set(gca,'Children',[h(9:end),h(1:8)]);
+    end
+    box off;   
+    
+  %%Phase
+  subplot('Position', reshape(subPlotLayout(idxPhase,indexColumn,:),1,4));       
+  
+    idxMin = find(frequencyAnalysisSimulationData.freqHz >= 4 ,1, 'first' );
+    idxMax = find(frequencyAnalysisSimulationData.freqHz <= simConfig.bandwidthHz ,1, 'last' );
+    plot( frequencyAnalysisSimulationData.freqHz(idxMin:1:idxMax,1),...
+          frequencyAnalysisSimulationData.phase(idxMin:1:idxMax,1).*rad2Deg,...
+          '.', 'Color', simulationModelColor);
+    hold on;  
+  
+    plot(   frequencyAnalysisSimulationData.freqHz(idxMin:1:idxMax,1),...
+            frequencyAnalysisSimulationData.phaseKD(idxMin:1:idxMax,1).*rad2Deg,...
+            '-', 'Color', [1,1,1],...
+            'LineWidth', 2);
+    hold on;  
+  
+    plot(   frequencyAnalysisSimulationData.freqHz(idxMin:1:idxMax,1),...
+            frequencyAnalysisSimulationData.phaseKD(idxMin:1:idxMax,1).*rad2Deg,...
+            '-', 'Color', simulationSpringDamperColor,...
+            'LineWidth', 0.75);
+    hold on
+    
+
+    
+    if(simConfig.bandwidthHz==90)
+        xticks([4,15,90]);
+        maxPhaseKD = max(frequencyAnalysisSimulationData.phaseKD(idxMin:1:idxMax,1).*rad2Deg);
+        yticks([0,round(maxPhaseKD,1)]);
+        
+        xlim([0,90.1]);
+        ylim([0, maxPhaseKD*1.1]);
+        
+        xlabel('Frequency (Hz)');
+        ylabel('Phase ($$^\circ$$)');
+        
+        h = get(gca,'Children');
+        set(gca,'Children',[h(4:6),h(1:3)]);
+
+    end
+    box off;        
+    here=1;
+    
+    %% Coherence
+  subplot('Position', reshape(subPlotLayout(idxCoherence,indexColumn,:),1,4));       
+  
+    plot( frequencyAnalysisSimulationData.freqHz(1:idxMax,1),...
+          frequencyAnalysisSimulationData.coherenceSq(1:idxMax,1),...
+          '-', 'Color', simulationModelColor);
+    hold on;
+    if(simConfig.bandwidthHz==90)
+        xticks([4,15,90]);
+        yticks([0,1]);
+        
+        xlim([0,90.1]);
+        ylim([0, 1.05]);
+        
+        xlabel('Frequency (Hz)');
+        ylabel('Coherence$$^2$$');
+        
+        h = get(gca,'Children');
+        set(gca,'Children',[h(end:-1:1)]);
+
+    end
+    box off;        
+    here=1;    
+    
+
+    
+    
+end
+       
 % 
 %     for z=1:1:length(freqSeriesFiles)
 %     
@@ -429,10 +583,8 @@ if(flag_addSimulationData==1)
 %       
 %     
 %     end
-end
+%end
 
 
 
 
-
-success = 1;

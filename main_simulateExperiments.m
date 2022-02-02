@@ -7,7 +7,7 @@ close all;
 %%
 % User-defined script variables
 %%
-flag_preProcessSimulationData     = 1; 
+flag_preProcessSimulationData     = 0; 
 %Setting this to 1 will perform any preprocessing needed of the enabled 
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
@@ -15,7 +15,7 @@ flag_preProcessSimulationData     = 1;
 flag_runSimulations               = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData    = 0;
+flag_postProcessSimulationData    = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
 
@@ -197,7 +197,7 @@ if(flag_preProcessSimulationData==1)
                                         flag_usingOctave); 
 
                     %The ugly number (0.234238575712566) should yield 5N
-                    excitationSeries = [0.01, 0.144604, 0.5, 1.];
+                    excitationSeries = [0.01, 0.1327646940142737, 0.5, 1.];
                     impedanceFolder = [simulationReleasePath,'/',simulationType];
 
                     [success] = writeImpedanceSimulationFiles(...
@@ -329,7 +329,7 @@ if(flag_postProcessSimulationData==1)
                 numberOfVerticalPlotRowsSpecific      = 1;                 
               case 'impedance'
                 numberOfHorizontalPlotColumnsSpecific = 1;
-                numberOfVerticalPlotRowsSpecific      = 5; 
+                numberOfVerticalPlotRowsSpecific      = 6; 
                 
                 sampleTimeK = getParameterFieldValue('impedance.k','dtsignal');
                 assert(abs(sampleTimeK-sampleTime)<sqrt(eps));
@@ -537,7 +537,7 @@ if(flag_postProcessSimulationData==1)
                       else
                         flag_addReferenceData = 0;
                       end
-                     
+                      indexColumn=1;
                       figSpecific =...
                           plotImpedanceSimulationData(figSpecific,...
                               inputFunctions,...
@@ -549,9 +549,7 @@ if(flag_postProcessSimulationData==1)
                               indexSimulationTrial, length(simulationDirectories),...
                               referenceDataFolder,...         
                               lceOpt,fiso,ltslk,...
-                              flag_addReferenceData,flag_addSimulationData,...
-                              simulationColorA,simulationColorB,...
-                              dataColorA,dataColorB);
+                              flag_addReferenceData,flag_addSimulationData);
               end
 
           end
