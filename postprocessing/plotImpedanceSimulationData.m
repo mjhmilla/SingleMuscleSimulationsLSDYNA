@@ -26,28 +26,23 @@ indexMusoutLce      = getColumnIndex('l_ce',lsdynaMuscle.columnNames);
 indexMusoutLmtcDot  = getColumnIndex('dot_l_mtc',lsdynaMuscle.columnNames);
 indexMusoutLceDot   = getColumnIndex('dot_l_ce',lsdynaMuscle.columnNames);
 
-%subplot('Position', reshape( subPlotLayout(1,indexColumn,:),1,4 ) );
+config=getConfiguration();
 
-% Add the reference data
-%if(flag_addReferenceData==1)
+assert(length(lsdynaBinout.nodout.time) ...
+    ==length(lsdynaBinout.elout.beam.time));
 
+nominalLength = getParameterValueFromD3HSPFile(d3hspFileName,'PATHLENN'); % by construction
+nominalForce    = lsdynaBinout.elout.beam.axial(end,1);    
+activation      = lsdynaMuscle.data(end,indexMusoutQ);
 
-%end
 
 % Add the simulation data
-if(flag_addSimulationData)
+if(flag_addSimulationData==1)
     n = (indexSimulation-1)/(totalSimulations-1);
     %simulationColor = (1-n).*simulationColorA + (n).*simulationColorB;
     
-    assert(length(lsdynaBinout.nodout.time) ...
-         ==length(lsdynaBinout.elout.beam.time));
 
-    nominalLength = getParameterValueFromD3HSPFile(d3hspFileName,'PATHLENO'); % by construction
-    nominalForce    = lsdynaBinout.elout.beam.axial(end,1);    
-    activation      = lsdynaMuscle.data(end,indexMusoutQ);
 
-    %Extract this information from the name and the simulation files    
-    config=getConfiguration();
     
     dt= max(diff(lsdynaBinout.elout.beam.time));
     freqRelErr = ((1/dt)-inputFunctions.sampleFrequency)/inputFunctions.sampleFrequency;   
@@ -62,24 +57,16 @@ if(flag_addSimulationData)
                         config.bandwidthHz,...
                         inputFunctions);
 
-  %You are here: 
-  % 1. Update these functions to add 1 series of data at a time
-  % 2. Update to plot the experimental data correctly.
+
     if( (config.bandwidthHz == 90 && config.amplitudeMM == 1.6) ...
          || (config.bandwidthHz == 15 && config.amplitudeMM == 1.6) )
+
+
 
         referenceForce = 5;
         forceError = abs(referenceForce-nominalForce)/referenceForce;
         if( forceError < 0.1)
-%             simulationColor = [0,0,0];
-%             if(config.bandwidthHz==15)
-%                 simulationColor=simulationColorA;
-%             end
-%             if(config.bandwidthHz==90)
-%                 simulationColor=simulationColorB;
-%             end
-%             springDamperColor=[1,1,1].*0.5;
-            
+
             figH = plotFrequencyResponse(...
                                   figH,...
                                   config,...
@@ -89,7 +76,7 @@ if(flag_addSimulationData)
                                   indexColumn,...
                                   subPlotLayout,...
                                   referenceDataFolder,...
-                                  flag_addReferenceData,...
+                                  0,...
                                   flag_addSimulationData); 
         end
 
@@ -118,6 +105,23 @@ if(flag_addSimulationData)
 
     %flag_frequencyAnalysisMuscleModelsPlotKD,...
     %flag_frequencyAnalysisMuscleModelsPlotAll,...
+end
+
+if(flag_addReferenceData==1)
+
+    figH = plotFrequencyResponse(...
+                          figH,...
+                          config,...
+                          inputFunctions,...                                           
+                          freqSimData,... 
+                          nominalForce,...
+                          indexColumn,...
+                          subPlotLayout,...
+                          referenceDataFolder,...
+                          flag_addReferenceData,...
+                          0); 
+
+                                                                  
 end
 
 

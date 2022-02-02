@@ -28,9 +28,9 @@ flag_enableImpedanceExperiment          = 1;
     
 
 
-matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
-%matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
-%                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
+%matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
+matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
+                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
 lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/SMP_R931/lsdyna';
 
 addpath(matlabScriptPath);
@@ -344,7 +344,11 @@ if(flag_postProcessSimulationData==1)
 
           for indexSimulationTrial=3:deltaPoints:length(simulationDirectories)
               cd(simulationTypePath);
-
+               
+              flag_lastTrial=0;
+              if(indexSimulationTrial==length(simulationDirectories))
+                flag_lastTrial=1;
+              end
               %% Load the muscle properties
               lceOpt=NaN;
               fiso=NaN;
@@ -531,12 +535,10 @@ if(flag_postProcessSimulationData==1)
                               dataColorA,dataColorB);   
                   case 'impedance'
                       flag_addSimulationData=1;
-                      if(flag_figSpecificDirty==0)
-                        flag_addReferenceData=1;
+                      if(flag_figSpecificDirty==0)                        
                         flag_figSpecificDirty=1;
-                      else
-                        flag_addReferenceData = 0;
                       end
+                      flag_addReferenceData = flag_lastTrial;
                       indexColumn=1;
                       figSpecific =...
                           plotImpedanceSimulationData(figSpecific,...
