@@ -1,5 +1,5 @@
 %% This script performs the validation tests isometric, concentric and quick release 
-%% for different release version of thereferenceDataPath EHTMM
+%% for different release version of the referenceDataPath EHTMM
 
 clear all;
 close all;
@@ -7,7 +7,7 @@ close all;
 %%
 % User-defined script variables
 %%
-flag_preProcessSimulationData     = 0; 
+flag_preProcessSimulationData     = 1; 
 %Setting this to 1 will perform any preprocessing needed of the enabled 
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
@@ -15,7 +15,7 @@ flag_preProcessSimulationData     = 0;
 flag_runSimulations               = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData    = 1;
+flag_postProcessSimulationData    = 0;
 %Setting this to 1 will generate plots of the enabled experiments
 
 
@@ -28,9 +28,9 @@ flag_enableImpedanceExperiment          = 1;
     
 
 
-%matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
-matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
-                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
+matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
+%matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
+%                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
 lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/SMP_R931/lsdyna';
 
 addpath(matlabScriptPath);
@@ -197,7 +197,7 @@ if(flag_preProcessSimulationData==1)
                                         flag_usingOctave); 
 
                     %The ugly number (0.234238575712566) should yield 5N
-                    excitationSeries = [0.05, 0.234238575712566, 0.5, 1.];
+                    excitationSeries = [0.01, 0.144604, 0.5, 1.];
                     impedanceFolder = [simulationReleasePath,'/',simulationType];
 
                     [success] = writeImpedanceSimulationFiles(...
@@ -316,7 +316,7 @@ if(flag_postProcessSimulationData==1)
           numberOfVerticalPlotRowsSpecific      = 1;
           switch (simulationType)
               case 'eccentric'
-                numberOfHorizontalPlotColumnsSpecific = 2;
+                numberOfHorizontalPlotColumnsSpecific = 1;
                 numberOfVerticalPlotRowsSpecific      = 6;
               case 'isometric'
                 numberOfHorizontalPlotColumnsSpecific = 1;
@@ -328,8 +328,7 @@ if(flag_postProcessSimulationData==1)
                 numberOfHorizontalPlotColumnsSpecific = 1;
                 numberOfVerticalPlotRowsSpecific      = 1;                 
               case 'impedance'
-                numberOfHorizontalPlotColumnsSpecific = ...
-                    length(simulationDirectories)-3+1;
+                numberOfHorizontalPlotColumnsSpecific = 1;
                 numberOfVerticalPlotRowsSpecific      = 5; 
                 
                 sampleTimeK = getParameterFieldValue('impedance.k','dtsignal');

@@ -1,4 +1,4 @@
-function [success] = calcSignalGainAndPhase(...
+function freqSimData = calcSignalGainAndPhase(...
                         tendonForce,...
                         nominalLength,...
                         nominalForce,...
@@ -8,7 +8,6 @@ function [success] = calcSignalGainAndPhase(...
                         inputFunctions)
 
 
-success = 0;
 
 assert(size(tendonForce,2)==1)
 samplePoints=inputFunctions.samples;
@@ -490,5 +489,5 @@ forceNorm = 1;
   %save([outputFolder,outputFileName],'freqSimData');
 %end                      
                       
-success = 1;
+
                       

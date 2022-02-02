@@ -16,7 +16,7 @@ for indexExcitation=1:1:length(excitationSeries)
         idx = strfind(waveformName,' ');        
         waveformName(1,idx)='_';
 
-        excitationStr = sprintf('%1.1f',excitationSeries(1,indexExcitation));
+        excitationStr = sprintf('%1.3f',excitationSeries(1,indexExcitation));
         idx = strfind(excitationStr,'.');
         excitationStr(1,idx)='p';
         
@@ -42,7 +42,7 @@ for indexExcitation=1:1:length(excitationSeries)
             fprintf(fid,'*KEYWORD\n');
             fprintf(fid,'*PARAMETER\n');
             fprintf(fid,'$#    name       val\n');
-            fprintf(fid,'R     stim     %1.3f\n',excitationSeries(1,indexExcitation));
+            fprintf(fid,'R     stim  %1.6f\n',excitationSeries(1,indexExcitation));
             fprintf(fid,'$\n');
             fprintf(fid,'*INCLUDE_PATH_RELATIVE\n');
             fprintf(fid,'../\n');
