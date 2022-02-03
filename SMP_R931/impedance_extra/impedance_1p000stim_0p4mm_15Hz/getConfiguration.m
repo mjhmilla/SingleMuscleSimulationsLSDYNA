@@ -1,3 +1,0 @@
-function config = getConfiguration()
-config=struct('amplitudeMM',4.000000e-01,'bandwidthHz',1.500000e+01,...
-'excitation',1.000000e+00,'indexWaveform',1);
