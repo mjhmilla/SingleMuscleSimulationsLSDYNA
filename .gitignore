@@ -1,3 +1,6 @@
+SMP_R931/impedance/*
+!SMP_R931/impedance/catsoleus.k
+!SMP_R931/impedance/impedance.k
 binout
 d3*
 elout
