@@ -1,197 +1,88 @@
-function [success] = plotStiffnessDamping(...
-                      dataInputFolder,...
-                      freqSeriesFiles_RT,...
-                      freqSeriesName_RT,...
-                      freqSeriesColor_RT,...
-                      freqSeriesFiles_ET,...
-                      freqSeriesName_ET,...
-                      freqSeriesColor_ET,...       
+function figH = plotStiffnessDamping(...
+                      figH,...
+                      simConfig,...
                       inputFunctions,...                      
-                      normFiberLength,...
-                      nominalForce,...                        
-                      dataKBR1994Fig12K,...
-                      dataKBR1994Fig12D,... 
-                      flag_useElasticTendon,...
-                      plotNameEnding,...
-                      plotLayoutSettings,...
-                      pubOutputFolder)
+                      frequencyAnalysisSimulationData,...
+                      nominalForce,...
+                      indexColumn,...
+                      subPlotLayout,...
+                      referenceDataFolder,...                      
+                      flag_addReferenceData,...
+                      flag_addSimulationData)
                       
 success = 0;
 
 
-assert(length(freqSeriesFiles_RT)==2);
-assert(length(freqSeriesFiles_ET)==2);
+idxStiffness=5;
+idxDamping  =6;
 
-assert( isempty(strfind(freqSeriesFiles_RT{1,1},'Hill'))==0 ...
-     && isempty(strfind(freqSeriesFiles_ET{1,1},'Hill'))==0);
+simulationSpringDamperColor =[1,1,1].*0.5;
+simulationModelColor        =[1,1,1].*0.9;
 
-freqSeriesFiles = {freqSeriesFiles_ET{1,2},...
-                   freqSeriesFiles_RT{1,2},...
-                   freqSeriesFiles_ET{1,1},...
-                   freqSeriesFiles_RT{1,1}};
-freqSeriesName =  {freqSeriesName_ET{1,2},...
-                   freqSeriesName_RT{1,2},...
-                   freqSeriesName_ET{1,1},...
-                   freqSeriesName_RT{1,1}};
-freqSeriesColor = [freqSeriesColor_ET(2,:);...
-                   freqSeriesColor_RT(2,:);...
-                   freqSeriesColor_ET(1,:);...
-                   freqSeriesColor_RT(1,:)];
-freqSeriesSubPlotOffsetIdx = [0,2,0,2];
+switch simConfig.bandwidthHz
+    case 15
+        simulationSpringDamperColor =[1,0,0];
+        simulationModelColor        =[1,0,0].*0.5 + [1,1,1].*0.5;
+        
+    case 35
+        simulationSpringDamperColor =[0.5,0,1].*0.5;
+        simulationModelColor        =[0.5,0,1].*0.5 + [1,1,1].*0.5;
+        
+    case 90
+        simulationSpringDamperColor =[0,0,1];
+        simulationModelColor        =[0,0,1].*0.5 + [1,1,1].*0.5;
+        
+end
 
-subPlotLabel = {'A. Models with elastic tendons','B.','C. Models with rigid tendons',... 
-                'D.',};
-figLabelFontSize = 8*1.2;
+%%
+% Plot the experimental data
+%%
+labelYNorm = 0.2; %For the experimental data
+labelYDeltaNorm = 0.05;
+labelXNorm = 0.075+(20/90);  
+labelLineXNorm = [0.0,0.05]+(20/90);
+labelXTimeNorm     = 0.075;  
+labelLineXTimeNorm = [0.0,0.05];
 
-numberOfHorizontalPlotColumns = plotLayoutSettings.numberOfHorizontalPlotColumns;
-numberOfVerticalPlotRows      = plotLayoutSettings.numberOfVerticalPlotRows;
-flag_fixedPlotWidth           = plotLayoutSettings.flag_fixedPlotWidth;
-plotWidth                     = plotLayoutSettings.plotWidth;
-plotWidth43                   = plotLayoutSettings.plotWidth43;
-plotHeight43                  = plotLayoutSettings.plotHeight43;
-plotHeight                    = plotWidth;
-flag_usingOctave              = plotLayoutSettings.flag_usingOctave;
-plotConfig;          
-                    
-samplePoints    = inputFunctions.samples;  
-paddingPoints   = inputFunctions.padding;
-sampleFrequency = inputFunctions.sampleFrequency;
-
-fig_fig12 = figure;
-
-  targetAmplitude   = [0.8];
-  targetBandwidth    = [35];
-
-  expPlotColor      = [0.5,  0.5, 0.5;...
-                       0.5,  0.5, 0.5];
-  expLineWidth      = [1,1];
-  expMarkType       = {'o','o'};
-  expMarkSize       = [5,5];
-  expMarkFaceColor  = [0.5,  0.5, 0.5;...
-                       0.75, 0.75,0.75];
-  expLegendEntry    = {'Kirsch: 0.8mm 35Hz Soleus',...
-                       'Kirsch: 0.8mm 35Hz MG'};
-  perturbationName = ' 0.8mm 35Hz';
-
-  subPlotList = zeros(4,4);
-
-  ySpace = 0.075;
-  xSpace = 0.075;
   
-  kMin = -0.01;
-  kMax = 10.5;
-  dMin = -0.001;
-  dMax = 0.11;
-  
-  fMin = -0.01;
-  fMax = 12.51;
-  
-  %%
-  % Gain
-  %%
-  figure(fig_fig12);
-    currentSubPlot  = subPlotSquare;
-    currentSubPlot(1,1) = currentSubPlot(1,1)*0.5; 
+
+if(flag_addSimulationData==1)
     
-    subPlotHeight   = currentSubPlot(1,4);
-    subPlotWidth    = currentSubPlot(1,3);
-    subPlotOffsetY  = subPlotHeight + ySpace;
-    subPlotOffsetX  = subPlotWidth  + xSpace;
+  assert(length(frequencyAnalysisSimulationData.vafTime)==1);    
 
-  %%
-  % Rigid Tendon
-  %%
-  % Stiffness vs. force
-  subPlotList(1,:) = currentSubPlot(1,:);
-
-  % Damping vs. force
-  subPlotList(2,:)    = subPlotList(1,:);
-  subPlotList(2,1)    = subPlotList(2,1)+ subPlotOffsetX;  
-
-  %%
-  % Elastic Tendon
-  %%
-  % Stiffness vs. force
-  subPlotList(3,:) = subPlotList(1,:);
-  subPlotList(3,2) = subPlotList(1,2)- subPlotOffsetY;
-
-  % Damping vs. force
-  subPlotList(4,:)    = subPlotList(3,:);
-  subPlotList(4,1)    = subPlotList(4,1) + subPlotOffsetX;  
+  spring            = frequencyAnalysisSimulationData.stiffness(1,1)./1000;
+  damper            = frequencyAnalysisSimulationData.damping(1,1)./1000;
+  kLabel            = sprintf('%1.1f',spring);
+  dLabel            = sprintf('%1.3f',damper);    
+  kLabel            = ['  K: ',kLabel,'N/mm'];
+  dLabel            = ['  $$\beta$$: ',dLabel,'N/(mm/s)'];
+  vafTime           = frequencyAnalysisSimulationData.vafTime(1,1);
+  vafLabel          = [' VAF ', sprintf('%d',(round(vafTime*100))),'\%'];
+  amplitudeLabel    = sprintf('%1.1fmm',simConfig.amplitudeMM);
+  frequencyLabel    = sprintf('%1.0fHz',simConfig.bandwidthHz);  
   
+  simTextShort   = 'Sim';
+  simTextAmpFreqVaf = ['Sim: ',amplitudeLabel,' ', frequencyLabel,' (',vafLabel,')'];  
+  %simTextVaf     = ['Sim: ',vafLabel];
   
-  %%
-  %Plot blank axis to check the layout
-  %%
-  for i=1:1:size(subPlotList,1)
-    subplot('Position', [ subPlotList(i,1),...
-                          subPlotList(i,2),...
-                          subPlotList(i,3),...
-                          subPlotList(i,4)]);
-    box off;
-    set(gca,'color','none')    
-  end
+  simTextKDAmpFreq = ['K-$$\beta$$: ',amplitudeLabel,' ',frequencyLabel];
   
+    
   %%
-  %Plot the experimental data
+  % Stiffness
   %%
-  idxK = 0;
-  idxD = 0;
+  subplot('Position', reshape(subPlotLayout(idxStiffness,indexColumn,:),1,4));       
+
+    idxSim=1;
+    plot(frequencyAnalysisSimulationData.nominalForce(1,idxSim),...
+         frequencyAnalysisSimulationData.stiffness(1,idxSim)/1000,...
+         modelMarkType, ...
+         'Color', modelLineColor,...
+         'LineWidth',modelLineWidth,...
+         'MarkerSize',modelMarkSize,...
+         'MarkerFaceColor',modelFaceColor,...
+         'DisplayName',freqSeriesName{z});
   
-  figure(fig_fig12);
-  
-  for z=1:1:2
-    idxK = 1 + 2*(z-1);
-    idxD = 2 + 2*(z-1);
-
-    for(i=1:1:length(dataKBR1994Fig12K))
-
-      subplot('Position', [ subPlotList(idxK,1),...
-                            subPlotList(idxK,2),...
-                            subPlotList(idxK,3),...
-                            subPlotList(idxK,4)]);
-      plot(dataKBR1994Fig12K(i).x,...
-           dataKBR1994Fig12K(i).y,...
-           expMarkType{i},...
-           'Color',     expPlotColor(i,:),...
-           'LineWidth', expLineWidth(1,i),...
-           'MarkerFaceColor',expMarkFaceColor(i,:),...
-           'MarkerSize', expMarkSize(1,i),...
-           'DisplayName', expLegendEntry{i});
-      hold on;   
-
-      if(i== length(dataKBR1994Fig12K))
-        xlabel('Force (N)');
-        ylabel('Stiffness (N/mm)');   
-        box off;
-        set(gca,'color','none');     
-      end
-
-
-      subplot('Position', [ subPlotList(idxD,1),...
-                            subPlotList(idxD,2),...
-                            subPlotList(idxD,3),...
-                            subPlotList(idxD,4)]);
-
-      plot(dataKBR1994Fig12D(i).x,...
-           dataKBR1994Fig12D(i).y,...
-           expMarkType{i},...
-           'Color',     expPlotColor(i,:),...
-           'LineWidth', expLineWidth(1,i),...
-           'MarkerFaceColor',expMarkFaceColor(i,:),...
-           'MarkerSize', expMarkSize(1,i),...
-           'DisplayName', expLegendEntry{i});
-      hold on;   
-
-      if(i== length(dataKBR1994Fig12K))
-        xlabel('Force (N)');
-        ylabel('Damping (N/(mm/s))'); 
-        box off;
-        set(gca,'color','none');
-      end
-
-    end
-  end
   %%
   %Plot the model data
   %%  
@@ -247,14 +138,7 @@ fig_fig12 = figure;
 
       
       
-      pid = plot(freqSimData.nominalForce(1,idxSim),...
-                 freqSimData.stiffness(1,idxSim)/1000,...
-                 modelMarkType, ...
-                 'Color', modelLineColor,...
-                 'LineWidth',modelLineWidth,...
-                 'MarkerSize',modelMarkSize,...
-                 'MarkerFaceColor',modelFaceColor,...
-                 'DisplayName',freqSeriesName{z});
+      pid = 
       hold on;
       if(i > 1)
         set(get(get(pid,'Annotation'),...
@@ -364,36 +248,5 @@ fig_fig12 = figure;
             
     end
   end
-
-  subplot('Position', [ subPlotList(1,1),...
-                      subPlotList(1,2),...
-                      subPlotList(1,3),...
-                      subPlotList(1,4)]);   
-  legend('Location','Northwest');
-  legend boxoff;
   
-  subplot('Position', [ subPlotList(3,1),...
-                      subPlotList(3,2),...
-                      subPlotList(3,3),...
-                      subPlotList(3,4)]);   
-  legend('Location','Northeast');
-  legend boxoff;
-    
-  
-  
-  set(fig_fig12,'Units','centimeters',...
-  'PaperUnits','centimeters',...
-  'PaperSize',[pageWidth pageHeight],...
-  'PaperPositionMode','manual',...
-  'PaperPosition',[0 0 pageWidth pageHeight]);     
-  %set(findall(figList(i).h,'-property','FontSize'),'FontSize',10);     
-  set(fig_fig12,'renderer','painters');     
-  set(gcf,'InvertHardCopy','off')
-
-  tendonTag = '_RigidAndElasticTendon';
-
-  print('-dpdf', [pubOutputFolder,'fig_Pub_StiffnessDampingKBRFig12_',...
-                                  tendonTag,'_',plotNameEnding,'.pdf']);   
-  
-
-success = 1;
+end
