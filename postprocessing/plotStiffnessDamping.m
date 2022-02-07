@@ -6,17 +6,19 @@ function figH = plotStiffnessDamping(...
                       nominalForce,...
                       indexColumn,...
                       subPlotLayout,...
-                      referenceDataFolder,...  
+                      referenceDataFolder,...
+                      flag_atTargetNominalForce,...
                       flag_addReferenceData,...
                       flag_addSimulationData)
                       
 success = 0;
 
+figure(figH);
 
 idxStiffness=5;
 idxDamping  =6;
 
-simulationSpringDamperColor =[1,1,1].*0.5;
+simulationSpringDamperColor =[1,1,1].*0.7;
 simulationModelColor        =[1,1,1].*0.9;
 
 switch simConfig.bandwidthHz
@@ -25,8 +27,8 @@ switch simConfig.bandwidthHz
         simulationModelColor        =[1,0,0].*0.5 + [1,1,1].*0.5;
         
     case 35
-        simulationSpringDamperColor =[0.5,0,1].*0.5;
-        simulationModelColor        =[0.5,0,1].*0.5 + [1,1,1].*0.5;
+        simulationSpringDamperColor =[1,0,1];
+        simulationModelColor        =[1,0,1].*0.5 + [1,1,1].*0.5;
         
     case 90
         simulationSpringDamperColor =[0,0,1];
@@ -57,6 +59,8 @@ f0=0;
 f1=12;
 df = (f1-f0)/20;
 
+
+
 if(flag_addReferenceData==1)
 
     fittingFilesK      = [referenceDataFolder,'/fig_KirschBoskovRymer1994_Fig12_K.dat'];
@@ -75,41 +79,55 @@ if(flag_addReferenceData==1)
     darkGrey = [1,1,1].*0.25;
     lightGrey= [1,1,1].*0.75;
 
+    amplitudeLabel    = sprintf('%1.1fmm',simConfig.amplitudeMM);
+    frequencyLabel    = sprintf('%1.0fHz',simConfig.bandwidthHz);  
+    
   subplot('Position', reshape(subPlotLayout(idxStiffness,indexColumn,:),1,4)); 
     
 
     xlbl = f0+df;
     ylbl = k1-dk;
 
+    text(xlbl,ylbl,[amplitudeLabel,' ',frequencyLabel]);
+    hold on;
+    ylbl = ylbl-dk;
     for indexRecord=1:1:length(dataKBR1994Fig12K)
         n = (indexRecord-1)/(numberOfRecordsK-1);
         seriesColor = darkGrey.*n + lightGrey.*(1-n);
         plot(dataKBR1994Fig12K(indexRecord).x,...
              dataKBR1994Fig12K(indexRecord).y,...
              'o','Color',seriesColor,...
-             'MarkerSize',7,...
+             'MarkerSize',4,...
              'MarkerFaceColor',seriesColor);
         hold on;
 
         plot(xlbl,ylbl,'o','Color',seriesColor,...
-             'MarkerSize',7,...
+             'MarkerSize',4,...
              'MarkerFaceColor',seriesColor);
         hold on;
         text(xlbl+2*df,ylbl,dataKBR1994Fig12K(indexRecord).seriesName);
         hold on;
-        ylbl = ylbl-2*df;
+        ylbl = ylbl-dk;
     end
+    plot(xlbl,ylbl,'o','Color',[1,1,1],...
+         'MarkerSize',7,...
+         'MarkerFaceColor',simulationSpringDamperColor);
+    hold on;
+    text(xlbl+2*df,ylbl,'Model');
+    hold on;
 
+
+
+    box off;
     
-
     ylabel('Stiffness (N/mm)');
-    yticks([0:1:8]);
+    yticks([0:1:10]);
 
     xlabel('Force (N)');
     xticks([0:2:12]);
     
     xlim([f0,(f1+df)]);
-    ylim([d0,(d1+dd)]);    
+    ylim([k0,(k1+dk)]);    
 
 
 
@@ -121,11 +139,13 @@ if(flag_addReferenceData==1)
         plot(dataKBR1994Fig12D(indexRecord).x,...
              dataKBR1994Fig12D(indexRecord).y,...
              'o','Color',seriesColor,...
-             'MarkerSize',7,...
+             'MarkerSize',4,...
              'MarkerFaceColor',seriesColor);
         hold on;
     end
 
+    box off;
+    
     ylabel('Damping (N/(mm/s))');
     yticks([0:0.01:0.1]);
 
@@ -133,15 +153,19 @@ if(flag_addReferenceData==1)
     xticks([0:2:12]);
 
     xlim([f0,(f1+df)]);
-    ylim([k0,k1]);     
+    ylim([d0,(d1+dd)]);     
 end
 
 if(flag_addSimulationData==1)
     
   assert(length(frequencyAnalysisSimulationData.vafTime)==1);    
-
+  vafTime           = frequencyAnalysisSimulationData.vafTime(1,1);
   vafPercentLabel   = [sprintf('%d',(round(vafTime*100))),'\%'];
     
+  if(flag_atTargetNominalForce==1)
+     vafPercentLabel = ['VAF ',vafPercentLabel]; 
+  end
+  
   %%
   % Stiffness
   %%
@@ -151,18 +175,23 @@ if(flag_addSimulationData==1)
     plot(frequencyAnalysisSimulationData.nominalForce(1,idxSim),...
          frequencyAnalysisSimulationData.stiffness(1,idxSim)/1000,...
          'o', ...
-         'Color', simulationSpringDamperColor,...
+         'Color', [1,1,1],...
          'LineWidth',1,...
          'MarkerSize',7,...
          'MarkerFaceColor',simulationSpringDamperColor);
-
-    text(frequencyAnalysisSimulationData.nominalForce(1,idxSim)+df,...
-         frequencyAnalysisSimulationData.stiffness(1,idxSim)/1000,...
-         vafPercentLabel);
-
+    hold on;
+    
+    text(frequencyAnalysisSimulationData.nominalForce(1,idxSim),...
+         frequencyAnalysisSimulationData.stiffness(1,idxSim)/1000 + dk,...
+         vafPercentLabel,...
+         'HorizontalAlignment','center',...
+         'VerticalAlignment','bottom');
+    hold on;
+    
     xlim([f0,f1]);
-    ylim([k0,k1]);    
-
+    ylim([k0,k1]);  
+    
+    box off;
     hold on;
 
   subplot('Position', reshape(subPlotLayout(idxDamping,indexColumn,:),1,4));       
@@ -171,13 +200,23 @@ if(flag_addSimulationData==1)
     plot(frequencyAnalysisSimulationData.nominalForce(1,idxSim),...
          frequencyAnalysisSimulationData.damping(1,idxSim)/1000,...
          'o', ...
-         'Color', simulationSpringDamperColor,...
+         'Color', [1,1,1],...
          'LineWidth',1,...
          'MarkerSize',7,...
          'MarkerFaceColor',simulationSpringDamperColor); 
+    hold on;
 
+    text(frequencyAnalysisSimulationData.nominalForce(1,idxSim),...
+         frequencyAnalysisSimulationData.damping(1,idxSim)/1000 + dd,...
+         vafPercentLabel,...
+         'HorizontalAlignment','center',...
+         'VerticalAlignment','bottom');
+    hold on;
+    
+    
     xlim([f0,f1]);
     ylim([d0,d1]);
-
+    
+    box off;
     hold on;
 end
