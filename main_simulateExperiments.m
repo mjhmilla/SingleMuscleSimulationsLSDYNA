@@ -10,9 +10,13 @@ close all;
 
 models(1) = struct('id',0,'name','');
 
-indexUmat41             = 1;
-models(indexUmat41).id  = 1;
-models(indexUmat41).name='umat41';
+%indexUmat41             = 1;
+%models(indexUmat41).id  = 1;
+%models(indexUmat41).name='umat41';
+
+indexUmat43             = 1;
+models(indexUmat43).id  = 1;
+models(indexUmat43).name='umat43';
 
 
 flag_preProcessSimulationData       = 0; 
@@ -20,7 +24,7 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
@@ -30,8 +34,8 @@ flag_generateGenericPlots           = 1;
 flag_generateSpecificPlots          = 1;
 
 
-flag_enableIsometricExperiment          = 0;
-flag_enableConcentricExperiment         = 1;
+flag_enableIsometricExperiment          = 1;
+flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
 flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
@@ -61,94 +65,7 @@ if(numberOfSimulationTypes==0)
 end
 numberOfSimulations = numberOfSimulationTypes*length(models);
 
-simulationType(numberOfSimulationTypes) = struct('type',[]);
 
-simulationInformation(numberOfSimulations) = ...
-    struct('type',[],'musclePropertyFile',[],...
-          'optimalFiberLength','',...
-          'maximumIsometricForce','',...
-          'tendonSlackLength','',...
-          'parametersInMuscleCard',0,...
-          'model',[]);
-idx=0;
-
-if(flag_enableIsometricExperiment==1)
-  idx=idx+1;
-  simulationType(idx).type = 'isometric';
-  simulationInformation(idx).type               = simulationType(idx).type;
-
-  simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
-  simulationInformation(idx).optimalFiberLength     = 'lCEopt';
-  simulationInformation(idx).maximumIsometricForce  = 'Fmax';
-  simulationInformation(idx).tendonSlackLength      = 'lSEE0';
-  simulationInformation(idx).parametersInMuscleCard = 1;
-  simulationInformation(idx).model = models(indexUmat41).name;
-  assert(length(models)==1);
-end
-
-if(flag_enableConcentricExperiment==1)
-  idx=idx+1;
-  simulationType(idx).type = 'concentric';
-  simulationInformation(idx).type               = simulationType(idx).type;
-  
-  simulationInformation(idx).type               = simulationInformation(idx).type;
-  simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
-  simulationInformation(idx).optimalFiberLength     = 'lCEopt';
-  simulationInformation(idx).maximumIsometricForce  = 'Fmax';
-  simulationInformation(idx).tendonSlackLength      = 'lSEE0';
-  simulationInformation(idx).parametersInMuscleCard = 1;
-  simulationInformation(idx).model = models(indexUmat41).name;  
-  assert(length(models)==1);
-  
-end 
-
-if(flag_enableQuickReleaseExperiment==1)
-  idx=idx+1;
-  simulationType(idx).type = 'quickrelease';
-  simulationInformation(idx).type               = simulationType(idx).type;
-  
-  simulationInformation(idx).type               = 'quickrelease';
-  simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
-  simulationInformation(idx).optimalFiberLength     = 'lCEopt';
-  simulationInformation(idx).maximumIsometricForce  = 'Fmax';
-  simulationInformation(idx).tendonSlackLength      = 'lSEE0';
-  simulationInformation(idx).parametersInMuscleCard = 1;
-  simulationInformation(idx).model = models(indexUmat41).name;  
-  assert(length(models)==1);
-  
-end 
-
-if(flag_enableEccentricExperiment==1)
-  idx=idx+1;
-  simulationType(idx).type = 'eccentric';
-  simulationInformation(idx).type               = simulationType(idx).type;
-
-  simulationInformation(idx).type                   = 'eccentric';
-  simulationInformation(idx).musclePropertyFile     = 'eccentric.k';
-  simulationInformation(idx).optimalFiberLength     = 'lopt';
-  simulationInformation(idx).maximumIsometricForce  = 'fiso';
-  simulationInformation(idx).tendonSlackLength      = 'ltslk';
-  simulationInformation(idx).parametersInMuscleCard = 0;
-  simulationInformation(idx).model = models(indexUmat41).name;  
-  assert(length(models)==1);
-  
-end 
-
-if(flag_enableImpedanceExperiment==1)
-  idx=idx+1;
-  simulationType(idx).type = 'impedance';
-  simulationInformation(idx).type               = simulationType(idx).type;
-  
-  simulationInformation(idx).type                   = 'impedance';
-  simulationInformation(idx).musclePropertyFile     = 'impedance.k';
-  simulationInformation(idx).optimalFiberLength     = 'lopt';
-  simulationInformation(idx).maximumIsometricForce  = 'fiso';
-  simulationInformation(idx).tendonSlackLength      = 'ltslk';
-  simulationInformation(idx).parametersInMuscleCard = 0;
-  simulationInformation(idx).model = models(indexUmat41).name;  
-  assert(length(models)==1);
-  
-end 
 
 
 % Define which Releases shall be tested
@@ -216,7 +133,13 @@ if(flag_preProcessSimulationData==1)
 
         
         for indexModel = 1:1:length(models)        
-
+            [simulationType,simulationInformation]=...
+                getSimulationInformation(models(indexModel).name,...
+                        flag_enableIsometricExperiment,...
+                        flag_enableConcentricExperiment,...
+                        flag_enableQuickReleaseExperiment,...
+                        flag_enableEccentricExperiment,...
+                        flag_enableImpedanceExperiment);
 
             for indexSimulationType = 1:length(simulationType)
 
@@ -283,7 +206,14 @@ if(flag_runSimulations==1)
         Release = cell2mat(Releases(indexRelease));      
 
         for indexModel = 1:1:length(models)
-
+            [simulationType,simulationInformation]=...
+                getSimulationInformation(models(indexModel).name,...
+                        flag_enableIsometricExperiment,...
+                        flag_enableConcentricExperiment,...
+                        flag_enableQuickReleaseExperiment,...
+                        flag_enableEccentricExperiment,...
+                        flag_enableImpedanceExperiment);
+                    
             switch Release
                 case 'SMP_R931'
                     lsdynaBin = lsdynaBin_SMP_931;
@@ -340,7 +270,13 @@ if(flag_postProcessSimulationData==1)
         for indexModel = 1:1:length(models)
             impedancePlotCounter=1;
 
-            
+            [simulationType,simulationInformation]=...
+                getSimulationInformation(models(indexModel).name,...
+                        flag_enableIsometricExperiment,...
+                        flag_enableConcentricExperiment,...
+                        flag_enableQuickReleaseExperiment,...
+                        flag_enableEccentricExperiment,...
+                        flag_enableImpedanceExperiment);            
               
             for indexSimulationType = 1:length(simulationType)
                 
