@@ -13,6 +13,11 @@ nodout
 rcforc
 spcforc
 status.out
+adptmp
+bg_switch
+disk8
+dyna.*
+kill_by_pid
 *.csv
 *.swp
 *.msg
