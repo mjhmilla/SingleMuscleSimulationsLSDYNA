@@ -14,18 +14,20 @@ binoutColor = (1-n).*binoutColorA + (n).*binoutColorB;
 musoutColor = (1-n).*musoutColorA + (n).*musoutColorB;
 
 %% Get the columns of musout
-indexMusoutTime     = getColumnIndex('time',lsdynaMuscle.columnNames);
-indexMusoutStim     = getColumnIndex('stim_tot',lsdynaMuscle.columnNames);
-indexMusoutQ        = getColumnIndex('q',lsdynaMuscle.columnNames); %activation
-indexMusoutFmtc     = getColumnIndex('f_mtc',lsdynaMuscle.columnNames);
-indexMusoutFce      = getColumnIndex('f_ce',lsdynaMuscle.columnNames);
-indexMusoutFpee     = getColumnIndex('f_pee',lsdynaMuscle.columnNames);
-indexMusoutFsee     = getColumnIndex('f_see',lsdynaMuscle.columnNames);
-indexMusoutFsde     = getColumnIndex('f_sde',lsdynaMuscle.columnNames);
-indexMusoutLmtc     = getColumnIndex('l_mtc',lsdynaMuscle.columnNames);
-indexMusoutLce      = getColumnIndex('l_ce',lsdynaMuscle.columnNames);
-indexMusoutLmtcDot  = getColumnIndex('dot_l_mtc',lsdynaMuscle.columnNames);
-indexMusoutLceDot   = getColumnIndex('dot_l_ce',lsdynaMuscle.columnNames);
+indexMuscleTime         = lsdynaMuscle.indexTime;
+indexMuscleExcitation   = lsdynaMuscle.indexExcitation;
+indexMuscleActivation   = lsdynaMuscle.indexActivation; 
+indexMuscleFmt          = lsdynaMuscle.indexFmt;
+indexMuscleFce          = lsdynaMuscle.indexFce;
+indexMuscleFpee         = lsdynaMuscle.indexFpee;
+indexMuscleFsee         = lsdynaMuscle.indexFsee;
+indexMuscleFsde         = lsdynaMuscle.indexFsde;
+indexMuscleLmt          = lsdynaMuscle.indexLmt;
+indexMuscleLce          = lsdynaMuscle.indexLce;
+indexMuscleLmtDot       = lsdynaMuscle.indexLmtDot;
+indexMuscleLceDot       = lsdynaMuscle.indexLceDot;
+
+assert(indexMuscleTime ~= 0)
 
 %% Extract the numeric values from the simulationFile name
 
@@ -68,9 +70,11 @@ hold on;
 %    seriesNumber);
 %hold on;
 
-plot(lsdynaMuscle.data(:,indexMusoutTime),...
-     lsdynaMuscle.data(:,indexMusoutLmtc),...
-     'Color',musoutColor);
+if(indexMuscleLmt ~=0)
+    plot(lsdynaMuscle.data(:,indexMuscleTime),...
+         lsdynaMuscle.data(:,indexMuscleLmt),...
+         'Color',musoutColor);
+end
 
 axis tight;
 yl = ylim;
@@ -96,11 +100,12 @@ plot(lsdynaBinout.elout.beam.time',...
      '--','Color',binoutColor,'LineWidth',2);
 hold on;
 
-
-plot(lsdynaMuscle.data(:,indexMusoutTime),...
-     lsdynaMuscle.data(:,indexMusoutFmtc),...
-     'Color',musoutColor);
-hold on;
+if(indexMuscleFmt~=0)
+    plot(lsdynaMuscle.data(:,indexMuscleTime),...
+         lsdynaMuscle.data(:,indexMuscleFmt),...
+         'Color',musoutColor);
+    hold on;
+end
 
 text( 0.80, 0.9, seriesNumber,...
       'Units', 'Normalized',...
@@ -130,10 +135,12 @@ box off;
 
 subplot('Position',reshape(subPlotLayout(3,indexColumn,:),1,4));
 
-plot(lsdynaMuscle.data(:,indexMusoutTime),...
-     lsdynaMuscle.data(:,indexMusoutLce)./optimalFiberLength,...
-     'Color',musoutColor);
-hold on;
+if(indexMuscleLce~=0)
+    plot(lsdynaMuscle.data(:,indexMuscleTime),...
+         lsdynaMuscle.data(:,indexMuscleLce)./optimalFiberLength,...
+         'Color',musoutColor);
+    hold on;
+end
 
 text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
@@ -157,13 +164,15 @@ box off;
 
 subplot('Position',reshape(subPlotLayout(4,indexColumn,:),1,4));
 
-ltN = ((lsdynaMuscle.data(:,indexMusoutLmtc)...
-       -lsdynaMuscle.data(:,indexMusoutLce) ) ./ optimalFiberLength);
+if(indexMuscleLmt ~= 0 && indexMuscleLce ~= 0)
+    ltN = ((lsdynaMuscle.data(:,indexMuscleLmt)...
+           -lsdynaMuscle.data(:,indexMuscleLce) ) ./ optimalFiberLength);
 
-plot(lsdynaMuscle.data(:,indexMusoutTime),...
-     ltN,...
-     'Color',musoutColor);
-hold on;
+    plot(lsdynaMuscle.data(:,indexMuscleTime),...
+         ltN,...
+         'Color',musoutColor);
+    hold on;
+end
 
 text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
@@ -188,10 +197,12 @@ box off;
 
 subplot('Position',reshape(subPlotLayout(5,indexColumn,:),1,4));
 
-plot(lsdynaMuscle.data(:,indexMusoutTime),...
-     lsdynaMuscle.data(:,indexMusoutLceDot)./optimalFiberLength,...
-     'Color',musoutColor);
-hold on;
+if(indexMuscleLceDot~=0)
+    plot(lsdynaMuscle.data(:,indexMuscleTime),...
+         lsdynaMuscle.data(:,indexMuscleLceDot)./optimalFiberLength,...
+         'Color',musoutColor);
+    hold on;
+end
 
 text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
@@ -217,13 +228,15 @@ box off;
 
 subplot('Position',reshape(subPlotLayout(6,indexColumn,:),1,4));
 
-ltN = ((lsdynaMuscle.data(:,indexMusoutLmtcDot)...
-       -lsdynaMuscle.data(:,indexMusoutLceDot) ) ./ optimalFiberLength);
+if(indexMuscleLmtDot ~=0 && indexMuscleLceDot ~=0)
+    ltN = ((lsdynaMuscle.data(:,indexMuscleLmtDot)...
+           -lsdynaMuscle.data(:,indexMuscleLceDot) ) ./ optimalFiberLength);
 
-plot(lsdynaMuscle.data(:,indexMusoutTime),...
-     ltN,...
-     'Color',musoutColor);
-hold on;
+    plot(lsdynaMuscle.data(:,indexMuscleTime),...
+         ltN,...
+         'Color',musoutColor);
+    hold on;
+end
 
 text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
@@ -251,10 +264,12 @@ box off;
 
 subplot('Position',reshape(subPlotLayout(7,indexColumn,:),1,4));
 
-plot(lsdynaMuscle.data(:,indexMusoutTime),...
-     lsdynaMuscle.data(:,indexMusoutQ).*100,...
-     'Color',musoutColor);
-hold on;
+if(indexMuscleActivation ~= 0)
+    plot(lsdynaMuscle.data(:,indexMuscleTime),...
+         lsdynaMuscle.data(:,indexMuscleActivation).*100,...
+         'Color',musoutColor);
+    hold on;
+end
 
 text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
@@ -280,10 +295,12 @@ box off;
 
 subplot('Position',reshape(subPlotLayout(8,indexColumn,:),1,4));
 
-plot(lsdynaMuscle.data(:,indexMusoutTime),...
-     lsdynaMuscle.data(:,indexMusoutFce)./maximumIsometricForce,...
-     'Color',musoutColor);
-hold on;
+if(indexMuscleFce ~= 0)
+    plot(lsdynaMuscle.data(:,indexMuscleTime),...
+         lsdynaMuscle.data(:,indexMuscleFce)./maximumIsometricForce,...
+         'Color',musoutColor);
+    hold on;
+end
 
 text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
@@ -309,10 +326,12 @@ box off;
 
 subplot('Position',reshape(subPlotLayout(9,indexColumn,:),1,4));
 
-plot(lsdynaMuscle.data(:,indexMusoutTime),...
-     lsdynaMuscle.data(:,indexMusoutFpee)./maximumIsometricForce,...
-     'Color',musoutColor);
-hold on;
+if(indexMuscleFpee~=0)
+    plot(lsdynaMuscle.data(:,indexMuscleTime),...
+         lsdynaMuscle.data(:,indexMuscleFpee)./maximumIsometricForce,...
+         'Color',musoutColor);
+    hold on;
+end
 
 text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
@@ -339,11 +358,12 @@ box off;
 
 subplot('Position',reshape(subPlotLayout(10,indexColumn,:),1,4));
 
-
-plot(lsdynaMuscle.data(:,indexMusoutTime),...
-     lsdynaMuscle.data(:,indexMusoutFsee)./maximumIsometricForce,...
-     'Color',musoutColor);
-hold on;
+if(indexMuscleFsee~=0)
+    plot(lsdynaMuscle.data(:,indexMuscleTime),...
+         lsdynaMuscle.data(:,indexMuscleFsee)./maximumIsometricForce,...
+         'Color',musoutColor);
+    hold on;
+end
 
 text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
@@ -369,11 +389,12 @@ box off;
 
 subplot('Position',reshape(subPlotLayout(11,indexColumn,:),1,4));
 
-
-plot(lsdynaMuscle.data(:,indexMusoutLce)./optimalFiberLength,...
-     lsdynaMuscle.data(:,indexMusoutFce)./maximumIsometricForce,...
-     'Color',musoutColor);
-hold on;
+if(indexMuscleFce ~=0 && indexMuscleLce ~= 0)
+    plot(lsdynaMuscle.data(:,indexMuscleLce)./optimalFiberLength,...
+         lsdynaMuscle.data(:,indexMuscleFce)./maximumIsometricForce,...
+         'Color',musoutColor);
+    hold on;
+end
 
 text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
@@ -405,11 +426,12 @@ box off;
 %% PE force vs length
 subplot('Position',reshape(subPlotLayout(12,indexColumn,:),1,4));
 
-
-plot(lsdynaMuscle.data(:,indexMusoutLce)./optimalFiberLength,...
-     lsdynaMuscle.data(:,indexMusoutFpee)./maximumIsometricForce,...
-     'Color',musoutColor);
-hold on;
+if(indexMuscleLce ~=0 && indexMuscleFpee ~=0)
+    plot(lsdynaMuscle.data(:,indexMuscleLce)./optimalFiberLength,...
+         lsdynaMuscle.data(:,indexMuscleFpee)./maximumIsometricForce,...
+         'Color',musoutColor);
+    hold on;
+end
 
 text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
@@ -443,13 +465,15 @@ box off;
 %% SE force vs length
 subplot('Position',reshape(subPlotLayout(13,indexColumn,:),1,4));
 
-ltN = (lsdynaMuscle.data(:,indexMusoutLmtc)...
-      -lsdynaMuscle.data(:,indexMusoutLce))./tendonSlackLength;
+if(indexMuscleLmt ~=0 && indexMuscleLce ~=0)
+    ltN = (lsdynaMuscle.data(:,indexMuscleLmt)...
+          -lsdynaMuscle.data(:,indexMuscleLce))./tendonSlackLength;
 
-plot(ltN,...
-     lsdynaMuscle.data(:,indexMusoutFsee)./maximumIsometricForce,...
-     'Color',musoutColor);
-hold on;
+    plot(ltN,...
+         lsdynaMuscle.data(:,indexMuscleFsee)./maximumIsometricForce,...
+         'Color',musoutColor);
+    hold on;
+end
 
 text( 0.9, 0.9, seriesNumber,...
       'Units', 'Normalized',...
@@ -480,8 +504,8 @@ title('Contractile Element: $$\tilde{f}^{T}-\tilde{\ell}^{T}$$');
 box off;
 
 
-%indexMusoutFce      = getColumnIndex('f_ce',lsdynaMuscle.columnNames);
-%indexMusoutFpee     = getColumnIndex('f_pee',lsdynaMuscle.columnNames);
-%indexMusoutFsee     = getColumnIndex('f_see',lsdynaMuscle.columnNames);
+%indexMuscleFce      = getColumnIndex('f_ce',lsdynaMuscle.columnNames);
+%indexMuscleFpee     = getColumnIndex('f_pee',lsdynaMuscle.columnNames);
+%indexMuscleFsee     = getColumnIndex('f_see',lsdynaMuscle.columnNames);
 
 

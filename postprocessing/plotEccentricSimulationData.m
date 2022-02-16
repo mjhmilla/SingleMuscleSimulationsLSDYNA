@@ -262,9 +262,11 @@ if(flag_addSimulationData)
         changeInLength=changeInLength.*(m2mm); %m to mm
         dl = round(changeInLength(end,1)-changeInLength(1,1),0);
         
-        indexStimulation = getColumnIndex('stim_tot',lsdynaMuscle.columnNames);
-        maxStim = max(lsdynaMuscle.data(:,indexStimulation));
-        
+        indexExcitation = lsdynaMuscle.indexExcitation;
+        maxStim=0;
+        if(indexExcitation~=0)
+            maxStim = max(lsdynaMuscle.data(:,indexExcitation));
+        end
         
                    
 

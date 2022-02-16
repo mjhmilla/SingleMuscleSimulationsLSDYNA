@@ -24,10 +24,10 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 0;
+flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_generateGenericPlots           = 1;
@@ -422,7 +422,9 @@ if(flag_postProcessSimulationData==1)
                     assert(musoutCount == 1);
                     
                     %% Load the muscle data
-                    [musout,success] = musoutreader(musoutFileList{1});              
+                    [musout,success] = ...
+                        musoutreader(models(indexModel).name,...
+                        musoutFileList{1});              
 
                     %Count the number of binout files        
                     binoutCount=0;
