@@ -4,13 +4,15 @@ function [simulationType, simulationInformation]=...
             flag_enableConcentricExperiment,...
             flag_enableQuickReleaseExperiment,...
             flag_enableEccentricExperiment,...
-            flag_enableImpedanceExperiment)
+            flag_enableImpedanceExperiment,...
+            flag_enableForceLengthExperiment)
 
 numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableConcentricExperiment ... 
                      +flag_enableQuickReleaseExperiment...
                      +flag_enableEccentricExperiment...
-                     +flag_enableImpedanceExperiment;
+                     +flag_enableImpedanceExperiment...
+                     +flag_enableForceLengthExperiment;
 
 if(numberOfSimulationTypes==0)
     numberOfSimulationTypes=1;
@@ -45,7 +47,7 @@ if(strcmp(modelName,'umat41')==1)
       simulationInformation(idx).model = modelName;
 
     end
-
+    
     if(flag_enableConcentricExperiment==1)
       idx=idx+1;
       simulationType(idx).type = 'concentric';
@@ -105,6 +107,8 @@ if(strcmp(modelName,'umat41')==1)
       simulationInformation(idx).model = modelName;  
 
     end
+
+    
 end
   
 
@@ -177,6 +181,21 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).model = modelName;  
 
     end
+    
+    
+    if(flag_enableForceLengthExperiment==1)
+      idx=idx+1;
+      simulationType(idx).type = 'force_length';
+      simulationInformation(idx).type               = simulationType(idx).type;
+
+      simulationInformation(idx).type                   = 'force_length';
+      simulationInformation(idx).musclePropertyFile     = 'force_length.k';
+      simulationInformation(idx).optimalFiberLength     = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength      = 'ltSlk';
+      simulationInformation(idx).parametersInMuscleCard = 0;
+      simulationInformation(idx).model = modelName;        
+    end    
 end
   
 

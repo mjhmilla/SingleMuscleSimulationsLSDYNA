@@ -12,11 +12,12 @@ $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R dtout   0.001  
-R lceOpt  0.015
-R ltSlk   0.045
-R penOptD 15.0
-R timeE   3.5
+R    dtout     0.001  
+R   lceOpt     0.015
+R    ltSlk     0.045
+R  penOptD      15.0
+R   fceOpt      30.0
+R    timeE       3.5
 *PARAMETER_EXPRESSION
 $#    name expression
 R  penOptR &penOptD*3.1415926/180.0
@@ -103,13 +104,13 @@ $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
 $#                a1                  o1
                  0.0               -&lp0
                  1.0               -&lp0
-                 1.0               -&lp1
+                 2.0               -&lp1
               &timeE               -&lp1
 $
 *NODE
 $#   nid               x               y               z      tc      rc
        1             0.0             0.0             0.0       7       7
-       2             0.0             0.0      -&pathLenS       7       7       
+       2             0.0             0.0           -&lp0       7       7       
 *INCLUDE
 matpiglet.k
 *END

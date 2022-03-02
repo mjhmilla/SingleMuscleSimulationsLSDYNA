@@ -1,6 +1,6 @@
 %% This script performs the validation tests isometric, concentric and quick release 
 %% for different release version of the referenceDataPath EHTMM
-
+clc;
 clear all;
 close all;
 
@@ -24,22 +24,24 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 0;
+flag_runSimulations                 = 1;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 1;
+flag_postProcessSimulationData      = 0;
 %Setting this to 1 will generate plots of the enabled experiments
 
-flag_generateGenericPlots           = 1;
-flag_generateSpecificPlots          = 1;
+flag_generateGenericPlots           = 0;
+flag_generateSpecificPlots          = 0;
 
 
-flag_enableIsometricExperiment          = 1;
+flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
 flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
-    
+
+%Lengthens muscle to sample force-length curves
+flag_enableForceLengthExperiment        = 1; 
 
 
 matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
@@ -58,7 +60,8 @@ numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableConcentricExperiment ... 
                      +flag_enableQuickReleaseExperiment...
                      +flag_enableEccentricExperiment...
-                     +flag_enableImpedanceExperiment;
+                     +flag_enableImpedanceExperiment...
+                     +flag_enableForceLengthExperiment;
 
 if(numberOfSimulationTypes==0)
     numberOfSimulationTypes=1;
@@ -139,7 +142,8 @@ if(flag_preProcessSimulationData==1)
                         flag_enableConcentricExperiment,...
                         flag_enableQuickReleaseExperiment,...
                         flag_enableEccentricExperiment,...
-                        flag_enableImpedanceExperiment);
+                        flag_enableImpedanceExperiment,...
+                        flag_enableForceLengthExperiment);
 
             for indexSimulationType = 1:length(simulationType)
 
@@ -212,7 +216,8 @@ if(flag_runSimulations==1)
                         flag_enableConcentricExperiment,...
                         flag_enableQuickReleaseExperiment,...
                         flag_enableEccentricExperiment,...
-                        flag_enableImpedanceExperiment);
+                        flag_enableImpedanceExperiment,...
+                        flag_enableForceLengthExperiment);
                     
             switch Release
                 case 'SMP_R931'
@@ -276,7 +281,8 @@ if(flag_postProcessSimulationData==1)
                         flag_enableConcentricExperiment,...
                         flag_enableQuickReleaseExperiment,...
                         flag_enableEccentricExperiment,...
-                        flag_enableImpedanceExperiment);            
+                        flag_enableImpedanceExperiment,...
+                        flag_enableForceLengthExperiment);            
               
             for indexSimulationType = 1:length(simulationType)
                 
