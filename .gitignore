@@ -1,6 +1,6 @@
 SMP_R931/umat41/impedance/*
-!SMP_R931/umat41/impedance/catsoleus.k
-!SMP_R931/umat41/impedance/impedance.k
+SMP_R931/umat43/force_length/*
+!*.k
 part_des
 binout
 d3*

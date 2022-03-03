@@ -24,14 +24,14 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 0;
+flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_generateGenericPlots           = 0;
-flag_generateSpecificPlots          = 0;
+flag_generateSpecificPlots          = 1;
 
 
 flag_enableIsometricExperiment          = 0;
@@ -44,9 +44,9 @@ flag_enableImpedanceExperiment          = 0;
 flag_enableForceLengthExperiment        = 1; 
 
 
-matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
-%matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
-%                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
+%matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
+matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
+                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
 lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/SMP_R931/lsdyna';
 
 addpath(matlabScriptPath);
@@ -349,9 +349,13 @@ if(flag_postProcessSimulationData==1)
                     case 'impedance'
                       numberOfHorizontalPlotColumnsSpecific = 1;
                       numberOfVerticalPlotRowsSpecific      = 6; 
-                      
                       sampleTimeK = getParameterFieldValue('impedance.k','dtsignal');
                       assert(abs(sampleTimeK-sampleTime)<sqrt(eps));
+    
+                    case 'force_length'
+                      numberOfHorizontalPlotColumnsSpecific = 3;
+                      numberOfVerticalPlotRowsSpecific      = 1;
+                      
                 end
 
 
@@ -581,6 +585,55 @@ if(flag_postProcessSimulationData==1)
                                         flag_addReferenceData,flag_addSimulationData,...
                                         impedancePlotCounter);
                                  impedancePlotCounter=impedancePlotCounterUpd;
+                            case 'force_length'
+                                %Only umat43 produces the curve-specific
+                                %files right now.
+                                if( strcmp( models(indexModel).name, 'umat43' ) )
+                                    %Get the curve files
+                                    curveSubstr = {'fal'};
+                                    curveCount=0;
+                                    curveFileList ={''};
+                                    for indexFile=1:1:length(fileList)
+                                      for indexCurveType=1:1:length(curveSubstr)
+                                          if(contains(fileList(indexFile).name,curveSubstr{indexCurveType}))
+                                            curveCount=curveCount+1;
+                                            if curveCount == 1
+                                              curveFileList = {fileList(indexFile).name};
+                                            else
+                                              curveFileList = {curveFileList{:};fileList(indexFile).name};
+                                            end                                            
+                                          end
+                                      end
+                                    end
+                                    assert(curveCount == 1);
+
+                                    flag_addSimulationData=1;
+                                    if(flag_figSpecificDirty==0)                        
+                                      flag_figSpecificDirty=1;
+                                      flag_addReferenceData=1;
+                                    else
+                                      flag_addReferenceData=0;
+                                    end
+                                    indexColumn=1;
+
+                                    for indexCurve=1:1:length(curveFileList)
+                                        curveData=curvereader(curveFileList{indexCurve});
+                                        figSpecific =...
+                                            plotForceLengthSimulationData(...
+                                                figSpecific,curveData,...
+                                                indexColumn,subPlotPanelSpecific,...
+                                                numberOfVerticalPlotRowsSpecific,...
+                                                numberOfHorizontalPlotColumnsSpecific,...                              
+                                                simulationDirectories(indexSimulationTrial).name,...
+                                                indexSimulationTrial, length(simulationDirectories),...
+                                                referenceDataFolder,...
+                                                flag_addReferenceData,flag_addSimulationData,...
+                                                simulationColorA,simulationColorB,...
+                                                dataColorA,dataColorB);
+                                    end
+
+                                end
+                                
                         end
                     end
 
