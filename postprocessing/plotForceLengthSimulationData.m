@@ -17,7 +17,7 @@ if(flag_addReferenceData==1)
 
     files = dir(referenceDataFolder);
     for indexFiles=3:1:length(files)
-        if( contains( files(indexFiles).name, 'feline_activeForceLength'))
+        if( contains( files(indexFiles).name, 'fortran_activeForceLengthCurveHuman'))
             data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0);
             subplot('Position', reshape( subPlotLayout(1,1,:),1,4 ) );
             plot(   data(:,1),...
