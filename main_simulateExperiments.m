@@ -24,7 +24,7 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
@@ -354,7 +354,7 @@ if(flag_postProcessSimulationData==1)
     
                     case 'force_length'
                       numberOfHorizontalPlotColumnsSpecific = 3;
-                      numberOfVerticalPlotRowsSpecific      = 1;
+                      numberOfVerticalPlotRowsSpecific      = 2;
                       
                 end
 
@@ -590,7 +590,7 @@ if(flag_postProcessSimulationData==1)
                                 %files right now.
                                 if( strcmp( models(indexModel).name, 'umat43' ) )
                                     %Get the curve files
-                                    curveSubstr = {'fal'};
+                                    curveSubstr = {'fal','fecmH'};
                                     curveCount=0;
                                     curveFileList ={''};
                                     for indexFile=1:1:length(fileList)
@@ -605,7 +605,7 @@ if(flag_postProcessSimulationData==1)
                                           end
                                       end
                                     end
-                                    assert(curveCount == 1);
+                                    assert(curveCount == 2);
 
                                     flag_addSimulationData=1;
                                     if(flag_figSpecificDirty==0)                        
@@ -630,6 +630,7 @@ if(flag_postProcessSimulationData==1)
                                                 flag_addReferenceData,flag_addSimulationData,...
                                                 simulationColorA,simulationColorB,...
                                                 dataColorA,dataColorB);
+                                            flag_addReferenceData=0;
                                     end
 
                                 end
