@@ -24,7 +24,7 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 0;
+flag_runSimulations                 = 1;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
@@ -354,7 +354,7 @@ if(flag_postProcessSimulationData==1)
     
                     case 'force_length'
                       numberOfHorizontalPlotColumnsSpecific = 3;
-                      numberOfVerticalPlotRowsSpecific      = 2;
+                      numberOfVerticalPlotRowsSpecific      = 4;
                       
                 end
 
@@ -590,7 +590,7 @@ if(flag_postProcessSimulationData==1)
                                 %files right now.
                                 if( strcmp( models(indexModel).name, 'umat43' ) )
                                     %Get the curve files
-                                    curveSubstr = {'fal','fecmH'};
+                                    curveSubstr = {'fal','fecmH','f1H','f2H'};
                                     curveCount=0;
                                     curveFileList ={''};
                                     for indexFile=1:1:length(fileList)
@@ -600,12 +600,12 @@ if(flag_postProcessSimulationData==1)
                                             if curveCount == 1
                                               curveFileList = {fileList(indexFile).name};
                                             else
-                                              curveFileList = {curveFileList{:};fileList(indexFile).name};
+                                              curveFileList = [curveFileList;fileList(indexFile).name];
                                             end                                            
                                           end
                                       end
                                     end
-                                    assert(curveCount == 2);
+                                    assert(curveCount == 4);
 
                                     flag_addSimulationData=1;
                                     if(flag_figSpecificDirty==0)                        

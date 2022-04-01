@@ -22,8 +22,8 @@ R    timeE       3.5
 $#    name expression
 R  penOptR &penOptD*3.1415926/180.0
 R    lceXT &lceOpt*sin(penOptR)  
-R     lce0 &lceOpt*0.4
-R     lce1 &lceOpt*1.7
+R     lce0 &lceOpt*0.63
+R     lce1 &lceOpt*1.8
 R   lceAT0 sqrt((&lce0)*(&lce0)-lceXT*lceXT)
 R   lceAT1 sqrt((&lce1)*(&lce1)-lceXT*lceXT)
 R      lp0 &lceAT0 + &ltSlk

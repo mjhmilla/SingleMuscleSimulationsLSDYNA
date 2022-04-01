@@ -54,6 +54,34 @@ if(flag_addReferenceData==1)
             titleText = 'ECM Force-Length';
         end
         
+        if( contains( files(indexFiles).name, 'fortran_forceLengthProximalTitinCurve'))
+            data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0); 
+            subplotA = reshape( subPlotLayout(3,1,:),1,4 );
+            subplotB = reshape( subPlotLayout(3,2,:),1,4 );
+            subplotC = reshape( subPlotLayout(3,3,:),1,4 ); 
+            found=1  ;  
+            
+            xlabelText = 'Norm. Half Length ($\frac{1}{2}\ell^{\mathrm{M}}_n$)';
+            ylabelText = '$f^{P}$)';
+            y1DerlabelText = '$d f^{P}/ d \frac{1}{2} \ell^{\mathrm{M}}_n$';
+            y2DerlabelText = '$d^2 f^{P}/ d (\frac{1}{2} \ell^{\mathrm{M}}_n)^2$';
+            titleText = 'Titin Proximal Force-Length';
+        end
+        
+        if( contains( files(indexFiles).name, 'fortran_forceLengthDistalTitinCurve'))
+            data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0); 
+            subplotA = reshape( subPlotLayout(4,1,:),1,4 );
+            subplotB = reshape( subPlotLayout(4,2,:),1,4 );
+            subplotC = reshape( subPlotLayout(4,3,:),1,4 ); 
+            found=1  ;  
+            
+            xlabelText = 'Norm. Half Length ($\frac{1}{2}\ell^{\mathrm{M}}_n$)';
+            ylabelText = '$f^{D}$)';
+            y1DerlabelText = '$d f^{D}/ d \frac{1}{2} \ell^{\mathrm{M}}_n$';
+            y2DerlabelText = '$d^2 f^{D}/ d (\frac{1}{2} \ell^{\mathrm{M}}_n)^2$';
+            titleText = 'Titin Distal Force-Length';
+        end        
+        
         if(found==1)
            
             subplot('Position', subplotA );
@@ -126,6 +154,16 @@ if(flag_addSimulationData)
       subplotB = reshape( subPlotLayout(2,2,:),1,4 );
       subplotC = reshape( subPlotLayout(2,3,:),1,4 );      
     end
+    if(contains(curveData.name,'f1H')==1)
+      subplotA = reshape( subPlotLayout(3,1,:),1,4 );
+      subplotB = reshape( subPlotLayout(3,2,:),1,4 );
+      subplotC = reshape( subPlotLayout(3,3,:),1,4 );      
+    end
+    if(contains(curveData.name,'f2H')==1)
+      subplotA = reshape( subPlotLayout(4,1,:),1,4 );
+      subplotB = reshape( subPlotLayout(4,2,:),1,4 );
+      subplotC = reshape( subPlotLayout(4,3,:),1,4 );      
+    end
     
     minCurveDataX = min(curveData.data(:,curveData.indexArg));
     
@@ -134,8 +172,7 @@ if(flag_addSimulationData)
             curveData.data(:,curveData.indexValue),...
             'Color',simulationColor);
     hold on;  
-    
-    
+        
     plot(   [minCurveDataX,minCurveDataX+0.15],...
             [1,1].*(1-0.05*indexSimulation),...
             'Color',simulationColor );
