@@ -39,6 +39,12 @@ $#  dtinit    tssfac      isdo    tslimt     dt2ms      lctm     erode     ms1st
        0.00.89999998         0       0.0       0.0         0         0         0
 $#  dt2msf   dt2mslc     imscl    unused    unused     rmscl     
        0.0         0         0                           0.0
+$*DEFINE_CURVE
+$#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
+$         5         0       1.0       1.0       0.0       0.0         0         0
+$#                a1                  o1  
+$                 0.0                 0.1
+$              &timeE                 0.1
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 $                                                                              $
 $                             DATABASE (OUTPUT)                                $
