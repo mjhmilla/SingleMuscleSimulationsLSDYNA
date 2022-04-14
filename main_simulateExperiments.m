@@ -432,9 +432,14 @@ if(flag_postProcessSimulationData==1)
                     assert(musoutCount == 1);
                     
                     %% Load the muscle data
-                    [musout,success] = ...
-                        musoutreader(models(indexModel).name,...
-                        musoutFileList{1});              
+                    if(strcmp(models(indexUmat43).name,'umat41')==1)
+                        [musout,success] = ...
+                            readUmat41MusoutData(musoutFileList{1});              
+                    end
+                    if(strcmp(models(indexUmat43).name,'umat43')==1)
+                        [musout,success] = ...
+                            readUmat43MusoutData(musoutFileList{1});              
+                    end
 
                     %Count the number of binout files        
                     binoutCount=0;

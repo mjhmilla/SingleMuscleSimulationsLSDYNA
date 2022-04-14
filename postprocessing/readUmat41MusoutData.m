@@ -1,4 +1,4 @@
-function [musout,success] = musoutreader(modelName,fileName)
+function [musout,success] = readUmat41MusoutData(fileName)
 
 success = 0;
 
@@ -56,7 +56,7 @@ end
 
 fclose(fid);
 
-if(strcmp(modelName,'umat41')==1)
+
     musout.indexTime        = getColumnIndex('time',musout.columnNames);
     musout.indexExcitation  = getColumnIndex('stim_tot',musout.columnNames);
     musout.indexActivation  = getColumnIndex('q',musout.columnNames); %activation
@@ -69,13 +69,6 @@ if(strcmp(modelName,'umat41')==1)
     musout.indexLce         = getColumnIndex('l_ce',musout.columnNames);
     musout.indexLmtDot      = getColumnIndex('dot_l_mtc',musout.columnNames);
     musout.indexLceDot      = getColumnIndex('dot_l_ce',musout.columnNames);    
-end
 
-if(strcmp(modelName,'umat43')==1)
-    musout.indexTime       = getColumnIndex('time',musout.columnNames);
-    musout.indexExcitation = getColumnIndex('e',musout.columnNames);
-    musout.indexActivation = getColumnIndex('a',musout.columnNames); %activation
-    musout.indexFmt        = getColumnIndex('f_mtc',musout.columnNames);
-end
 
 success   = 1;
