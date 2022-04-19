@@ -17,6 +17,7 @@ R   lceOpt     0.015
 R    ltSlk     0.045
 R  penOptD      15.0
 R   fceOpt      30.0
+R   vceMax       4.5
 R    timeE       3.5
 *PARAMETER_EXPRESSION
 $#    name expression
