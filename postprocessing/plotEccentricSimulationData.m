@@ -1,5 +1,5 @@
 function figH = plotEccentricSimulationData(figH,...
-                      lsdynaBinout,lsdynaMuscle,d3hspFileName, ...
+                      lsdynaBinout,lsdynaMuscleUniform,d3hspFileName, ...
                       indexColumn,...
                       subPlotLayout,subPlotRows,subPlotColumns,...                      
                       simulationFile,indexSimulation, totalSimulations,... 
@@ -262,10 +262,9 @@ if(flag_addSimulationData)
         changeInLength=changeInLength.*(m2mm); %m to mm
         dl = round(changeInLength(end,1)-changeInLength(1,1),0);
         
-        indexExcitation = lsdynaMuscle.indexExcitation;
         maxStim=0;
-        if(indexExcitation~=0)
-            maxStim = max(lsdynaMuscle.data(:,indexExcitation));
+        if(isempty(lsdynaMuscleUniform))
+            maxStim = max(lsdynaMuscleUniform.exc);
         end
         
                    

@@ -1,6 +1,6 @@
 function uniformModelData = createUniformMuscleModelData(modelName, lsdynaMuscle,...
     optimalFiberLength, maxActiveIsometricForce, ...
-    tendonSlackLength, pennationAngle, maximumContractionVelocity)
+    tendonSlackLength, pennationAngle)
 %%
 % 
 %
@@ -59,15 +59,17 @@ uniformModelData = struct('lceOpt',optimalFiberLength,...
                           'time',[],...
                           'exc',[],...
                           'act',[],...
+                          'lp',[],'vp',[],...
                           'lceN',[],'ltN',[],'alpha',[],...
                           'lceNDot',[],'ltNDot',[],'alphaDot',[],...
-                          'fceN',[],'fpeN',[],'fmtN',[]);
+                          'fceN',[],'fpeN',[],'fseN',[], 'dseN',[]...
+                          'fmtN',[]);
 
 switch modelName
     case 'umat41'
         indexMuscleTime         = lsdynaMuscle.indexTime;
-        indexMuscleExcitation   = lsdynaMuscle.indexHsvExcitation;
-        indexMuscleActivation   = lsdynaMuscle.indexHsvAct; 
+        indexMuscleExcitation   = lsdynaMuscle.indexExcitation;
+        indexMuscleActivation   = lsdynaMuscle.indexAct; 
         indexMuscleFmt          = lsdynaMuscle.indexFmt;
         indexMuscleFce          = lsdynaMuscle.indexFce;
         indexMuscleFpee         = lsdynaMuscle.indexFpee;
@@ -81,6 +83,10 @@ switch modelName
         uniformModelData.time   = lsdynaMuscle.data(:,indexMuscleTime);
         uniformModelData.exc    = lsdynaMuscle.data(:,indexMuscleExcitation);
         uniformModelData.act    = lsdynaMuscle.data(:,indexMuscleActivation); 
+
+        uniformModelData.lp = lsdynaMuscle.data(:,indexMuscleLmt);
+
+        uniformModelData.vp = lsdynaMuscle.data(:,indexMuscleLmtDot);
 
         uniformModelData.lceN   = lsdynaMuscle.data(:,indexLce)...
                                     ./optimalFiberLength;
@@ -106,6 +112,11 @@ switch modelName
         uniformModelData.fpeN = ...
             lsdynaMuscle.data(:,indexMuscleFpee)./maxActiveIsometricForce;
 
+        uniformModelData.fseN = lsdynaMuscle.data(:,indexMuscleFsee);
+
+        uniformModelData.dseN = lsdynaMuscle.data(:,indexMuscleFsde);
+
+
         uniformModelData.fmtN  = ...
             lsdynaMuscle.data(:,indexMuscleFmt)./maxActiveIsometricForce;
 
@@ -114,16 +125,22 @@ switch modelName
         uniformModelData.exc  = lsdynaMuscle.data(:,lsdynaMuscle.indexExc);
         uniformModelData.act  = lsdynaMuscle.data(:,lsdynaMuscle.indexAct);
         
+        uniformModelData.lp   = lsdynaMuscle.data(:,lsdynaMuscle.indexLp);
+        uniformModelData.vp   = lsdynaMuscle.data(:,lsdynaMuscle.indexVp);
 
 
         uniformModelData.lceN       = lsdynaMuscle.data(:,lsdynaMuscle.indexLceN);
         uniformModelData.ltN        = lsdynaMuscle.data(:,lsdynaMuscle.indexLtN);
         uniformModelData.alpha      = lsdynaMuscle.data(:,lsdynaMuscle.indexAlpha);
+
         uniformModelData.lceNDot    = lsdynaMuscle.data(:,lsdynaMuscle.indexVceNN);
         uniformModelData.ltNDot     = lsdynaMuscle.data(:,lsdynaMuscle.index);
         uniformModelData.alphaDot   = lsdynaMuscle.data(:,lsdynaMuscle.index);
-        uniformModelData.fceN       = lsdynaMuscle.data(:,lsdynaMuscle.index);
-        uniformModelData.fpeN       = lsdynaMuscle.data(:,lsdynaMuscle.index);
+
+        uniformModelData.fceN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFceN);
+        uniformModelData.fpeN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFecmHN);
+        uniformModelData.fseN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFtfcnN);
+        uniformModelData.dseN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFtBetaN);        
         uniformModelData.fmtN       = lsdynaMuscle.data(:,lsdynaMuscle.index);
 
     otherwise
