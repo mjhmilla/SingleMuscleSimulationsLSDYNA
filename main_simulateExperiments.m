@@ -44,10 +44,9 @@ flag_enableImpedanceExperiment          = 0;
 flag_enableForceLengthExperiment        = 1; 
 
 
-%matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
-%matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
+matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
+%matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/ricatti',...
 %                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
-matlabScriptPath = '/home/mmillard/work/code/stuttgart/scholze/scratch/mmillard/SingleMuscleSimulationsLSDYNA';
 
 lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/SMP_R931/lsdyna';
 lsdynaBin_MPP_931 = '/scratch/tmp/mmillard/MPP_R931/mppdyna';
@@ -453,13 +452,14 @@ if(flag_postProcessSimulationData==1)
                     assert(musoutCount == 1);
                     
                     %% Load the muscle data
-                    if(strcmp(models(indexModel).name,'umat41')==1)
-                        [musout,success] = ...
-                            readUmat41MusoutData(musoutFileList{1});              
-                    end
-                    if(strcmp(models(indexModel).name,'umat43')==1)
-                        [musout,success] = ...
-                            readUmat43MusoutData(musoutFileList{1});              
+                    switch strcmp(models(indexModel).name
+                        case 'umat41'
+                            [musout,success] = ...
+                                readUmat41MusoutData(musoutFileList{1});  
+                        case 'umat43'
+                            [musout,success] = ...
+                                readUmat43MusoutData(musoutFileList{1});  
+                        otherwise assert(0)
                     end
 
                     %Count the number of binout files        
