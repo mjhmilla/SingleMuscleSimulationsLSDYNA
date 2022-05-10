@@ -25,3 +25,5 @@ kill_by_pid
 *.pdf
 *.mat
 *.asv
+*.cfile
+*.0000000002

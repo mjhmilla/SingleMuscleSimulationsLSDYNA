@@ -48,6 +48,8 @@ matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
 %matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/scholze',...
 %                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
 lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/SMP_R931/lsdyna';
+lsdynaBin_MPP_931 = '/scratch/tmp/mmillard/MPP_R931/mppdyna';
+%'/scratch/tmp/mmillard/SMP_R931/lsdyna';
 
 addpath(matlabScriptPath);
 cd(matlabScriptPath);
@@ -72,7 +74,7 @@ numberOfSimulations = numberOfSimulationTypes*length(models);
 
 
 % Define which Releases shall be tested
-Releases    =  {'SMP_R931'};
+Releases    =  {'MPP_R931'};
 
 
 % Define if all all datapoints are used or only some of them?
@@ -221,6 +223,8 @@ if(flag_runSimulations==1)
                     
             switch Release
                 case 'SMP_R931'
+                    lsdynaBin = lsdynaBin_SMP_931;
+                case 'MPP_R931'
                     lsdynaBin = lsdynaBin_SMP_931;
                     
                 otherwise
