@@ -26,12 +26,15 @@ simulationInformation(numberOfSimulationTypes) = ...
           'maximumIsometricForce','',...
           'tendonSlackLength','',...
           'parametersInMuscleCard',0,...
+          'pennationAngleDegrees',0,...
+          'maximumContractionVelocity',0,...
           'model',[]);
 idx=0;
 
 %% umat41 
 %% Kleinbach et al.
 
+%umat41 has no pennation model: the pennation angle is zero.
 if(strcmp(modelName,'umat41')==1)
 
     if(flag_enableIsometricExperiment==1)
@@ -125,6 +128,7 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOptIso';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees  = 'alphaOptD';
       simulationInformation(idx).parametersInMuscleCard = 1;
       simulationInformation(idx).model = modelName;
 
@@ -138,6 +142,7 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOptIso';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees  = 'alphaOptD';
       simulationInformation(idx).parametersInMuscleCard = 1;
       simulationInformation(idx).model = modelName;  
 
@@ -151,7 +156,8 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOptIso';
-      simulationInformation(idx).tendonSlackLength      = 'ltSlk';      
+      simulationInformation(idx).tendonSlackLength      = 'ltSlk';    
+      simulationInformation(idx).pennationAngleDegrees  = 'alphaOptD';
       simulationInformation(idx).parametersInMuscleCard = 1;
       simulationInformation(idx).model = modelName;  
     end 
@@ -164,6 +170,7 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOptIso';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees  = 'alphaOptD';
       simulationInformation(idx).parametersInMuscleCard = 1;
       simulationInformation(idx).model = modelName;  
 
@@ -177,6 +184,7 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOptIso';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees  = 'alphaOptD';
       simulationInformation(idx).parametersInMuscleCard = 1;
       simulationInformation(idx).model = modelName;  
 
@@ -193,6 +201,8 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees  = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
       simulationInformation(idx).parametersInMuscleCard = 0;
       simulationInformation(idx).model = modelName;        
     end    
