@@ -1,5 +1,5 @@
-function figH = plotSimulationDataSummary(figH,modelName,lsdynaBinout,lsdynaMuscleUniform, ...
-                      indexColumn,...
+function figH = plotSimulationDataSummary(figH,modelName,lsdynaBinout,...
+                      lsdynaMuscleUniform, indexColumn,...
                       subPlotLayout,subPlotRows,subPlotColumns,...                      
                       simulationFile,indexSimulation, totalSimulations,...  
                       optimalFiberLength, maximumIsometricForce, tendonSlackLength,...
@@ -55,10 +55,7 @@ musoutColor = (1-n).*musoutColorA + (n).*musoutColorB;
 %     
 %end
 %
-
-
-
-assert(indexMuscleTime ~= 0)
+%assert(indexMuscleTime ~= 0)
 
 %% Extract the numeric values from the simulationFile name
 
@@ -127,7 +124,7 @@ box off;
 subplot('Position',reshape(subPlotLayout(2,indexColumn,:),1,4));
 
 plot(lsdynaBinout.elout.beam.time',...
-     lsdynaBinout.elout.beam.axial,...
+     lsdynaBinout.elout.beam.axial ./ maximumIsometricForce,...
      '--','Color',binoutColor,'LineWidth',2);
 hold on;
 
@@ -150,8 +147,8 @@ hold on;
 
 axis tight;
 yl = ylim;
-yminDes = -0.05*maximumIsometricForce;
-ymaxDes = maximumIsometricForce*1.5;
+yminDes = -0.05;%*maximumIsometricForce;
+ymaxDes = 1.5;%maximumIsometricForce*1.5;
 ymin = min(yminDes, min(yl));
 ymax = max(ymaxDes,max(yl));
 ylim([ymin,ymax]);
@@ -197,7 +194,7 @@ subplot('Position',reshape(subPlotLayout(4,indexColumn,:),1,4));
 
 if(isempty(lsdynaMuscleUniform)==0)    
     plot(lsdynaMuscleUniform.time,...
-         lsdynaMuscleUniform.ltN,...
+         lsdynaMuscleUniform.ltN ./ optimalFiberLength,...
          'Color',musoutColor);
     hold on;
 end
@@ -259,7 +256,7 @@ subplot('Position',reshape(subPlotLayout(6,indexColumn,:),1,4));
 if(isempty(lsdynaMuscleUniform)==0)
 
     plot(lsdynaMuscleUniform.time,...
-         lsdynaMuscleUniform.ltNDot,...
+         lsdynaMuscleUniform.ltNDot.*(tendonSlackLength / optimalFiberLength),...
          'Color',musoutColor);
     hold on;
 end
@@ -291,7 +288,7 @@ subplot('Position',reshape(subPlotLayout(7,indexColumn,:),1,4));
 
 if(isempty(lsdynaMuscleUniform)==0)
     plot(lsdynaMuscleUniform.time,...
-         lsdynaMuscleUniform.act.*100,...
+         lsdynaMuscleUniform.act,...
          'Color',musoutColor);
     hold on;
 end
@@ -304,8 +301,8 @@ hold on;
 
 axis tight;
 yl = ylim;
-yminDes = -5;
-ymaxDes = 110;
+yminDes = -0.05;
+ymaxDes = 1.10;
 ymin = min(yminDes, min(yl));
 ymax = max(ymaxDes,max(yl));
 ylim([ymin,ymax]);

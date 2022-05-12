@@ -62,7 +62,7 @@ uniformModelData = struct('lceOpt',optimalFiberLength,...
                           'lp',[],'vp',[],...
                           'lceN',[],'ltN',[],'alpha',[],...
                           'lceNDot',[],'ltNDot',[],'alphaDot',[],...
-                          'fceN',[],'fpeN',[],'fseN',[], 'dseN',[]...
+                          'fceN',[],'fpeN',[],'fseN',[], 'dseN',[],...
                           'fmtN',[]);
 
 switch modelName
@@ -134,14 +134,14 @@ switch modelName
         uniformModelData.alpha      = lsdynaMuscle.data(:,lsdynaMuscle.indexAlpha);
 
         uniformModelData.lceNDot    = lsdynaMuscle.data(:,lsdynaMuscle.indexVceNN);
-        uniformModelData.ltNDot     = lsdynaMuscle.data(:,lsdynaMuscle.index);
-        uniformModelData.alphaDot   = lsdynaMuscle.data(:,lsdynaMuscle.index);
+        uniformModelData.ltNDot     = lsdynaMuscle.data(:,lsdynaMuscle.indexVtN);
+        uniformModelData.alphaDot   = lsdynaMuscle.data(:,lsdynaMuscle.indexAlphaDot);
 
         uniformModelData.fceN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFceN);
         uniformModelData.fpeN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFecmHN);
         uniformModelData.fseN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFtfcnN);
         uniformModelData.dseN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFtBetaN);        
-        uniformModelData.fmtN       = lsdynaMuscle.data(:,lsdynaMuscle.index);
+        uniformModelData.fmtN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFtN);
 
     otherwise
         assert(0,['modelName (',modelName,') is not yet coded'])

@@ -30,7 +30,7 @@ flag_runSimulations                 = 0;
 flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
-flag_generateGenericPlots           = 0;
+flag_generateGenericPlots           = 1;
 flag_generateSpecificPlots          = 1;
 
 
@@ -452,7 +452,7 @@ if(flag_postProcessSimulationData==1)
                     assert(musoutCount == 1);
                     
                     %% Load the muscle data
-                    switch strcmp(models(indexModel).name
+                    switch models(indexModel).name
                         case 'umat41'
                             [musout,success] = ...
                                 readUmat41MusoutData(musoutFileList{1});  
@@ -492,8 +492,9 @@ if(flag_postProcessSimulationData==1)
                       flag_figGenericDirty=1;
                     end
                     
-                    uniformModelData = createUniformMuscleModelData(modelName, musout, ...
-                        lceOpt,fiso,ltslk,alpha);
+                    uniformModelData = createUniformMuscleModelData(...
+                        models(indexModel).name,...
+                        musout, lceOpt,fiso,ltslk,alpha);
 
                     if(flag_generateGenericPlots==1)
                         figGeneric =plotSimulationDataSummary(figGeneric,...
