@@ -15,10 +15,6 @@ figure(figH);
 
 
 %% Get the columns of musout
-indexMuscleTime         = lsdynaMuscle.indexTime;
-indexMuscleExcitation   = lsdynaMuscle.indexExcitation;
-indexMuscleActivation   = lsdynaMuscle.indexActivation; %activation
-
 config=getConfiguration();
 
 assert(length(lsdynaBinout.nodout.time) ...
@@ -26,7 +22,7 @@ assert(length(lsdynaBinout.nodout.time) ...
 
 nominalLength = getParameterValueFromD3HSPFile(d3hspFileName,'PATHLENN'); % by construction
 nominalForce  = lsdynaBinout.elout.beam.axial(end,1);    
-activation    = lsdynaMuscleUniform.act;
+activation    = lsdynaMuscleUniform.act(end,1);
 
 
 

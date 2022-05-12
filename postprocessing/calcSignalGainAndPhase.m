@@ -20,7 +20,7 @@ samplePoints=inputFunctions.samples;
 %outputFolder
 flag_usingOctave=0;
                         
-numberOfSimulations=length(activation)*length(amplitudeMM)*length(bandwidthHz);
+numberOfSimulations=size(activation,2)*length(amplitudeMM)*length(bandwidthHz);
 freqSimData = struct('force',  zeros(samplePoints, numberOfSimulations),...
                      'cxx',   zeros(samplePoints*2-1, numberOfSimulations),...
                      'cxy',   zeros(samplePoints*2-1, numberOfSimulations),...
@@ -33,6 +33,7 @@ freqSimData = struct('force',  zeros(samplePoints, numberOfSimulations),...
                      'gainKD',  zeros(samplePoints*2, numberOfSimulations),...
                      'phaseKD',         zeros(samplePoints*2, numberOfSimulations),...                     
                      'coherence2',    zeros(samplePoints*2, numberOfSimulations),... 
+                     'coherence2Frequency',zeros(samplePoints*2, numberOfSimulations),...
                      'freqHz',        zeros(samplePoints*2, 1),...
                      'freq',          zeros(samplePoints*2, 1),...     
                      'idxFreqRange',  zeros(2, numberOfSimulations),...                
@@ -90,8 +91,8 @@ forceNorm = 1;
 %                    simSeriesFiles{idxModel}(1,(z+length(tag)):end)];
 
 
-  for idxNormFiberLength = 1:1:length(nominalLength)
-    for idxActivation = 1:1:length(activation)      
+  for idxNormFiberLength = 1:1:size(nominalLength,2)
+    for idxActivation = 1:1:size(activation,2)      
       for i=1:1:length(amplitudeMM)        
         for j=1:1:length(bandwidthHz)
 
@@ -163,11 +164,28 @@ forceNorm = 1;
           %freqSimData.phase(:,idx)  =...
           %  -angle(freqSimData.fxy(:,idx)./freqSimData.fxx(:,idx));
 
-          axy = abs(  freqSimData.fxy(:,idx));
-          freqSimData.coherenceSq(:,idx) = ...
-              (axy.*axy) ...
-              ./ abs( (freqSimData.fxx(:,idx).*freqSimData.fyy(:,idx)) );
+        [Gxy,Fxy] = cpsd(x,y,[],[],[],freqMax,'onesided');
+        [Gxx,Fxx] = cpsd(x,x,[],[],[],freqMax,'onesided');
+        [Gyy,Fyy] = cpsd(y,y,[],[],[],freqMax,'onesided');
+        
+        assert(length(Fxy)==length(Fxx) && length(Fxy) == length(Fyy));
 
+        npts =size( freqSimData.coherence2,1);
+        c01 = [1:1:npts]./npts;
+
+        GxySampled = interp1(Fxy,Gxy,(c01.*(max(Fxy)-min(Fxy)) + min(Fxy)));
+        GxxSampled = interp1(Fxx,Gxx,(c01.*(max(Fxx)-min(Fxx)) + min(Fxx)));
+        GyySampled = interp1(Fyy,Gyy,(c01.*(max(Fyy)-min(Fyy)) + min(Fyy)));
+        
+        
+        FxySampled = interp1(Fxy,Fxy,(c01.*(max(Fxy)-min(Fxy)) + min(Fxy)));
+        %FxxSampled = interp1(Fxx,Fxx,(c01.*(max(Fxx)-min(Fxx)) + min(Fxx)));
+        %FyySampled = interp1(Fyy,Fyy,(c01.*(max(Fyy)-min(Fyy)) + min(Fyy)));
+        
+        freqSimData.coherence2(:,idx) = ( abs(GxySampled).*abs(GxySampled) ) ./ (GxxSampled.*GyySampled) ;
+        freqSimData.coherence2Frequency(:,idx) = FxySampled;
+          
+          
           %Get a decent starting solution for the optimization routine
 
           k0 = mean(freqSimData.gain(indexCorrFreqRange,idx));

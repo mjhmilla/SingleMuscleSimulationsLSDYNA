@@ -69,7 +69,7 @@ switch modelName
     case 'umat41'
         indexMuscleTime         = lsdynaMuscle.indexTime;
         indexMuscleExcitation   = lsdynaMuscle.indexExcitation;
-        indexMuscleActivation   = lsdynaMuscle.indexAct; 
+        indexMuscleActivation   = lsdynaMuscle.indexActivation; 
         indexMuscleFmt          = lsdynaMuscle.indexFmt;
         indexMuscleFce          = lsdynaMuscle.indexFce;
         indexMuscleFpee         = lsdynaMuscle.indexFpee;
@@ -88,7 +88,7 @@ switch modelName
 
         uniformModelData.vp = lsdynaMuscle.data(:,indexMuscleLmtDot);
 
-        uniformModelData.lceN   = lsdynaMuscle.data(:,indexLce)...
+        uniformModelData.lceN   = lsdynaMuscle.data(:,indexMuscleLce)...
                                     ./optimalFiberLength;
 
         uniformModelData.ltN    = (lsdynaMuscle.data(:,indexMuscleLmt) ...

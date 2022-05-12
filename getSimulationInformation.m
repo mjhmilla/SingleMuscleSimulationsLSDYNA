@@ -106,6 +106,7 @@ if(strcmp(modelName,'umat41')==1)
       simulationInformation(idx).optimalFiberLength     = 'lopt';
       simulationInformation(idx).maximumIsometricForce  = 'fiso';
       simulationInformation(idx).tendonSlackLength      = 'ltslk';
+      simulationInformation(idx).pennationAngleDegrees  = 'alphaDeg';
       simulationInformation(idx).parametersInMuscleCard = 0;
       simulationInformation(idx).model = modelName;  
 

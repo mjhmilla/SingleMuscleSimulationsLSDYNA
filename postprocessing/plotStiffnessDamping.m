@@ -157,9 +157,9 @@ if(flag_addReferenceData==1)
 end
 
 if(flag_addSimulationData==1)
+  idxSim=1;
     
-  assert(length(frequencyAnalysisSimulationData.vafTime)==1);    
-  vafTime           = frequencyAnalysisSimulationData.vafTime(1,1);
+  vafTime           = frequencyAnalysisSimulationData.vafTime(1,idxSim);
   vafPercentLabel   = [sprintf('%d',(round(vafTime*100))),'\%'];
     
   if(flag_atTargetNominalForce==1)
@@ -171,7 +171,7 @@ if(flag_addSimulationData==1)
   %%
   subplot('Position', reshape(subPlotLayout(idxStiffness,indexColumn,:),1,4));       
 
-    idxSim=1;
+
     plot(frequencyAnalysisSimulationData.nominalForce(1,idxSim),...
          frequencyAnalysisSimulationData.stiffness(1,idxSim)/1000,...
          'o', ...

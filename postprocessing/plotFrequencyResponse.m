@@ -250,8 +250,12 @@ if(flag_addSimulationData==1)
     %% Coherence
   subplot('Position', reshape(subPlotLayout(idxCoherence,indexColumn,:),1,4));       
   
-    plot( frequencyAnalysisSimulationData.freqHz(1:idxMax,1),...
-          frequencyAnalysisSimulationData.coherenceSq(1:idxMax,1),...
+ 
+    idxMinCoherence = find(frequencyAnalysisSimulationData.coherenceSq2Frequency >= 4 ,1, 'first' );
+    idxMaxCoherence = find(frequencyAnalysisSimulationData.coherenceSq2Frequency <= simConfig.bandwidthHz ,1, 'last' );
+    
+    plot( frequencyAnalysisSimulationData.coherenceSq2Frequency(1:idxMaxCoherence,1),...
+          frequencyAnalysisSimulationData.coherenceSq2(1:idxMaxCoherence,1),...
           '-', 'Color', simulationModelColor);
     hold on;
 

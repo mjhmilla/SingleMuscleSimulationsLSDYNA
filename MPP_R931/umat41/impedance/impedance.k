@@ -10,6 +10,7 @@ R dtsignal 0.003
 R     lopt 0.0428571
 R     fiso 21.506061
 R alphaRad 0.1221730
+R alphaDeg 7.0  
 R    ltslk 0.0304511
 R       et  0.045833
 R   points    2048.0
