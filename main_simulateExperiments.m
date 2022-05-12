@@ -8,6 +8,9 @@ close all;
 % User-defined script variables
 %%
 
+% Define which Releases shall be tested
+Releases    =  {'MPP_R931'};
+
 models(1) = struct('id',0,'name','');
 
 %indexUmat41             = 1;
@@ -74,8 +77,7 @@ numberOfSimulations = numberOfSimulationTypes*length(models);
 
 
 
-% Define which Releases shall be tested
-Releases    =  {'MPP_R931'};
+
 
 
 % Define if all all datapoints are used or only some of them?
