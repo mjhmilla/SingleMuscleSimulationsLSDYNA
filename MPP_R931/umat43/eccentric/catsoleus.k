@@ -8,7 +8,7 @@ $#   ivect     ifail    itherm    ihyper      ieos      lmca    unused    unused
 $#  stimId    tauAct  tauDeact fceOptIso    lceOpt alphaOptD     ltSlk     etIso
          3     0.010     0.040   &fceOpt   &lceOpt  &penOptD    &ltSlk     0.049
 $#     dtN  scalePEE lambdaECM  beta1AHN  beta1PHN kxOptIsoN dxOptIsoN    vceMax
-    0.0556  0.449333      0.56     100.0      0.25      47.8     0.354   &vceMax
+    0.0556  1.000000      0.56     100.0      0.25      47.8     0.354   &vceMax
 $# taudvst   dvsBeta   aniType    output     dtout
      0.001       1.0         1         2     0.005
 *END
