@@ -11,13 +11,13 @@ RstimTimeS      0.95
 R   lceOpt 0.0428571
 R   fceOpt 24.364617
 R   penOpt 0.1221730
+R  penOptD 7.0000000 
 R    ltSlk 0.0304511
 R       et 0.045833
 R   vceMax 4.5
 $
 *PARAMETER_EXPRESSION
 $#    name expression
-R  penOptD &penOpt*(180.0/3.141592653589793)
 R rampLenS &rampLenE-&rampLen
 R lceOptAT &lceOpt*cos(&penOpt)
 R     Fmax &fceOpt*cos(&penOpt)

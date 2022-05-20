@@ -169,10 +169,11 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
       simulationInformation(idx).musclePropertyFile     = 'eccentric.k';
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
-      simulationInformation(idx).maximumIsometricForce  = 'fceOptIso';
+      simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
-      simulationInformation(idx).pennationAngleDegrees  = 'alphaOptD';
-      simulationInformation(idx).parametersInMuscleCard = 1;
+      simulationInformation(idx).pennationAngleDegrees  = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard = 0;
       simulationInformation(idx).model = modelName;  
 
     end 

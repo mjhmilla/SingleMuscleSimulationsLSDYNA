@@ -2,7 +2,8 @@ SMP_R931/umat41/impedance/*
 SMP_R931/umat43/force_length/*
 !*.k
 part_des
-binout
+mes*
+binout*
 d3*
 elout
 glstat
@@ -10,6 +11,7 @@ lspost
 matsum
 messag*
 musout.*
+*.xy
 nodout
 rcforc
 spcforc

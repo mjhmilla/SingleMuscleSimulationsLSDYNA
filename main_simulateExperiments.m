@@ -27,14 +27,14 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 0;
+flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_generateGenericPlots           = 0;
-flag_generateSpecificPlots          = 0;
+flag_generateSpecificPlots          = 1;
 
 
 flag_enableIsometricExperiment          = 0;
@@ -232,7 +232,7 @@ if(flag_runSimulations==1)
                 case 'SMP_R931'
                     lsdynaBin = lsdynaBin_SMP_931;
                 case 'MPP_R931'
-                    lsdynaBin = lsdynaBin_SMP_931;
+                    lsdynaBin = lsdynaBin_MPP_931;
                     
                 otherwise
                     error('Release not specified yet')
@@ -255,8 +255,9 @@ if(flag_runSimulations==1)
                     cd(simulationDirectories(indexSimulationTrial).name);
                     
                     %% generate output signals                        
-                    system(['rm -f *.csv d3* matsum musout* messag* glstat',...
-                             ' nodout spcforc lspost*']);
+                    %system(['rm -f binout* *.csv d3* matsum musout* messag* glstat',...
+                    %         ' nodout spcforc lspost*']);
+                    system('find . -type f -not \( -name ''*k'' -or -name ''*m'' \) -delete');
                     system([lsdynaBin,' i=',...
                             simulationDirectories(indexSimulationTrial).name,...
                             '.k']);                    
@@ -481,7 +482,7 @@ if(flag_postProcessSimulationData==1)
                     assert(binoutCount == 1);
 
                     %% Load the binout file
-                    [binout,status] = binoutreader('dynaOutputFile','binout');
+                    [binout,status] = binoutreader('dynaOutputFile',binoutFileList{1},'ignoreUnknownDataError',true);
 
 
                     %% Load the d3hsp file which contains parameters
