@@ -14,6 +14,7 @@ R   penOpt 0.1221730
 R    ltSlk 0.0304511
 R       et 0.045833
 R   vceMax 4.5
+RlceNScale 0.960745
 $
 *PARAMETER_EXPRESSION
 $#    name expression
@@ -26,7 +27,7 @@ RrampTimeD (&rampLen)/&rampVel
 RrampTimeE &rampTimeS+&rampTimeD
 RstimTimeE &rampTimeE+5.0
 R       kt 30.0*&fceOpt/&ltSlk
-R pathLenO &lceOpt*cos(&penOpt)+(&Fmax)/&kt+&ltSlk
+R pathLenO &lceOpt*&lceNScale*cos(&penOpt)+&ltSlk
 R pathLenS &pathLenO+&rampLenS
 R pathLenE &pathLenO+&rampLenE  
 R    timeE &stimTimeE+5.0
