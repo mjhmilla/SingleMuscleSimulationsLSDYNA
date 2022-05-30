@@ -5,14 +5,16 @@ function [simulationType, simulationInformation]=...
             flag_enableQuickReleaseExperiment,...
             flag_enableEccentricExperiment,...
             flag_enableImpedanceExperiment,...
-            flag_enableForceLengthExperiment)
+            flag_enableForceLengthExperiment,...
+            flag_enableSinusoidExperiment)
 
 numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableConcentricExperiment ... 
                      +flag_enableQuickReleaseExperiment...
                      +flag_enableEccentricExperiment...
                      +flag_enableImpedanceExperiment...
-                     +flag_enableForceLengthExperiment;
+                     +flag_enableForceLengthExperiment...
+                     +flag_enableSinusoidExperiment;
 
 if(numberOfSimulationTypes==0)
     numberOfSimulationTypes=1;
@@ -112,7 +114,9 @@ if(strcmp(modelName,'umat41')==1)
 
     end
 
-    
+    if(flag_enableSinusoidExperiment==1)
+        assert(0);
+    end
 end
   
 
@@ -208,6 +212,22 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).parametersInMuscleCard = 0;
       simulationInformation(idx).model = modelName;        
     end    
+    
+    if(flag_enableSinusoidExperiment==1)
+      idx=idx+1;
+      simulationType(idx).type = 'sinusoid';
+      simulationInformation(idx).type               = simulationType(idx).type;
+
+      simulationInformation(idx).type                   = 'sinusoid';
+      simulationInformation(idx).musclePropertyFile     = 'sinusoid.k';
+      simulationInformation(idx).optimalFiberLength     = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength      = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees  = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard = 0;
+      simulationInformation(idx).model = modelName; 
+    end
 end
   
 

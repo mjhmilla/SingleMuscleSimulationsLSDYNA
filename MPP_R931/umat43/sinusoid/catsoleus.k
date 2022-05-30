@@ -10,5 +10,5 @@ $#  stimId    tauAct  tauDeact fceOptIso    lceOpt alphaOptD     ltSlk     etIso
 $#     dtN  scalePEE lambdaECM  beta1AHN  beta1PHN kxOptIsoN dxOptIsoN    vceMax
     0.0556       1.0      0.56      20.0      0.25      47.8     0.354   &vceMax
 $# taudvst   dvsBeta   aniType    output     dtout
-     0.001       1.0         1         2     0.005
+     0.001       1.0         1         2     0.001
 *END

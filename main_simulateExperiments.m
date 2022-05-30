@@ -27,10 +27,10 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 0;
+flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_generateGenericPlots           = 0;
@@ -40,8 +40,9 @@ flag_generateSpecificPlots          = 1;
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
-flag_enableEccentricExperiment          = 1;
+flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
+flag_enableSinusoidExperiment           = 1;
 
 %Lengthens muscle to sample force-length curves
 flag_enableForceLengthExperiment        = 0; 
@@ -67,7 +68,8 @@ numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableQuickReleaseExperiment...
                      +flag_enableEccentricExperiment...
                      +flag_enableImpedanceExperiment...
-                     +flag_enableForceLengthExperiment;
+                     +flag_enableForceLengthExperiment...
+                     +flag_enableSinusoidExperiment;
 
 if(numberOfSimulationTypes==0)
     numberOfSimulationTypes=1;
@@ -152,7 +154,8 @@ if(flag_preProcessSimulationData==1)
                         flag_enableQuickReleaseExperiment,...
                         flag_enableEccentricExperiment,...
                         flag_enableImpedanceExperiment,...
-                        flag_enableForceLengthExperiment);
+                        flag_enableForceLengthExperiment,...
+                        flag_enableSinusoidExperiment);
 
             for indexSimulationType = 1:length(simulationType)
 
@@ -226,7 +229,8 @@ if(flag_runSimulations==1)
                         flag_enableQuickReleaseExperiment,...
                         flag_enableEccentricExperiment,...
                         flag_enableImpedanceExperiment,...
-                        flag_enableForceLengthExperiment);
+                        flag_enableForceLengthExperiment,...
+                        flag_enableSinusoidExperiment);
                     
             switch Release
                 case 'SMP_R931'
@@ -294,7 +298,8 @@ if(flag_postProcessSimulationData==1)
                         flag_enableQuickReleaseExperiment,...
                         flag_enableEccentricExperiment,...
                         flag_enableImpedanceExperiment,...
-                        flag_enableForceLengthExperiment);            
+                        flag_enableForceLengthExperiment,...
+                        flag_enableSinusoidExperiment);            
               
             for indexSimulationType = 1:length(simulationType)
                 
@@ -362,11 +367,13 @@ if(flag_postProcessSimulationData==1)
                       numberOfHorizontalPlotColumnsSpecific = 1;
                       numberOfVerticalPlotRowsSpecific      = 6; 
                       sampleTimeK = getParameterFieldValue('impedance.k','dtsignal');
-                      assert(abs(sampleTimeK-sampleTime)<sqrt(eps));
-    
+                      assert(abs(sampleTimeK-sampleTime)<sqrt(eps));    
                     case 'force_length'
                       numberOfHorizontalPlotColumnsSpecific = 3;
                       numberOfVerticalPlotRowsSpecific      = 4;
+                    case 'sinusoid'
+                      numberOfHorizontalPlotColumnsSpecific = 3;
+                      numberOfVerticalPlotRowsSpecific      = 5;
                       
                 end
 
@@ -620,8 +627,7 @@ if(flag_postProcessSimulationData==1)
                                         impedancePlotCounter);
                                  impedancePlotCounter=impedancePlotCounterUpd;
                             case 'force_length'
-                                %Only umat43 produces the curve-specific
-                                %files right now.
+                                %Only umat43 produces the curve-specific files right now.
                                 if( strcmp( models(indexModel).name, 'umat43' ) )
                                     %Get the curve files
                                     curveSubstr = {'fal','fecmH','f1H','f2H'};
@@ -667,6 +673,54 @@ if(flag_postProcessSimulationData==1)
                                             flag_addReferenceData=0;
                                     end
 
+                                end
+                            case 'sinusoid'
+                                %Only umat43 produces the curve-specific files right now.                                
+                                if( strcmp( models(indexModel).name, 'umat43' ) )
+                                   %Get the curve files
+                                    curveSubstr = {'fal','fecmH','f1H','f2H','fv'};
+                                    curveCount=0;
+                                    curveFileList ={''};
+                                    for indexFile=1:1:length(fileList)
+                                      for indexCurveType=1:1:length(curveSubstr)
+                                          if(contains(fileList(indexFile).name,curveSubstr{indexCurveType}))
+                                            curveCount=curveCount+1;
+                                            if curveCount == 1
+                                              curveFileList = {fileList(indexFile).name};
+                                            else
+                                              curveFileList = [curveFileList;fileList(indexFile).name];
+                                            end                                            
+                                          end
+                                      end
+                                    end
+                                    assert(curveCount == 5); 
+                                    
+                                    flag_addSimulationData=1;
+                                    if(flag_figSpecificDirty==0)                        
+                                      flag_figSpecificDirty=1;
+                                      flag_addReferenceData=1;
+                                    else
+                                      flag_addReferenceData=0;
+                                    end
+                                    indexColumn=1;                                    
+                                    
+                                    for indexCurve=1:1:length(curveFileList)
+                                        curveData=curvereader(curveFileList{indexCurve});
+                                        figSpecific =...
+                                            plotSinusoidSimulationData(...
+                                                figSpecific,curveData,...
+                                                indexColumn,subPlotPanelSpecific,...
+                                                numberOfVerticalPlotRowsSpecific,...
+                                                numberOfHorizontalPlotColumnsSpecific,...                              
+                                                simulationDirectories(indexSimulationTrial).name,...
+                                                indexSimulationTrial, length(simulationDirectories),...
+                                                referenceDataFolder,...
+                                                flag_addReferenceData,flag_addSimulationData,...
+                                                simulationColorA,simulationColorB,...
+                                                dataColorA,dataColorB);
+                                            flag_addReferenceData=0;
+                                    end
+                                    
                                 end
                                 
                         end
