@@ -42,7 +42,8 @@ musout  = struct('data',[],'columnNames','','PartID','',...
                     'indexFtBetaN'      ,0,...  
                     'indexDvsHNHill'    ,0,...  
                     'indexDvsHNDamping' ,0,... 
-                    'indexDvsHNTracking',0);
+                    'indexDvsHNTracking',0,...
+                    'indexDTVmWDt',0);
 
 
 
@@ -131,5 +132,6 @@ musout.indexDvsHNHill     = getColumnIndex('dvsHNHill',  musout.columnNames);
 musout.indexDvsHNDamping  = getColumnIndex('dvsHNDamp',  musout.columnNames); 
 musout.indexDvsHNTracking = getColumnIndex('dvsHNTrak',  musout.columnNames);
 
+musout.indexDTVmWDt = getColumnIndex('D_TpVmW_Dt',musout.columnNames);
 
 success   = 1;

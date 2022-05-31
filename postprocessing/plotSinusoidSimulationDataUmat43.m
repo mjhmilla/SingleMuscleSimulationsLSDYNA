@@ -1,14 +1,23 @@
-function figH = plotSinusoidSimulationData(figH, curveData, indexColumn,...
+function figH = plotSinusoidSimulationDataUmat43(figH, musout, curveData, indexColumn,...
                       subPlotLayout,subPlotRows,subPlotColumns,...                      
                       simulationFile,indexSimulation, totalSimulations,... 
                       referenceDataFolder,...                      
                       flag_addReferenceData,...
-                      flag_addSimulationData,...
-                      simulationColorA, simulationColorB, ...
-                      referenceColorA, referenceColorB)
+                      flag_addSimulationCurveData,...
+                      flag_addSimulationOutputData)
 
 figure(figH);
 
+
+simulationColor = [0,0,1];%simulationColorA;
+referenceColor=[1,1,1].*0.75;%referenceColorA;
+lineType = '-';
+
+if( max(musout.data(:,musout.indexAct)) > 0.5 )
+    simulationColor = [1,0,0];
+    referenceColor=[1,1,1].*0.75;
+    lineType = '--';    
+end
 
 
 % Add the reference data
@@ -102,18 +111,18 @@ if(flag_addReferenceData==1)
             plot(   data(:,1),...
                     data(:,2),...
                     'LineWidth',3,...
-                    'Color',referenceColorB);
+                    'Color',referenceColor);
             hold on;
             
             dataMinX = min(data(:,1));
-            if(flag_addSimulationData==1)
+            if(flag_addSimulationCurveData==1)
                dataMinX = min(curveData.data(:,curveData.indexArg)); 
             end
             
             plot(   [dataMinX,dataMinX+0.15],...
                     [1,1],...
                     'LineWidth',3,...
-                    'Color',referenceColorB);
+                    'Color',referenceColor);
             hold on;
             text(dataMinX+0.15,1,'Matlab');
             hold on;
@@ -126,7 +135,7 @@ if(flag_addReferenceData==1)
             plot(   data(:,1),...
                     data(:,3),...
                     'LineWidth',3,...
-                    'Color',referenceColorB);
+                    'Color',referenceColor);
             hold on;
             box off;        
             xlabel(xlabelText);
@@ -137,7 +146,7 @@ if(flag_addReferenceData==1)
             plot(   data(:,1),...
                     data(:,4),...
                     'LineWidth',3,...
-                    'Color',referenceColorB);
+                    'Color',referenceColor);
             hold on;
             box off;        
             xlabel(xlabelText);
@@ -151,9 +160,9 @@ if(flag_addReferenceData==1)
 end
 
 % Add the simulation data
-if(flag_addSimulationData)
-    n = (indexSimulation-1)/(totalSimulations-1);
-    simulationColor = (1-n).*simulationColorA + (n).*simulationColorB;
+if(flag_addSimulationCurveData)
+%    n = (indexSimulation-1)/(totalSimulations-1);
+%    simulationColor = (1-n).*simulationColorA + (n).*simulationColorB;
 
     subplotA = [];
     subplotB = [];
@@ -190,12 +199,12 @@ if(flag_addSimulationData)
     subplot('Position', subplotA );
     plot(   curveData.data(:,curveData.indexArg),...
             curveData.data(:,curveData.indexValue),...
-            'Color',simulationColor);
+            lineType,'Color',simulationColor);
     hold on;  
         
     plot(   [minCurveDataX,minCurveDataX+0.15],...
             [1,1].*(1-0.05*indexSimulation),...
-            'Color',simulationColor );
+            lineType,'Color',simulationColor );
     hold on;
     text( minCurveDataX+0.15, 1-0.05*indexSimulation,'Fortran');
     hold on;
@@ -203,17 +212,125 @@ if(flag_addSimulationData)
     subplot('Position', subplotB );
     plot(   curveData.data(:,curveData.indexArg),...
             curveData.data(:,curveData.index1stDer),...
-            'Color',simulationColor)
+            lineType,'Color',simulationColor)
     hold on;
     box off;        
 
     subplot('Position', subplotC );
     plot(   curveData.data(:,curveData.indexArg),...
             curveData.data(:,curveData.index2ndDer),...
-            'Color',simulationColor)
+            lineType,'Color',simulationColor)
     hold on;
     box off;  
  
+end
+
+if(flag_addSimulationOutputData==1)
+    subplotA = reshape( subPlotLayout(6,1,:),1,4 );
+    subplotB = reshape( subPlotLayout(6,2,:),1,4 );
+    subplotC = reshape( subPlotLayout(6,3,:),1,4 );
+    
+    subplot('Position',subplotA);
+    plot( musout.data(:,musout.indexTime),...
+          musout.data(:,musout.indexDTVmWDt),...
+          lineType,'Color', simulationColor)
+    hold on;
+    box off;
+    xlabel('Time (s)');
+    ylabel('Power (J/s)');
+    title('d/dt T+V-W');
+       
+    subplot('Position',subplotB);
+    plot( musout.data(:,musout.indexTime),...
+          musout.data(:,musout.indexFceN),...
+          lineType,'Color', simulationColor);
+    hold on;
+    box off;
+    xlabel('Time (s)');
+    ylabel('Norm. Force $$f/f^{M}_{\circ}$$');
+    title('CE Force');
+    
+    subplot('Position',subplotC);    
+    plot( musout.data(:,musout.indexTime),...
+          musout.data(:,musout.indexFecmHN),...
+          lineType,'Color',simulationColor);
+    hold on;
+    box off;
+    xlabel('Time (s)');
+    ylabel('Norm. Force $$f/f^{M}_{\circ}$$');
+    title('ECM Force');    
+          
+    
+    subplotA = reshape( subPlotLayout(7,1,:),1,4 );
+    subplotB = reshape( subPlotLayout(7,2,:),1,4 );
+    subplotC = reshape( subPlotLayout(7,3,:),1,4 );    
+    
+
+    subplot('Position',subplotA);
+    plot( musout.data(:,musout.indexTime),...
+          musout.data(:,musout.indexF1HN),...
+          lineType,'Color', simulationColor);
+    hold on;
+    box off;      
+    xlabel('Time (s)');
+    ylabel('Norm. Force $$f/f^{M}_{\circ}$$');
+    title('Distal Titin (f1) Force');
+    
+    subplot('Position',subplotB);
+    plot( musout.data(:,musout.indexTime),...
+          musout.data(:,musout.indexF2HN),...
+          lineType,'Color', simulationColor);
+    hold on;
+    box off;      
+    xlabel('Time (s)');
+    ylabel('Norm. Force $$f/f^{M}_{\circ}$$');
+    title('Distal Titin (f2) Force');
+      
+    subplot('Position',subplotC);
+    plot( musout.data(:,musout.indexTime),...
+          musout.data(:,musout.indexFxHN),...
+          lineType,'Color', simulationColor);
+    hold on;      
+    box off;
+    xlabel('Time (s)');
+    ylabel('Norm. Force $$f/f^{M}_{\circ}$$');
+    title('XE Force');    
+    
+    
+    subplotA = reshape( subPlotLayout(8,1,:),1,4 );
+    subplotB = reshape( subPlotLayout(8,2,:),1,4 );
+    subplotC = reshape( subPlotLayout(8,3,:),1,4 );    
+    
+    subplot('Position',subplotA);
+    plot( musout.data(:,musout.indexTime),...
+          musout.data(:,musout.indexLp),...
+          lineType,'Color', simulationColor)
+    hold on;
+    box off;
+    xlabel('Time (s)');
+    ylabel('Length');
+    title('Path Length');    
+
+    subplot('Position',subplotB);
+    plot( musout.data(:,musout.indexTime),...
+          musout.data(:,musout.indexLceN),...
+          lineType,'Color', simulationColor)
+    hold on;
+    box off;
+    xlabel('Time (s)');
+    ylabel('Norm. Length $$\ell^{M}/\ell^{M}_{\circ}$$');
+    title('CE Length');     
+    
+    subplot('Position',subplotC);
+    plot( musout.data(:,musout.indexTime),...
+          musout.data(:,musout.indexLxHN),...
+          lineType,'Color', simulationColor)
+    hold on;
+    box off;
+    xlabel('Time (s)');
+    ylabel('Norm. Length $$\ell^{X}/\ell^{M}_{\circ}$$');
+    title('Cross-bridge Length $$\ell^{X}$$');    
+    
 end
 
 
