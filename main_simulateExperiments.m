@@ -13,13 +13,13 @@ Releases    =  {'MPP_R931'};
 
 models(1) = struct('id',0,'name','');
 
-%indexUmat41             = 1;
-%models(indexUmat41).id  = 1;
-%models(indexUmat41).name='umat41';
+indexUmat41             = 1;
+models(indexUmat41).id  = 1;
+models(indexUmat41).name='umat41';
 
-indexUmat43             = 1;
-models(indexUmat43).id  = 1;
-models(indexUmat43).name='umat43';
+%indexUmat43             = 1;
+%models(indexUmat43).id  = 1;
+%models(indexUmat43).name='umat43';
 
 
 flag_preProcessSimulationData       = 0; 
@@ -33,8 +33,8 @@ flag_runSimulations                 = 0;
 flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
-flag_generateGenericPlots           = 0;
-flag_generateSpecificPlots          = 1;
+flag_generateGenericPlots           = 1;
+flag_generateSpecificPlots          = 0;
 
 
 flag_enableIsometricExperiment          = 0;
@@ -42,7 +42,8 @@ flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
 flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
-flag_enableSinusoidExperiment           = 1;
+flag_enableSinusoidExperiment           = 0;
+flag_enableReflexExperiment             = 1;
 
 %Lengthens muscle to sample force-length curves
 flag_enableForceLengthExperiment        = 0; 
@@ -69,7 +70,8 @@ numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableEccentricExperiment...
                      +flag_enableImpedanceExperiment...
                      +flag_enableForceLengthExperiment...
-                     +flag_enableSinusoidExperiment;
+                     +flag_enableSinusoidExperiment...
+                     +flag_enableReflexExperiment;
 
 if(numberOfSimulationTypes==0)
     numberOfSimulationTypes=1;
@@ -155,7 +157,8 @@ if(flag_preProcessSimulationData==1)
                         flag_enableEccentricExperiment,...
                         flag_enableImpedanceExperiment,...
                         flag_enableForceLengthExperiment,...
-                        flag_enableSinusoidExperiment);
+                        flag_enableSinusoidExperiment,...
+                        flag_enableReflexExperiment);
 
             for indexSimulationType = 1:length(simulationType)
 
@@ -230,7 +233,8 @@ if(flag_runSimulations==1)
                         flag_enableEccentricExperiment,...
                         flag_enableImpedanceExperiment,...
                         flag_enableForceLengthExperiment,...
-                        flag_enableSinusoidExperiment);
+                        flag_enableSinusoidExperiment,...
+                        flag_enableReflexExperiment);
                     
             switch Release
                 case 'SMP_R931'
@@ -299,7 +303,8 @@ if(flag_postProcessSimulationData==1)
                         flag_enableEccentricExperiment,...
                         flag_enableImpedanceExperiment,...
                         flag_enableForceLengthExperiment,...
-                        flag_enableSinusoidExperiment);            
+                        flag_enableSinusoidExperiment,...
+                        flag_enableReflexExperiment);            
               
             for indexSimulationType = 1:length(simulationType)
                 

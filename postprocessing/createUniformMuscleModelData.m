@@ -112,9 +112,9 @@ switch modelName
         uniformModelData.fpeN = ...
             lsdynaMuscle.data(:,indexMuscleFpee)./maxActiveIsometricForce;
 
-        uniformModelData.fseN = lsdynaMuscle.data(:,indexMuscleFsee);
+        uniformModelData.fseN = lsdynaMuscle.data(:,indexMuscleFsee)./maxActiveIsometricForce;
 
-        uniformModelData.dseN = lsdynaMuscle.data(:,indexMuscleFsde);
+        uniformModelData.dseN = lsdynaMuscle.data(:,indexMuscleFsde)./maxActiveIsometricForce;
 
 
         uniformModelData.fmtN  = ...

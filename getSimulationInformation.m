@@ -6,7 +6,8 @@ function [simulationType, simulationInformation]=...
             flag_enableEccentricExperiment,...
             flag_enableImpedanceExperiment,...
             flag_enableForceLengthExperiment,...
-            flag_enableSinusoidExperiment)
+            flag_enableSinusoidExperiment,...
+            flag_enableReflexExperiment)
 
 numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableConcentricExperiment ... 
@@ -93,6 +94,7 @@ if(strcmp(modelName,'umat41')==1)
       simulationInformation(idx).optimalFiberLength     = 'lopt';
       simulationInformation(idx).maximumIsometricForce  = 'fiso';
       simulationInformation(idx).tendonSlackLength      = 'ltslk';
+      simulationInformation(idx).pennationAngleDegrees  = 'alphaDeg';
       simulationInformation(idx).parametersInMuscleCard = 0;
       simulationInformation(idx).model = modelName;  
 
@@ -116,6 +118,22 @@ if(strcmp(modelName,'umat41')==1)
 
     if(flag_enableSinusoidExperiment==1)
         assert(0);
+    end
+    
+    if(flag_enableReflexExperiment==1)
+      idx=idx+1;
+      simulationType(idx).type = 'reflex';
+      simulationInformation(idx).type               = simulationType(idx).type;
+
+      simulationInformation(idx).type                   = 'reflex';
+      simulationInformation(idx).musclePropertyFile     = 'reflex.k';
+      simulationInformation(idx).optimalFiberLength     = 'lopt';
+      simulationInformation(idx).maximumIsometricForce  = 'fiso';
+      simulationInformation(idx).tendonSlackLength      = 'ltslk';
+      simulationInformation(idx).pennationAngleDegrees  = 'alphaDeg';
+      simulationInformation(idx).parametersInMuscleCard = 0;
+      simulationInformation(idx).model = modelName;  
+
     end
 end
   
