@@ -90,8 +90,6 @@ $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
 $#                a1                  o1  
                  0.0                 0.0
           &stimTimeS                 0.0
-          &stimTimeS                 1.0
-          &stimTimeE                 1.0
           &stimTimeE                 0.0
               &timeE                 0.0
 *ELEMENT_BEAM
@@ -118,8 +116,8 @@ $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
             0.000000            0.000300
-          &rampTimeS            0.000005
-          &rampTimeE            0.000005
+          &rampTimeS            0.000050
+          &rampTimeE            0.000050
               &timeE            0.000300
 $
 *END

@@ -27,7 +27,7 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 0;
+flag_runSimulations                 = 1;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
@@ -344,7 +344,7 @@ if(flag_postProcessSimulationData==1)
                 referenceDataFolder = [referenceDataPath,simulationTypeStr];
 
                 numberOfHorizontalPlotColumnsGeneric = length(simulationDirectories)-3+1;
-                numberOfVerticalPlotRowsGeneric      = 13;
+                numberOfVerticalPlotRowsGeneric      = 14;
                                               
                 [subPlotPanelGeneric, pageWidthGeneric,pageHeightGeneric]= ...
                       plotConfigGeneric(  numberOfHorizontalPlotColumnsGeneric,...

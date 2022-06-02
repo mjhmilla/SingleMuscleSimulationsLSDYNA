@@ -281,10 +281,40 @@ ylabel('Norm. Velocity ($$\dot{\ell}^{T}/\ell^{M}_{o}$$)');
 title('Tendon Rate of Lengthening');
 box off;
 
+%% Stimulation
+
+subplot('Position',reshape(subPlotLayout(7,indexColumn,:),1,4));
+
+if(isempty(lsdynaMuscleUniform)==0)
+    plot(lsdynaMuscleUniform.time,...
+         lsdynaMuscleUniform.exc,...
+         'Color',musoutColor);
+    hold on;
+end
+
+text( 0.9, 0.9, seriesNumber,...
+      'Units', 'Normalized',...
+      'Color', musoutColor);
+hold on;
+
+
+axis tight;
+yl = ylim;
+yminDes = -0.05;
+ymaxDes = 1.10;
+ymin = min(yminDes, min(yl));
+ymax = max(ymaxDes,max(yl));
+ylim([ymin,ymax]);
+
+
+xlabel('Time (s)');
+ylabel('Excitation (0-1)');
+title('Excitation');
+box off;
 
 %% Activation
 
-subplot('Position',reshape(subPlotLayout(7,indexColumn,:),1,4));
+subplot('Position',reshape(subPlotLayout(8,indexColumn,:),1,4));
 
 if(isempty(lsdynaMuscleUniform)==0)
     plot(lsdynaMuscleUniform.time,...
@@ -315,7 +345,7 @@ box off;
 
 %% CE Force
 
-subplot('Position',reshape(subPlotLayout(8,indexColumn,:),1,4));
+subplot('Position',reshape(subPlotLayout(9,indexColumn,:),1,4));
 
 if(isempty(lsdynaMuscleUniform)==0)
     plot(lsdynaMuscleUniform.time,...
@@ -345,7 +375,7 @@ box off;
 
 %% PE Force
 
-subplot('Position',reshape(subPlotLayout(9,indexColumn,:),1,4));
+subplot('Position',reshape(subPlotLayout(10,indexColumn,:),1,4));
 
 if(isempty(lsdynaMuscleUniform)==0)
     plot(lsdynaMuscleUniform.time,...
@@ -375,13 +405,13 @@ title('Parallel Element Force');
 box off;
 
 
-%% SE Force
+%% MT Force
 
-subplot('Position',reshape(subPlotLayout(10,indexColumn,:),1,4));
+subplot('Position',reshape(subPlotLayout(11,indexColumn,:),1,4));
 
 if(isempty(lsdynaMuscleUniform)==0)
     plot(lsdynaMuscleUniform.time,...
-         lsdynaMuscleUniform.fseN,...
+         lsdynaMuscleUniform.fmtN,...
          'Color',musoutColor);
     hold on;
 end
@@ -402,13 +432,13 @@ ylim([ymin,ymax]);
 
 
 xlabel('Time (s)');
-ylabel('Norm. Force ($$f^{T}/f^{M}_{\circ}$$)');
-title('Tendon Force');
+ylabel('Norm. Force ($$f^{M}/f^{M}_{\circ}$$)');
+title('Musculotendon Unit Force');
 box off;
 
 %% CE force vs length
 
-subplot('Position',reshape(subPlotLayout(11,indexColumn,:),1,4));
+subplot('Position',reshape(subPlotLayout(12,indexColumn,:),1,4));
 
 if(isempty(lsdynaMuscleUniform)==0)
     plot(lsdynaMuscleUniform.lceN,...
@@ -445,7 +475,7 @@ title('Contractile Element: $$\tilde{f}^{M}-\tilde{\ell}^{M}$$');
 box off;
 
 %% PE force vs length
-subplot('Position',reshape(subPlotLayout(12,indexColumn,:),1,4));
+subplot('Position',reshape(subPlotLayout(13,indexColumn,:),1,4));
 
 if(isempty(lsdynaMuscleUniform)==0)
     plot(lsdynaMuscleUniform.lceN,...
@@ -483,7 +513,7 @@ box off;
 
 
 %% SE force vs length
-subplot('Position',reshape(subPlotLayout(13,indexColumn,:),1,4));
+subplot('Position',reshape(subPlotLayout(14,indexColumn,:),1,4));
 
 if(isempty(lsdynaMuscleUniform)==0)
 

@@ -6,7 +6,7 @@ $#     mid        ro        mt       lmc       nhv    iortho     ibulk        ig
 $#   ivect     ifail    itherm    ihyper      ieos      lmca    unused    unused
          0         0         0         0         0         0                    
 $#  ActOpt   STIM_ID        q0    tauq/c betaq/eta         k         m   lOffset
-         2         0    5.0E-3   1.37E-4   52700.0       2.9    0.0113         0
+         1         0    1.0E-4     0.025       0.5                              
 $#    Fmax    lCEopt     dWdes   nuCEdes     dWasc   nuCEasc     Arel0     Brel0
      &Fmax   &lCEopt 0.3852852 1.9043187 0.4005710 4.5843765 0.1240458 0.5550417
 $#    Secc      Fecc     LPEE0     nuPEE      FPEE     lSEE0  dUSEEnll    duSEEl
@@ -14,5 +14,5 @@ $#    Secc      Fecc     LPEE0     nuPEE      FPEE     lSEE0  dUSEEnll    duSEEl
 $#  dFSEE0[not-used]      Dsde      Rsde    Output     dtOut     IBULK        IG
  14.337374                 0.3      0.01         2     0.005      0.13      0.13
 $# Control    Lambda        kp        kd     delay    preAct    thresh
-         3         0         0         0       0.0      0.50      0.05
+         3         0         0         0       0.0       1.0      0.05
 *END
