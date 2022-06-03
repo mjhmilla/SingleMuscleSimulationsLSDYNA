@@ -20,15 +20,16 @@ $#    name expression
 R rampLenS &rampLenE-&rampLen
 R   lCEopt &lopt*cos(&alphaRad)
 R     Fmax &fiso*cos(&alphaRad)
-RrampTimeS 2.38+(&rampLenE-&rampLen)/&rampVel 
+RrampTime0 1.0+(&rampLenE-&rampLen)/&rampVel 
 RrampTimeD (&rampLen)/&rampVel
-RrampTimeE &rampTimeS+&rampTimeD
-RstimTimeE &rampTimeE+5.0
+RrampTime1 &rampTime0+&rampTimeD
+RrampTime2 &rampTime1+1.0
+RrampTime3 &rampTime2+&rampTimeD
 R       kt 30.0*&fiso/&ltslk
 R pathLenO &lopt*cos(&alphaRad)+(&Fmax)/&kt+&ltslk
-R pathLenS &pathLenO+&rampLenS
-R pathLenE &pathLenO+&rampLenE  
-R    timeE &stimTimeE+5.0
+R pathLenA &pathLenO+&rampLenS
+R pathLenB &pathLenO+&rampLenE  
+R    timeE &rampTime3+1.0
 $
 *TITLE
 $#                                                                         title
@@ -89,8 +90,6 @@ $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
                  0.0                 0.0
-          &stimTimeS                 0.0
-          &stimTimeE                 0.0
               &timeE                 0.0
 *ELEMENT_BEAM
 $#   eid     pid      n1      n2      n3     rt1     rr1     rt2     rr2   local
@@ -102,22 +101,24 @@ $#  typeid       dof       vad      lcid        sf       vid     death     birth
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          4         0       1.0       1.0       0.0       0.0
 $#                a1                  o1
-                 0.0          -&pathLenS
-          &rampTimeS          -&pathLenS
-          &rampTimeE          -&pathLenE
-              &timeE          -&pathLenE
+                 0.0          -&pathLenA
+          &rampTime0          -&pathLenA
+          &rampTime1          -&pathLenB
+          &rampTime2          -&pathLenB
+          &rampTime3          -&pathLenA
+              &timeE          -&pathLenA
 $
 *NODE
 $#   nid               x               y               z      tc      rc
        1             0.0             0.0             0.0       7       7
-       2             0.0             0.0      -&pathLenS       7       7
+       2             0.0             0.0      -&pathLenA       7       7
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
             0.000000            0.000300
-          &rampTimeS            0.000050
-          &rampTimeE            0.000050
+          &rampTime0            0.000050
+          &rampTime3            0.000050
               &timeE            0.000300
 $
 *END
