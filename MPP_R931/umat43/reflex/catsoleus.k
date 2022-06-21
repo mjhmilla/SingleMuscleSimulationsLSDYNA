@@ -10,7 +10,7 @@ $#  stimId    tauAct  tauDeact fceOptIso    lceOpt alphaOptD     ltSlk     etIso
 $#     dtN  scalePEE lambdaECM  beta1AHN  beta1PHN kxOptIsoN dxOptIsoN gainTrack
     0.0556       1.0      0.56      20.0      0.25      47.8     0.354    1000.0
 $#  vceMax   taudvst   dvsBeta   aniType  ctrlType ctrlDelay ctrlThrsh    output
-   &vceMax     0.001       1.0         1         4     0.025       0.1         2
+   &vceMax     0.001       1.0         1         4     0.025      0.05         2
 $#   dtout  
      0.005
 *END

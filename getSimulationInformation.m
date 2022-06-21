@@ -24,7 +24,8 @@ end
 simulationType(numberOfSimulationTypes) = struct('type',[]);
 
 simulationInformation(numberOfSimulationTypes) = ...
-    struct('type',[],'musclePropertyFile',[],...
+    struct('type',[],'simulationConstantFile',[],...
+          'musclePropertyCard',[],...
           'optimalFiberLength','',...
           'maximumIsometricForce','',...
           'tendonSlackLength','',...
@@ -45,7 +46,8 @@ if(strcmp(modelName,'umat41')==1)
       simulationType(idx).type = 'isometric';
       simulationInformation(idx).type               = simulationType(idx).type;
 
-      simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
+      simulationInformation(idx).simulationConstantFile = 'isometric.k';
+      simulationInformation(idx).musclePropertyCard     = 'matpiglet.k';      
       simulationInformation(idx).optimalFiberLength     = 'lCEopt';
       simulationInformation(idx).maximumIsometricForce  = 'Fmax';
       simulationInformation(idx).tendonSlackLength      = 'lSEE0';
@@ -60,7 +62,9 @@ if(strcmp(modelName,'umat41')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).type               = simulationInformation(idx).type;
-      simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
+
+      simulationInformation(idx).simulationConstantFile = 'concentric.k';
+      simulationInformation(idx).musclePropertyCard     = 'matpiglet.k';      
       simulationInformation(idx).optimalFiberLength     = 'lCEopt';
       simulationInformation(idx).maximumIsometricForce  = 'Fmax';
       simulationInformation(idx).tendonSlackLength      = 'lSEE0';
@@ -75,8 +79,9 @@ if(strcmp(modelName,'umat41')==1)
       simulationType(idx).type = 'quickrelease';
       simulationInformation(idx).type               = simulationType(idx).type;
 
-      simulationInformation(idx).type               = 'quickrelease';
-      simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
+      simulationInformation(idx).type                   = 'quickrelease';
+      simulationInformation(idx).simulationConstantFile = 'quick_release.k';
+      simulationInformation(idx).musclePropertyCard     = 'matpiglet.k';      
       simulationInformation(idx).optimalFiberLength     = 'lCEopt';
       simulationInformation(idx).maximumIsometricForce  = 'Fmax';
       simulationInformation(idx).tendonSlackLength      = 'lSEE0';
@@ -90,7 +95,8 @@ if(strcmp(modelName,'umat41')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).type                   = 'eccentric';
-      simulationInformation(idx).musclePropertyFile     = 'eccentric.k';
+      simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';
+      simulationInformation(idx).simulationConstantFile = 'eccentric.k';
       simulationInformation(idx).optimalFiberLength     = 'lopt';
       simulationInformation(idx).maximumIsometricForce  = 'fiso';
       simulationInformation(idx).tendonSlackLength      = 'ltslk';
@@ -106,7 +112,8 @@ if(strcmp(modelName,'umat41')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).type                   = 'impedance';
-      simulationInformation(idx).musclePropertyFile     = 'impedance.k';
+      simulationInformation(idx).simulationConstantFile = 'impedance.k';
+      simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';
       simulationInformation(idx).optimalFiberLength     = 'lopt';
       simulationInformation(idx).maximumIsometricForce  = 'fiso';
       simulationInformation(idx).tendonSlackLength      = 'ltslk';
@@ -126,7 +133,8 @@ if(strcmp(modelName,'umat41')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).type                   = 'reflex';
-      simulationInformation(idx).musclePropertyFile     = 'reflex.k';
+      simulationInformation(idx).simulationConstantFile = 'reflex.k';
+      simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';      
       simulationInformation(idx).optimalFiberLength     = 'lopt';
       simulationInformation(idx).maximumIsometricForce  = 'fiso';
       simulationInformation(idx).tendonSlackLength      = 'ltslk';
@@ -147,7 +155,8 @@ if(strcmp(modelName,'umat43')==1)
       idx=idx+1;
       simulationType(idx).type = 'isometric';
       simulationInformation(idx).type               = simulationType(idx).type;
-      simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
+      simulationInformation(idx).simulationConstantFile = 'isometric.k';
+      simulationInformation(idx).musclePropertyCard     = 'matpiglet.k';
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOptIso';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
@@ -161,7 +170,8 @@ if(strcmp(modelName,'umat43')==1)
       idx=idx+1;
       simulationType(idx).type = 'concentric';
       simulationInformation(idx).type               = simulationType(idx).type;
-      simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
+      simulationInformation(idx).simulationConstantFile = 'concentric.k';
+      simulationInformation(idx).musclePropertyCard     = 'matpiglet.k';      
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOptIso';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
@@ -176,7 +186,8 @@ if(strcmp(modelName,'umat43')==1)
       idx=idx+1;
       simulationType(idx).type = 'quickrelease';
       simulationInformation(idx).type               = simulationType(idx).type;
-      simulationInformation(idx).musclePropertyFile = 'matpiglet.k';
+      simulationInformation(idx).simulationConstantFile = 'quick_release.k';      
+      simulationInformation(idx).musclePropertyCard     = 'matpiglet.k';
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOptIso';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';    
@@ -189,7 +200,9 @@ if(strcmp(modelName,'umat43')==1)
       idx=idx+1;
       simulationType(idx).type = 'eccentric';
       simulationInformation(idx).type               = simulationType(idx).type;
-      simulationInformation(idx).musclePropertyFile     = 'eccentric.k';
+
+      simulationInformation(idx).simulationConstantFile = 'eccentric.k';      
+      simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';      
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
@@ -204,7 +217,8 @@ if(strcmp(modelName,'umat43')==1)
       idx=idx+1;
       simulationType(idx).type = 'impedance';
       simulationInformation(idx).type               = simulationType(idx).type;
-      simulationInformation(idx).musclePropertyFile     = 'impedance.k';
+      simulationInformation(idx).simulationConstantFile = 'impedance.k';  
+      simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';      
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOptIso';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
@@ -221,7 +235,8 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).type                   = 'force_length';
-      simulationInformation(idx).musclePropertyFile     = 'force_length.k';
+      simulationInformation(idx).simulationConstantFile = 'force_length.k';  
+      simulationInformation(idx).musclePropertyCard     = 'matpiglet.k';            
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
@@ -237,7 +252,8 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).type                   = 'sinusoid';
-      simulationInformation(idx).musclePropertyFile     = 'sinusoid.k';
+      simulationInformation(idx).simulationConstantFile = 'sinusoid.k';
+      simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
@@ -253,7 +269,8 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).type                   = 'reflex';
-      simulationInformation(idx).musclePropertyFile     = 'reflex.k';
+      simulationInformation(idx).simulationConstantFile = 'reflex.k';
+      simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
