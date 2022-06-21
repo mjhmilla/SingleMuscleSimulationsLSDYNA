@@ -49,13 +49,13 @@ flag_enableReflexExperiment             = 1;
 flag_enableForceLengthExperiment        = 0; 
 
 
-matlabScriptPath    = '/scratch/tmp/mmillard/SingleMuscleSimulationsLSDYNA';
+matlabScriptPath    = '/scratch/tmp/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA';
 %matlabScriptPath = ['/home/mjhmilla/dev/projectsBig/stuttgart/ricatti',...
-%                    '/scratch/mmillard/SingleMuscleSimulationsLSDYNA'];
+%                    '/scratch/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA'];
 
-lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/SMP_R931/lsdyna';
-lsdynaBin_MPP_931 = '/scratch/tmp/mmillard/MPP_R931/mppdyna';
-%'/scratch/tmp/mmillard/SMP_R931/lsdyna';
+lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/lsdynaCompilation/SMP_R931/lsdyna';
+lsdynaBin_MPP_931 = '/scratch/tmp/mmillard/lsdynaCompilation/MPP_R931/mppdyna';
+
 
 addpath(matlabScriptPath);
 cd(matlabScriptPath);
