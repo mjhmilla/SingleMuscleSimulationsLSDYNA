@@ -246,6 +246,22 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).parametersInMuscleCard = 0;
       simulationInformation(idx).model = modelName; 
     end
+    
+        if(flag_enableReflexExperiment==1)
+      idx=idx+1;
+      simulationType(idx).type = 'reflex';
+      simulationInformation(idx).type               = simulationType(idx).type;
+
+      simulationInformation(idx).type                   = 'reflex';
+      simulationInformation(idx).musclePropertyFile     = 'reflex.k';
+      simulationInformation(idx).optimalFiberLength     = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength      = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees  = 'penOptD';
+      simulationInformation(idx).parametersInMuscleCard = 0;
+      simulationInformation(idx).model = modelName;  
+
+    end
 end
   
 

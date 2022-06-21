@@ -15,7 +15,7 @@ models(1) = struct('id',0,'name','');
 
 indexUmat41             = 1;
 models(indexUmat41).id  = 1;
-models(indexUmat41).name='umat41';
+models(indexUmat41).name='umat43';
 
 %indexUmat43             = 1;
 %models(indexUmat43).id  = 1;

@@ -7,27 +7,23 @@ $
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
 R    dtout      0.01                                     
 R rampLenE     0.009
-RstimTimeS      0.95
 R   lceOpt 0.0428571
 R   fceOpt 24.364617
 R   penOpt 0.1221730
 R  penOptD 7.0
 R    ltSlk 0.0304511
-R       et  0.045833
+R       et 0.045833
 R   vceMax 4.5
 $
 *PARAMETER_EXPRESSION
 $#    name expression
 R rampLenS &rampLenE-&rampLen
-R   lCEopt &lceOpt*cos(&penOpt)
-R     Fmax &fceOpt*cos(&penOpt)
 RrampTime0 1.0+(&rampLenE-&rampLen)/&rampVel 
 RrampTimeD (&rampLen)/&rampVel
 RrampTime1 &rampTime0+&rampTimeD
 RrampTime2 &rampTime1+1.0
 RrampTime3 &rampTime2+&rampTimeD
-R       kt 30.0*&fceOpt/&ltSlk
-R pathLenO &lceOpt*cos(&penOpt)+(&Fmax)/&kt+&ltSlk
+R pathLenO &lceOpt*cos(&penOpt)+&ltSlk
 R pathLenA &pathLenO+&rampLenS
 R pathLenB &pathLenO+&rampLenE  
 R    timeE &rampTime3+1.0
