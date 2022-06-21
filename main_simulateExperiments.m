@@ -15,7 +15,7 @@ models(1) = struct('id',0,'name','');
 
 indexUmat41             = 1;
 models(indexUmat41).id  = 1;
-models(indexUmat41).name='umat41';
+models(indexUmat41).name='umat43';
 
 %indexUmat43             = 1;
 %models(indexUmat43).id  = 1;
@@ -27,10 +27,10 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 0;
+flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_generateGenericPlots           = 0;
@@ -49,9 +49,9 @@ flag_enableReflexExperiment             = 1;
 flag_enableForceLengthExperiment        = 0; 
 
 
-%matlabScriptPath    = '/scratch/tmp/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA';
-matlabScriptPath = ['/home/mmillard/work/code/stuttgart/riccati/',...
-      'scratch/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA'];
+matlabScriptPath    = '/scratch/tmp/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA';
+%matlabScriptPath = ['/home/mmillard/work/code/stuttgart/riccati/',...
+%      'scratch/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA'];
 
 lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/lsdynaCompilation/SMP_R931/lsdyna';
 lsdynaBin_MPP_931 = '/scratch/tmp/mmillard/lsdynaCompilation/MPP_R931/mppdyna';

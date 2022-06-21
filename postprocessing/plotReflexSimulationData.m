@@ -29,44 +29,52 @@ subplotExcitation  = reshape(subPlotLayout(2,indexColumn,:),1,4);
 subplotActivation  = reshape(subPlotLayout(3,indexColumn,:),1,4);
 subplotForce       = reshape(subPlotLayout(4,indexColumn,:),1,4);
 
-
-lengthThreshold = uniformModelData.lp(1,1)*(normLengthChangeThreshold+1);
+lengthReference = uniformModelData.lceN(1,1);
+lengthThreshold = lengthReference*(normLengthChangeThreshold+1);
 timeMin  = min(uniformModelData.time);
 timeMax  = max(uniformModelData.time);
 
 indexLengthCrossing = [];
 timeOfLengthCrossing = [];
-for i=2:1:(length(uniformModelData.time))
-  dlL = uniformModelData.lp(i-1,1)-lengthThreshold;
-  dlR = uniformModelData.lp(i,1)-lengthThreshold;
+flag_reflexActive = 0;
+for i=1:1:(length(uniformModelData.time))
 
-  if(dlL*dlR <= 0)
-    if(isempty(indexLengthCrossing))
+  if(flag_reflexActive == 1 ...
+          && uniformModelData.lceN(i,1) <= lengthReference)
+      indexLengthCrossing   = [indexLengthCrossing;i];
+      timeOfLengthCrossing  = ...
+          [timeOfLengthCrossing;uniformModelData.time(i,1)];
+      flag_reflexActive=0;
+  end
+  
+  if(flag_reflexActive == 0 ...
+          && uniformModelData.lceN(i,1) >= lengthThreshold)
       indexLengthCrossing = i;
       timeOfLengthCrossing  = uniformModelData.time(i,1);
-    else
-      indexLengthCrossing = [indexLengthCrossing;i];
-      timeOfLengthCrossing = [timeOfLengthCrossing;...
-                              uniformModelData.time(i,1)];
-    end
+      flag_reflexActive = 1;
   end
 end
 
 subplot('Position',subplotLength);
     
     plot( uniformModelData.time,...
-          uniformModelData.lp,...
+          uniformModelData.lceN,...
           '-','Color',simulationColor,...
           'LineWidth',simulationLineWidth)
     hold on;
+    
     plot([timeMin;timeMax],...
          [1;1].*lengthThreshold,...
          thresholdLineType,...
          'Color', thresholdColor);
     hold on;
     
-    lmin = min(uniformModelData.lp);
-    lmax = max(uniformModelData.lp);
+    xlbl = timeMin + 0.05*(timeMax-timeMin);
+    text(xlbl, lengthThreshold,sprintf('%1.3f',lengthThreshold));
+    hold on;
+    
+    lmin = min(uniformModelData.lceN);
+    lmax = max(uniformModelData.lceN);
     lmax = max(lmax,lengthThreshold);
     
     lspan = lmax-lmin;
@@ -83,15 +91,15 @@ subplot('Position',subplotLength);
                'Color', simulationColor);
           hold on;
           text(uniformModelData.time(indexLengthCrossing(i,1),1),...
-               uniformModelData.lp(indexLengthCrossing(i,1),1),...
+               uniformModelData.lceN(indexLengthCrossing(i,1),1),...
                sprintf('%1.3f',uniformModelData.time(indexLengthCrossing(i,1))) );
           hold on;
         end
     end
     
     xlabel('Time (s)');
-    ylabel('Length (m)');
-    title([trialName,' :Path Length']);
+    ylabel('Norm. Length (m)');
+    title([trialName,' : CE']);
     
     hold on;
     box off;
@@ -101,9 +109,10 @@ subplot('Position',subplotExcitation);
     indexExcitationCrossing = [];
     timeOfExcitationCrossing = [];
     for i=2:1:(length(uniformModelData.time))
-      de = uniformModelData.exc(i,1)-uniformModelData.exc(i-1,1);
+      deR = uniformModelData.exc(i,1)  -0.99;
+      deL = uniformModelData.exc(i-1,1)-0.99;
     
-      if(abs(de) > 0.5)
+      if(deR*deL <= 0)
         if(isempty(indexExcitationCrossing))
           indexExcitationCrossing = i;
           timeOfExcitationCrossing  = uniformModelData.time(i,1);
