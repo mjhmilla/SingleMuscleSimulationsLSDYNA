@@ -14,9 +14,14 @@ musout  = struct('data',[],'columnNames','','PartID','',...
                 'indexLmt',0,...
                 'indexLce',0,...
                 'indexLmtDot',0,...
-                'indexLceDot',0);
+                'indexLceDot',0,...
+                'indexLceRef',0);
 
-
+%         time     stim_tot            q''
+%     1       ''        f_mtc         f_ce        f_pee        f_see''
+%     2       ''        f_sde        l_mtc         l_ce''
+%     3       ''    dot_l_mtc     dot_l_ce     del_l_ce del_dot_l_ce''
+%     4       ''     l_ce_ref         e_ce         stim    stim_flag''
 
 fid = fopen(fileName);
 
@@ -69,6 +74,6 @@ fclose(fid);
     musout.indexLce         = getColumnIndex('l_ce',musout.columnNames);
     musout.indexLmtDot      = getColumnIndex('dot_l_mtc',musout.columnNames);
     musout.indexLceDot      = getColumnIndex('dot_l_ce',musout.columnNames);    
-
+    musout.indexLceRef      = getColumnIndex('l_ce_ref',musout.columnNames);
 
 success   = 1;

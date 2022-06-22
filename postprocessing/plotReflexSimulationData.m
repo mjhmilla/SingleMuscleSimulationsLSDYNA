@@ -1,5 +1,6 @@
 function figH = plotReflexSimulationData(figH, uniformModelData, ...
-                      normLengthChangeThreshold, indexColumn,...
+                      normCERefrenceLength, lengthThreshold,...
+                      indexColumn,...
                       subPlotLayout,subPlotRows,subPlotColumns,...                      
                       simulationFile,indexSimulation, totalSimulations)
 
@@ -29,8 +30,8 @@ subplotExcitation  = reshape(subPlotLayout(2,indexColumn,:),1,4);
 subplotActivation  = reshape(subPlotLayout(3,indexColumn,:),1,4);
 subplotForce       = reshape(subPlotLayout(4,indexColumn,:),1,4);
 
-lengthReference = uniformModelData.lceN(1,1);
-lengthThreshold = lengthReference*(normLengthChangeThreshold+1);
+lengthReference = normCERefrenceLength;
+lengthThreshold = (1+lengthThreshold)*normCERefrenceLength;
 timeMin  = min(uniformModelData.time);
 timeMax  = max(uniformModelData.time);
 

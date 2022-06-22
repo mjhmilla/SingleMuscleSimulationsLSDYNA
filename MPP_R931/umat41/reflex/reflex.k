@@ -7,6 +7,7 @@ $
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
 R    dtout      0.01                                     
 R rampLenE     0.009
+R deltaLen     0.001
 RstimTimeS      0.95
 R     lopt 0.0428571
 R     fiso 24.364617
@@ -22,13 +23,15 @@ R   lCEopt &lopt*cos(&alphaRad)
 R     Fmax &fiso*cos(&alphaRad)
 RrampTime0 1.0+(&rampLenE-&rampLen)/&rampVel 
 RrampTimeD (&rampLen)/&rampVel
+RrampTimeE (&rampLen+&deltaLen)/&rampVel
 RrampTime1 &rampTime0+&rampTimeD
 RrampTime2 &rampTime1+1.0
-RrampTime3 &rampTime2+&rampTimeD
+RrampTime3 &rampTime2+&rampTimeE
 R       kt 30.0*&fiso/&ltslk
 R pathLenO &lopt*cos(&alphaRad)+(&Fmax)/&kt+&ltslk
 R pathLenA &pathLenO+&rampLenS
-R pathLenB &pathLenO+&rampLenE  
+R pathLenB &pathLenO+&rampLenE 
+R pathLenC &pathLenO+&rampLenS-&deltaLen
 R    timeE &rampTime3+1.0
 $
 *TITLE
@@ -105,8 +108,8 @@ $#                a1                  o1
           &rampTime0          -&pathLenA
           &rampTime1          -&pathLenB
           &rampTime2          -&pathLenB
-          &rampTime3          -&pathLenA
-              &timeE          -&pathLenA
+          &rampTime3          -&pathLenC
+              &timeE          -&pathLenC
 $
 *NODE
 $#   nid               x               y               z      tc      rc
