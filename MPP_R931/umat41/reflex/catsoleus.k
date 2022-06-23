@@ -12,7 +12,7 @@ $#    Fmax    lCEopt     dWdes   nuCEdes     dWasc   nuCEasc     Arel0     Brel0
 $#    Secc      Fecc     LPEE0     nuPEE      FPEE     lSEE0  dUSEEnll    duSEEl
  0.7725022 1.4391543 1.0063986 1.5907747  0.654342    &ltslk 0.0347222 0.0222222
 $#  dFSEE0[not-used]      Dsde      Rsde    Output     dtOut     IBULK        IG
- 14.337374                 0.3      0.01         2     0.005      0.13      0.13
+ 14.337374                 0.3      0.01         2     0.001      0.13      0.13
 $# Control    Lambda        kp        kd     delay    switch    thresh
-         4         0         0         0       0.0       0.5      0.05
+         4         0         0         0       0.0       0.0     0.075
 *END

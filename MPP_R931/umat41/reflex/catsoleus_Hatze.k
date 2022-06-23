@@ -14,5 +14,5 @@ $#    Secc      Fecc     LPEE0     nuPEE      FPEE     lSEE0  dUSEEnll    duSEEl
 $#  dFSEE0[not-used]      Dsde      Rsde    Output     dtOut     IBULK        IG
  14.337374                 0.3      0.01         2     0.005      0.13      0.13
 $# Control    Lambda        kp        kd     delay    preAct    thresh
-         4         0         0         0     0.025      0.50      0.05
+         4         0         0         0       0.0       0.0      0.05
 *END

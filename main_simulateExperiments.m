@@ -15,7 +15,7 @@ models(1) = struct('id',0,'name','');
 
 indexUmat41             = 1;
 models(indexUmat41).id  = 1;
-models(indexUmat41).name='umat41';
+models(indexUmat41).name='umat43';
 
 %indexUmat43             = 1;
 %models(indexUmat43).id  = 1;
@@ -27,7 +27,7 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 0;
+flag_runSimulations                 = 1;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
@@ -764,6 +764,14 @@ if(flag_postProcessSimulationData==1)
                                         lengthThreshold = getLsdynaCardFieldValue(...
                                             simulationInformation(indexSimulationInfo).musclePropertyCard,...
                                             'thresh');
+                                        
+                                        %disp('Note: matching the reflex switching time of umat41 by ');
+                                        %disp('  post-processing is not possible because the muscle ');
+                                        %disp('  rapidly shortens and the data is often too coarsely');
+                                        %disp('  sampled to catch the point where the threshold is ');
+                                        %disp('  crossed.');
+                                        
+                                        lengthThreshold = lengthThreshold*0.999; 
                                         cd(workingDirectory)
                                     case 'umat43'
                                         normCERefLength = musout.data(end,musout.indexLceNRef);                                        
@@ -777,7 +785,11 @@ if(flag_postProcessSimulationData==1)
 
                                 
                                 figSpecific = plotReflexSimulationData(...
-                                                figSpecific,uniformModelData,...
+                                                figSpecific,...
+                                                models(indexModel).name, ...
+                                                lceOpt,...
+                                                musout,...                                                
+                                                uniformModelData,...
                                                 normCERefLength,...
                                                 lengthThreshold,...
                                                 indexColumn,subPlotPanelSpecific,...
