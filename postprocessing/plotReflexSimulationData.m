@@ -88,7 +88,7 @@ subplot('Position',subplotLength);
     l0 = lmin - 0.05*lspan;
     l1 = lmax + 0.05*lspan;
     
-%    ylim([l0,l1]);
+    ylim([l0,l1]);
     
     
     if(contains(modelName,'umat41')==1)
