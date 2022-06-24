@@ -44,14 +44,14 @@ flag_reflexActive = 0;
 for i=1:1:(length(uniformModelData.time))
 
   if(flag_reflexActive == 1 ...
-          && uniformModelData.lceN(i,1) <= normCERefrenceLength)
+          && uniformModelData.lceATN(i,1) <= normCERefrenceLength)
       indexLengthCrossing   = [indexLengthCrossing;i];
       timeOfLengthCrossing  = ...
           [timeOfLengthCrossing;uniformModelData.time(i,1)];
       flag_reflexActive=0;
   end
   
-  normLengthChange = (uniformModelData.lceN(i,1)-normCERefrenceLength)...
+  normLengthChange = (uniformModelData.lceATN(i,1)-normCERefrenceLength)...
            /normCERefrenceLength;
   
   if(flag_reflexActive == 0 ...
@@ -65,7 +65,7 @@ end
 subplot('Position',subplotLength);
     
     plot( uniformModelData.time,...
-          uniformModelData.lceN,...
+          uniformModelData.lceATN,...
           '-','Color',simulationColor,...
           'LineWidth',simulationLineWidth)
     hold on;
@@ -80,8 +80,8 @@ subplot('Position',subplotLength);
     text(xlbl, normLengthThreshold,sprintf('%1.3f',normLengthThreshold));
     hold on;
     
-    lmin = min(uniformModelData.lceN);
-    lmax = max(uniformModelData.lceN);
+    lmin = min(uniformModelData.lceATN);
+    lmax = max(uniformModelData.lceATN);
     lmax = max(lmax,normLengthThreshold);
     
     lspan = lmax-lmin;
@@ -137,7 +137,7 @@ subplot('Position',subplotLength);
                'Color', simulationColor);
           hold on;
           text(uniformModelData.time(indexLengthCrossing(i,1),1),...
-               uniformModelData.lceN(indexLengthCrossing(i,1),1),...
+               uniformModelData.lceATN(indexLengthCrossing(i,1),1),...
                sprintf('%1.3f',uniformModelData.time(indexLengthCrossing(i,1))) );
           hold on;
         end
@@ -155,7 +155,7 @@ subplot('Position',subplotExcitation);
     indexExcitationCrossing = [];
     timeOfExcitationCrossing = [];
     excitationThreshold = min(uniformModelData.exc) ...
-        + 0.05*(max(uniformModelData.exc)-min(uniformModelData.exc));
+        + 0.95*(max(uniformModelData.exc)-min(uniformModelData.exc));
     
     if(max(uniformModelData.exc) > 0.99)
         for i=2:1:(length(uniformModelData.time)-1)
@@ -190,6 +190,20 @@ subplot('Position',subplotExcitation);
 
     ylim([-0.1,1.1]);
 
+    if(isempty(indexLengthCrossing)==0)
+        for i=1:1:length(indexLengthCrossing)
+          plot([1;1].*uniformModelData.time(indexLengthCrossing(i,1),1),...
+               [0;1.05],...
+               thresholdLineType,...
+               'Color', simulationColor);
+          hold on;
+          text(uniformModelData.time(indexLengthCrossing(i,1),1),...
+               uniformModelData.lceATN(indexLengthCrossing(i,1),1),...
+               sprintf('%1.3f',uniformModelData.time(indexLengthCrossing(i,1))) );
+          hold on;
+        end
+    end
+    
     if(isempty(indexExcitationCrossing)==0)
         for i=1:1:length(indexExcitationCrossing)
           plot([1;1].*uniformModelData.time(indexExcitationCrossing(i,1),1),...
@@ -204,6 +218,21 @@ subplot('Position',subplotExcitation);
         end
     end
 
+    if(isempty(indexExcitationCrossing)==0 ...
+            && isempty(indexLengthCrossing)==0)
+        n = min(length(indexLengthCrossing),...
+                length(indexExcitationCrossing));
+        for i=1:1:n
+          dt = uniformModelData.time(indexExcitationCrossing(i,1),1) ...
+               - uniformModelData.time(indexLengthCrossing(i,1),1);
+          text(uniformModelData.time(indexLengthCrossing(i,1),1),...
+               0.5,...
+               sprintf('%1.3fms',dt*1000) );
+          hold on;
+        end
+        
+    end
+    
     xlabel('Time (s)');
     ylabel('Stimulation (0-1)');
     title([trialName,': excitation']);
