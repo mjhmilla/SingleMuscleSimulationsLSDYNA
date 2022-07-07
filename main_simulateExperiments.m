@@ -40,10 +40,10 @@ flag_generateSpecificPlots          = 1;
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
-flag_enableEccentricExperiment          = 1;
+flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
-flag_enableReflexExperiment             = 1;
+flag_enableReflexExperiment             = 0;
 flag_enableReflexExperiment_kN_mm_ms    = 1;
 
 
@@ -757,7 +757,7 @@ if(flag_postProcessSimulationData==1)
                                     here=1;
                                     
                                 end
-                            case 'reflex'  || 'reflex_kN_mm_ms'      
+                            case 'reflex'    
                                 if(flag_figSpecificDirty==0)                        
                                     flag_figSpecificDirty=1;
                                 end
@@ -808,6 +808,58 @@ if(flag_postProcessSimulationData==1)
                                                 simulationDirectories(indexSimulationTrial).name,...
                                                 indexSimulationTrial,...
                                                 length(simulationDirectories));
+                                            
+                            case 'reflex_kN_mm_ms'    
+                                if(flag_figSpecificDirty==0)                        
+                                    flag_figSpecificDirty=1;
+                                end
+
+                                normCERefLength = 0;
+                                lengthThreshold = 0;
+
+                                workingDirectory = pwd;
+                                switch models(indexModel).name
+                                    case 'umat41'
+                                        normCERefLength = musout.data(end,musout.indexLceRef);
+                                        normCERefLength = normCERefLength/lceOpt;
+                                        cd ..
+                                        lengthThreshold = getLsdynaCardFieldValue(...
+                                            simulationInformation(indexSimulationInfo).musclePropertyCard,...
+                                            'thresh');
+                                        
+                                        %disp('Note: matching the reflex switching time of umat41 by ');
+                                        %disp('  post-processing is not possible because the muscle ');
+                                        %disp('  rapidly shortens and the data is often too coarsely');
+                                        %disp('  sampled to catch the point where the threshold is ');
+                                        %disp('  crossed.');
+                                        
+                                        lengthThreshold = lengthThreshold*0.999; 
+                                        cd(workingDirectory)
+                                    case 'umat43'
+                                        normCERefLength = musout.data(end,musout.indexLceNRef);                                        
+                                        cd ..
+                                        lengthThreshold = getLsdynaCardFieldValue(...
+                                            simulationInformation(indexSimulationInfo).musclePropertyCard,...
+                                            'ctrlThrsh');
+                                        cd(workingDirectory);
+                                        
+                                end
+
+                                
+                                figSpecific = plotReflexSimulationData(...
+                                                figSpecific,...
+                                                models(indexModel).name, ...
+                                                lceOpt,...
+                                                musout,...                                                
+                                                uniformModelData,...
+                                                normCERefLength,...
+                                                lengthThreshold,...
+                                                indexColumn,subPlotPanelSpecific,...
+                                                numberOfVerticalPlotRowsSpecific,...
+                                                numberOfHorizontalPlotColumnsSpecific,...                              
+                                                simulationDirectories(indexSimulationTrial).name,...
+                                                indexSimulationTrial,...
+                                                length(simulationDirectories));                                            
                                 
                         end
                     end
