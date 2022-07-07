@@ -30,6 +30,13 @@ subplotExcitation  = reshape(subPlotLayout(2,indexColumn,:),1,4);
 subplotActivation  = reshape(subPlotLayout(3,indexColumn,:),1,4);
 subplotForce       = reshape(subPlotLayout(4,indexColumn,:),1,4);
 
+subplotLceN      = reshape(subPlotLayout(5,indexColumn,:),1,4);
+subplotLceDotN   = reshape(subPlotLayout(6,indexColumn,:),1,4);
+subplotL1N       = reshape(subPlotLayout(7,indexColumn,:),1,4);
+
+subplotForceTermsN       = reshape(subPlotLayout(8,indexColumn,:),1,4);
+subplotMultipliersN      = reshape(subPlotLayout(9,indexColumn,:),1,4);
+
 
 timeMin  = min(uniformModelData.time);
 timeMax  = max(uniformModelData.time);
@@ -143,8 +150,8 @@ subplot('Position',subplotLength);
         end
     end
     
-    xlabel('Time (s)');
-    ylabel('Norm. Length (m)');
+    xlabel('Time');
+    ylabel('Norm. Length');
     title([trialName,' : CE']);
     
     hold on;
@@ -227,13 +234,13 @@ subplot('Position',subplotExcitation);
                - uniformModelData.time(indexLengthCrossing(i,1),1);
           text(uniformModelData.time(indexLengthCrossing(i,1),1),...
                0.5,...
-               sprintf('%1.3fms',dt*1000) );
+               sprintf('%1.3f',dt) );
           hold on;
         end
         
     end
     
-    xlabel('Time (s)');
+    xlabel('Time');
     ylabel('Stimulation (0-1)');
     title([trialName,': excitation']);
     
@@ -265,7 +272,7 @@ subplot('Position',subplotActivation);
     end
 
 
-    xlabel('Time (s)');
+    xlabel('Time');
     ylabel('$$Ca^{2+}$$ (0-1)');
     title([trialName,': activation']);
     
@@ -296,10 +303,132 @@ subplot('Position',subplotForce);
     end
 
 
-    xlabel('Time (s)');
-    ylabel('Norm. Force ($$f^{m}/f^{m}_{o}$$');
+    xlabel('Time');
+    ylabel('Norm. Force ($$f^{m}/f^{m}_{o})$$');
     title([trialName,': musculotendon force']);
     
     hold on;
-    box off;      
+    box off; 
+    
+subplot('Position',subplotLceN);
 
+    plot(uniformModelData.time,...
+         uniformModelData.lceN,...
+         '-','Color',simulationColor,...
+          'LineWidth',simulationLineWidth);
+    hold on;
+    
+
+ 
+
+
+    xlabel('Time');
+    ylabel('Norm. Length ($$\ell^{m}/\ell^{m}_{o})$$');
+    title([trialName,': CE Length']);
+    
+    hold on;
+    box off;     
+
+subplot('Position',subplotLceDotN);
+
+    plot(uniformModelData.time,...
+         uniformModelData.lceNDot,...
+         '-','Color',simulationColor,...
+          'LineWidth',simulationLineWidth);
+    hold on;
+    
+
+
+
+
+    xlabel('Time');
+    ylabel('Norm. Velocity ($$\dot{\ell}^{m}/\ell^{m}_{o})$$');
+    title([trialName,': CE Length']);
+    
+    hold on;
+    box off;     
+    
+if(contains(modelName,'umat43'))
+   subplot('Position',subplotL1N);
+
+    plot(musout.data(:,musout.indexTime),...
+         musout.data(:,musout.indexL1HN),...
+         '-','Color',simulationColor,...
+          'LineWidth',simulationLineWidth);
+    hold on;
+    
+
+
+
+
+    xlabel('Time');
+    ylabel('Norm. Length ($$\ell^{1}/\ell^{m}_{o})$$');
+    title([trialName,': Prox. Titin Length']);
+    
+    hold on;
+    box off;     
+
+  subplot('Position',subplotForceTermsN);
+  
+      plot(musout.data(:,musout.indexTime),...
+             musout.data(:,musout.indexFceATN),...
+             '-','Color',[0,0,0],...
+              'LineWidth',simulationLineWidth,...
+              'DisplayName','fceATN');
+        hold on;
+      plot(musout.data(:,musout.indexTime),...
+             musout.data(:,musout.indexFecmHN),...
+             '-','Color',[0,0,1],...
+              'LineWidth',simulationLineWidth,...
+              'DisplayName','fecmHN');
+      hold on;
+      plot(musout.data(:,musout.indexTime),...
+             musout.data(:,musout.indexF2HN),...
+             '-','Color',[0,1,0],...
+              'LineWidth',simulationLineWidth,...
+              'DisplayName','f2HN');
+      hold on;  
+      plot(musout.data(:,musout.indexTime),...
+             musout.data(:,musout.indexFxHN),...
+             '-','Color',[1,0,0],...
+              'LineWidth',simulationLineWidth,...
+              'DisplayName','fxHN');
+      hold on;    
+      legend;
+      legend boxoff;
+      xlabel('Time');
+      ylabel('Norm. Force ($$f/f^{m}_{o})$$');
+      title([trialName,': Component Forces']);
+
+      hold on;
+      box off;     
+
+subplot('Position',subplotMultipliersN);
+  
+      plot(musout.data(:,musout.indexTime),...
+             musout.data(:,musout.indexFalN),...
+             '-','Color',[0.5,0.5,1],...
+              'LineWidth',simulationLineWidth,...
+              'DisplayName','falN');
+        hold on;
+      plot(musout.data(:,musout.indexTime),...
+             musout.data(:,musout.indexFvN),...
+             '-','Color',[1,0.5,0.5],...
+              'LineWidth',simulationLineWidth,...
+              'DisplayName','fvN');
+      hold on;
+
+      hold on;    
+      legend;
+      legend boxoff;
+      xlabel('Time');
+      ylabel('Multipliers ($$f/f^{m}_{o})$$');
+      title([trialName,': Multipliers']);
+
+      hold on;
+      box off;      
+      
+end
+
+
+    

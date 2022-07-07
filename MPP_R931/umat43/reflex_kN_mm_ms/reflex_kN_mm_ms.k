@@ -5,7 +5,7 @@ $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout      10.0                                     
+R    dtout       1.0                                     
 R rampLenE       9.0
 R deltaLen       1.0
 R   lceOpt   42.8571
@@ -116,9 +116,9 @@ $#   nid               x               y               z      tc      rc
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
-            0.000000               0.300
-          &rampTime0               0.050
-          &rampTime3               0.050
-              &timeE               0.300
+            0.000000               0.005
+          &rampTime0               0.005
+          &rampTime3               0.005
+              &timeE               0.005
 $
 *END

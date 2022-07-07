@@ -6,11 +6,11 @@ $#     mid        ro        mt       lmc       nhv    iortho     ibulk        ig
 $#   ivect     ifail    itherm    ihyper      ieos      lmca    unused    unused
          0         0         0         0         0         0                    
 $#  stimId    tauAct  tauDeact fceOptIso    lceOpt alphaOptD     ltSlk     etIso
-         3        10        40   &fceOpt   &lceOpt  &penOptD    &ltSlk     0.049
+         3       10.       40.   &fceOpt   &lceOpt  &penOptD    &ltSlk     0.049
 $#     dtN  scalePEE lambdaECM  beta1AHN  beta1PHN kxOptIsoN dxOptIsoN gainTrack
-    0.0556      0.76      0.56      45.0      0.25      47.8     0.354       1.0
+      55.6      0.76      0.56     45000       250      47.8     0.354        1.
 $#  vceMax   taudvst   dvsBeta   aniType  ctrlType ctrlDelay ctrlThrsh    output
-   &vceMax         1     0.001         1         4        25        75         1
+   &vceMax     1000.     0.001         1         4       25.     0.075         1
 $#   dtout  
-         1
+        1.
 *END
