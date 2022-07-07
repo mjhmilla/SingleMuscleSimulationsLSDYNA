@@ -44,6 +44,7 @@ flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 1;
+flag_enableReflexExperiment_kN_mm_ms    = 1;
 
 %Lengthens muscle to sample force-length curves
 flag_enableForceLengthExperiment        = 0; 
@@ -71,7 +72,9 @@ numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableImpedanceExperiment...
                      +flag_enableForceLengthExperiment...
                      +flag_enableSinusoidExperiment...
-                     +flag_enableReflexExperiment;
+                     +flag_enableReflexExperiment...
+                     +flag_enableReflexExperiment_kN_mm_ms;
+
 
 if(numberOfSimulationTypes==0)
     numberOfSimulationTypes=1;
@@ -158,7 +161,8 @@ if(flag_preProcessSimulationData==1)
                         flag_enableImpedanceExperiment,...
                         flag_enableForceLengthExperiment,...
                         flag_enableSinusoidExperiment,...
-                        flag_enableReflexExperiment);
+                        flag_enableReflexExperiment,...
+                        flag_enableReflexExperiment_kN_mm_ms);
 
             for indexSimulationType = 1:length(simulationType)
 
@@ -234,7 +238,8 @@ if(flag_runSimulations==1)
                         flag_enableImpedanceExperiment,...
                         flag_enableForceLengthExperiment,...
                         flag_enableSinusoidExperiment,...
-                        flag_enableReflexExperiment);
+                        flag_enableReflexExperiment,...
+                        flag_enableReflexExperiment_kN_mm_ms);
                     
             switch Release
                 case 'SMP_R931'
@@ -304,7 +309,8 @@ if(flag_postProcessSimulationData==1)
                         flag_enableImpedanceExperiment,...
                         flag_enableForceLengthExperiment,...
                         flag_enableSinusoidExperiment,...
-                        flag_enableReflexExperiment);            
+                        flag_enableReflexExperiment,...
+                        flag_enableReflexExperiment_kN_mm_ms);            
               
             for indexSimulationType = 1:length(simulationType)
                 
@@ -381,7 +387,10 @@ if(flag_postProcessSimulationData==1)
                       numberOfVerticalPlotRowsSpecific      = 5+3;
                     case 'reflex'
                       numberOfHorizontalPlotColumnsSpecific = 3;
-                      numberOfVerticalPlotRowsSpecific      = 4;  
+                      numberOfVerticalPlotRowsSpecific      = 4; 
+                    case 'reflex_kN_mm_ms'
+                      numberOfHorizontalPlotColumnsSpecific = 3;
+                      numberOfVerticalPlotRowsSpecific      = 4;    
                       
                 end
 
@@ -747,7 +756,7 @@ if(flag_postProcessSimulationData==1)
                                     here=1;
                                     
                                 end
-                            case 'reflex'        
+                            case 'reflex'  || 'reflex_kN_mm_ms'      
                                 if(flag_figSpecificDirty==0)                        
                                     flag_figSpecificDirty=1;
                                 end
