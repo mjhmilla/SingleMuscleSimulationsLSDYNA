@@ -15,7 +15,7 @@ models(1) = struct('id',0,'name','');
 
 indexUmat41             = 1;
 models(indexUmat41).id  = 1;
-models(indexUmat41).name='umat41';
+models(indexUmat41).name='umat43';
 
 %indexUmat43             = 1;
 %models(indexUmat43).id  = 1;
@@ -40,11 +40,12 @@ flag_generateSpecificPlots          = 1;
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
-flag_enableEccentricExperiment          = 0;
+flag_enableEccentricExperiment          = 1;
 flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 1;
 flag_enableReflexExperiment_kN_mm_ms    = 1;
+
 
 %Lengthens muscle to sample force-length curves
 flag_enableForceLengthExperiment        = 0; 
