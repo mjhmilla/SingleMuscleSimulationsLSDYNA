@@ -36,6 +36,7 @@ subplotL1N       = reshape(subPlotLayout(7,indexColumn,:),1,4);
 
 subplotForceTermsN       = reshape(subPlotLayout(8,indexColumn,:),1,4);
 subplotMultipliersN      = reshape(subPlotLayout(9,indexColumn,:),1,4);
+subplotAccelerationN      = reshape(subPlotLayout(10,indexColumn,:),1,4);
 
 
 timeMin  = min(uniformModelData.time);
@@ -393,7 +394,13 @@ if(contains(modelName,'umat43'))
              '-','Color',[1,0,0],...
               'LineWidth',simulationLineWidth,...
               'DisplayName','fxHN');
-      hold on;    
+      hold on;
+      plot(musout.data(:,musout.indexTime),...
+             musout.data(:,musout.indexFxHN),...
+             '-','Color',[1,0,0],...
+              'LineWidth',simulationLineWidth,...
+              'DisplayName','fxHN');
+      hold on;
       legend;
       legend boxoff;
       xlabel('Time');
@@ -427,6 +434,36 @@ subplot('Position',subplotMultipliersN);
 
       hold on;
       box off;      
+      
+subplot('Position',subplotAccelerationN);
+  
+      plot(musout.data(:,musout.indexTime),...
+             musout.data(:,musout.indexDvsHNHill),...
+             '-','Color',[0,0,0],...
+              'LineWidth',simulationLineWidth,...
+              'DisplayName','Hill');
+      hold on;
+      plot(musout.data(:,musout.indexTime),...
+             musout.data(:,musout.indexDvsHNDamping),...
+             '-','Color',[0,0,1],...
+              'LineWidth',simulationLineWidth,...
+              'DisplayName','Damping');
+      hold on;
+      plot(musout.data(:,musout.indexTime),...
+             musout.data(:,musout.indexDvsHNTracking),...
+             '-','Color',[1,0,0],...
+              'LineWidth',simulationLineWidth,...
+              'DisplayName','Tracking');
+      hold on;
+
+      legend;
+      legend boxoff;
+      xlabel('Time');
+      ylabel('Norm. Acceleration ($$\dot{v}/v^{m}_{o})$$');
+      title([trialName,': Acceleration Terms']);
+
+      hold on;
+      box off;        
       
 end
 

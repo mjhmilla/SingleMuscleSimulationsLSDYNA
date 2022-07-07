@@ -116,9 +116,9 @@ $#   nid               x               y               z      tc      rc
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
-            0.000000            0.000050
-          &rampTime0            0.000050
-          &rampTime3            0.000050
-              &timeE            0.000050
+            0.000000            0.000005
+          &rampTime0            0.000005
+          &rampTime3            0.000005
+              &timeE            0.000005
 $
 *END

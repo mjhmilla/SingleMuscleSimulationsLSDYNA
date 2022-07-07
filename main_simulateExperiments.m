@@ -44,7 +44,7 @@ flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 1;
-flag_enableReflexExperiment_kN_mm_ms    = 1;
+flag_enableReflexExperiment_kN_mm_ms    = 0;
 
 
 %Lengthens muscle to sample force-length curves
@@ -388,10 +388,10 @@ if(flag_postProcessSimulationData==1)
                       numberOfVerticalPlotRowsSpecific      = 5+3;
                     case 'reflex'
                       numberOfHorizontalPlotColumnsSpecific = 3;
-                      numberOfVerticalPlotRowsSpecific      = 9; 
+                      numberOfVerticalPlotRowsSpecific      = 10; 
                     case 'reflex_kN_mm_ms'
                       numberOfHorizontalPlotColumnsSpecific = 3;
-                      numberOfVerticalPlotRowsSpecific      = 9;    
+                      numberOfVerticalPlotRowsSpecific      = 10;    
                       
                 end
 
