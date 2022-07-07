@@ -27,7 +27,7 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 0;
+flag_runSimulations                 = 1;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
@@ -44,7 +44,7 @@ flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 1;
-flag_enableReflexExperiment_kN_mm_ms    = 0;
+flag_enableReflexExperiment_kN_mm_ms    = 1;
 
 
 %Lengthens muscle to sample force-length curves
