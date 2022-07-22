@@ -44,7 +44,7 @@ flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 1;
-flag_enableReflexExperiment_kN_mm_ms    = 0;
+flag_enableReflexExperiment_kN_mm_ms    = 1;
 
 
 %Lengthens muscle to sample force-length curves
