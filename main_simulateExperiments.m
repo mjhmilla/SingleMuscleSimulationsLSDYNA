@@ -781,7 +781,7 @@ if(flag_postProcessSimulationData==1)
                                         %disp('  sampled to catch the point where the threshold is ');
                                         %disp('  crossed.');
                                         
-                                        lengthThreshold = lengthThreshold*0.999; 
+                                        %lengthThreshold = lengthThreshold;%*0.999; 
                                         cd(workingDirectory)
                                     case 'umat43'
                                         normCERefLength = musout.data(end,musout.indexLceNRef);                                        
