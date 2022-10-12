@@ -13,12 +13,12 @@ Releases    =  {'MPP_R931'};
 
 models(1) = struct('id',0,'name','');
 
-indexUmat41             = 1;
-models(indexUmat41).id  = 1;
-models(indexUmat41).name='umat41';
+%indexUmat41             = 1;
+%models(indexUmat41).id  = 1;
+%models(indexUmat41).name='umat41';
 
-indexUmat43             = 2;
-models(indexUmat43).id  = 2;
+indexUmat43             = 1;
+models(indexUmat43).id  = 1;
 models(indexUmat43).name='umat43';
 
 
@@ -42,8 +42,8 @@ flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
 flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
-flag_enableSinusoidExperiment           = 0;
-flag_enableReflexExperiment             = 1;
+flag_enableSinusoidExperiment           = 1;
+flag_enableReflexExperiment             = 0;
 flag_enableReflexExperiment_kN_mm_ms    = 0;
 
 
