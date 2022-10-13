@@ -50,6 +50,7 @@ flag_aniType = 1;
 %0. human
 %1. feline
 
+
 %Lengthens muscle to sample force-length curves
 flag_enableForceLengthExperiment        = 0; 
 

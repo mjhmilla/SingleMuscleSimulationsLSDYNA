@@ -37,6 +37,7 @@ if(flag_addReferenceData==1)
         subplotC = [];  
         dy = 0;
         
+        
         if( contains( files(indexFiles).name, 'activeForceLengthCalibratedCurve'))
             data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0); 
             subplotA = reshape( subPlotLayout(1,1,:),1,4 );
