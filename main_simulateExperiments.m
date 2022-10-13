@@ -21,13 +21,12 @@ models(indexUmat41).name='umat43';
 %models(indexUmat43).id  = 1;
 %models(indexUmat43).name='umat43';
 
-
 flag_preProcessSimulationData       = 0; 
 %Setting this to 1 will perform any preprocessing needed of the enabled 
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
@@ -42,21 +41,25 @@ flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
 flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
-flag_enableSinusoidExperiment           = 0;
-flag_enableReflexExperiment             = 1;
-flag_enableReflexExperiment_kN_mm_ms    = 1;
+flag_enableSinusoidExperiment           = 1;
+flag_enableReflexExperiment             = 0;
+flag_enableReflexExperiment_kN_mm_ms    = 0;
 
+flag_aniType = 1; 
+% This is only relevant when post-processing SinusoidExperiment
+%0. human
+%1. feline
 
 %Lengthens muscle to sample force-length curves
 flag_enableForceLengthExperiment        = 0; 
 
 
-matlabScriptPath    = '/scratch/tmp/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA';
+matlabScriptPath    = '/home/mmillard/work/code/stuttgart/riccati/scratch/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA';
 %matlabScriptPath = ['/home/mmillard/work/code/stuttgart/riccati/',...
 %      'scratch/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA'];
 
-lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/lsdynaCompilation/SMP_R931/lsdyna';
-lsdynaBin_MPP_931 = '/scratch/tmp/mmillard/lsdynaCompilation/MPP_R931/mppdyna';
+lsdynaBin_SMP_931 = '/home/mmillard/work/code/stuttgart/riccati/scratch/mmillard/lsdynaCompilation/SMP_R931/lsdyna';
+lsdynaBin_MPP_931 = '/home/mmillard/work/code/stuttgart/riccati/scratch/mmillard/lsdynaCompilation/MPP_R931/mppdyna';
 
 
 addpath(matlabScriptPath);
@@ -348,7 +351,23 @@ if(flag_postProcessSimulationData==1)
                   simulationDirectories([simulationDirectories.isdir]==true);
         
                 %Set the path for the reference data
+                
+
                 referenceDataFolder = [referenceDataPath,simulationTypeStr];
+
+                if(contains(simulationType(indexSimulationType).type,...
+                           'sinusoid'))
+                    switch flag_aniType
+                        case 0
+                            referenceDataFolder = [referenceDataFolder,...
+                                            '/QuadraticBezierHumanCurves'];
+                        case 1
+                            referenceDataFolder = [referenceDataFolder,...
+                                            '/QuadraticBezierFelineCurves'];
+                        otherwise 
+                            assert(0,'flag_aniType should be 0 (human) or 1 (feline)');
+                    end
+                end
 
                 numberOfHorizontalPlotColumnsGeneric = length(simulationDirectories)-3+1;
                 numberOfVerticalPlotRowsGeneric      = 14;
@@ -723,6 +742,7 @@ if(flag_postProcessSimulationData==1)
                                     end
                                     indexColumn=1;                                    
 
+                                 
                                     for indexCurve=1:1:length(curveFileList)
                                         curveData=curvereader(curveFileList{indexCurve});
                                         figSpecific =...

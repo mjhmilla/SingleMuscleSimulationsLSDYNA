@@ -1,7 +1,7 @@
 function figH = plotSinusoidSimulationDataUmat43(figH, musout, curveData, indexColumn,...
                       subPlotLayout,subPlotRows,subPlotColumns,...                      
                       simulationFile,indexSimulation, totalSimulations,... 
-                      referenceDataFolder,...                      
+                      referenceDataFolder,...  
                       flag_addReferenceData,...
                       flag_addSimulationCurveData,...
                       flag_addSimulationOutputData)
@@ -35,8 +35,9 @@ if(flag_addReferenceData==1)
         subplotA = [];
         subplotB = [];
         subplotC = [];  
+        dy = 0;
         
-        if( contains( files(indexFiles).name, 'fortran_activeForceLengthCurveFeline'))
+        if( contains( files(indexFiles).name, 'activeForceLengthCalibratedCurve'))
             data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0); 
             subplotA = reshape( subPlotLayout(1,1,:),1,4 );
             subplotB = reshape( subPlotLayout(1,2,:),1,4 );
@@ -47,9 +48,10 @@ if(flag_addReferenceData==1)
             ylabelText = '$f^{L}$)';
             y1DerlabelText = '$d f^{L}/ d \ell^{\mathrm{M}}_n$';
             y2DerlabelText = '$d^2 f^{L}/ d (\ell^{\mathrm{M}}_n)^2$';
-            titleText = 'Active-Force Length (feline)';
+            titleText = 'Active-Force Length (Cal.)';
+            dy = 0;
         end
-        if( contains( files(indexFiles).name, 'fortran_forceLengthECMHalfCurve'))
+        if( contains( files(indexFiles).name, 'forceLengthECMHalfCurve'))
             data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0); 
             subplotA = reshape( subPlotLayout(2,1,:),1,4 );
             subplotB = reshape( subPlotLayout(2,2,:),1,4 );
@@ -61,9 +63,10 @@ if(flag_addReferenceData==1)
             y1DerlabelText = '$d f^{ECM}/ d \frac{1}{2} \ell^{\mathrm{M}}_n$';
             y2DerlabelText = '$d^2 f^{ECM}/ d (\frac{1}{2} \ell^{\mathrm{M}}_n)^2$';
             titleText = 'ECM Force-Length';
+            dy = 0;
         end
         
-        if( contains( files(indexFiles).name, 'fortran_forceLengthProximalTitinFelineCurve'))
+        if( contains( files(indexFiles).name, 'Zero_forceLengthProximalTitinCurve'))
             data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0); 
             subplotA = reshape( subPlotLayout(3,1,:),1,4 );
             subplotB = reshape( subPlotLayout(3,2,:),1,4 );
@@ -74,10 +77,26 @@ if(flag_addReferenceData==1)
             ylabelText = '$f^{P}$)';
             y1DerlabelText = '$d f^{P}/ d \frac{1}{2} \ell^{\mathrm{M}}_n$';
             y2DerlabelText = '$d^2 f^{P}/ d (\frac{1}{2} \ell^{\mathrm{M}}_n)^2$';
-            titleText = 'Titin Proximal Force-Length (Feline)';
+            titleText = 'Titin Proximal Force-Length';
+            dy = 0;
+        end
+
+        if( contains( files(indexFiles).name, 'One_forceLengthProximalTitinCurve'))
+            data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0); 
+            subplotA = reshape( subPlotLayout(3,1,:),1,4 );
+            subplotB = reshape( subPlotLayout(3,2,:),1,4 );
+            subplotC = reshape( subPlotLayout(3,3,:),1,4 ); 
+            found=1  ;  
+            
+            xlabelText = 'Norm. Half Length ($\frac{1}{2}\ell^{\mathrm{M}}_n$)';
+            ylabelText = '$f^{P}$)';
+            y1DerlabelText = '$d f^{P}/ d \frac{1}{2} \ell^{\mathrm{M}}_n$';
+            y2DerlabelText = '$d^2 f^{P}/ d (\frac{1}{2} \ell^{\mathrm{M}}_n)^2$';
+            titleText = 'Titin Proximal Force-Length';
+            dy = -0.1;
         end
         
-        if( contains( files(indexFiles).name, 'fortran_forceLengthDistalTitinFelineCurve'))
+        if( contains( files(indexFiles).name, 'Zero_forceLengthDistalTitinCurve'))
             data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0); 
             subplotA = reshape( subPlotLayout(4,1,:),1,4 );
             subplotB = reshape( subPlotLayout(4,2,:),1,4 );
@@ -88,10 +107,26 @@ if(flag_addReferenceData==1)
             ylabelText = '$f^{D}$)';
             y1DerlabelText = '$d f^{D}/ d \frac{1}{2} \ell^{\mathrm{M}}_n$';
             y2DerlabelText = '$d^2 f^{D}/ d (\frac{1}{2} \ell^{\mathrm{M}}_n)^2$';
-            titleText = 'Titin Distal Force-Length (Feline)';
-        end        
+            titleText = 'Titin Distal Force-Length';
+            dy = 0;
+        end 
+
+        if( contains( files(indexFiles).name, 'One_forceLengthDistalTitinCurve'))
+            data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0); 
+            subplotA = reshape( subPlotLayout(4,1,:),1,4 );
+            subplotB = reshape( subPlotLayout(4,2,:),1,4 );
+            subplotC = reshape( subPlotLayout(4,3,:),1,4 ); 
+            found=1  ;  
+            
+            xlabelText = 'Norm. Half Length ($\frac{1}{2}\ell^{\mathrm{M}}_n$)';
+            ylabelText = '$f^{D}$)';
+            y1DerlabelText = '$d f^{D}/ d \frac{1}{2} \ell^{\mathrm{M}}_n$';
+            y2DerlabelText = '$d^2 f^{D}/ d (\frac{1}{2} \ell^{\mathrm{M}}_n)^2$';
+            titleText = 'Titin Distal Force-Length';
+            dy = -0.1;
+        end 
         
-        if( contains( files(indexFiles).name, 'fortran_fiberForceVelocityCurve'))
+        if( contains( files(indexFiles).name, 'fiberForceVelocityCalibratedCurve'))
             data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0); 
             subplotA = reshape( subPlotLayout(5,1,:),1,4 );
             subplotB = reshape( subPlotLayout(5,2,:),1,4 );
@@ -103,6 +138,7 @@ if(flag_addReferenceData==1)
             y1DerlabelText = '$d f^{V}/ d v^{\mathrm{M}}$';
             y2DerlabelText = '$d^2 f^{V}/ d v^{\mathrm{M}})^2$';
             titleText = 'Force Velocity Curve';
+            dy = 0;
         end  
         
         if(found==1)
@@ -124,7 +160,7 @@ if(flag_addReferenceData==1)
                     'LineWidth',3,...
                     'Color',referenceColor);
             hold on;
-            text(dataMinX+0.15,1,'Matlab');
+            text(dataMinX+0.15,1+dy,'Matlab');
             hold on;
             box off;        
             xlabel(xlabelText);
