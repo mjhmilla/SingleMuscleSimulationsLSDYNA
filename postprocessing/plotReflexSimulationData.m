@@ -85,7 +85,7 @@ subplot('Position',subplotLength);
     hold on;
     
     xlbl = timeMin + 0.05*(timeMax-timeMin);
-    text(xlbl, normLengthThreshold,sprintf('%1.3f',normLengthThreshold));
+    text(xlbl, normLengthThreshold,sprintf('%1.4f',normLengthThreshold));
     hold on;
     
     lmin = min(uniformModelData.lceATN);
@@ -116,7 +116,7 @@ subplot('Position',subplotLength);
                  'Color',[1,0,0]);
             hold on;
             text(musout.data(i, musout.indexTime),l1,...
-                 sprintf('%1.3f',musout.data(i, musout.indexTime)));
+                 sprintf('%1.4f',musout.data(i, musout.indexTime)));
             hold on;
             flag_reflex=1;
           end
@@ -127,7 +127,7 @@ subplot('Position',subplotLength);
                  'Color',[1,0,0]);
             hold on;
             text(musout.data(i, musout.indexTime),l1,...
-                 sprintf('%1.3f',musout.data(i, musout.indexTime)));
+                 sprintf('%1.4f',musout.data(i, musout.indexTime)));
             hold on;
             flag_reflex=0;
               
@@ -146,7 +146,7 @@ subplot('Position',subplotLength);
           hold on;
           text(uniformModelData.time(indexLengthCrossing(i,1),1),...
                uniformModelData.lceATN(indexLengthCrossing(i,1),1),...
-               sprintf('%1.3f',uniformModelData.time(indexLengthCrossing(i,1))) );
+               sprintf('%1.4f',uniformModelData.time(indexLengthCrossing(i,1))) );
           hold on;
         end
     end
@@ -207,7 +207,7 @@ subplot('Position',subplotExcitation);
           hold on;
           text(uniformModelData.time(indexLengthCrossing(i,1),1),...
                uniformModelData.lceATN(indexLengthCrossing(i,1),1),...
-               sprintf('%1.3f',uniformModelData.time(indexLengthCrossing(i,1))) );
+               sprintf('%1.4f',uniformModelData.time(indexLengthCrossing(i,1))) );
           hold on;
         end
     end
@@ -221,7 +221,7 @@ subplot('Position',subplotExcitation);
           hold on;
           text(uniformModelData.time(indexExcitationCrossing(i,1),1),...
                1.1,...
-               sprintf('%1.3f',uniformModelData.time(indexExcitationCrossing(i,1))) );
+               sprintf('%1.4f',uniformModelData.time(indexExcitationCrossing(i,1))) );
           hold on;
         end
     end
@@ -235,7 +235,7 @@ subplot('Position',subplotExcitation);
                - uniformModelData.time(indexLengthCrossing(i,1),1);
           text(uniformModelData.time(indexLengthCrossing(i,1),1),...
                0.5,...
-               sprintf('%1.3f',dt) );
+               sprintf('%1.4f',dt) );
           hold on;
         end
         
@@ -267,7 +267,7 @@ subplot('Position',subplotActivation);
           hold on;
           text(uniformModelData.time(indexExcitationCrossing(i,1),1),...
                1.1,...
-               sprintf('%1.3f',uniformModelData.time(indexExcitationCrossing(i,1))) );
+               sprintf('%1.4f',uniformModelData.time(indexExcitationCrossing(i,1))) );
           hold on;
         end
     end
@@ -298,7 +298,7 @@ subplot('Position',subplotForce);
           hold on;
           text(uniformModelData.time(indexExcitationCrossing(i,1),1),...
                1.1,...
-               sprintf('%1.3f',uniformModelData.time(indexExcitationCrossing(i,1))) );
+               sprintf('%1.4f',uniformModelData.time(indexExcitationCrossing(i,1))) );
           hold on;
         end
     end

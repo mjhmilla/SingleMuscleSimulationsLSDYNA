@@ -13,13 +13,13 @@ Releases    =  {'MPP_R931'};
 
 models(1) = struct('id',0,'name','');
 
-indexUmat41             = 1;
-models(indexUmat41).id  = 1;
-models(indexUmat41).name='umat43';
+%indexUmat41             = 1;
+%models(indexUmat41).id  = 1;
+%models(indexUmat41).name='umat41';
 
-%indexUmat43             = 1;
-%models(indexUmat43).id  = 1;
-%models(indexUmat43).name='umat43';
+indexUmat43             = 1;
+models(indexUmat43).id  = 1;
+models(indexUmat43).name='umat43';
 
 flag_preProcessSimulationData       = 0; 
 %Setting this to 1 will perform any preprocessing needed of the enabled 
@@ -802,7 +802,7 @@ if(flag_postProcessSimulationData==1)
                                         %disp('  sampled to catch the point where the threshold is ');
                                         %disp('  crossed.');
                                         
-                                        lengthThreshold = lengthThreshold*0.999; 
+                                        %lengthThreshold = lengthThreshold;%*0.999; 
                                         cd(workingDirectory)
                                     case 'umat43'
                                         normCERefLength = musout.data(end,musout.indexLceNRef);                                        
