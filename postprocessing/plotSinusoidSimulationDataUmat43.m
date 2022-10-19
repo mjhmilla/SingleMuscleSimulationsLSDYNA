@@ -140,7 +140,50 @@ if(flag_addReferenceData==1)
             y2DerlabelText = '$d^2 f^{V}/ d v^{\mathrm{M}})^2$';
             titleText = 'Force Velocity Curve';
             dy = 0;
-        end  
+        end
+
+        if( contains( files(indexFiles).name, 'tendonForceLengthNormCurve'))
+            data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0); 
+            subplotA = reshape( subPlotLayout(6,1,:),1,4 );
+            subplotB = reshape( subPlotLayout(6,2,:),1,4 );
+            subplotC = reshape( subPlotLayout(6,3,:),1,4 ); 
+            found=1  ;  
+            
+            xlabelText = 'Norm. Strain ($e^{T} / e^{T}_{\circ}$)';
+            ylabelText = '$f^{T}$)';
+            y1DerlabelText = '$d f^{T}/ d ( e^{T} /e^{T}_{\circ} )$';
+            y2DerlabelText = '$d^2 f^{T}/ d ( e^{T} /e^{T}_{\circ} )^2$';
+            titleText = 'Tendon Force Length Curve';
+        end
+
+        if( contains( files(indexFiles).name, 'tendonStiffnessNormCurve'))
+            data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0); 
+            subplotA = reshape( subPlotLayout(7,1,:),1,4 );
+            subplotB = reshape( subPlotLayout(7,2,:),1,4 );
+            subplotC = reshape( subPlotLayout(7,3,:),1,4 ); 
+            found=1  ;  
+            
+            xlabelText = 'Norm. Strain ($e^{T} / e^{T}_{\circ}$)';
+            ylabelText = '$k^{T}$)';
+            y1DerlabelText = '$d k^{T}/ d ( e^{T} /e^{T}_{\circ} )$';
+            y2DerlabelText = '$d^2 k^{T}/ d ( e^{T} /e^{T}_{\circ} )^2$';
+            titleText = 'Tendon Stiffness Length Curve';
+        end        
+
+        if( contains( files(indexFiles).name, 'compressiveForceLengthCurve'))
+            data = csvread([referenceDataFolder,'/',files(indexFiles).name],1,0); 
+            subplotA = reshape( subPlotLayout(8,1,:),1,4 );
+            subplotB = reshape( subPlotLayout(8,2,:),1,4 );
+            subplotC = reshape( subPlotLayout(8,3,:),1,4 ); 
+            found=1  ;  
+            
+            xlabelText = 'Norm. Length Along Tendon ($ \ell^{\mathrm{M}} \cos \alpha / \ell^{\mathrm{M}}_\circ$)';
+            ylabelText = '$f^{C}$)';
+            y1DerlabelText = '$d f^{C}/ d ( \tilde{\ell}^{M}_{AT} )$';
+            y2DerlabelText = '$d^2 f^{C}/ d ( \tilde{\ell}^{M}_{AT} )^2$';
+            titleText = 'Compressive Force Length Curve';
+        end        
+        
         
         if(found==1)
            
@@ -230,7 +273,25 @@ if(flag_addSimulationCurveData)
       subplotB = reshape( subPlotLayout(5,2,:),1,4 );
       subplotC = reshape( subPlotLayout(5,3,:),1,4 );      
     end
-    
+
+    if(contains(curveData.name,'ftFcnN')==1)
+      subplotA = reshape( subPlotLayout(6,1,:),1,4 );
+      subplotB = reshape( subPlotLayout(6,2,:),1,4 );
+      subplotC = reshape( subPlotLayout(6,3,:),1,4 );      
+    end
+
+    if(contains(curveData.name,'ktFcnN')==1)
+      subplotA = reshape( subPlotLayout(7,1,:),1,4 );
+      subplotB = reshape( subPlotLayout(7,2,:),1,4 );
+      subplotC = reshape( subPlotLayout(7,3,:),1,4 );      
+    end
+
+    if(contains(curveData.name,'fCpFcnN')==1)
+      subplotA = reshape( subPlotLayout(8,1,:),1,4 );
+      subplotB = reshape( subPlotLayout(8,2,:),1,4 );
+      subplotC = reshape( subPlotLayout(8,3,:),1,4 );      
+    end
+
     minCurveDataX = min(curveData.data(:,curveData.indexArg));
     
     subplot('Position', subplotA );
@@ -245,6 +306,7 @@ if(flag_addSimulationCurveData)
     hold on;
     text( minCurveDataX+0.15, 1-0.05*indexSimulation,'Fortran');
     hold on;
+    box off;
 
     subplot('Position', subplotB );
     plot(   curveData.data(:,curveData.indexArg),...
@@ -263,9 +325,9 @@ if(flag_addSimulationCurveData)
 end
 
 if(flag_addSimulationOutputData==1)
-    subplotA = reshape( subPlotLayout(6,1,:),1,4 );
-    subplotB = reshape( subPlotLayout(6,2,:),1,4 );
-    subplotC = reshape( subPlotLayout(6,3,:),1,4 );
+    subplotA = reshape( subPlotLayout(9,1,:),1,4 );
+    subplotB = reshape( subPlotLayout(9,2,:),1,4 );
+    subplotC = reshape( subPlotLayout(9,3,:),1,4 );
     
     subplot('Position',subplotA);
     plot( musout.data(:,musout.indexTime),...
@@ -298,9 +360,9 @@ if(flag_addSimulationOutputData==1)
     title('ECM Force');    
           
     
-    subplotA = reshape( subPlotLayout(7,1,:),1,4 );
-    subplotB = reshape( subPlotLayout(7,2,:),1,4 );
-    subplotC = reshape( subPlotLayout(7,3,:),1,4 );    
+    subplotA = reshape( subPlotLayout(10,1,:),1,4 );
+    subplotB = reshape( subPlotLayout(10,2,:),1,4 );
+    subplotC = reshape( subPlotLayout(10,3,:),1,4 );    
     
 
     subplot('Position',subplotA);
@@ -334,9 +396,9 @@ if(flag_addSimulationOutputData==1)
     title('XE Force');    
     
     
-    subplotA = reshape( subPlotLayout(8,1,:),1,4 );
-    subplotB = reshape( subPlotLayout(8,2,:),1,4 );
-    subplotC = reshape( subPlotLayout(8,3,:),1,4 );    
+    subplotA = reshape( subPlotLayout(11,1,:),1,4 );
+    subplotB = reshape( subPlotLayout(11,2,:),1,4 );
+    subplotC = reshape( subPlotLayout(11,3,:),1,4 );    
     
     subplot('Position',subplotA);
     plot( musout.data(:,musout.indexTime),...

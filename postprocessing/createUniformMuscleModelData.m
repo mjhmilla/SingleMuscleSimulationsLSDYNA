@@ -144,7 +144,7 @@ switch modelName
         uniformModelData.fceN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFceN);
         uniformModelData.fpeN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFecmHN);
         uniformModelData.fseN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFtfcnN);
-        uniformModelData.dseN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFtBetaN);        
+        uniformModelData.dseN       = lsdynaMuscle.data(:,lsdynaMuscle.indexKtfcnN);        
         uniformModelData.fmtN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFtN);
 
     otherwise

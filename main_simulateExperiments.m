@@ -55,7 +55,7 @@ flag_aniType = 1;
 flag_enableForceLengthExperiment        = 0; 
 
 
-matlabScriptPath    = '/home/mmillard/work/code/stuttgart/riccati/scratch/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA';
+matlabScriptPath    = '/scratch/tmp/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA';
 %matlabScriptPath = ['/home/mmillard/work/code/stuttgart/riccati/',...
 %      'scratch/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA'];
 
@@ -405,7 +405,7 @@ if(flag_postProcessSimulationData==1)
                       numberOfVerticalPlotRowsSpecific      = 4;
                     case 'sinusoid'
                       numberOfHorizontalPlotColumnsSpecific = 3;
-                      numberOfVerticalPlotRowsSpecific      = 5+3;
+                      numberOfVerticalPlotRowsSpecific      = 8+3;
                     case 'reflex'
                       numberOfHorizontalPlotColumnsSpecific = 3;
                       numberOfVerticalPlotRowsSpecific      = 10; 
@@ -716,7 +716,8 @@ if(flag_postProcessSimulationData==1)
                                 %Only umat43 produces the curve-specific files right now.                                
                                 if( strcmp( models(indexModel).name, 'umat43' ) )
                                    %Get the curve files
-                                    curveSubstr = {'fal','fecmH','f1H','f2H','fv'};
+                                    curveSubstr = {'fal','fecmH','f1H','f2H','fv',...
+                                                    'ftFcnN','ktFcnN','fCpFcnN'};
                                     curveCount=0;
                                     curveFileList ={''};
                                     for indexFile=1:1:length(fileList)
@@ -731,7 +732,7 @@ if(flag_postProcessSimulationData==1)
                                           end
                                       end
                                     end
-                                    assert(curveCount == 5); 
+                                    assert(curveCount == length(curveSubstr)); 
                                     
                                     flag_addSimulationCurveData=1;
                                     flag_addSimulationOutputData=0;
