@@ -12,5 +12,5 @@ $#     dtN  scalePEE lambdaECM  beta1AHN  beta1PHN kxOptIsoN dxOptIsoN gainTrack
 $#  vceMax   taudvst   dvsBeta   aniType  ctrlType ctrlDelay ctrlThrsh    output
    &vceMax     0.001       1.0         1         4     0.050     0.075         1
 $#   dtout  
-    0.0001
+    0.001
 *END
