@@ -25,18 +25,21 @@ thresholdColor   = simulationColor;
 simulationLineWidth = 0.5;
 thresholdLineType = '--';
 
-subplotLength      = reshape(subPlotLayout(1,indexColumn,:),1,4);
-subplotExcitation  = reshape(subPlotLayout(2,indexColumn,:),1,4);
-subplotActivation  = reshape(subPlotLayout(3,indexColumn,:),1,4);
-subplotForce       = reshape(subPlotLayout(4,indexColumn,:),1,4);
+subplotLength           = reshape(subPlotLayout(1,indexColumn,:),1,4);
+subplotExcitation       = reshape(subPlotLayout(2,indexColumn,:),1,4);
+subplotActivation       = reshape(subPlotLayout(3,indexColumn,:),1,4);
+subplotForce            = reshape(subPlotLayout(4,indexColumn,:),1,4);
 
-subplotLceN      = reshape(subPlotLayout(5,indexColumn,:),1,4);
-subplotLceDotN   = reshape(subPlotLayout(6,indexColumn,:),1,4);
-subplotL1N       = reshape(subPlotLayout(7,indexColumn,:),1,4);
+subplotLceN             = reshape(subPlotLayout(5,indexColumn,:),1,4);
+subplotLceDotN          = reshape(subPlotLayout(6,indexColumn,:),1,4);
+subplotLxHN             = reshape(subPlotLayout(7,indexColumn,:),1,4);
+subplotVxHN             = reshape(subPlotLayout(8,indexColumn,:),1,4);
 
-subplotForceTermsN       = reshape(subPlotLayout(8,indexColumn,:),1,4);
-subplotMultipliersN      = reshape(subPlotLayout(9,indexColumn,:),1,4);
-subplotAccelerationN      = reshape(subPlotLayout(10,indexColumn,:),1,4);
+subplotL1N              = reshape(subPlotLayout(9,indexColumn,:),1,4);
+
+subplotForceTermsN      = reshape(subPlotLayout(10,indexColumn,:),1,4);
+subplotMultipliersN     = reshape(subPlotLayout(11,indexColumn,:),1,4);
+subplotAccelerationN    = reshape(subPlotLayout(12,indexColumn,:),1,4);
 
 
 timeMin  = min(uniformModelData.time);
@@ -344,11 +347,39 @@ subplot('Position',subplotLceDotN);
 
     xlabel('Time');
     ylabel('Norm. Velocity ($$\dot{\ell}^{m}/\ell^{m}_{o})$$');
-    title([trialName,': CE Length']);
+    title([trialName,': CE Velocity']);
     
     hold on;
     box off;     
     
+if(contains(modelName,'umat43'))
+    subplot('Position',subplotLxHN);
+    plot(musout.data(:,musout.indexTime),...
+         musout.data(:,musout.indexLxHN),...
+         '-','Color',simulationColor,...
+          'LineWidth',simulationLineWidth);
+    hold on;    
+    xlabel('Time');
+    ylabel('Norm. Length ($$\ell^{X}/\ell^{m}_{o})$$');
+    title([trialName,': XE Strain']);
+    
+    hold on;
+    box off; 
+
+    subplot('Position',subplotVxHN);
+    plot(musout.data(:,musout.indexTime),...
+         musout.data(:,musout.indexVxHN),...
+         '-','Color',simulationColor,...
+          'LineWidth',simulationLineWidth);
+    hold on;    
+    xlabel('Time');
+    ylabel('Norm. Velocity ($$\dot{\ell}^{X}/\ell^{m}_{o})$$');
+    title([trialName,': XE Strain Rate']);
+    
+    hold on;
+    box off;     
+end
+
 if(contains(modelName,'umat43'))
    subplot('Position',subplotL1N);
 

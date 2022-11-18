@@ -42,7 +42,7 @@ flag_enableQuickReleaseExperiment       = 0;
 flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
-flag_enableReflexExperiment             = 0;
+flag_enableReflexExperiment             = 1;
 flag_enableReflexExperiment_kN_mm_ms    = 0;
 
 flag_aniType = 1; 
@@ -408,10 +408,10 @@ if(flag_postProcessSimulationData==1)
                       numberOfVerticalPlotRowsSpecific      = 8+3;
                     case 'reflex'
                       numberOfHorizontalPlotColumnsSpecific = 3;
-                      numberOfVerticalPlotRowsSpecific      = 10; 
+                      numberOfVerticalPlotRowsSpecific      = 12; 
                     case 'reflex_kN_mm_ms'
                       numberOfHorizontalPlotColumnsSpecific = 3;
-                      numberOfVerticalPlotRowsSpecific      = 10;    
+                      numberOfVerticalPlotRowsSpecific      = 12;    
                       
                 end
 
