@@ -13,7 +13,7 @@ R  penOptD 7.0000000
 R    ltSlk 0.0304511
 R       et 0.045833
 R   vceMax 4.5
-R       tp 0.5
+R       tp 0.0
 R       ts 1.0
 $
 *PARAMETER_EXPRESSION
@@ -92,8 +92,7 @@ $#  typeid       dof       vad      lcid        sf       vid     death     birth
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          4         0       1.0       1.0       0.0       0.0
 $#                a1                  o1
-        &tp*0.000000      &a*0.000000+&b
-        &tp*1.000000      &a*0.000000+&b
+    0.000000             &a*0.000000+&b
     &ts*0.010000+&tp     &a*-0.001973+&b
     &ts*0.020000+&tp     &a*-0.007885+&b
     &ts*0.030000+&tp     &a*-0.017713+&b
@@ -194,8 +193,10 @@ $#                a1                  o1
     &ts*0.980000+&tp     &a*-0.007885+&b
     &ts*0.990000+&tp     &a*-0.001973+&b
     &ts*1.000000+&tp      &a*0.000000+&b
-      &ts+&tp*1.0100      &a*0.000000+&b
-      &ts+&tp*2.0000      &a*0.000000+&b
+$#        &tp*0.000000      &a*0.000000+&b
+$#        &tp*1.000000      &a*0.000000+&b    
+$#      &ts+&tp*1.0100      &a*0.000000+&b
+$#      &ts+&tp*2.0000      &a*0.000000+&b
 $
 *NODE
 $#   nid               x               y               z      tc      rc

@@ -32,3 +32,4 @@ kill_by_pid
 *.asv
 *.cfile
 *.0000000002
+scr0000*
