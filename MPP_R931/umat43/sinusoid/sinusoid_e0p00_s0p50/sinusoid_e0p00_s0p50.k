@@ -2,7 +2,7 @@
 *PARAMETER
 $#    name       val
 R     stim      0.00
-R     mstr      0.50
+R     mstr      0.51
 *INCLUDE_PATH_RELATIVE
 ../
 $
