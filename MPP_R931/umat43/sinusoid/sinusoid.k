@@ -30,7 +30,7 @@ $#  endtim    endcyc     dtmin    endeng    endmas
     &timeE         0       0.0       0.01.000000E8
 *CONTROL_TIMESTEP
 $#  dtinit    tssfac      isdo    tslimt     dt2ms      lctm     erode     ms1st
-       0.00.89999998         0       0.0       0.0         0         0         0
+       0.00.89999998         0       0.0       0.0         9         0         0
 $#  dt2msf   dt2mslc     imscl    unused    unused     rmscl     
        0.0         0         0                           0.0
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -76,6 +76,12 @@ $#     id1       id2       id3       id4       id5       id6       id7       id8
 $#
 *INCLUDE
 catsoleus.k
+*DEFINE_CURVE
+$#    lcid      sidr       sfa       sfo      offa      offo    dattyp
+         9         0  1.000000  1.000000     0.000     0.000         0
+$#                a1                  o1
+            0.000000               0.001
+              &timeE               0.001
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0

@@ -29,7 +29,7 @@ flag_preProcessSimulationData       = 0;
 flag_runSimulations                 = 1;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 0;
+flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_generateGenericPlots           = 1;
