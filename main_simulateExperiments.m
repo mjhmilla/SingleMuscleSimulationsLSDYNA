@@ -26,7 +26,7 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
@@ -292,7 +292,8 @@ if(flag_postProcessSimulationData==1)
     cd(matlabScriptPath);
 
     figGeneric  = figure;
-    figSpecific = figure;      
+    figSpecific = figure;   
+    figDebug    = figure;
     
     %load inputFunctions
     load([structFolder,signalFileName]);
@@ -325,6 +326,9 @@ if(flag_postProcessSimulationData==1)
                 flag_figGenericDirty=0;
                 clf(figSpecific);
                 flag_figSpecificDirty=0;
+
+                clf(figDebug);
+                flag_figDebugDirty=0;
 
                 indexSimulationInfo = 1;
                 found=0;
@@ -382,6 +386,9 @@ if(flag_postProcessSimulationData==1)
                 
                 numberOfHorizontalPlotColumnsSpecific = 1;
                 numberOfVerticalPlotRowsSpecific      = 1;
+                numberOfHorizontalPlotColumnsDebug    = 3;
+                numberOfVerticalPlotRowsDebug         = 5;
+
                 switch (simulationTypeStr)
                     case 'eccentric'
                       numberOfHorizontalPlotColumnsSpecific = 1;
@@ -423,6 +430,15 @@ if(flag_postProcessSimulationData==1)
                                           plotHeight,...
                                           plotHorizMarginCm,...
                                           plotVertMarginCm);
+
+                [subPlotPanelDebug, pageWidthDebug,pageHeightDebug]= ...
+                      plotConfigGeneric(  numberOfHorizontalPlotColumnsDebug,...
+                                          numberOfVerticalPlotRowsDebug,...
+                                          plotWidth,...
+                                          plotHeight,...
+                                          plotHorizMarginCm,...
+                                          plotVertMarginCm);
+
 
                 for indexSimulationTrial=3:deltaPoints:length(simulationDirectories)                    
                     cd(simulationTypePath);
@@ -483,7 +499,7 @@ if(flag_postProcessSimulationData==1)
                     fileList = dir;
                   
                     %% Count the number of musout files
-                    musout =[];              
+                    musout =[];                          
                     musoutCount=0;
                     musoutFileList ={''};
                     for indexFile=1:1:length(fileList)
@@ -496,9 +512,25 @@ if(flag_postProcessSimulationData==1)
                         end
                         
                       end
-                    end
+                    end                    
                     assert(musoutCount == 1);
-                    
+
+                    musdebug=[];
+                    musdebugCount=0;
+                    musdebugFileList={''};                    
+                    if(contains(models(indexModel).name,'umat43'))
+                        for indexFile=1:1:length(fileList)
+                          if(contains(fileList(indexFile).name,'musdebug'))
+                            musdebugCount=musdebugCount+1;
+                            if musdebugCount == 1
+                              musdebugFileList = {fileList(indexFile).name};
+                            else
+                              musdebugFileList = {musdebugFileList{:};fileList(indexFile).name};
+                            end                            
+                          end
+                        end
+                        assert(musdebugCount==1);
+                    end
                     %% Load the muscle data
                     switch models(indexModel).name
                         case 'umat41'
@@ -506,7 +538,9 @@ if(flag_postProcessSimulationData==1)
                                 readUmat41MusoutData(musoutFileList{1});  
                         case 'umat43'
                             [musout,success] = ...
-                                readUmat43MusoutData(musoutFileList{1});  
+                                readUmat43MusoutData(musoutFileList{1}); 
+                            [musdebug,success] = ...
+                                readUmat43MusDebugData(musdebugFileList{1});
                         otherwise assert(0)
                     end
 
@@ -777,7 +811,16 @@ if(flag_postProcessSimulationData==1)
                                                 flag_addSimulationCurveData,...
                                                 flag_addSimulationOutputData);
                                     here=1;
-                                    
+
+                                    figDebug=...
+                                        plotDebugDataUmat43(...
+                                            figDebug,musout,musdebug,...
+                                            subPlotPanelDebug,...
+                                            numberOfVerticalPlotRowsDebug,...
+                                            numberOfHorizontalPlotColumnsDebug);
+                                    if(flag_figDebugDirty==0)                        
+                                        flag_figDebugDirty=1;
+                                    end
                                 end
                             case 'reflex'    
                                 if(flag_figSpecificDirty==0)                        
@@ -910,6 +953,18 @@ if(flag_postProcessSimulationData==1)
                                   models(indexModel).name,'_',...                    
                                   simulationInformation(indexSimulationInfo).type,...
                                   '_Specific.pdf'];
+                    print('-dpdf', [matlabScriptPath,'/',outputFolder,'/',...
+                          Release,'/',models(indexModel).name,'/',fileName]);
+                end
+                if(flag_figDebugDirty==1)
+                    figure(figDebug);      
+                    figSpecific=configPlotExporter(figDebug, ...
+                                pageWidthDebug, pageHeightDebug);
+
+                    fileName =    ['fig_',Release,'_',...
+                                  models(indexModel).name,'_',...                    
+                                  simulationInformation(indexSimulationInfo).type,...
+                                  '_Debug.pdf'];
                     print('-dpdf', [matlabScriptPath,'/',outputFolder,'/',...
                           Release,'/',models(indexModel).name,'/',fileName]);
                 end
