@@ -17,6 +17,22 @@ figure(figDebug);
 
 idxPlot=1;
 
+
+idxRow = ceil(idxPlot/numberOfPlotColumns);
+idxColumn = idxPlot-(idxRow-1)*numberOfPlotColumns;
+subplot('Position',reshape( subPlotLayout(idxRow,idxColumn,:),1,4 ));
+
+plot(musout.data(:,musout.indexTime),...
+     musout.data(:,musout.indexDTVmWDt),...
+     lineType,'Color',simulationColor);
+    hold on;
+    xlabel('Time (s)');
+    ylabel('Power (Nm/s)');
+    title('d/dt(T+V-W)');
+    box off;
+
+
+idxPlot=idxPlot+1;    
 idxRow = ceil(idxPlot/numberOfPlotColumns);
 idxColumn = idxPlot-(idxRow-1)*numberOfPlotColumns;
 subplot('Position',reshape( subPlotLayout(idxRow,idxColumn,:),1,4 ));
