@@ -19,7 +19,7 @@ $
 *PARAMETER_EXPRESSION
 $#    name expression
 R        a (&mstr)*(&lceOpt)*cos(&penOpt) 
-R        b (&lceOpt*(1.-&mstr))*cos(&penOpt)+&ltSlk
+R        b (&lceOpt)*cos(&penOpt)+&ltSlk
 R    timeE (&tp)*2.0+&ts
 $
 *TITLE
