@@ -2,7 +2,7 @@
 *MAT_USER_DEFINED_MATERIAL_MODELS
 $ Millard 2022 Muscle
 $#     mid        ro        mt       lmc       nhv    iortho     ibulk        ig
-         11.00000E-6        43        25      1000         0         3         4
+         11.00000E-6        43        32      1000         0         3         4
 $#   ivect     ifail    itherm    ihyper      ieos      lmca    unused    unused
          0         0         0         0         0         0                    
 $#  stimId exDefault    tauAct  tauDeact fceOptIso    lceOpt alphaOptD useRgdTdn
