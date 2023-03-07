@@ -22,7 +22,7 @@ $#    name expression
 R rampLenS &rampLenE-&rampLen
 R lceOptAT &lceOpt*cos(&penOpt)
 R     Fmax &fceOpt*cos(&penOpt)
-RrampTimeS 2.38+(&rampLenE-&rampLen)/&rampVel 
+RrampTimeS 2.3+(&rampLenE-&rampLen)/&rampVel 
 RrampTimeD (&rampLen)/&rampVel
 RrampTimeE &rampTimeS+&rampTimeD
 RstimTimeE &rampTimeE+5.0
