@@ -975,6 +975,6 @@ if(flag_postProcessSimulationData==1)
 end
 
 
-
+cd(matlabScriptPath);
 rmpath(matlabScriptPath);
 

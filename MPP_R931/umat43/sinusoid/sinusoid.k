@@ -86,7 +86,9 @@ $#                a1                  o1
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
-                 0.0               &stim
+                 0.0                 0.0
+               0.099                 0.0
+                 0.1               &stim
               &timeE               &stim
 *ELEMENT_BEAM
 $#   eid     pid      n1      n2      n3     rt1     rr1     rt2     rr2   local

@@ -6,7 +6,7 @@ $#     mid        ro        mt       lmc       nhv    iortho     ibulk        ig
 $#   ivect     ifail    itherm    ihyper      ieos      lmca    unused    unused
          0         0         0         0         0         0                    
 $#  stimId exDefault    tauAct  tauDeact fceOptIso    lceOpt alphaOptD useRgdTdn
-         3     &stim     0.010     0.040   &fceOpt   &lceOpt  &penOptD         0
+         3       0.0     0.010     0.040   &fceOpt   &lceOpt  &penOptD         0
 $#   ltSlk     etIso       dtN  scalePEE lambdaECM  lPevkPtN lceHNLb1A   act1AHN
     &ltSlk     0.049    0.0556      0.76      0.56       0.5       0.5       0.1
 $#beta1AHN  beta1PHN kxOptIsoN dxOptIsoN gainTrack  actTrack    vceMax   taudvst
