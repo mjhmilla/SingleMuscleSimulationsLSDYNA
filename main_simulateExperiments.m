@@ -32,16 +32,16 @@ flag_runSimulations                 = 1;
 flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
-flag_generateGenericPlots           = 1;
+flag_generateGenericPlots           = 0;
 flag_generateSpecificPlots          = 1;
 
 
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
-flag_enableEccentricExperiment          = 0;
+flag_enableEccentricExperiment          = 1;
 flag_enableImpedanceExperiment          = 0;
-flag_enableSinusoidExperiment           = 1;
+flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 0;
 flag_enableReflexExperiment_kN_mm_ms    = 0;
 
