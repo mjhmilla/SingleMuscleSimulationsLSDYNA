@@ -15,7 +15,7 @@ R  penOptD 7.0000000
 R    ltSlk 0.0304511
 R       et 0.045833
 R   vceMax 4.5
-RlceNScale 1.0
+RlceNScale 0.975
 $
 *PARAMETER_EXPRESSION
 $#    name expression

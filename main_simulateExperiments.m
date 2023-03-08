@@ -3,7 +3,7 @@
 clc;
 clear all;
 close all;
-
+opengl('save','software');
 %%
 % User-defined script variables
 %%
