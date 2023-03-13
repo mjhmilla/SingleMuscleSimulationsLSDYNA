@@ -167,7 +167,7 @@ end
   
 
 %% umat43 
-%% Kleinbach et al.
+%% Proposed model
 
 if(strcmp(modelName,'umat43')==1)
 
@@ -318,6 +318,63 @@ if(strcmp(modelName,'umat43')==1)
     end
 end
   
+
+%% mat56
+%% LS-DYNA's built in Hill-type muscle model
+
+if(strcmp(modelName,'umat43')==1)
+
+    if(flag_enableIsometricExperiment==1)
+      assert(0, 'Error: Experiment is not yet implemented');
+    end
+
+    if(flag_enableConcentricExperiment==1)
+      assert(0, 'Error: Experiment is not yet implemented');      
+    end 
+
+    if(flag_enableQuickReleaseExperiment==1)
+      assert(0, 'Error: Experiment is not yet implemented');
+    end 
+
+    if(flag_enableEccentricExperiment==1)
+      idx=idx+1;
+      simulationType(idx).type = 'eccentric';
+      simulationInformation(idx).type                   = simulationType(idx).type;
+
+      simulationInformation(idx).simulationConstantFile = 'eccentric.k';      
+      simulationInformation(idx).musclePropertyCard     = 'catsoleusMat156.k';      
+      simulationInformation(idx).optimalFiberLength     = 'lceOptAT';
+      simulationInformation(idx).maximumIsometricForce  = 'fceOptAT';
+      simulationInformation(idx).tendonSlackLength      = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees  = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard = 0;
+      simulationInformation(idx).model = modelName;  
+
+    end 
+
+    if(flag_enableImpedanceExperiment==1)
+      assert(0, 'Error: Experiment is not yet implemented');
+    end
+    
+    
+    if(flag_enableForceLengthExperiment==1)
+      assert(0, 'Error: Experiment is not yet implemented');    
+    end    
+    
+    if(flag_enableSinusoidExperiment==1)
+      assert(0, 'Error: Experiment is not yet implemented');
+    end
+    
+    if(flag_enableReflexExperiment==1)
+      assert(0, 'Error: Experiment is not yet implemented');
+    end
+
+    if(flag_enableReflexExperiment_kN_mm_ms==1)
+      assert(0, 'Error: Experiment is not yet implemented');
+    end
+end
+
 
   
 end 

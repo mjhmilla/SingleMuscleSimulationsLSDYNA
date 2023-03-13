@@ -1,11 +1,12 @@
-function uniformModelData = createUniformMuscleModelData(modelName, lsdynaMuscle,...
-                                    optimalFiberLength, maxActiveIsometricForce, ...
-                                    tendonSlackLength, pennationAngle)
+function uniformModelData = createUniformMuscleModelData(...
+        modelName, lsdynaMusout, lsdynaBinout,...
+        optimalFiberLength, maxActiveIsometricForce, ...
+        tendonSlackLength, pennationAngle)
 %%
 % 
 %
 %   @param modelName   : the name of the model (e.g. umat41 or umat43
-%   @param lsdynaMuscle: the data stored in the model-specific text file
+%   @param lsdynaMusout: the data stored in the model-specific text file
 %   @param optimalFiberLength: the CE length at which the max. active force
 %                               is developed
 %   @param maxActiveIsometricForce: the maximum active isometric force
@@ -68,84 +69,111 @@ uniformModelData = struct('lceOpt',optimalFiberLength,...
 
 switch modelName
     case 'umat41'
-        indexMuscleTime         = lsdynaMuscle.indexTime;
-        indexMuscleExcitation   = lsdynaMuscle.indexExcitation;
-        indexMuscleActivation   = lsdynaMuscle.indexActivation; 
-        indexMuscleFmt          = lsdynaMuscle.indexFmt;
-        indexMuscleFce          = lsdynaMuscle.indexFce;
-        indexMuscleFpee         = lsdynaMuscle.indexFpee;
-        indexMuscleFsee         = lsdynaMuscle.indexFsee;
-        indexMuscleFsde         = lsdynaMuscle.indexFsde;
-        indexMuscleLmt          = lsdynaMuscle.indexLmt;
-        indexMuscleLce          = lsdynaMuscle.indexLce;
-        indexMuscleLceATN       = lsdynaMuscle.indexLce; %umat41 has no pennation model
-        indexMuscleLmtDot       = lsdynaMuscle.indexLmtDot;
-        indexMuscleLceDot       = lsdynaMuscle.indexLceDot;
+        indexMuscleTime         = lsdynaMusout.indexTime;
+        indexMuscleExcitation   = lsdynaMusout.indexExcitation;
+        indexMuscleActivation   = lsdynaMusout.indexActivation; 
+        indexMuscleFmt          = lsdynaMusout.indexFmt;
+        indexMuscleFce          = lsdynaMusout.indexFce;
+        indexMuscleFpee         = lsdynaMusout.indexFpee;
+        indexMuscleFsee         = lsdynaMusout.indexFsee;
+        indexMuscleFsde         = lsdynaMusout.indexFsde;
+        indexMuscleLmt          = lsdynaMusout.indexLmt;
+        indexMuscleLce          = lsdynaMusout.indexLce;
+        indexMuscleLceATN       = lsdynaMusout.indexLce; %umat41 has no pennation model
+        indexMuscleLmtDot       = lsdynaMusout.indexLmtDot;
+        indexMuscleLceDot       = lsdynaMusout.indexLceDot;
 
-        uniformModelData.time   = lsdynaMuscle.data(:,indexMuscleTime);
-        uniformModelData.exc    = lsdynaMuscle.data(:,indexMuscleExcitation);
-        uniformModelData.act    = lsdynaMuscle.data(:,indexMuscleActivation); 
+        uniformModelData.time   = lsdynaMusout.data(:,indexMuscleTime);
+        uniformModelData.exc    = lsdynaMusout.data(:,indexMuscleExcitation);
+        uniformModelData.act    = lsdynaMusout.data(:,indexMuscleActivation); 
 
-        uniformModelData.lp = lsdynaMuscle.data(:,indexMuscleLmt);
+        uniformModelData.lp = lsdynaMusout.data(:,indexMuscleLmt);
 
-        uniformModelData.vp = lsdynaMuscle.data(:,indexMuscleLmtDot);
+        uniformModelData.vp = lsdynaMusout.data(:,indexMuscleLmtDot);
 
-        uniformModelData.lceN   = lsdynaMuscle.data(:,indexMuscleLce)...
+        uniformModelData.lceN   = lsdynaMusout.data(:,indexMuscleLce)...
                                     ./optimalFiberLength;
         uniformModelData.lceATN = uniformModelData.lceN;
 
-        uniformModelData.ltN    = (lsdynaMuscle.data(:,indexMuscleLmt) ...
-                                  -lsdynaMuscle.data(:,indexMuscleLce))...
+        uniformModelData.ltN    = (lsdynaMusout.data(:,indexMuscleLmt) ...
+                                  -lsdynaMusout.data(:,indexMuscleLce))...
                                     ./tendonSlackLength;
 
         uniformModelData.alpha = zeros(size(uniformModelData.time));
 
         uniformModelData.lceNDot    = ...
-            lsdynaMuscle.data(:,indexMuscleLceDot)./optimalFiberLength;
+            lsdynaMusout.data(:,indexMuscleLceDot)./optimalFiberLength;
 
-        uniformModelData.ltNDot     = (lsdynaMuscle.data(:,indexMuscleLmtDot) ...
-                                      -lsdynaMuscle.data(:,indexMuscleLceDot))...
+        uniformModelData.ltNDot     = (lsdynaMusout.data(:,indexMuscleLmtDot) ...
+                                      -lsdynaMusout.data(:,indexMuscleLceDot))...
                                     ./tendonSlackLength;
 
         uniformModelData.alphaDot   = zeros(size(uniformModelData.time));
 
         uniformModelData.fceN = ...
-            lsdynaMuscle.data(:,indexMuscleFce)./maxActiveIsometricForce;
+            lsdynaMusout.data(:,indexMuscleFce)./maxActiveIsometricForce;
 
         uniformModelData.fpeN = ...
-            lsdynaMuscle.data(:,indexMuscleFpee)./maxActiveIsometricForce;
+            lsdynaMusout.data(:,indexMuscleFpee)./maxActiveIsometricForce;
 
-        uniformModelData.fseN = lsdynaMuscle.data(:,indexMuscleFsee)./maxActiveIsometricForce;
+        uniformModelData.fseN = lsdynaMusout.data(:,indexMuscleFsee)./maxActiveIsometricForce;
 
-        uniformModelData.dseN = lsdynaMuscle.data(:,indexMuscleFsde)./maxActiveIsometricForce;
+        uniformModelData.dseN = lsdynaMusout.data(:,indexMuscleFsde)./maxActiveIsometricForce;
 
 
         uniformModelData.fmtN  = ...
-            lsdynaMuscle.data(:,indexMuscleFmt)./maxActiveIsometricForce;
+            lsdynaMusout.data(:,indexMuscleFmt)./maxActiveIsometricForce;
 
     case 'umat43'
-        uniformModelData.time = lsdynaMuscle.data(:,lsdynaMuscle.indexTime);
-        uniformModelData.exc  = lsdynaMuscle.data(:,lsdynaMuscle.indexExc);
-        uniformModelData.act  = lsdynaMuscle.data(:,lsdynaMuscle.indexAct);
+        uniformModelData.time = lsdynaMusout.data(:,lsdynaMusout.indexTime);
+        uniformModelData.exc  = lsdynaMusout.data(:,lsdynaMusout.indexExc);
+        uniformModelData.act  = lsdynaMusout.data(:,lsdynaMusout.indexAct);
         
-        uniformModelData.lp   = lsdynaMuscle.data(:,lsdynaMuscle.indexLp);
-        uniformModelData.vp   = lsdynaMuscle.data(:,lsdynaMuscle.indexVp);
+        uniformModelData.lp   = lsdynaMusout.data(:,lsdynaMusout.indexLp);
+        uniformModelData.vp   = lsdynaMusout.data(:,lsdynaMusout.indexVp);
 
 
-        uniformModelData.lceN       = lsdynaMuscle.data(:,lsdynaMuscle.indexLceN);
-        uniformModelData.lceATN     = lsdynaMuscle.data(:,lsdynaMuscle.indexLceATN);
-        uniformModelData.ltN        = lsdynaMuscle.data(:,lsdynaMuscle.indexLtN);
-        uniformModelData.alpha      = lsdynaMuscle.data(:,lsdynaMuscle.indexAlpha);
+        uniformModelData.lceN       = lsdynaMusout.data(:,lsdynaMusout.indexLceN);
+        uniformModelData.lceATN     = lsdynaMusout.data(:,lsdynaMusout.indexLceATN);
+        uniformModelData.ltN        = lsdynaMusout.data(:,lsdynaMusout.indexLtN);
+        uniformModelData.alpha      = lsdynaMusout.data(:,lsdynaMusout.indexAlpha);
 
-        uniformModelData.lceNDot    = lsdynaMuscle.data(:,lsdynaMuscle.indexVceNN);
-        uniformModelData.ltNDot     = lsdynaMuscle.data(:,lsdynaMuscle.indexVtN);
-        uniformModelData.alphaDot   = lsdynaMuscle.data(:,lsdynaMuscle.indexAlphaDot);
+        uniformModelData.lceNDot    = lsdynaMusout.data(:,lsdynaMusout.indexVceNN);
+        uniformModelData.ltNDot     = lsdynaMusout.data(:,lsdynaMusout.indexVtN);
+        uniformModelData.alphaDot   = lsdynaMusout.data(:,lsdynaMusout.indexAlphaDot);
 
-        uniformModelData.fceN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFceN);
-        uniformModelData.fpeN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFecmHN);
-        uniformModelData.fseN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFtfcnN);
-        uniformModelData.dseN       = lsdynaMuscle.data(:,lsdynaMuscle.indexKtfcnN);        
-        uniformModelData.fmtN       = lsdynaMuscle.data(:,lsdynaMuscle.indexFtN);
+        uniformModelData.fceN       = lsdynaMusout.data(:,lsdynaMusout.indexFceN);
+        uniformModelData.fpeN       = lsdynaMusout.data(:,lsdynaMusout.indexFecmHN);
+        uniformModelData.fseN       = lsdynaMusout.data(:,lsdynaMusout.indexFtN);
+        uniformModelData.dseN       = lsdynaMusout.data(:,lsdynaMusout.indexFtN) ...
+                                     -lsdynaMusout.data(:,lsdynaMusout.indexFtfcnN);        
+        uniformModelData.fmtN       = lsdynaMusout.data(:,lsdynaMusout.indexFtN);
+
+    case 'mat156'
+
+        disp(' update mat156 createUniformMuscleModelData to somehow read u, a, fpe, dpe')
+        uniformModelData.time = lsdynaBinout.elout.beam.time';
+        uniformModelData.exc  = ones(size(uniformModelData.time)).*nan;
+        uniformModelData.act  = ones(size(uniformModelData.time)).*nan;
+
+        uniformModelData.lp     = -lsdynaBinout.nodout.z_coordinate;
+        uniformModelData.vp     = calcCentralDifferenceDataSeries(...
+                                        uniformModelData.time,...
+                                        uniformModelData.lp);
+        uniformModelData.lceN   = uniformModelData.lp./optimalFiberLength;
+        uniformModelData.lceATN = uniformModelData.lceN; 
+        uniformModelData.ltN    = zeros(size(uniformModelData.time));
+        uniformModelData.alpha  = zeros(size(uniformModelData.time));
+
+        uniformModelData.lceNDot    = uniformModelData.vp./optimalFiberLength;
+        uniformModelData.ltNDot     = zeros(size(uniformModelData.time));
+        uniformModelData.alphaDot   = zeros(size(uniformModelData.time));
+
+        uniformModelData.fceN       = lsdynaBinout.elout.beam.axial ./ maxActiveIsometricForce;
+        uniformModelData.fpeN       = zeros(size(uniformModelData.time));
+        uniformModelData.fseN       = zeros(size(uniformModelData.time));
+        uniformModelData.dseN       = zeros(size(uniformModelData.time));        
+        uniformModelData.fmtN       = uniformModelData.fceN;       
 
     otherwise
         assert(0,['modelName (',modelName,') is not yet coded'])

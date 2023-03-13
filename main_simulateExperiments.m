@@ -13,13 +13,18 @@ Releases    =  {'MPP_R931'};
 
 models(1) = struct('id',0,'name','');
 
-%indexUmat41             = 1;
-%models(indexUmat41).id  = 1;
-%models(indexUmat41).name='umat41';
+%indexUmat41              = 1;
+%models(indexUmat41).id   = 1;
+%models(indexUmat41).name ='umat41';
 
-indexUmat43             = 1;
-models(indexUmat43).id  = 1;
-models(indexUmat43).name='umat43';
+%indexUmat43              = 1;
+%models(indexUmat43).id   = 1;
+%models(indexUmat43).name ='umat43';
+
+indexMat56                = 1;
+models(indexMat56).id     = 1;
+models(indexMat56).name   ='mat56';
+
 
 flag_preProcessSimulationData       = 0; 
 %Setting this to 1 will perform any preprocessing needed of the enabled 
@@ -512,8 +517,10 @@ if(flag_postProcessSimulationData==1)
                         end
                         
                       end
-                    end                    
-                    assert(musoutCount == 1);
+                    end      
+                    if( contains(models(indexModel).name,'umat') )              
+                      assert(musoutCount == 1,'Error: could not find musout files');
+                    end
 
                     musdebug=[];
                     musdebugCount=0;
@@ -529,7 +536,7 @@ if(flag_postProcessSimulationData==1)
                             end                            
                           end
                         end
-                        assert(musdebugCount==1);
+                        assert(musdebugCount==1,'Error: could not find umat43 musout files');
                     end
                     %% Load the muscle data
                     switch models(indexModel).name
@@ -541,6 +548,8 @@ if(flag_postProcessSimulationData==1)
                                 readUmat43MusoutData(musoutFileList{1}); 
                             [musdebug,success] = ...
                                 readUmat43MusDebugData(musdebugFileList{1});
+                        case 'mat156'
+                            disp('  mat156: does not have any musout files');
                         otherwise assert(0)
                     end
 
@@ -576,7 +585,7 @@ if(flag_postProcessSimulationData==1)
                     
                     uniformModelData = createUniformMuscleModelData(...
                         models(indexModel).name,...
-                        musout, lceOpt,fiso,ltslk,alpha);
+                        musout, binout, lceOpt,fiso,ltslk,alpha);
 
                     if(flag_generateGenericPlots==1)
                         figGeneric =plotSimulationDataSummary(figGeneric,...
