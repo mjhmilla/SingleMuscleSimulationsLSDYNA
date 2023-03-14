@@ -17,7 +17,7 @@ R  penOptD 0.0
 R   vceMax 4.5
 RlceNScale 0.975
 R    ltSlk 0.0
-R timeStep 1.0E-6
+R timeStep 1.0E-3
 $
 *PARAMETER_EXPRESSION
 $#    name expression
