@@ -29,7 +29,7 @@ R pathLenO &lceOptAT*&lceNScale
 R pathLenS &pathLenO+&rampLenS
 R pathLenE &pathLenO+&rampLenE  
 R    timeE &stimTimeE+5.0
-R   sno156 &pathLenS/&lceOptAT
+R      sno &pathLenS/&lceOptAT
 $
 *TITLE
 $#                                                                         title

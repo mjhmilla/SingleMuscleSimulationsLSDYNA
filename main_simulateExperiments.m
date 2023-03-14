@@ -17,13 +17,13 @@ models(1) = struct('id',0,'name','');
 %models(indexUmat41).id   = 1;
 %models(indexUmat41).name ='umat41';
 
-indexUmat43              = 1;
-models(indexUmat43).id   = 1;
-models(indexUmat43).name ='umat43';
+%indexUmat43              = 1;
+%models(indexUmat43).id   = 1;
+%models(indexUmat43).name ='umat43';
 
-%indexMat56                = 1;
-%models(indexMat56).id     = 1;
-%models(indexMat56).name   ='mat56';
+indexMat56                = 1;
+models(indexMat56).id     = 1;
+models(indexMat56).name   ='mat156';
 
 
 flag_preProcessSimulationData       = 0; 
@@ -31,13 +31,13 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 0;
+flag_runSimulations                 = 1;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 1;
+flag_postProcessSimulationData      = 0;
 %Setting this to 1 will generate plots of the enabled experiments
 
-flag_generateGenericPlots           = 0;
+flag_generateGenericPlots           = 1;
 flag_generateSpecificPlots          = 1;
 
 
@@ -71,10 +71,10 @@ else
                ' SingleMuscleSimulationsLSDYNA directory']);
 end
 
-lsdynaBin_SMP_931 = fullfile(   'scratch','tmp','mmillard',...
+lsdynaBin_SMP_931 = fullfile( filesep,  'scratch','tmp','mmillard',...
                                 'lsdynaCompilation','SMP_R931','lsdyna');
 
-lsdynaBin_MPP_931 = fullfile(   'scratch','tmp','mmillard',...
+lsdynaBin_MPP_931 = fullfile( filesep,  'scratch','tmp','mmillard',...
                                 'lsdynaCompilation','MPP_R931','mppdyna');
 
 addpath(matlabScriptPath);
@@ -82,7 +82,7 @@ cd(matlabScriptPath);
 
 
 %% path to exp. reference
-referenceDataPath= fullfile(matlabScriptPath,'ReferenceExperiments/');
+referenceDataPath= fullfile(matlabScriptPath,'ReferenceExperiments', filesep);
 
 numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableConcentricExperiment ... 

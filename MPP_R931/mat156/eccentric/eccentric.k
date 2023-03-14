@@ -29,7 +29,7 @@ R pathLenO &lceOptAT*&lceNScale
 R pathLenS &pathLenO+&rampLenS
 R pathLenE &pathLenO+&rampLenE  
 R    timeE &stimTimeE+5.0
-R   sno156 &pathLenS/&lceOptAT
+R      sno &pathLenS/&lceOptAT
 $
 *TITLE
 $#                                                                         title
@@ -84,7 +84,7 @@ $#     id1       id2       id3       id4       id5       id6       id7       id8
     &dtout         2
 $#
 *INCLUDE
-catsoleus156.k
+catsoleusMat156.k
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0
