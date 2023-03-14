@@ -16,6 +16,7 @@ R    ltSlk 0.0304511
 R       et 0.045833
 R   vceMax 4.5
 RlceNScale 0.975000
+R timeStep 1.0E-6
 $
 *PARAMETER_EXPRESSION
 $#    name expression
@@ -109,6 +110,13 @@ $#                a1                  o1
           &rampTimeS          -&pathLenS
           &rampTimeE          -&pathLenE
               &timeE          -&pathLenE
+$
+*DEFINE_CURVE
+$#    lcid      sidr       sfa       sfo      offa      offo    dattyp
+         5         0       1.0       1.0       0.0       0.0
+$#                a1                  o1
+                 0.0           &timeStep
+              &timeE           &timeStep
 $
 *NODE
 $#   nid               x               y               z      tc      rc

@@ -17,6 +17,7 @@ R  penOptD 0.0
 R   vceMax 4.5
 RlceNScale 0.975
 R    ltSlk 0.0
+R timeStep 1.0E-6
 $
 *PARAMETER_EXPRESSION
 $#    name expression
@@ -39,7 +40,7 @@ $#  endtim    endcyc     dtmin    endeng    endmas
     &timeE         0       0.0       0.01.000000E8
 *CONTROL_TIMESTEP
 $#  dtinit    tssfac      isdo    tslimt     dt2ms      lctm     erode     ms1st
-       0.00.89999998         0       0.0       0.0         0         0         0
+       0.00.89999998         0       0.0       0.0         5         0         0
 $#  dt2msf   dt2mslc     imscl    unused    unused     rmscl     
        0.0         0         0                           0.0
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -107,6 +108,13 @@ $#                a1                  o1
           &rampTimeS          -&pathLenS
           &rampTimeE          -&pathLenE
               &timeE          -&pathLenE
+$
+*DEFINE_CURVE
+$#    lcid      sidr       sfa       sfo      offa      offo    dattyp
+         5         0       1.0       1.0       0.0       0.0
+$#                a1                  o1
+                 0.0           &timeStep
+              &timeE           &timeStep
 $
 *NODE
 $#   nid               x               y               z      tc      rc
