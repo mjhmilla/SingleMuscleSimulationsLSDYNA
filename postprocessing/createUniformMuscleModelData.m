@@ -145,8 +145,7 @@ switch modelName
         uniformModelData.fceN       = lsdynaMusout.data(:,lsdynaMusout.indexFceN);
         uniformModelData.fpeN       = lsdynaMusout.data(:,lsdynaMusout.indexFecmHN);
         uniformModelData.fseN       = lsdynaMusout.data(:,lsdynaMusout.indexFtN);
-        uniformModelData.dseN       = lsdynaMusout.data(:,lsdynaMusout.indexFtN) ...
-                                     -lsdynaMusout.data(:,lsdynaMusout.indexFtfcnN);        
+        uniformModelData.dseN       = lsdynaMusout.data(:,lsdynaMusout.indexFtBetaN);        
         uniformModelData.fmtN       = lsdynaMusout.data(:,lsdynaMusout.indexFtN);
 
     case 'mat156'
@@ -157,9 +156,8 @@ switch modelName
         uniformModelData.act  = ones(size(uniformModelData.time)).*nan;
 
         uniformModelData.lp     = -lsdynaBinout.nodout.z_coordinate;
-        uniformModelData.vp     = calcCentralDifferenceDataSeries(...
-                                        uniformModelData.time,...
-                                        uniformModelData.lp);
+        uniformModelData.vp     = -lsdynaBinout.nodout.z_velocity;
+        
         uniformModelData.lceN   = uniformModelData.lp./optimalFiberLength;
         uniformModelData.lceATN = uniformModelData.lceN; 
         uniformModelData.ltN    = zeros(size(uniformModelData.time));

@@ -322,7 +322,7 @@ end
 %% mat56
 %% LS-DYNA's built in Hill-type muscle model
 
-if(strcmp(modelName,'umat43')==1)
+if(strcmp(modelName,'mat156')==1)
 
     if(flag_enableIsometricExperiment==1)
       assert(0, 'Error: Experiment is not yet implemented');

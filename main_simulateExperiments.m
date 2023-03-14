@@ -17,13 +17,13 @@ models(1) = struct('id',0,'name','');
 %models(indexUmat41).id   = 1;
 %models(indexUmat41).name ='umat41';
 
-%indexUmat43              = 1;
-%models(indexUmat43).id   = 1;
-%models(indexUmat43).name ='umat43';
+indexUmat43              = 1;
+models(indexUmat43).id   = 1;
+models(indexUmat43).name ='umat43';
 
-indexMat56                = 1;
-models(indexMat56).id     = 1;
-models(indexMat56).name   ='mat56';
+%indexMat56                = 1;
+%models(indexMat56).id     = 1;
+%models(indexMat56).name   ='mat56';
 
 
 flag_preProcessSimulationData       = 0; 
@@ -31,7 +31,7 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
@@ -55,18 +55,27 @@ flag_aniType = 1;
 %0. human
 %1. feline
 
-
 %Lengthens muscle to sample force-length curves
 flag_enableForceLengthExperiment        = 0; 
 
+%Test to see if the Matlab terminal is in the correct directory
+currDirContents = dir;
+[pathToParent,parentFolderName,ext] = fileparts(currDirContents(1).folder);
 
-matlabScriptPath    = '/scratch/tmp/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA';
-%matlabScriptPath = ['/home/mmillard/work/code/stuttgart/riccati/',...
-%      'scratch/mmillard/muscleModeling/SingleMuscleSimulationsLSDYNA'];
+matlabScriptPath = '';
+if(strcmp(currDirContents(1).name,'.') ...
+        && contains(parentFolderName,'SingleMuscleSimulationsLSDYNA'))
+    matlabScriptPath = pwd;
+else
+    assert(0, ['Error: script is not starting in the',...
+               ' SingleMuscleSimulationsLSDYNA directory']);
+end
 
-lsdynaBin_SMP_931 = '/scratch/tmp/mmillard/lsdynaCompilation/SMP_R931/lsdyna';
-lsdynaBin_MPP_931 = '/scratch/tmp/mmillard/lsdynaCompilation/MPP_R931/mppdyna';
+lsdynaBin_SMP_931 = fullfile(   'scratch','tmp','mmillard',...
+                                'lsdynaCompilation','SMP_R931','lsdyna');
 
+lsdynaBin_MPP_931 = fullfile(   'scratch','tmp','mmillard',...
+                                'lsdynaCompilation','MPP_R931','mppdyna');
 
 addpath(matlabScriptPath);
 cd(matlabScriptPath);
