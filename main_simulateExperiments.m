@@ -44,20 +44,26 @@ models(indexMat56).id     = 1;
 models(indexMat56).name   ='mat156';
 models(indexMat56).colors = [maroonA;maroonB];
 
-indexUmat43              = 2;
-models(indexUmat43).id   = 2;
+indexUmat41              = 2;
+models(indexUmat41).id   = 2;
+models(indexUmat41).name ='umat41';
+models(indexUmat41).colors= [magentaA;magentaB];
+
+indexUmat43              = 3;
+models(indexUmat43).id   = 3;
 models(indexUmat43).name ='umat43';
-models(indexUmat43).colors= [magentaA;magentaB];
+models(indexUmat43).colors= [blueA;blueB];
+
 
 flag_preProcessSimulationData       = 0; 
 %Setting this to 1 will perform any preprocessing needed of the enabled 
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 0;
+flag_runSimulations                 = 1;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 1;
+flag_postProcessSimulationData      = 0;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_generateGenericPlots           = 0;
