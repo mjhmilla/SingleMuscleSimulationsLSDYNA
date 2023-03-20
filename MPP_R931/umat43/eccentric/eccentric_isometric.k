@@ -28,10 +28,12 @@ RrampTimeS 2.39+&dT+(&rampLenE-&rampLen)/&rampVel
 RrampTimeD (&rampLen)/&rampVel
 RrampTimeE &rampTimeS+&rampTimeD
 RstimTimeE &rampTimeE+5.0
+R  stimLow 0.0
+R stimHigh 1.0
 R       kt 30.0*&fceOpt/&ltSlk
 R pathLenO &lceOpt*&lceNScale*cos(&penOpt)+&ltSlk
 R pathLenS &pathLenO+&rampLenS
-R pathLenE &pathLenO+&rampLenE  
+R pathLenE &pathLenS  
 R    timeE &stimTimeE+5.0
 $
 *TITLE
@@ -92,12 +94,12 @@ catsoleus.k
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
-                 0.0                 0.0
-          &stimTimeS                 0.0
-          &stimTimeS                 1.0
-          &stimTimeE                 1.0
-          &stimTimeE                 0.0
-              &timeE                 0.0
+                 0.0            &stimLow
+          &stimTimeS            &stimLow
+          &stimTimeS           &stimHigh
+          &stimTimeE           &stimHigh
+          &stimTimeE            &stimLow
+              &timeE            &stimLow
 *ELEMENT_BEAM
 $#   eid     pid      n1      n2      n3     rt1     rr1     rt2     rr2   local
        1       2       1       2       0       0       0       0       0       2
@@ -108,8 +110,8 @@ $#  typeid       dof       vad      lcid        sf       vid     death     birth
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          4         0       1.0       1.0       0.0       0.0
 $#                a1                  o1
-                 0.0          -&pathLenE
-          &rampTimeS          -&pathLenE
+                 0.0          -&pathLenS
+          &rampTimeS          -&pathLenS
           &rampTimeE          -&pathLenE
               &timeE          -&pathLenE
 $

@@ -13,18 +13,41 @@ Releases    =  {'MPP_R931'};
 
 models(1) = struct('id',0,'name','');
 
+greyA = [0,0,0];
+greyB = [1,1,1].*0.5;
+
+blueA  = [0, 0.4470, 0.7410];
+blueB  = blueA.*0.5 + [1,1,1].*0.5;
+
+greenA = [0, 0.75, 0.75];
+greenB = greenA.*0.5 + [1,1,1].*0.5;
+
+maroonA= [0.6350, 0.0780, 0.1840];
+maroonB= maroonA.*0.5 + [1,1,1].*0.5;
+
+magentaA = [0.75, 0, 0.75];
+magentaB = magentaA.*0.5 + [1,1,1].*0.5;
+
+redA = [1,0,0];
+redB = redA.*0.5 + [1,1,1].*0.5;
+
+dataColorA=greyA;
+dataColorB=greyB;
+
 %indexUmat41              = 1;
 %models(indexUmat41).id   = 1;
 %models(indexUmat41).name ='umat41';
-
-% indexUmat43              = 1;
-% models(indexUmat43).id   = 1;
-% models(indexUmat43).name ='umat43';
+%models(indexUmat41).colors= [blueA;blueB];
 
 indexMat56                = 1;
 models(indexMat56).id     = 1;
 models(indexMat56).name   ='mat156';
+models(indexMat56).colors = [maroonA;maroonB];
 
+indexUmat43              = 2;
+models(indexUmat43).id   = 2;
+models(indexUmat43).name ='umat43';
+models(indexUmat43).colors= [magentaA;magentaB];
 
 flag_preProcessSimulationData       = 0; 
 %Setting this to 1 will perform any preprocessing needed of the enabled 
@@ -38,7 +61,7 @@ flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_generateGenericPlots           = 0;
-flag_generateSpecificPlots          = 1;
+flag_generateSpecificPlots          = 0;
 flag_generatePublicationPlots       = 1;
 
 flag_enableIsometricExperiment          = 0;
@@ -158,17 +181,7 @@ plotHorizMarginCm = 1.5;
 plotVertMarginCm  = 2.;  
 
 
-simulationColorA = [0,0,1].*(0.9)+[1,1,1].*(0.1);
-simulationColorB = [0,0,1].*(0.5)+[1,1,1].*(0.5);
 
-dataColorA = [0,0,0].*(0.5)+[1,1,1].*(0.5);
-dataColorB = [0,0,0].*(0.2)+[1,1,1].*(0.8);
-
-binoutColorA = dataColorA;
-binoutColorB = dataColorB;
-
-musoutColorA = [1,0,0].*(1)+[0,0,1].*(0.);
-musoutColorB = [1,0,0].*(0)+[0,0,1].*(1);
 
 
 %% Preprocessing
@@ -314,10 +327,10 @@ if(flag_postProcessSimulationData==1)
 
     cd(matlabScriptPath);
 
-    figGeneric  = figure;
-    figSpecific = figure; 
-    figPublication=figure;
-    figDebug    = figure;
+    figGeneric      = figure;
+    figSpecific     = figure; 
+    figPublication  = figure;
+    figDebug        = figure;
     
     %load inputFunctions
     load([structFolder,signalFileName]);
@@ -327,6 +340,8 @@ if(flag_postProcessSimulationData==1)
 
         Release = cell2mat(Releases(indexRelease));
 
+        clf(figPublication);
+        flag_figPublicationDirty=0;        
         for indexModel = 1:1:length(models)
             impedancePlotCounter=1;
 
@@ -342,6 +357,9 @@ if(flag_postProcessSimulationData==1)
                         flag_enableReflexExperiment,...
                         flag_enableReflexExperiment_kN_mm_ms);            
               
+            simulationColorA = models(indexModel).colors(1,:);
+            simulationColorB = models(indexModel).colors(2,:);
+
             for indexSimulationType = 1:length(simulationType)
                 
 
@@ -350,8 +368,7 @@ if(flag_postProcessSimulationData==1)
                 flag_figGenericDirty=0;
                 clf(figSpecific);
                 flag_figSpecificDirty=0;
-                clf(figPublication);
-                flag_figPublicationDirty=0;
+
 
                 clf(figDebug);
                 flag_figDebugDirty=0;
@@ -415,10 +432,19 @@ if(flag_postProcessSimulationData==1)
                 numberOfHorizontalPlotColumnsDebug    = 3;
                 numberOfVerticalPlotRowsDebug         = 6;
 
+                numberOfHorizontalPlotColumnsPublication  = 1; 
+                numberOfVerticalPlotRowsPublication       = 1;
+
                 switch (simulationTypeStr)
                     case 'eccentric'
-                      numberOfHorizontalPlotColumnsSpecific = 1;
-                      numberOfVerticalPlotRowsSpecific      = 6;
+
+                      numberOfHorizontalPlotColumnsSpecific     = 1;
+                      numberOfVerticalPlotRowsSpecific          = 6;
+
+                      numberOfHorizontalPlotColumnsPublication  = length(models)+1; 
+                      numberOfVerticalPlotRowsPublication       = 2;
+
+
                     case 'isometric'
                       numberOfHorizontalPlotColumnsSpecific = 1;
                       numberOfVerticalPlotRowsSpecific      = 1;
@@ -449,7 +475,7 @@ if(flag_postProcessSimulationData==1)
                 end
 
 
-                [subPlotPanelSpecific, pageWidthSpecific,pageHeightSpecific]= ...
+                [subPlotPanelSpecific,pageWidthSpecific,pageHeightSpecific]= ...
                       plotConfigGeneric(  numberOfHorizontalPlotColumnsSpecific,...
                                           numberOfVerticalPlotRowsSpecific,...
                                           plotWidth,...
@@ -457,13 +483,22 @@ if(flag_postProcessSimulationData==1)
                                           plotHorizMarginCm,...
                                           plotVertMarginCm);
 
-                [subPlotPanelDebug, pageWidthDebug,pageHeightDebug]= ...
+                [subPlotPanelDebug,pageWidthDebug,pageHeightDebug]= ...
                       plotConfigGeneric(  numberOfHorizontalPlotColumnsDebug,...
                                           numberOfVerticalPlotRowsDebug,...
                                           plotWidth,...
                                           plotHeight,...
                                           plotHorizMarginCm,...
                                           plotVertMarginCm);
+
+                [subPlotPanelPublication,pageWidthPublication,pageHeightPublication]= ...
+                      plotConfigPublication(numberOfHorizontalPlotColumnsPublication,...
+                                          numberOfVerticalPlotRowsPublication,...
+                                          plotWidth,...
+                                          plotHeight,...
+                                          plotHorizMarginCm,...
+                                          plotVertMarginCm,...
+                                          simulationTypeStr);
 
 
                 for indexSimulationTrial=3:deltaPoints:length(simulationDirectories)                    
@@ -653,14 +688,14 @@ if(flag_postProcessSimulationData==1)
 
                     %% Add to the publication plots
                     if(flag_generatePublicationPlots==1)
-                        [figPublication, flag_figSpecificDirty] ...
+                        [figPublication,flag_figSpecificDirty] ...
                             = generatePublicationPlots(figPublication,...
                                     simulationTypeStr,...
                                     binout,uniformModelData,d3hspFileName,...
-                                    indexColumn,...
-                                    subPlotPanelSpecific,...
-                                    numberOfVerticalPlotRowsSpecific,...
-                                    numberOfHorizontalPlotColumnsSpecific,... 
+                                    indexModel,...
+                                    subPlotPanelPublication,...
+                                    numberOfVerticalPlotRowsPublication,...
+                                    numberOfHorizontalPlotColumnsPublication,... 
                                     simulationDirectories(indexSimulationTrial).name,...
                                     indexSimulationTrial,...
                                     length(simulationDirectories),...
@@ -698,10 +733,10 @@ if(flag_postProcessSimulationData==1)
                     print('-dpdf', [matlabScriptPath,'/',outputFolder,'/',...
                           Release,'/',models(indexModel).name,'/',fileName]);
                 end
-                if(flag_figPublicationDirty==1)
+                if(flag_figPublicationDirty==1 && indexModel ==length(models))
                     figure(figPublication);      
                     figPublication=configPlotExporter(figPublication, ...
-                                pageWidthSpecific, pageHeightSpecific);
+                                pageWidthPublication, pageHeightPublication);
                     fileName =    ['fig_',Release,'_',...
                                   models(indexModel).name,'_',...                    
                                   simulationInformation(indexSimulationInfo).type,...

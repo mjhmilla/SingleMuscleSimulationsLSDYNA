@@ -65,7 +65,11 @@ uniformModelData = struct('lceOpt',optimalFiberLength,...
                           'lceN',[],'ltN',[],'alpha',[],...
                           'lceNDot',[],'ltNDot',[],'alphaDot',[],...
                           'fceN',[],'fpeN',[],'fseN',[], 'dseN',[],...
-                          'fmtN',[]);
+                          'fmtN',[],...
+                          'name','',...
+                          'nameLabel','',...
+                          'authorship','',...
+                          'authorshipShort','');
 
 switch modelName
     case 'umat41'
@@ -123,7 +127,12 @@ switch modelName
 
         uniformModelData.fmtN  = ...
             lsdynaMusout.data(:,indexMuscleFmt)./maxActiveIsometricForce;
-
+        
+        uniformModelData.name       = modelName;
+        uniformModelData.nameLabel  = 'EHTMM';
+        uniformModelData.authorship = 'Kleinbach et al. (2017)';
+        uniformModelData.authorshipShort = 'Kleinbach (2017)';
+        
     case 'umat43'
         uniformModelData.time = lsdynaMusout.data(:,lsdynaMusout.indexTime);
         uniformModelData.exc  = lsdynaMusout.data(:,lsdynaMusout.indexExc);
@@ -147,6 +156,11 @@ switch modelName
         uniformModelData.fseN       = lsdynaMusout.data(:,lsdynaMusout.indexFtN);
         uniformModelData.dseN       = lsdynaMusout.data(:,lsdynaMusout.indexFtBetaN);        
         uniformModelData.fmtN       = lsdynaMusout.data(:,lsdynaMusout.indexFtN);
+
+        uniformModelData.name               = modelName;
+        uniformModelData.nameLabel          = 'Model';
+        uniformModelData.authorship         = 'Millard et al. (2023)';
+        uniformModelData.authorshipShort    = 'Millard (2023)';
 
     case 'mat156'
 
@@ -172,6 +186,12 @@ switch modelName
         uniformModelData.fseN       = zeros(size(uniformModelData.time));
         uniformModelData.dseN       = zeros(size(uniformModelData.time));        
         uniformModelData.fmtN       = uniformModelData.fceN;       
+
+
+        uniformModelData.name               = modelName;
+        uniformModelData.nameLabel          = 'MAT156';
+        uniformModelData.authorship         = 'Weiss (2016)';
+        uniformModelData.authorshipShort    = 'Weiss (2016)';
 
     otherwise
         assert(0,['modelName (',modelName,') is not yet coded'])

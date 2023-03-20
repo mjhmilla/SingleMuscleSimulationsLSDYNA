@@ -1,6 +1,6 @@
 function figH = plotEccentricSimulationDataForPublication(figH,...
                       lsdynaBinout,lsdynaMuscleUniform,d3hspFileName, ...
-                      indexColumn,...
+                      indexModel,...
                       subPlotLayout,subPlotRows,subPlotColumns,...                      
                       simulationFile,indexSimulation, totalSimulations,... 
                       referenceDataFolder,...   
@@ -12,7 +12,19 @@ function figH = plotEccentricSimulationDataForPublication(figH,...
 
 figure(figH);
 
-subplot('Position', reshape( subPlotLayout(1,indexColumn,:),1,4 ) );
+flag_addIsometricTrials=0;
+
+
+yLimForce = [0,40];
+xLimForce = [0,14];
+
+yLimRamp = [-0.5,9.5];
+xLimRamp = xLimForce;
+
+% Plot: 9mm ramps at the 3 different speeds on one plot
+%
+% Row 1: Forces
+% Row 2: Ramp length change (much skinnier)
 
 % Add the reference data
 if(flag_addReferenceData==1)
@@ -26,7 +38,7 @@ if(flag_addReferenceData==1)
     %dataFig7B = importdata([referenceDataFolder,'/','dataHerzogLeonard2002Figure7B.csv']);
     %dataFig7C = importdata([referenceDataFolder,'/','dataHerzogLeonard2002Figure7C.csv']);    
     rampVelocities=[3,9,27];
-    rampLengths = [3,6,9];
+    rampLengths = [9];
 
     for indexFile = 1:1:length(dataFiles)
         data = importdata([referenceDataFolder,'/',dataFiles{indexFile}]);
@@ -74,64 +86,97 @@ if(flag_addReferenceData==1)
         end
 
         %Plot the data
-        indexRowA = (indexFile-1)*2+1;
+        indexRowA = 1;%(indexFile-1)*2+1;
         indexRowB = indexRowA+1;
         
         %Plot the reference isometric force datda
-        for indexForceColumn=(length(data.colheaders)-1):-2:2     
-            n = (indexForceColumn-2)/(length(data.colheaders)-1);    
-            referenceColor = referenceColorB.*(1-n)+referenceColorA.*n;
-            indexLengthColumn = indexForceColumn+1;
+        indexPlotedLine = 1;
+        numberPlottedLines=3;
 
-            subplot('Position',...
-                    reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));   
-
-            if(isIsometricColumn(1,indexForceColumn)==1)
-
-                %Plot the isometric trial that takes place at 9mm
-                if(  data.data(end,indexLengthColumn) < 0.5)
-                    fill([data.data(1,indexTime);...
-                          data.data(:,indexTime);...
-                          data.data(end,indexTime)],...
-                         [0;...
-                          data.data(:,indexForceColumn);...
-                          0],...
-                         referenceColor,'EdgeColor','none','FaceAlpha',0.5);
-                    hold on;
-
-                    t0 = 2.3+9/3;
-                    f0 = max(data.data(:,indexForceColumn));
-
-
-                    text(   t0,f0,'Exp: f',...
-                            'VerticalAlignment','top');
-                    hold on;
-
-                    
-                    subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));    
-                    plot(data.data(:,indexTime), data.data(:,indexForceColumn+1),...
-                         'Color',referenceColor,'LineWidth',2);
-                    hold on;            
-
-                end
-                
-            end
-
-        end
+%         for indexForceColumn=(length(data.colheaders)-1):-2:2     
+% 
+%             
+%             indexLengthColumn = indexForceColumn+1;
+%
+%             subplot('Position',...
+%                     reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));   
+% 
+% 
+%             if(isIsometricColumn(1,indexForceColumn)==1 ...
+%                     && flag_addIsometricTrials==1)
+% 
+% 
+%                 %Plot the isometric trial that takes place at 9mm
+%                 if(  data.data(end,indexLengthColumn) < 0.5)
+%                     referenceColor = referenceColorA;
+%                     fill([data.data(1,indexTime);...
+%                           data.data(:,indexTime);...
+%                           data.data(end,indexTime)],...
+%                          [0;...
+%                           data.data(:,indexForceColumn);...
+%                           0],...
+%                          referenceColor,'EdgeColor','none','FaceAlpha',0.5);
+%                     hold on;
+% 
+%                     t0 = 2.3+9/3;
+%                     f0 = max(data.data(:,indexForceColumn));
+% 
+% 
+%                     text(   t0,f0,'Exp: f',...
+%                             'VerticalAlignment','top');
+%                     hold on;
+% 
+%                     
+%                     subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));    
+%                     plot(data.data(:,indexTime), data.data(:,indexForceColumn+1),...
+%                          'Color',referenceColor,'LineWidth',0.5);
+%                     hold on;   
+% 
+%                     indexPlotedLine=indexPlotedLine+1;
+% 
+%                 end
+%                 
+%             end
+%
+%        end
 
         trialCount=0;
         for indexForceColumn=(length(data.colheaders)-1):-2:2  
-            indexLengthColumn = indexForceColumn+1;
-            n = (indexForceColumn-2)/(length(data.colheaders)-1);    
-            referenceColor = referenceColorB.*(1-n)+referenceColorA.*n;
 
-            subplot('Position',...
-                    reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));   
+            indexLengthColumn = indexForceColumn+1;
+            
+
+             
 
             if(   isIsometricColumn(1,indexForceColumn)==0)
-             
-                plot(data.data(:,indexTime), data.data(:,indexForceColumn),...
-                     'Color',referenceColor,'LineWidth',2);
+                             
+                %Identify the rate of lengthening
+                minL = min(data.data(:,indexLengthColumn));
+                maxL = max(data.data(:,indexLengthColumn));
+
+                [timeMinL,indexRampStart] = max( data.data(:,indexLengthColumn)>(minL+1) );
+                [timeMaxL,indexRampEnd] = min( data.data(:,indexLengthColumn)<(maxL-1) );
+                
+                timeRampStart   = data.data(indexRampStart,indexTime);
+                timeRampEnd     = data.data(indexRampEnd,indexTime);
+
+                rampVelRough = (maxL-minL)/(timeRampEnd-timeRampStart);
+                
+                errVel = [1,1,1].*rampVelRough - [3,9,27];
+                [errVelMin, indexVel] = min(abs(errVel));
+
+                indexColumn = indexVel;
+
+                subplot('Position',...
+                    reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));  
+                
+                %n = (indexVel-1)/2;
+                %referenceColor = referenceColorB.*(1-n)+referenceColorA.*n;                
+                referenceColor = referenceColorA;
+
+                plot(data.data(:,indexTime), ...
+                     data.data(:,indexForceColumn),...
+                     'Color',referenceColor,'LineWidth',0.5);
                 hold on;
 
                 dl = round(data.data(end,indexLengthColumn) ...
@@ -159,38 +204,44 @@ if(flag_addReferenceData==1)
                          'MarkerFaceColor',[1,1,1]);
                     hold on;  
                     
-                    trialLabel = ['Exp: ', num2str(dl)];
+                    trialLabel = sprintf('%1.1fN',f0);
+
                 elseif(isPassiveColumn(1,indexForceColumn) == 1 && ...
                    isIsometricColumn(1,indexForceColumn) == 0)
-                    trialLabel = ['Exp: ', 'p'];
-
                     t1=t0;
                     f1=f0;
+                    trialLabel = sprintf('%1.1fN',f0); 
+
+                    plot(t0,f0,...
+                         'o','Color',referenceColor,...
+                         'MarkerSize',2,...
+                         'MarkerFaceColor',[1,1,1]);
+                    hold on;                      
+
                 elseif(isPassiveColumn(1,indexForceColumn) == 0 && ...
                    isIsometricColumn(1,indexForceColumn) == 0)
-                    trialLabel = ['Exp: ', 'f'];
                     t1=t0;
                     f1=f0;
+                    trialLabel = sprintf('%1.1fN',f0); 
+
+                    plot(t0,f0,...
+                         'o','Color',referenceColor,...
+                         'MarkerSize',2,...
+                         'MarkerFaceColor',[1,1,1]);
+                    hold on;                      
+
                 end
 
-                text(t1,...
-                     f1,...
-                     trialLabel);
+                text(t1,f1,trialLabel,'VerticalAlignment','bottom');
                 hold on;
 
                 if( isPassiveColumn(1,indexForceColumn)==0)
                     subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
 
                     plot(data.data(:,indexTime), data.data(:,indexLengthColumn),...
-                         'Color',referenceColor,'LineWidth',2);
+                         'Color',referenceColor,'LineWidth',0.5);
                     hold on;            
 
-                    text(0.25,...
-                         data.data(1,indexLengthColumn),...
-                         ['Exp: ', num2str(dl)],...
-                         'VerticalAlignment','bottom',...
-                         'HorizontalAlignment','left');
-                    hold on;
                 end
                 if(isPassiveColumn(1,indexForceColumn)==0 ...
                         && isIsometricColumn(1,indexForceColumn)==0)
@@ -198,22 +249,53 @@ if(flag_addReferenceData==1)
                 end
             end
 
-        end
-        subplot('Position',reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));
-        xlabel('Time (s)');
-        ylabel('Force (N)');
-        title(['Active lengthening (',dataLabels{indexFile},')']);
-        box off;
-        xticks([0:2:14]);
-        yticks([0:10:40])
+            plotLabel1  = '';
+            plotLabel2  = '';
+            velLabel    = '';
+            switch indexColumn
+                case 1
+                    plotLabel1 = 'A';
+                    plotLabel2 = 'B';
+                    velLabel   = '3 mm/s';
+                    
+                case 2
+                    plotLabel1 = 'C';
+                    plotLabel2 = 'D';
+                    velLabel   = '9 mm/s';
+                    
+                case 3
+                    plotLabel1 = 'E';
+                    plotLabel2 = 'F';
+                    velLabel   = '27 mm/s';
+                    
+                otherwise
+                    assert(0,'Error: invalid indexColumn');
+            end
 
-        subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
-        xlabel('Time (s)');
-        ylabel('Length (mm)');
-        title(['Active lengthening (',dataLabels{indexFile},')']);
-        box off;
-        xticks([0:2:14]);
-        yticks([0:2:10])
+
+
+            subplot('Position',reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));
+            xlabel('Time (s)');
+            ylabel('Force (N)');
+            title([plotLabel1,'. Active lengthening (',velLabel,')']);
+            box off;
+            xticks([0:2:14]);
+            yticks([0:10:40])
+            ylim(yLimForce);
+            xlim(xLimForce);
+    
+            subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
+            xlabel('Time (s)');
+            ylabel('Length (mm)');
+            title([plotLabel2,'. Ramp profile: 9mm \& ',velLabel]);
+            box off;
+            xticks([0:2:14]);
+            yticks([0:2:10])
+            ylim(yLimRamp);
+            xlim(xLimRamp);
+
+        end
+
         
     end
 
@@ -224,103 +306,147 @@ end
 if(flag_addSimulationData)
     n = (indexSimulation-1)/(totalSimulations-1);
 
-    simulationColor = (1-n).*simulationColorA + (n).*simulationColorB;
-
     rampSpeedLabel = {'3mmps','9mmps','27mmps'};
     rampSpeed = [3,9,27];
     indexRamp = 0;
+
     for i=1:1:length(rampSpeedLabel)
-        if(contains(simulationFile,rampSpeedLabel{i}))
+        if(contains(simulationFile,[rampSpeedLabel{i},'_9mm']))
             indexRamp=i;
+
         end
+
     end
 
-    indexRowA = (indexRamp-1)*2+1;
-    indexRowB = indexRowA+1;
+    indexColumn     = indexRamp;
+    simulationColor = simulationColorA;
 
-    %Get the reference length PATHLEN0 stored in the d3hsp file
-    pathLen = getParameterValueFromD3HSPFile(d3hspFileName,'PATHLENO');
-    m2mm=1000;
+    %If we have found a ramp that has a 9mm length change, plot it
+    if(indexRamp ~= 0)
 
+        indexRowA = 1;
+        indexRowB = indexRowA+1;
     
-
+        %Get the reference length PATHLEN0 stored in the d3hsp file
+        pathLen = getParameterValueFromD3HSPFile(d3hspFileName,'PATHLENO');
+        m2mm=1000;
     
-    subplot('Position',reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));
+        subplot('Position',reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));
+    
+            changeInLength = -( lsdynaBinout.nodout.z_coordinate ...
+                               -lsdynaBinout.nodout.z_coordinate(1,1));
+                           
+            changeInLengthFromOptimal = -(lsdynaBinout.nodout.z_coordinate+pathLen);
+                           
+            changeInLength  = changeInLength.*(m2mm); %m to mm
+            dl              = round(changeInLength(end,1)-changeInLength(1,1),0);
+    
+            maxStim=0;
 
-        changeInLength = -( lsdynaBinout.nodout.z_coordinate ...
-                           -lsdynaBinout.nodout.z_coordinate(1,1));
-                       
-        changeInLengthFromOptimal = -(lsdynaBinout.nodout.z_coordinate+pathLen);
-                       
-        changeInLength=changeInLength.*(m2mm); %m to mm
-        dl = round(changeInLength(end,1)-changeInLength(1,1),0);
+            if(dl > 2)
+                plot(lsdynaBinout.elout.beam.time',...
+                     lsdynaBinout.elout.beam.axial,...
+                     'Color', simulationColor,...
+                     'LineWidth',1);
+                hold on;
+                box off;    
+                                        
+            end
+    
+           
+            if(dl > 2 && maxStim > 0.5)
+                rampTimeE = getParameterValueFromD3HSPFile(d3hspFileName,'RAMPTIMEE');
 
-        plot(lsdynaBinout.elout.beam.time',...
-             lsdynaBinout.elout.beam.axial,...
-             'Color', simulationColor,...
-             'LineWidth',1.0);
-        hold on;
-        box off;    
+                t0=rampTimeE;
+                f0 = interp1(   lsdynaBinout.elout.beam.time', ...
+                                lsdynaBinout.elout.beam.axial,...
+                                t1);
+                
+                dt = 2;
+                t1 = t0+dt;
+                f1 = 40-(indexModel/2)*5;
 
+                plot(t0,f0,...
+                     'o','Color',simulationColor,...
+                     'MarkerSize',2,...
+                     'MarkerFaceColor',[1,1,1]);
+                hold on;
+
+                plot([t0;t1],[f0;f1],...
+                     '-','Color',simulationColor);
+                hold on;
+    
+                text(t1,f1,sprintf('%1.1fN',f0),...
+                     'Color',simulationColor,...
+                     'HorizontalAlignment','left',...
+                     'VerticalAlignment','middle');
+                hold on;
+            end
         
-        maxStim=0;
-        if(isempty(lsdynaMuscleUniform))
-            maxStim = max(lsdynaMuscleUniform.exc);
-        end
-        
-                   
-
-
-        if(dl > 2 && maxStim > 0.5)
-            rampTimeS = getParameterValueFromD3HSPFile(d3hspFileName,'RAMPTIMES');        
-            t0=rampTimeS+0.1;
-            f0 = interp1(lsdynaBinout.elout.beam.time', ...
-                       lsdynaBinout.elout.beam.axial,...
-                       t0);                        
-            dt = 1;
-
-            t1 = 2;
-            f1 = 38 - ((dl-3)/6)*5;
-
-            plot([t0,t1],...
-                 [f0,f1],...
-                 'Color',simulationColor);
-            hold on;
+            ylim(yLimForce);
+            xlim(xLimForce);            
+     
+    
+        subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
             
-            plot(t0,f0,...
-                 'o','Color',simulationColor,...
-                 'MarkerSize',2,...
-                 'MarkerFaceColor',[1,1,1]);
-            hold on;
-
-            text(t1,f1,['Sim: ',num2str(dl)],...
-                 'Color',simulationColor,...
-                 'HorizontalAlignment','right',...
-                 'VerticalAlignment','middle');
-            hold on;
-        end
+            if(dl > 2)
+                plot(   lsdynaBinout.elout.beam.time',...
+                        changeInLengthFromOptimal.*m2mm,...
+                        '--','Color', simulationColor,...
+                        'LineWidth',1);
+                hold on;
+            end
     
- 
+            box off;           
+            ylim(yLimRamp);
+            xlim(xLimRamp);            
 
-    subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
+        subplot('Position',reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));
+        xlabel('Time (s)');
+        ylabel('Force (N)');
+   
+        plotLabel1 = '';
+        plotLabel2 = '';
+        velLabel = '';
+        switch indexColumn
+            case 1
+                plotLabel1 = 'A';
+                plotLabel2 = 'B';
+                velLabel   = '3 mm/s';
+                
+            case 2
+                plotLabel1 = 'C';
+                plotLabel2 = 'D';
+                velLabel   = '9 mm/s';
+                
+            case 3
+                plotLabel1 = 'E';
+                plotLabel2 = 'F';
+                velLabel   = '27 mm/s';
+                
+            otherwise
+                assert(0,'Error: invalid indexColumn');
+        end        
         
-        plot(lsdynaBinout.elout.beam.time',...
-         changeInLengthFromOptimal.*m2mm,...
-         'Color', simulationColor,...
-         'LineWidth',1.0);
-        hold on;
+        title([plotLabel1,'. ',lsdynaMuscleUniform.nameLabel]);
+        box off;
+        xticks([0:2:14]);
+        yticks([0:10:40])
+        ylim(yLimForce);
+        xlim(xLimForce);
+    
+        subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
+        xlabel('Time (s)');
+        ylabel('Length (mm)');
+        title([plotLabel2,'. Ramps']);
+        box off;
+        xticks([0:2:14]);
+        yticks([0:2:10])
+        ylim(yLimRamp);
+        xlim(xLimRamp);
+    end
 
-        if(dl > 2 && maxStim > 0.5)
-            text(2.3+(9/rampSpeed(1,indexRamp))-dl/rampSpeed(1,indexRamp)+0.25,...
-                 changeInLengthFromOptimal(1,1).*m2mm,...
-                 ['Sim: ', num2str(dl)],...
-                 'Color',simulationColor,...
-                 'VerticalAlignment','bottom', ...
-                 'HorizontalAlignment','left');
-            hold on;
-        end
-
-        box off;            
+    
 
 end
 
