@@ -13,6 +13,7 @@ R     fiso 24.364617
 R alphaRad 0.1221730
 R    ltslk 0.0304511
 R       et  0.045833
+R timeStep 1.0E-3
 $
 *PARAMETER_EXPRESSION
 $#    name expression
@@ -44,8 +45,8 @@ $#  dt2msf   dt2mslc     imscl    unused    unused     rmscl
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          5         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
-                 0.0              0.0001
-              &timeE              0.0001      
+                 0.0           &timeStep
+              &timeE           &timeStep      
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 $                                                                              $
 $                             DATABASE (OUTPUT)                                $
@@ -108,7 +109,7 @@ $#                a1                  o1
                  0.0          -&pathLenS
           &rampTimeS          -&pathLenS
           &rampTimeE          -&pathLenE
-              &timeE          -&pathLenE
+              &timeE          -&pathLenE             
 $
 *NODE
 $#   nid               x               y               z      tc      rc

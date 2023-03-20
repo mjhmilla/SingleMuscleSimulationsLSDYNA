@@ -2,7 +2,7 @@
 *MAT_USER_DEFINED_MATERIAL_MODELS
 $ Hill-type Muscle
 $#     mid        ro        mt       lmc       nhv    iortho     ibulk        ig
-         11.00000E-6        41        32        50         0         3         4
+         1       1.0        41        32        50         0         3         4
 $#   ivect     ifail    itherm    ihyper      ieos      lmca    unused    unused
          0         0         0         0         0         0                    
 $#  ActOpt   STIM_ID        q0    tauq/c betaq/eta         k         m
