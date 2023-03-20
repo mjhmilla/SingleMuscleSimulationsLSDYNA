@@ -184,12 +184,12 @@ if(flag_addReferenceData==1)
 
                 [valMax,idxMax] = max(data.data(:,indexForceColumn));
 
-                dt = 2;
+                dt = 1;
                 t0 = data.data(idxMax,indexTime);
-                t1 = t0+dt;
+                t1 = t0-dt;
 
                 f0 = valMax;
-                f1 = 40-(trialCount/2)*5;
+                f1 = f0;
 
                 trialLabel = '';
                 if(isPassiveColumn(1,indexForceColumn) == 0 && ...
@@ -232,7 +232,9 @@ if(flag_addReferenceData==1)
 
                 end
 
-                text(t1,f1,trialLabel,'VerticalAlignment','bottom');
+                text(t1,f1,trialLabel,...
+                    'VerticalAlignment','middle',...
+                    'HorizontalAlignment','right');
                 hold on;
 
                 if( isPassiveColumn(1,indexForceColumn)==0)
@@ -357,14 +359,27 @@ if(flag_addSimulationData)
             if(dl > 2 && maxStim > 0.5)
                 rampTimeE = getParameterValueFromD3HSPFile(d3hspFileName,'RAMPTIMEE');
 
-                t0=rampTimeE;
-                f0 = interp1(   lsdynaBinout.elout.beam.time', ...
-                                lsdynaBinout.elout.beam.axial,...
-                                t1);
-                
-                dt = 2;
+                t0   = rampTimeE;
+                idx0 = interp1( lsdynaBinout.elout.beam.time, ...
+                                [1:1:length(lsdynaBinout.elout.beam.time)],...
+                                t0 );
+                idx0 = round(idx0);
+
+                dt = lsdynaBinout.elout.beam.time(1,idx0) ...
+                    -lsdynaBinout.elout.beam.time(1,idx0-1);
+
+                idxA = idx0 - round(0.1/dt);
+                idxB = idx0 + round(0.1/dt);
+
+                [f0, idxDelta] = max( lsdynaBinout.elout.beam.axial(idxA:idxB,1) );
+                t0 = lsdynaBinout.elout.beam.time(1,idxDelta+idxA-1);
+                %f0 = interp1(   lsdynaBinout.elout.beam.time', ...
+                %                lsdynaBinout.elout.beam.axial,...
+                %                t0);
+
+                dt = 1;
                 t1 = t0+dt;
-                f1 = 40-(indexModel/2)*5;
+                f1 = f0;
 
                 plot(t0,f0,...
                      'o','Color',simulationColor,...
@@ -401,49 +416,49 @@ if(flag_addSimulationData)
             ylim(yLimRamp);
             xlim(xLimRamp);            
 
-        subplot('Position',reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));
-        xlabel('Time (s)');
-        ylabel('Force (N)');
-   
-        plotLabel1 = '';
-        plotLabel2 = '';
-        velLabel = '';
-        switch indexColumn
-            case 1
-                plotLabel1 = 'A';
-                plotLabel2 = 'B';
-                velLabel   = '3 mm/s';
-                
-            case 2
-                plotLabel1 = 'C';
-                plotLabel2 = 'D';
-                velLabel   = '9 mm/s';
-                
-            case 3
-                plotLabel1 = 'E';
-                plotLabel2 = 'F';
-                velLabel   = '27 mm/s';
-                
-            otherwise
-                assert(0,'Error: invalid indexColumn');
-        end        
-        
-        title([plotLabel1,'. ',lsdynaMuscleUniform.nameLabel]);
-        box off;
-        xticks([0:2:14]);
-        yticks([0:10:40])
-        ylim(yLimForce);
-        xlim(xLimForce);
-    
-        subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
-        xlabel('Time (s)');
-        ylabel('Length (mm)');
-        title([plotLabel2,'. Ramps']);
-        box off;
-        xticks([0:2:14]);
-        yticks([0:2:10])
-        ylim(yLimRamp);
-        xlim(xLimRamp);
+%         subplot('Position',reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));
+%         xlabel('Time (s)');
+%         ylabel('Force (N)');
+%    
+%         plotLabel1 = '';
+%         plotLabel2 = '';
+%         velLabel = '';
+%         switch indexColumn
+%             case 1
+%                 plotLabel1 = 'A';
+%                 plotLabel2 = 'B';
+%                 velLabel   = '3 mm/s';
+%                 
+%             case 2
+%                 plotLabel1 = 'C';
+%                 plotLabel2 = 'D';
+%                 velLabel   = '9 mm/s';
+%                 
+%             case 3
+%                 plotLabel1 = 'E';
+%                 plotLabel2 = 'F';
+%                 velLabel   = '27 mm/s';
+%                 
+%             otherwise
+%                 assert(0,'Error: invalid indexColumn');
+%         end        
+%         
+%         title([plotLabel1,'. ',lsdynaMuscleUniform.nameLabel]);
+%         box off;
+%         xticks([0:2:14]);
+%         yticks([0:10:40])
+%         ylim(yLimForce);
+%         xlim(xLimForce);
+%     
+%         subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
+%         xlabel('Time (s)');
+%         ylabel('Length (mm)');
+%         title([plotLabel2,'. Ramps']);
+%         box off;
+%         xticks([0:2:14]);
+%         yticks([0,9])
+%         ylim(yLimRamp);
+%         xlim(xLimRamp);
     end
 
     

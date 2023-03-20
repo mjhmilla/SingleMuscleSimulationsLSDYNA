@@ -16,7 +16,7 @@ R    ltSlk 0.0304511
 R       et 0.045833
 R   vceMax 4.5
 RlceNScale 0.975
-R timeStep 1.0E-3
+R timeStep 1.0E-6
 $
 *PARAMETER_EXPRESSION
 $#    name expression
