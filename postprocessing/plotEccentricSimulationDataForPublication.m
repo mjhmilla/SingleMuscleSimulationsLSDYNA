@@ -341,7 +341,7 @@ if(flag_addSimulationData)
             changeInLength  = changeInLength.*(m2mm); %m to mm
             dl              = round(changeInLength(end,1)-changeInLength(1,1),0);
     
-            maxStim=0;
+            maxStim=getParameterValueFromD3HSPFile(d3hspFileName,'STIMHIGH');
 
             if(dl > 2)
                 plot(lsdynaBinout.elout.beam.time',...

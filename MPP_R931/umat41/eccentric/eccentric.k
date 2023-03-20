@@ -25,6 +25,8 @@ RrampTimeS 2.38+(&rampLenE-&rampLen)/&rampVel
 RrampTimeD (&rampLen)/&rampVel
 RrampTimeE &rampTimeS+&rampTimeD
 RstimTimeE &rampTimeE+5.0
+R  stimLow 0.0
+R stimHigh 1.0
 R       kt 30.0*&fiso/&ltslk
 R pathLenO &lopt*cos(&alphaRad)+(&Fmax)/&kt+&ltslk
 R pathLenS &pathLenO+&rampLenS
@@ -95,12 +97,12 @@ catsoleus.k
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
-                 0.0                 0.0
-    &stimTimeS-0.001                 0.0
-          &stimTimeS                 1.0
-          &stimTimeE                 1.0
-    &stimTimeE+0.001                 0.0
-              &timeE                 0.0
+                 0.0            &stimLow
+    &stimTimeS-0.001            &stimLow
+          &stimTimeS           &stimHigh
+          &stimTimeE           &stimHigh
+    &stimTimeE+0.001            &stimLow
+              &timeE            &stimLow
 *ELEMENT_BEAM
 $#   eid     pid      n1      n2      n3     rt1     rr1     rt2     rr2   local
        1       2       1       2       0       0       0       0       0       2
