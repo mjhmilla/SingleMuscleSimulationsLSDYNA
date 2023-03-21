@@ -37,7 +37,7 @@ dataColorB=greyB;
 indexMat56                = 1;
 models(indexMat56).id     = 1;
 models(indexMat56).name   ='mat156';
-models(indexMat56).colors = [maroonA;maroonB];
+models(indexMat56).colors = [greenA;greenB];
 
 %indexUmat41              = 1;
 %models(indexUmat41).id   = 1;
@@ -443,7 +443,7 @@ if(flag_postProcessSimulationData==1)
                       numberOfVerticalPlotRowsSpecific          = 6;
 
                       numberOfHorizontalPlotColumnsPublication  = length(models)+1; 
-                      numberOfVerticalPlotRowsPublication       = 2;
+                      numberOfVerticalPlotRowsPublication       = 3;
 
 
                     case 'isometric'
@@ -689,7 +689,7 @@ if(flag_postProcessSimulationData==1)
 
                     %% Add to the publication plots
                     if(flag_generatePublicationPlots==1)
-                        [figPublication,flag_figSpecificDirty] ...
+                        [figPublication,flag_figPublicationDirty] ...
                             = generatePublicationPlots(figPublication,...
                                     simulationTypeStr,...
                                     binout,uniformModelData,d3hspFileName,...

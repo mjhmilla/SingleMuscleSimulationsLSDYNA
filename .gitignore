@@ -25,6 +25,7 @@ disk8
 dyna.*
 kill_by_pid
 *.csv
+!ReferenceCurves/*
 *.swp
 *.msg
 *.pdf

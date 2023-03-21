@@ -31,11 +31,15 @@ switch (simulationTypeStr)
         scalePlotHeight = 0.;
         for(ai=1:1:numberOfVerticalPlotRows)
 
-          if(ai == 1)
-            scalePlotHeight = 1;
-          end
-          if(ai == 2)
-            scalePlotHeight = 0.5;
+          switch ai
+              case 1
+                  scalePlotHeight = 1;
+              case 2
+                  scalePlotHeight = 1/3;
+              case 3
+                  scalePlotHeight = 1;
+              otherwise
+                  assert(0,'Error: eccentric publication plots not configured for more than 3 rows');
           end
 
           subPlotHeight = scalePlotHeight*plotHeight;
@@ -56,7 +60,7 @@ switch (simulationTypeStr)
                   subPlotPanel(ai,aj,1) = subPlotPanel(ai-1,aj,1);
                      
                   subPlotPanel(ai,aj,2) = subPlotPanel(ai-1,aj,2) ...                            
-                                      + (-subPlotPanel(ai-1,aj,4)-plotVertMargin );
+                                      + (-subPlotHeight-plotVertMargin );
                   subPlotPanel(ai,aj,3) = subPlotPanel(ai-1,aj,3);
                   subPlotPanel(ai,aj,4) = (subPlotHeight);
 

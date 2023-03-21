@@ -233,7 +233,7 @@ if(flag_addReferenceData==1)
                 end
 
                 text(t1,f1,trialLabel,...
-                    'VerticalAlignment','middle',...
+                    'VerticalAlignment','bottom',...
                     'HorizontalAlignment','right');
                 hold on;
 
@@ -249,59 +249,64 @@ if(flag_addReferenceData==1)
                         && isIsometricColumn(1,indexForceColumn)==0)
                     trialCount=trialCount+1;
                 end
+
+
             end
-
-            plotLabel1  = '';
-            plotLabel2  = '';
-            velLabel    = '';
-            switch indexColumn
-                case 1
-                    plotLabel1 = 'A';
-                    plotLabel2 = 'B';
-                    velLabel   = '3 mm/s';
-                    
-                case 2
-                    plotLabel1 = 'C';
-                    plotLabel2 = 'D';
-                    velLabel   = '9 mm/s';
-                    
-                case 3
-                    plotLabel1 = 'E';
-                    plotLabel2 = 'F';
-                    velLabel   = '27 mm/s';
-                    
-                otherwise
-                    assert(0,'Error: invalid indexColumn');
-            end
-
-
-
-            subplot('Position',reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));
-            xlabel('Time (s)');
-            ylabel('Force (N)');
-            title([plotLabel1,'. Active lengthening (',velLabel,')']);
-            box off;
-            xticks([0:2:14]);
-            yticks([0:10:40])
-            ylim(yLimForce);
-            xlim(xLimForce);
-    
-            subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
-            xlabel('Time (s)');
-            ylabel('Length (mm)');
-            title([plotLabel2,'. Ramp profile: 9mm \& ',velLabel]);
-            box off;
-            xticks([0:2:14]);
-            yticks([0:2:10])
-            ylim(yLimRamp);
-            xlim(xLimRamp);
 
         end
 
-        
     end
 
-    here=1;
+    for indexSubplotColumn = 1:1:3
+
+        indexRowA = 1;
+        indexRowB = 2;
+
+        plotLabel1  = '';
+        plotLabel2  = '';
+        velLabel    = '';
+        switch indexSubplotColumn
+            case 1
+                plotLabel1 = 'A';
+                plotLabel2 = 'B';
+                velLabel   = '3 mm/s';
+                
+            case 2
+                plotLabel1 = 'C';
+                plotLabel2 = 'D';
+                velLabel   = '9 mm/s';
+                
+            case 3
+                plotLabel1 = 'E';
+                plotLabel2 = 'F';
+                velLabel   = '27 mm/s';
+                
+            otherwise
+                assert(0,'Error: invalid indexColumn');
+        end
+    
+        subplot('Position',reshape(subPlotLayout(indexRowA,indexSubplotColumn,:),1,4));
+        xlabel('Time (s)');
+        ylabel('Force (N)');
+        title([plotLabel1,'. Active lengthening (',velLabel,')']);
+        box off;
+        xticks([0:2:14]);
+        yticks([0:10:40])
+        ylim(yLimForce);
+        xlim(xLimForce);
+    
+        subplot('Position',reshape(subPlotLayout(indexRowB,indexSubplotColumn,:),1,4));
+        xlabel('Time (s)');
+        ylabel('Length (mm)');
+        title([plotLabel2,'. Ramp profile: 9mm \& ',velLabel]);
+        box off;
+        xticks([0:2:14]);
+        yticks([0:2:10])
+        ylim(yLimRamp);
+        xlim(xLimRamp);    
+    end
+
+
 end
 
 % Add the simulation data
