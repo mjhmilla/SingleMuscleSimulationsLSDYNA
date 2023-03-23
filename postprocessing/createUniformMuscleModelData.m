@@ -1,7 +1,7 @@
 function uniformModelData = createUniformMuscleModelData(...
         modelName, lsdynaMusout, lsdynaBinout,...
         optimalFiberLength, maxActiveIsometricForce, ...
-        tendonSlackLength, pennationAngle)
+        tendonSlackLength, pennationAngle, simulationTypeStr)
 %%
 % 
 %
@@ -13,6 +13,11 @@ function uniformModelData = createUniformMuscleModelData(...
 %   @param tendonSlackLength: the slack length of the tendon
 %   @param pennationAngle: the pennation angle of the CE when it is
 %                           developing its maximum isometric force.
+%   @param simulationTypeStr: the string that defines the type of the
+%   simulation. This is used to go into 'ReferenceCurves' and go load the
+%   appropriate curves into the struct for later use in postprocessing
+%   routines, particularly the specialized publication plotting routines.
+%
 %
 %   @return uniformModelData a struct with the following fields
 %
@@ -127,7 +132,8 @@ switch modelName
 
         uniformModelData.fmtN  = ...
             lsdynaMusout.data(:,indexMuscleFmt)./maxActiveIsometricForce;
-        
+
+
         uniformModelData.name       = modelName;
         uniformModelData.nameLabel  = 'EHTMM';
         uniformModelData.authorship = 'Kleinbach et al. (2017)';
@@ -161,6 +167,9 @@ switch modelName
         uniformModelData.nameLabel          = 'Model';
         uniformModelData.authorship         = 'Millard et al. (2023)';
         uniformModelData.authorshipShort    = 'Millard (2023)';
+
+
+        
 
     case 'mat156'
 

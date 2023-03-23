@@ -163,17 +163,12 @@ baseSignalFileName  = [ 'baseFunction',signalFileEnding,'.mat'];
 
 %% paths
 outputFolder            = 'output';
-structFolder            = 'output/structs/';
+structFolder            = fullfile('output','structs',filesep);
 
-numericDirectoryTree = genpath('numeric');
-addpath(numericDirectoryTree);
-
-
-preprocessingDirectoryTree = genpath('preprocessing');
-addpath(preprocessingDirectoryTree);
-
-postprocessingDirectoryTree = genpath('postprocessing');
-addpath(postprocessingDirectoryTree);
+addpath(genpath('numeric'));
+addpath(genpath('curves'));
+addpath(genpath('preprocessing'));
+addpath(genpath('postprocessing'));
 
 %% Plot configuration
 plotWidth         = 6;
@@ -403,20 +398,39 @@ if(flag_postProcessSimulationData==1)
                 
 
                 referenceDataFolder = [referenceDataPath,simulationTypeStr];
+                
 
-                if(contains(simulationType(indexSimulationType).type,...
-                           'sinusoid'))
-                    switch flag_aniType
-                        case 0
-                            referenceDataFolder = [referenceDataFolder,...
-                                            '/QuadraticBezierHumanCurves'];
-                        case 1
-                            referenceDataFolder = [referenceDataFolder,...
-                                            '/QuadraticBezierFelineCurves'];
-                        otherwise 
-                            assert(0,'flag_aniType should be 0 (human) or 1 (feline)');
-                    end
+
+                switch simulationType(indexSimulationType).type
+                    case 'isometric'
+                        referenceCurveFolder = [];
+                    case 'concentric'
+                        referenceCurveFolder = [];
+                    case 'quickrelease'
+                        referenceCurveFolder = [];
+                    case 'eccentric'
+                        referenceCurveFolder = fullfile(matlabScriptPath,'ReferenceCurves','eccentric');
+                    case 'impedance'
+                        referenceCurveFolder = [];
+                    case 'reflex'
+                        referenceCurveFolder = [];
+                    case 'reflex_kN_mm_ms'
+                        referenceCurveFolder = [];
+                    case 'sinusoid'
+                        switch flag_aniType
+                            case 0
+                                referenceDataFolder = [referenceDataFolder,...
+                                                '/QuadraticBezierHumanCurves'];
+                            case 1
+                                referenceDataFolder = [referenceDataFolder,...
+                                                '/QuadraticBezierFelineCurves'];
+                            otherwise 
+                                assert(0,'flag_aniType should be 0 (human) or 1 (feline)');
+                        end
+                    otherwise
+                        assert(0,'Error: simulation type not yet coded with reference data');
                 end
+
 
                 numberOfHorizontalPlotColumnsGeneric = length(simulationDirectories)-3+1;
                 numberOfVerticalPlotRowsGeneric      = 14;
@@ -647,7 +661,8 @@ if(flag_postProcessSimulationData==1)
                     
                     uniformModelData = createUniformMuscleModelData(...
                         models(indexModel).name,...
-                        musout, binout, lceOpt,fiso,ltslk,alpha);
+                        musout, binout, lceOpt,fiso,ltslk,alpha,...
+                        simulationTypeStr);
 
                     if(flag_generateGenericPlots==1)
                         figGeneric =plotSimulationDataSummary(figGeneric,...
@@ -701,8 +716,9 @@ if(flag_postProcessSimulationData==1)
                                     indexSimulationTrial,...
                                     length(simulationDirectories),...
                                     referenceDataFolder,...
+                                    referenceCurveFolder,...
                                     muscleArchitecture,...
-                                    flag_figSpecificDirty,...
+                                    flag_figPublicationDirty,...
                                     simulationColorA, simulationColorB,...
                                     dataColorA, dataColorB);
                     end

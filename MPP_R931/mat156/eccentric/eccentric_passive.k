@@ -9,13 +9,13 @@ R    dtout      0.01
 R rampLenE     0.009
 RstimTimeS      0.95
 R   lceOpt 0.0428571
-R   fceOpt 22.469172
-R lceOptAT 0.0425376
-R fceOptAT 22.301690
+R   fceOpt 21.760954
+R lceOptAT 0.0425377
+R fceOptAT 21.598751
 R   penOpt 0.0
 R  penOptD 0.0
 R   vceMax 4.5
-RlceNScale 1.00
+RlceNScale 0.95
 R    ltSlk 0.0
 R timeStep 1.0E-3
 $
