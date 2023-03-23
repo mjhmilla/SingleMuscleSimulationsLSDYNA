@@ -27,6 +27,9 @@ xLimForce = [0,14];
 yLimRamp = [-0.5,9.5];
 xLimRamp = xLimForce;
 
+lineWidthData=1;
+lineWidthModel=1;
+
 % Plot: 9mm ramps at the 3 different speeds on one plot
 %
 % Row 1: Forces
@@ -171,7 +174,7 @@ if(flag_addReferenceData==1)
                     hold on;
 
                     plot(xSample,ySample(:,3),'Color',[1,1,1].*0.75,...
-                         'LineWidth',2,'HandleVisibility','off');
+                         'LineWidth',lineWidthData*2,'HandleVisibility','off');
                     hold on;                    
 
                     addedReferenceForceLengthCurve(1,indexColumn) = 1;
@@ -186,7 +189,7 @@ if(flag_addReferenceData==1)
 
                 plot(data.data(:,indexTime), ...
                      data.data(:,indexForceColumn),...
-                     'Color',referenceColor,'LineWidth',0.5);
+                     'Color',referenceColor,'LineWidth',lineWidthData);
                 hold on;
 
                 dl = round(data.data(end,indexLengthColumn) ...
@@ -248,10 +251,11 @@ if(flag_addReferenceData==1)
 
                     rampIdx = [idxMaxDlDt:1:idxMaxF]';
                     lceN0 = csvread([referenceDataFolder,filesep,...
-                        'simulationParametersHerzogLeonard2002.csv']);
+                        'simulationParametersHerzogLeonard2002.dat']);
                     plot( lceN0(1,1)+( data.data(rampIdx,indexLengthColumn)./(1000*optimalFiberLength)),...
                           data.data(rampIdx,indexForceColumn)./maximumIsometricForce,...
-                          '-','Color',referenceColor);
+                          '-','Color',referenceColor,...
+                          'LineWidth',lineWidthData);
                     hold on;
 
                     subplot('Position',...
@@ -318,7 +322,7 @@ if(flag_addReferenceData==1)
                 if( isPassiveColumn(1,indexForceColumn)==0)
                     subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn,:),1,4));
                     plot(data.data(:,indexTime), data.data(:,indexLengthColumn),...
-                         'Color',referenceColor,'LineWidth',0.5);
+                         'Color',referenceColor,'LineWidth',lineWidthData);
                     hold on;            
 
                 end
@@ -449,7 +453,7 @@ if(flag_addSimulationData)
                 plot(lsdynaBinout.elout.beam.time',...
                      lsdynaBinout.elout.beam.axial,...
                      'Color', simulationColor,...
-                     'LineWidth',1);
+                     'LineWidth',lineWidthModel);
                 hold on;
                 box off;    
                                         
@@ -541,7 +545,8 @@ if(flag_addSimulationData)
                     
                     plot(lsdynaMuscleUniform.lceN(idxS:idxE,1),...
                          lsdynaMuscleUniform.fmtN(idxS:idxE,1),...
-                         '-','Color',simulationColor);
+                         '-','Color',simulationColor,...
+                         'LineWidth',lineWidthModel);
                     hold on;
     
                 
@@ -560,7 +565,7 @@ if(flag_addSimulationData)
                 plot(   lsdynaBinout.elout.beam.time',...
                         changeInLengthFromOptimal.*m2mm,...
                         '--','Color', simulationColor,...
-                        'LineWidth',1);
+                        'LineWidth',lineWidthModel);
                 hold on;
             end
     

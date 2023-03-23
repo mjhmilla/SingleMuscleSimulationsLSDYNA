@@ -28,7 +28,7 @@ maroonB= maroonA.*0.5 + [1,1,1].*0.5;
 magentaA = [0.75, 0, 0.75];
 magentaB = magentaA.*0.5 + [1,1,1].*0.5;
 
-redA = [1,0,0];
+redA = [193, 39, 45]./255;
 redB = redA.*0.5 + [1,1,1].*0.5;
 
 dataColorA=greyA;
@@ -37,15 +37,15 @@ dataColorB=greyB;
 indexMat56                = 1;
 models(indexMat56).id     = 1;
 models(indexMat56).name   ='mat156';
-models(indexMat56).colors = [greenA;greenB];
+models(indexMat56).colors = [redA;redB];
 
-indexUmat41              = 2;
-models(indexUmat41).id   = 2;
-models(indexUmat41).name ='umat41';
-models(indexUmat41).colors= [magentaA;magentaB];
+% indexUmat41              = 2;
+% models(indexUmat41).id   = 2;
+% models(indexUmat41).name ='umat41';
+% models(indexUmat41).colors= [magentaA;magentaB];
 
-indexUmat43              = 3;
-models(indexUmat43).id   = 3;
+indexUmat43              = 2;
+models(indexUmat43).id   = 2;
 models(indexUmat43).name ='umat43';
 models(indexUmat43).colors= [blueA;blueB];
 
@@ -55,15 +55,15 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 0;
+flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_generateGenericPlots           = 0;
 flag_generateSpecificPlots          = 0;
-flag_generatePublicationPlots       = 0;
+flag_generatePublicationPlots       = 1;
 
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
