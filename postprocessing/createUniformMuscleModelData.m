@@ -1,5 +1,5 @@
 function uniformModelData = createUniformMuscleModelData(...
-        modelName, lsdynaMusout, lsdynaBinout,...
+        modelName, lsdynaMusout, lsdynaBinout,d3hspFileName,...
         optimalFiberLength, maxActiveIsometricForce, ...
         tendonSlackLength, pennationAngle, simulationTypeStr)
 %%
@@ -177,6 +177,17 @@ switch modelName
         uniformModelData.time = lsdynaBinout.elout.beam.time';
         uniformModelData.exc  = ones(size(uniformModelData.time)).*nan;
         uniformModelData.act  = ones(size(uniformModelData.time)).*nan;
+
+        if(strcmp(simulationTypeStr,'eccentric'))
+            stimTimeS = getParameterValueFromD3HSPFile(d3hspFileName,'STIMTIMES');
+            stimTimeE = getParameterValueFromD3HSPFile(d3hspFileName,'STIMTIMEE');
+            stimLow =  getParameterValueFromD3HSPFile(d3hspFileName,'STIMLOW');
+            stimHigh =  getParameterValueFromD3HSPFile(d3hspFileName,'STIMHIGH');
+
+            uniformModelData.act = ones(size(uniformModelData.time)).*stimLow;
+            uniformModelData.act( uniformModelData.time >= stimTimeS ...
+                                & uniformModelData.time <= stimTimeE) = stimHigh;
+        end
 
         uniformModelData.lp     = -lsdynaBinout.nodout.z_coordinate;
         uniformModelData.vp     = -lsdynaBinout.nodout.z_velocity;
