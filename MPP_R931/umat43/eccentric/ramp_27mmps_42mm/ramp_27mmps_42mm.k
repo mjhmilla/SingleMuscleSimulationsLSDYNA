@@ -1,6 +1,7 @@
 *KEYWORD
 *PARAMETER
 $#    name       val
+R rampLenE     0.042
 R rampVel      0.027
 R rampLen      0.042
 R dT           0.000
