@@ -357,15 +357,15 @@ if(flag_addReferenceData==1)
                 velLabel   = '3 mm/s';
                 
             case 2
-                plotLabel1 = 'D';
-                plotLabel2 = 'E';
-                plotLabel3 = 'F';
+                plotLabel1 = 'A';
+                plotLabel2 = 'B';
+                plotLabel3 = 'C';
                 velLabel   = '9 mm/s';
                 
             case 3
-                plotLabel1 = 'G';
-                plotLabel2 = 'H';
-                plotLabel3 = 'I';
+                plotLabel1 = 'A';
+                plotLabel2 = 'B';
+                plotLabel3 = 'C';
                 velLabel   = '27 mm/s';
                 
             otherwise
