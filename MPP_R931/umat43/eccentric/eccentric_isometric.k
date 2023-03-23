@@ -20,7 +20,6 @@ R timeStep 1.0E-4
 $
 *PARAMETER_EXPRESSION
 $#    name expression
-R  penOptD &penOpt*(180.0/3.141592653589793)
 R rampLenS &rampLenE-&rampLen
 R lceOptAT &lceOpt*cos(&penOpt)
 R     Fmax &fceOpt*cos(&penOpt)

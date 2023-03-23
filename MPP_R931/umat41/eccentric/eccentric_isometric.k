@@ -8,12 +8,15 @@ $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
 R    dtout      0.01                                     
 R rampLenE     0.009
 RstimTimeS      0.95
-R     lopt 0.0428571
-R     fiso 24.364617
-R alphaRad 0.1221730
-R    ltslk 0.0304511
-R       et  0.045833
-R timeStep 1.0E-3
+R   lceOpt 0.0428571
+R   fceOpt 21.612138
+R   penOpt 0.1221730
+R  penOptD 7.0000000 
+R    ltSlk 0.0304511
+R       et 0.045833
+R   vceMax 4.5
+RlceNScale 0.95
+R timeStep 1.0E-6
 $
 *PARAMETER_EXPRESSION
 $#    name expression
@@ -27,7 +30,7 @@ RstimTimeE &rampTimeE+5.0
 R  stimLow 0.0
 R stimHigh 1.0
 R       kt 30.0*&fiso/&ltslk
-R pathLenO &lopt*cos(&alphaRad)+(&Fmax)/&kt+&ltslk
+R pathLenO &lceNScale*&lopt*cos(&alphaRad)+(&Fmax)/&kt+&ltslk
 R pathLenS &pathLenO+&rampLenS
 R pathLenE &pathLenO+&rampLenE  
 R    timeE &stimTimeE+5.0
