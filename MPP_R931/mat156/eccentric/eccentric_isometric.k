@@ -15,7 +15,8 @@ R   penOpt 0.0
 R  penOptD 0.0
 R   vceMax 4.5
 RlceNScale 0.95
-R    ltSlk 0.0
+R    ltSlk 0.0304511
+R       et 0.0458333
 R timeStep 1.0E-3
 $
 *PARAMETER_EXPRESSION
@@ -27,7 +28,7 @@ RrampTimeE &rampTimeS+&rampTimeD
 RstimTimeE &rampTimeE+5.0
 R  stimLow 0.0
 R stimHigh 1.0
-R pathLenO &lceOptAT*&lceNScale
+R pathLenO &lceOptAT*&lceNScale+&ltSlk*(&et)
 R pathLenS &pathLenO+&rampLenS
 R pathLenE &pathLenO+&rampLenE  
 R    timeE &stimTimeE+5.0

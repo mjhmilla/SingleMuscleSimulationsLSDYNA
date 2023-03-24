@@ -22,11 +22,11 @@ pennationAngle          =muscleArchitecture.alpha;
 flag_addIsometricTrials=0;
 
 yLimForce = [0,40;...
-             0,110];
+             0,80];
 xLimForce = [0,12.0;...
              0,18.0];
 yLimRamp = [-0.5,9.5;...
-            -0.5,42.5];
+            -0.5,52.5];
 xLimRamp = xLimForce;
 
 yLimForceNorm = [0,1.76;...
@@ -35,11 +35,23 @@ yLimForceNorm = [0,1.76;...
 xLimRampNorm = [0.49,1.31;...
                 0.49,2.01];
 
-lengthsToPlot = [9;42];
+
+
+
+lengthsToPlot = [9;52];
 
 lineWidthData=1;
 lineWidthModel=1;
 
+
+%Plot the injury threshold
+tfN = 3.41;
+tfActiveMinorN    = tfN*0.7;
+tfActiveMajorN    = tfN*0.9;
+tfActiveRuptureN  = tfN;
+tfPassiveMinorN   = tfN*0.3;
+tfPassiveMajorN   = tfN*0.8;
+tfPassiveRuptureN = tfN;
 % Plot: 9mm ramps at the 3 different speeds on one plot
 %
 % Row 1: Forces
@@ -198,7 +210,7 @@ if(flag_addReferenceData==1)
                         hold on;
     
                         plot(xSample,ySample(:,3),'Color',[1,1,1].*0.75,...
-                             'LineWidth',lineWidthData,'HandleVisibility','off');
+                             'LineWidth',lineWidthData*2,'HandleVisibility','off');
                         hold on;                    
     
                         addedReferenceForceLengthCurve(1,indexColumn) = 1;
@@ -427,8 +439,14 @@ if(flag_addReferenceData==1)
             ylabel('Length (mm)');
             title([plotLabel2,'. Ramp profile: ',lengthStr,'mm \& ',velLabel]);
             box off;
-            xticks([0:2:max(xLimRamp(indexLengths,:))]);
-            yticks([0,(max(yLimRamp(indexLengths,:))+1)])
+            switch(indexLengths)
+                case 1
+                    yticks([0,9]);
+                case 2
+                    yticks([0,52]);
+                otherwise
+                    assert(0,'Error: switch case not coded for that index')
+            end
             ylim(yLimRamp(indexLengths,:));
             xlim(xLimRamp(indexLengths,:)); 
             hold on;
@@ -439,7 +457,50 @@ if(flag_addReferenceData==1)
             ylabel('Norm. Force ($$f/f^{M}_o$$)');
             title([plotLabel3,'. ',lengthStr,'mm \& ',velLabel]);
             box off;
+            hold on;
 
+            if(indexLengths==2)
+
+                subplot('Position',reshape(subPlotLayout(indexRowC,indexSubplotColumn+subPlotColOffset,:),1,4));
+                
+                    lceNDomain =[xLimRampNorm(indexLengths,:)];
+    
+                    plot(lceNDomain,...
+                         [1;1].*tfActiveMinorN,...
+                         '--','Color',[1,1,1].*0.5,'LineWidth',0.5);
+                    hold on
+                    plot(lceNDomain,...
+                         [1;1].*tfActiveMajorN,...
+                         '-','Color',[1,1,1].*0.5,'LineWidth',0.5);
+                    hold on
+                    plot(lceNDomain,...
+                         [1;1].*tfActiveRuptureN,...
+                         '-','Color',[0,0,0],'LineWidth',1);
+                    hold on
+
+
+                    lceNDomainLeft = lceNDomain(1,1) + 0.025*(lceNDomain(1,2)-lceNDomain(1,1));
+                    text(lceNDomainLeft,...
+                         tfActiveMinorN,[sprintf('%1.2f',tfActiveMinorN), ' Minor Injury'],...
+                         'HorizontalAlignment','left',...
+                         'VerticalAlignment','bottom');
+                    hold on;
+                    text(lceNDomainLeft,...
+                         tfActiveMajorN,[sprintf('%1.2f',tfActiveMajorN),  ' Major Injury'],...
+                         'HorizontalAlignment','left',...
+                         'VerticalAlignment','bottom');
+                    hold on;
+                    text(lceNDomainLeft,...
+                         tfActiveRuptureN,[sprintf('%1.2f',tfActiveRuptureN), ' Rupture'],...
+                         'HorizontalAlignment','left',...
+                         'VerticalAlignment','bottom');
+                    hold on;
+
+                             
+            end
+
+            subplot('Position',reshape(subPlotLayout(indexRowC,indexSubplotColumn+subPlotColOffset,:),1,4));
+            
             switch (indexLengths)
                 case 1
                     xticks([0.5:0.1:1.3]);
@@ -454,7 +515,39 @@ if(flag_addReferenceData==1)
             xlim(xLimRampNorm(indexLengths,:));                     
             hold on;
             
-            here=1;
+            indexFullColumn = indexSubplotColumn+subPlotColOffset;
+            switch indexFullColumn
+                case 4
+                    subplot('Position',reshape(subPlotLayout(indexRowA,indexSubplotColumn+subPlotColOffset,:),1,4));
+                    xticks([0:5:20]);
+                    xlim([0,20.01]);
+                    hold on;
+
+                    subplot('Position',reshape(subPlotLayout(indexRowB,indexSubplotColumn+subPlotColOffset,:),1,4));
+                    xticks([0:5:20]);
+                    xlim([0,20.01]);
+                    hold on;
+                case 5
+                    subplot('Position',reshape(subPlotLayout(indexRowA,indexSubplotColumn+subPlotColOffset,:),1,4));
+                    xticks([0:2:8]);
+                    xlim([0,8.5]);
+                    hold on;
+
+                    subplot('Position',reshape(subPlotLayout(indexRowB,indexSubplotColumn+subPlotColOffset,:),1,4));
+                    xticks([0:2:8]);
+                    xlim([0,8.5]);
+                    hold on;
+                case 6
+                    subplot('Position',reshape(subPlotLayout(indexRowA,indexSubplotColumn+subPlotColOffset,:),1,4));
+                    xticks([0:1:4]);
+                    xlim([0,4.51]);
+                    hold on;
+
+                    subplot('Position',reshape(subPlotLayout(indexRowB,indexSubplotColumn+subPlotColOffset,:),1,4));
+                    xticks([0:1:4]);
+                    xlim([0,4.51]);
+                    hold on;
+            end
         end
     end
     flag_addReferenceData=0;
@@ -611,156 +704,110 @@ if(flag_addSimulationData)
                      '-','Color',simulationColor,...
                      'LineWidth',lineWidthModel);
                 hold on;
+                                
+                if(indexLengths==2)
 
-            
-                %Plot the injury threshold
-                tfN = 3.41;
-                tfActiveMinorN    = tfN*0.7;
-                tfActiveMajorN    = tfN*0.9;
-                tfActiveRuptureN  = tfN;
-                tfPassiveMinorN   = tfN*0.3;
-                tfPassiveMajorN   = tfN*0.8;
-                tfPassiveRuptureN = tfN;
+    
+    
+                    idxActiveMinor = find(lsdynaMuscleUniform.fmtN >= tfActiveMinorN,1);
+                    idxActiveMajor = find(lsdynaMuscleUniform.fmtN >= tfActiveMajorN,1);
+                    idxActiveRupture = find(lsdynaMuscleUniform.fmtN >= tfActiveRuptureN,1);
+                   
+                    idxInjuryVector = [idxActiveMinor;idxActiveMajor;idxActiveRupture];
+    
+                    %lceNDomain=[lsdynaMuscleUniform.lceN(idxS,1);...
+                    %            lsdynaMuscleUniform.lceN(idxE,1)];
+
+    
+                    for idxInjury=1:1:length(idxInjuryVector)
+                        k = idxInjuryVector(idxInjury,1);
+                        plot(lsdynaMuscleUniform.lceN(k,1),...
+                             lsdynaMuscleUniform.fmtN(k,1),...
+                             'o','Color',simulationColor,...
+                             'MarkerFaceColor',[1,1,1]);
+                        hold on;
+                        text(lsdynaMuscleUniform.lceN(k,1),...
+                             lsdynaMuscleUniform.fmtN(k,1),...
+                             sprintf('%1.2f',lsdynaMuscleUniform.lceN(k,1)),...
+                             'HorizontalAlignment','right',...
+                             'VerticalAlignment','bottom');
+                        hold on;
+                    end
+                    
 
 
-                idxActiveMinor = find(lsdynaMuscleUniform.fmtN >= tfActiveMinorN,1);
-                idxActiveMajor = find(lsdynaMuscleUniform.fmtN >= tfActiveMajorN,1);
-                idxActiveRupture = find(lsdynaMuscleUniform.fmtN >= tfActiveRuptureN,1);
-               
-                idxInjuryVector = [idxActiveMinor;idxActiveMajor;idxActiveRupture];
-
-                lceNDomain=[lsdynaMuscleUniform.lceN(idxS,1);...
-                            lsdynaMuscleUniform.lceN(idxE,1)];
-
-                plot(lceNDomain,...
-                     [1;1].*tfActiveMinorN,...
-                     '--','Color',[1,1,1].*0.5,'LineWidth',0.5);
-                hold on
-                plot(lceNDomain,...
-                     [1;1].*tfActiveMajorN,...
-                     '-','Color',[1,1,1].*0.5,'LineWidth',0.5);
-                hold on
-                plot(lceNDomain,...
-                     [1;1].*tfActiveRuptureN,...
-                     '-','Color',[0,0,0],'LineWidth',1);
-                hold on
-
-                for idxInjury=1:1:length(idxInjuryVector)
-                    k = idxInjuryVector(idxInjury,1);
-                    plot(lsdynaMuscleUniform.lceN(k,1),...
-                         lsdynaMuscleUniform.fmtN(k,1),...
-                         'o','Color',simulationColor,...
-                         'MarkerFaceColor',[1,1,1]);
-                    hold on;
-                    text(lsdynaMuscleUniform.lceN(k,1),...
-                         lsdynaMuscleUniform.fmtN(k,1),...
-                         sprintf('%1.2f',lsdynaMuscleUniform.lceN(k,1)),...
-                         'HorizontalAlignment','right',...
-                         'VerticalAlignment','bottom');
-                    hold on;
-                end
-                
-                if(indexModel==1)
-                    text(lceNDomain(1,1),...
-                         tfActiveMinorN,['Minor Injury: ',sprintf('%1.1f',tfActiveMinorN)],...
-                         'HorizontalAlignment','right',...
-                         'VerticalAlignment','bottom');
-                    hold on;
-                    text(lceNDomain(1,1),...
-                         tfActiveMajorN,['Major Injury',sprintf('%1.1f',tfActiveMajorN)],...
-                         'HorizontalAlignment','right',...
-                         'VerticalAlignment','bottom');
-                    hold on;
-                    text(lceNDomain(1,1),...
-                         tfActiveRuptureN,['Rupture',sprintf('%1.1f',tfActiveRuptureN)],...
-                         'HorizontalAlignment','right',...
-                         'VerticalAlignment','bottom');
-                    hold on;
-                end
 
                 
-
-            
-                minorInjuryN = lsdynaMuscleUniform.act.*(tfActiveMinorN-tfPassiveMinorN) ...
-                             + tfPassiveMinorN;
-                majorInjuryN = lsdynaMuscleUniform.act.*(tfActiveMajorN-tfPassiveMajorN) ...
-                             + tfPassiveMajorN;
-                ruptureInjuryN = lsdynaMuscleUniform.act.*(tfActiveRuptureN-tfPassiveRuptureN) ...
-                             + tfPassiveRuptureN;
-
-                injuryBlockX = [lsdynaMuscleUniform.lceN(idxS:idxE,1);...
-                                fliplr(lsdynaMuscleUniform.lceN(idxS:idxE,1)')';...
-                                lsdynaMuscleUniform.lceN(idxS,1)];
-                injuryBlockY = [minorInjuryN(idxS:idxE,1);...
-                                fliplr(ruptureInjuryN(idxS:idxE,1)')';...
-                                minorInjuryN(idxS,1)];
-
-                subplot('Position',reshape(...
-                subPlotLayout(indexRowA,indexColumn+subPlotColOffset,:),1,4));
-
-                injuryBlockFullX = [lsdynaMuscleUniform.time(:,1);...
-                                fliplr(lsdynaMuscleUniform.time(:,1)')';...
-                                lsdynaMuscleUniform.time(1,1)];
-                injuryBlockFullY = [minorInjuryN(:,1);...
-                                fliplr(ruptureInjuryN(:,1)')';...
-                                minorInjuryN(1,1)];
-
-%                     fill(injuryBlockFullX,injuryBlockFullY.*muscleArchitecture.fiso,...
-%                         [0.75,0.25,0.25],'EdgeColor','none',...
-%                         'FaceAlpha',0.5);
-%                     hold on;
-
-                plot(lsdynaMuscleUniform.time(:,1),...
-                     minorInjuryN(:,1).*muscleArchitecture.fiso,...
-                     '--','Color',[1,1,1].*0.5,'LineWidth',0.5);
-                hold on
-                plot(lsdynaMuscleUniform.time(:,1),...
-                     majorInjuryN(:,1).*muscleArchitecture.fiso,...
-                     '-','Color',[1,1,1].*0.5,'LineWidth',0.5);
-                hold on
-                plot(lsdynaMuscleUniform.time(:,1),...
-                     ruptureInjuryN(:,1).*muscleArchitecture.fiso,...
-                     '-','Color',[0,0,0],'LineWidth',1);
-                hold on
-
-                for idxInjury=1:1:length(idxInjuryVector)
-                    k = idxInjuryVector(idxInjury,1);
-                    plot(lsdynaMuscleUniform.time(k,1),...
-                         lsdynaMuscleUniform.fmtN(k,1).*muscleArchitecture.fiso,...
-                         'o','Color',simulationColor,...
-                         'MarkerFaceColor',[1,1,1]);
-                    hold on;
-                    text(lsdynaMuscleUniform.time(k,1),...
-                         lsdynaMuscleUniform.fmtN(k,1).*muscleArchitecture.fiso,...
-                         sprintf('%1.2f',lsdynaMuscleUniform.lceN(k,1)),...
-                         'HorizontalAlignment','right',...
-                         'VerticalAlignment','bottom');
-                    hold on;
-                end
-
-                text(lsdynaMuscleUniform.time(1,1),...
-                     minorInjuryN(1,1).*muscleArchitecture.fiso,'Minor Injury',...
-                     'HorizontalAlignment','left',...
-                     'VerticalAlignment','bottom');
-                hold on;
-                text(lsdynaMuscleUniform.lceN(1,1),...
-                     majorInjuryN(1,1).*muscleArchitecture.fiso,'Major Injury',...
-                     'HorizontalAlignment','left',...
-                     'VerticalAlignment','bottom');
-                hold on;
-                text(lsdynaMuscleUniform.lceN(1,1),...
-                     ruptureInjuryN(1,1).*muscleArchitecture.fiso,'Rupture',...
-                     'HorizontalAlignment','left',...
-                     'VerticalAlignment','bottom');
-                here=1;
-                
-                subplot('Position',reshape(...
+                    minorInjuryN = lsdynaMuscleUniform.act.*(tfActiveMinorN-tfPassiveMinorN) ...
+                                 + tfPassiveMinorN;
+                    majorInjuryN = lsdynaMuscleUniform.act.*(tfActiveMajorN-tfPassiveMajorN) ...
+                                 + tfPassiveMajorN;
+                    ruptureInjuryN = lsdynaMuscleUniform.act.*(tfActiveRuptureN-tfPassiveRuptureN) ...
+                                 + tfPassiveRuptureN;
+    
+    
+                    subplot('Position',reshape(...
                     subPlotLayout(indexRowA,indexColumn+subPlotColOffset,:),1,4));
+
+                    if(indexModel==1)
+                        plot(lsdynaMuscleUniform.time(:,1),...
+                             minorInjuryN(:,1).*muscleArchitecture.fiso,...
+                             '--','Color',[1,1,1].*0.5,'LineWidth',0.5);
+                        hold on
+                        plot(lsdynaMuscleUniform.time(:,1),...
+                             majorInjuryN(:,1).*muscleArchitecture.fiso,...
+                             '-','Color',[1,1,1].*0.5,'LineWidth',0.5);
+                        hold on
+                        plot(lsdynaMuscleUniform.time(:,1),...
+                             ruptureInjuryN(:,1).*muscleArchitecture.fiso,...
+                             '-','Color',[0,0,0],'LineWidth',1);
+                        hold on;
+                    end
+                    
+    
+                    for idxInjury=1:1:length(idxInjuryVector)
+                        k = idxInjuryVector(idxInjury,1);
+                        plot(lsdynaMuscleUniform.time(k,1),...
+                             lsdynaMuscleUniform.fmtN(k,1).*muscleArchitecture.fiso,...
+                             'o','Color',simulationColor,...
+                             'MarkerFaceColor',[1,1,1]);
+                        hold on;
+                        text(lsdynaMuscleUniform.time(k,1),...
+                             lsdynaMuscleUniform.fmtN(k,1).*muscleArchitecture.fiso,...
+                             sprintf('%1.2f',lsdynaMuscleUniform.lceN(k,1)),...
+                             'HorizontalAlignment','right',...
+                             'VerticalAlignment','bottom');
+                        hold on;
+                    end
+
+                    subplot('Position',reshape(subPlotLayout(indexRowA,indexColumn+subPlotColOffset,:),1,4));
+    
+                    if(indexModel==1)
+                        text(lsdynaMuscleUniform.time(1,1),...
+                             minorInjuryN(1,1).*muscleArchitecture.fiso,'Minor Injury',...
+                             'HorizontalAlignment','left',...
+                             'VerticalAlignment','bottom');
+                        hold on;
+                        text(lsdynaMuscleUniform.lceN(1,1),...
+                             majorInjuryN(1,1).*muscleArchitecture.fiso,'Major Injury',...
+                             'HorizontalAlignment','left',...
+                             'VerticalAlignment','bottom');
+                        hold on;
+                        text(lsdynaMuscleUniform.lceN(1,1),...
+                             ruptureInjuryN(1,1).*muscleArchitecture.fiso,'Rupture',...
+                             'HorizontalAlignment','left',...
+                             'VerticalAlignment','bottom');
+                        hold on;   
+                    end
+    
+                end
                 
             end
-        
-            ylim(yLimForce(indexLengths,:));
-            xlim(xLimForce(indexLengths,:));            
+%             subplot('Position',reshape(...
+%                         subPlotLayout(indexRowA,indexColumn+subPlotColOffset,:),1,4));            
+%         
+%             ylim(yLimForce(indexLengths,:));
+%             xlim(xLimForce(indexLengths,:));            
      
     
         subplot('Position',reshape(...
@@ -775,8 +822,8 @@ if(flag_addSimulationData)
             end
     
             box off;           
-            ylim(yLimRamp(indexLengths,:));
-            xlim(xLimRamp(indexLengths,:));            
+%             ylim(yLimRamp(indexLengths,:));
+%             xlim(xLimRamp(indexLengths,:));            
 
 %         subplot('Position',reshape(subPlotLayout(indexRowA,indexColumn,:),1,4));
 %         xlabel('Time (s)');
