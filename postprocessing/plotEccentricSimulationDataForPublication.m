@@ -22,23 +22,30 @@ pennationAngle          =muscleArchitecture.alpha;
 flag_addIsometricTrials=0;
 
 yLimForce = [0,40;...
-             0,80];
+             0,80;...
+             0,40];
+
 xLimForce = [0,12.0;...
-             0,18.0];
+             0,18.0;...
+             0,12.0];
+
 yLimRamp = [-0.5,9.5;...
-            -0.5,52.5];
+            -0.5,52.5;...
+            -0.5,9.5];
 xLimRamp = xLimForce;
 
 yLimForceNorm = [0,1.76;...
-                 0,4.01];
+                 0,4.01;...
+                 0,1.76];
 
 xLimRampNorm = [0.49,1.31;...
-                0.49,2.01];
+                0.49,2.01;...
+                0.49,1.31];
 
 
 
 
-lengthsToPlot = [9;52];
+lengthsToPlot = [9;52;3];
 
 lineWidthData=1;
 lineWidthModel=1;
@@ -70,8 +77,6 @@ if(flag_addReferenceData==1)
     %dataFig7B = importdata([referenceDataFolder,'/','dataHerzogLeonard2002Figure7B.csv']);
     %dataFig7C = importdata([referenceDataFolder,'/','dataHerzogLeonard2002Figure7C.csv']);  
 
-    rampVelocities=[3,9,27];
-    rampLengths = [9];
 
 
 
@@ -85,6 +90,8 @@ if(flag_addReferenceData==1)
                 addHLData=1;
             case 2
                 addHLData=0;
+            case 3
+                addHLData=1;
             otherwise
                 assert(0,'Error: switch statement coded for [1,2]');
         end
@@ -119,7 +126,7 @@ if(flag_addReferenceData==1)
                 if(contains(data.colheaders{indexColumnHeader},'(mm)'))
                     isLengthColumn(1,indexColumnHeader) =1;              
                     if(max(data.data(:,indexColumnHeader)) ...
-                       -min(data.data(:,indexColumnHeader)) < min(rampLengths))
+                       -min(data.data(:,indexColumnHeader)) < min(lengthsToPlot(indexLengths,1)))
                         isIsometricColumn(1,indexColumnHeader)=1;
     
                         isIsometricColumn(1,indexColumnHeader-1)=1;
@@ -148,19 +155,52 @@ if(flag_addReferenceData==1)
     
                 indexLengthColumn = indexForceColumn+1;
     
-                if(   isIsometricColumn(1,indexForceColumn)==0)
+                dl =  max(data.data(end,indexLengthColumn)) ...
+                     -min(data.data(1,indexLengthColumn));
+                dlErr = abs(dl-lengthsToPlot(indexLengths,1));
+                flag_plotThisColumn = (dlErr < 1.5);
+
+                if(isPassiveColumn(1,indexForceColumn)==1)
+                    fprintf('%1.1f Passive\n',dl);
+                    here=1;
+                end
+
+                if(   isIsometricColumn(1,indexForceColumn)==0 && flag_plotThisColumn==1)
                                  
                     %Identify the rate of lengthening
                     minL = min(data.data(:,indexLengthColumn));
                     maxL = max(data.data(:,indexLengthColumn));
     
-                    [timeMinL,indexRampStart] = max( data.data(:,indexLengthColumn)>(minL+1) );
-                    [timeMaxL,indexRampEnd] = min( data.data(:,indexLengthColumn)<(maxL-1) );
+                    dt = data.data(2,indexTime) ...
+                        -data.data(1,indexTime);
+                    freq=1/dt;
+                    [b,a]=butter(2,5/(0.5/dt),'low');
+                    rampFilt=filtfilt(b,a,data.data(:,indexLengthColumn));
+                    rampFiltDiff = calcCentralDifferenceDataSeries(...
+                                        data.data(:,indexTime),...
+                                        rampFilt);
+                    rampFiltDiff=filtfilt(b,a,rampFiltDiff);
+                    rampFiltDDiff = calcCentralDifferenceDataSeries(...
+                                        data.data(:,indexTime),...
+                                        rampFiltDiff);
+                    rampFiltDDiff=filtfilt(b,a,rampFiltDDiff);
+                    rampFiltDDiff(1:freq,1)=0;
+                    rampFiltDDiff(end-freq:end,1)=0;
+                    [maxDlDt,idxMaxDlDt]= max(rampFiltDDiff);
+                    [minDlDt,idxMinDlDt]= min(rampFiltDDiff);
+                    
+                    indexRampStart = idxMaxDlDt;
+                    indexRampEnd   = idxMinDlDt;
+                    %[timeMinL,indexRampStart] = max( data.data(:,indexLengthColumn)>(minL+1) );
+                    %[timeMaxL,indexRampEnd] = min( data.data(:,indexLengthColumn)<(maxL-1) );
                     
                     timeRampStart   = data.data(indexRampStart,indexTime);
                     timeRampEnd     = data.data(indexRampEnd,indexTime);
+
+                    lengthRampStart   = data.data(indexRampStart,indexLengthColumn);
+                    lengthRampEnd     = data.data(indexRampEnd,indexLengthColumn);
     
-                    rampVelRough = (maxL-minL)/(timeRampEnd-timeRampStart);
+                    rampVelRough = (lengthRampEnd-lengthRampStart)/(timeRampEnd-timeRampStart);
                     
                     errVel = [1,1,1].*rampVelRough - [3,9,27];
                     [errVelMin, indexVel] = min(abs(errVel));
@@ -222,15 +262,15 @@ if(flag_addReferenceData==1)
                     %n = (indexVel-1)/2;
                     %referenceColor = referenceColorB.*(1-n)+referenceColorA.*n;                
                     referenceColor = referenceColorA;
-    
+                    
+
                     if(addHLData==1)
                         plot(data.data(:,indexTime), ...
                              data.data(:,indexForceColumn),...
                              'Color',referenceColor,'LineWidth',lineWidthData);
                         hold on;
                     end
-                    dl = round(data.data(end,indexLengthColumn) ...
-                              -data.data(1,indexLengthColumn)  , 0);
+
     
                     [valMax,idxMax] = max(data.data(:,indexForceColumn));
     
@@ -243,7 +283,8 @@ if(flag_addReferenceData==1)
                     
                     trialLabel = '';
                     if(isPassiveColumn(1,indexForceColumn) == 0 && ...
-                       isIsometricColumn(1,indexForceColumn) == 0)
+                       isIsometricColumn(1,indexForceColumn) == 0 && ...
+                       flag_plotThisColumn==1)
 
                         if(addHLData==1)
                             plot([t0,t1],...
@@ -327,7 +368,7 @@ if(flag_addReferenceData==1)
                         t1=t0;
                         f1=f0;
                         
-                        if(addHLData==1)
+                        if(addHLData==1 && flag_plotThisColumn==1)
                             plot(t0,f0,...
                                  'o','Color',referenceColor,...
                                  'MarkerSize',2,...
@@ -342,7 +383,8 @@ if(flag_addReferenceData==1)
                         end
     
                     elseif(isPassiveColumn(1,indexForceColumn) == 0 && ...
-                       isIsometricColumn(1,indexForceColumn) == 0)
+                       isIsometricColumn(1,indexForceColumn) == 0 && ...
+                       flag_plotThisColumn==1)
                         t1=t0;
                         f1=f0;
                         
@@ -367,7 +409,7 @@ if(flag_addReferenceData==1)
                     if( isPassiveColumn(1,indexForceColumn)==0)
                         subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn+subPlotColOffset,:),1,4));
                         
-                        if(addHLData==1)
+                        if(addHLData==1 && flag_plotThisColumn==1)
                             plot(data.data(:,indexTime), data.data(:,indexLengthColumn),...
                                  'Color',referenceColor,'LineWidth',lineWidthData);
                             hold on;  
@@ -444,6 +486,8 @@ if(flag_addReferenceData==1)
                     yticks([0,9]);
                 case 2
                     yticks([0,52]);
+                case 3
+                    yticks([0,9]);
                 otherwise
                     assert(0,'Error: switch case not coded for that index')
             end
@@ -508,6 +552,9 @@ if(flag_addReferenceData==1)
                 case 2
                     xticks([0.5:0.25:2.0]);
                     yticks([0:0.25:4.0])
+                case 3
+                    xticks([0.5:0.1:1.3]);
+                    yticks([0:0.25:1.75])    
                 otherwise
                     assert(0,'Error: switch statement not coded for indexLengths outside of [1,2]');
             end

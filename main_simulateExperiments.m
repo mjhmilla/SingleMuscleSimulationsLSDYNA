@@ -456,7 +456,7 @@ if(flag_postProcessSimulationData==1)
                       numberOfHorizontalPlotColumnsSpecific     = 1;
                       numberOfVerticalPlotRowsSpecific          = 6;
 
-                      numberOfHorizontalPlotColumnsPublication  = (length(models)+1)*2; 
+                      numberOfHorizontalPlotColumnsPublication  = (length(models)+1)*3; 
                       numberOfVerticalPlotRowsPublication       = 3;
 
 
