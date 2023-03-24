@@ -28,7 +28,7 @@ RrampTimeE &rampTimeS+&rampTimeD
 RstimTimeE &rampTimeE+5.0
 R  stimLow 0.0
 R stimHigh 0.0
-R pathLenO &lceOptAT*&lceNScale+&ltSlk*(&et)
+R pathLenO &lceOptAT*&lceNScale
 R pathLenS &pathLenO+&rampLenS
 R pathLenE &pathLenO+&rampLenE  
 R    timeE &stimTimeE+5.0
