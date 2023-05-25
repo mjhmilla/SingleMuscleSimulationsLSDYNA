@@ -11,6 +11,8 @@ $#   ltSlk     etIso       dtN  scalePEE lambdaECM  lPevkPtN lceHNLb1A   act1AHN
     &ltSlk     0.049    0.0556      0.76      0.56       0.5       0.5       0.1
 $#beta1AHN  beta1PHN kxOptIsoN dxOptIsoN gainTrack  actTrack    vceMax   taudvst
       45.0      0.25      47.8     0.354    1000.0      0.05   &vceMax     0.001
-$# dvsBeta    dtNumN   aniType  ctrlType ctrlDelay ctrlThrsh    output     dtout    
-       1.0    0.0001         1         3     0.050     0.075         1     0.001   
+$# dvsBeta    dtNumN   aniType   ctlType  ctlDelay  ctlThrsh ctlOnTime    output    
+       1.0    0.0001         1         3     0.050     0.075     0.100         1
+$#   dtout          
+     0.001
 *END

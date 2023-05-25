@@ -285,7 +285,7 @@ switch (simulationTypeStr)
                 cd ..
                 lengthThreshold = getLsdynaCardFieldValue(...
                     simulationInformationEntry.musclePropertyCard,...
-                    'ctrlThrsh');
+                    'ctlThrsh');
                 cd(workingDirectory);
                 
         end
@@ -337,7 +337,7 @@ switch (simulationTypeStr)
                 cd ..
                 lengthThreshold = getLsdynaCardFieldValue(...
                     simulationInformationEntry.musclePropertyCard,...
-                    'ctrlThrsh');
+                    'ctlThrsh');
                 cd(workingDirectory);
                 
         end
