@@ -71,6 +71,7 @@ uniformModelData = struct('lceOpt',optimalFiberLength,...
                           'lceNDot',[],'ltNDot',[],'alphaDot',[],...
                           'fceN',[],'fpeN',[],'fseN',[], 'dseN',[],...
                           'fmtN',[],...
+                          'eloutTime',[],'eloutAxialBeamForce',[],...
                           'name','',...
                           'nameLabel','',...
                           'authorship','',...
@@ -134,6 +135,9 @@ switch modelName
             lsdynaMusout.data(:,indexMuscleFmt)./maxActiveIsometricForce;
 
 
+        uniformModelData.eloutTime           = lsdynaBinout.elout.beam.time';
+        uniformModelData.eloutAxialBeamForce = lsdynaBinout.elout.beam.axial;
+
         uniformModelData.name       = modelName;
         uniformModelData.nameLabel  = 'EHTMM';
         uniformModelData.authorship = 'Kleinbach et al. (2017)';
@@ -162,6 +166,9 @@ switch modelName
         uniformModelData.fseN       = lsdynaMusout.data(:,lsdynaMusout.indexFtN);
         uniformModelData.dseN       = lsdynaMusout.data(:,lsdynaMusout.indexFtBetaN);        
         uniformModelData.fmtN       = lsdynaMusout.data(:,lsdynaMusout.indexFtN);
+
+        uniformModelData.eloutTime           = lsdynaBinout.elout.beam.time';
+        uniformModelData.eloutAxialBeamForce = lsdynaBinout.elout.beam.axial;
 
         uniformModelData.name               = modelName;
         uniformModelData.nameLabel          = 'Model';
@@ -207,6 +214,8 @@ switch modelName
         uniformModelData.dseN       = zeros(size(uniformModelData.time));        
         uniformModelData.fmtN       = uniformModelData.fceN;       
 
+        uniformModelData.eloutTime           = lsdynaBinout.elout.beam.time';
+        uniformModelData.eloutAxialBeamForce = lsdynaBinout.elout.beam.axial;
 
         uniformModelData.name               = modelName;
         uniformModelData.nameLabel          = 'MAT156';

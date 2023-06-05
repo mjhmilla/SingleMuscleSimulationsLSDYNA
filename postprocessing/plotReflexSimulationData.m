@@ -380,6 +380,8 @@ if(contains(modelName,'umat43'))
     box off;     
 end
 
+
+
 if(contains(modelName,'umat43'))
    subplot('Position',subplotL1N);
 
@@ -498,5 +500,12 @@ subplot('Position',subplotAccelerationN);
       
 end
 
+
+subplot('Position',subplotForceTermsN);
+    plot(uniformModelData.eloutTime,... 
+         uniformModelData.eloutAxialBeamForce,...
+         '--','Color',[1,1,1].*0.75,'LineWidth',2,...
+         'DisplayName','Axial Beam Force');
+    hold on;
 
     
