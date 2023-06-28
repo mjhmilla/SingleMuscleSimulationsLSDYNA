@@ -21,31 +21,39 @@ pennationAngle          =muscleArchitecture.alpha;
 
 flag_addIsometricTrials=0;
 
+indexInjury=4;
+
 yLimForce = [0,40;...
-             0,80;...
-             0,40];
+             0,40;...
+             0,40;...
+             0,80];
 
 xLimForce = [0,12.0;...
-             0,18.0;...
-             0,12.0];
+             0,12.0;...
+             0,12.0;...
+             0,18.0];
 
-yLimRamp = [-0.5,9.5;...
-            -0.5,52.5;...
-            -0.5,9.5];
+yLimRamp = [-0.5,9.5;...            
+            -0.5,9.5;...
+            -0.5,9.5;...
+            -0.5,52.5];
+
 xLimRamp = xLimForce;
 
 yLimForceNorm = [0,1.76;...
-                 0,4.01;...
-                 0,1.76];
+                 0,1.76;...
+                 0,1.76;...
+                 0,4.01];
 
-xLimRampNorm = [0.49,1.31;...
-                0.49,2.01;...
-                0.49,1.31];
+xLimRampNorm = [0.49,1.31;...                
+                0.49,1.31;...
+                0.49,1.31;...
+                0.49,2.01];
 
 
 
 
-lengthsToPlot = [9;52;3];
+lengthsToPlot = [9;6;3;52];
 
 lineWidthData=1;
 lineWidthModel=1;
@@ -82,19 +90,70 @@ if(flag_addReferenceData==1)
 
     for indexLengths = 1:1:length(lengthsToPlot)
 
+        indexRowA = 1;
+        indexRowB = indexRowA+1;
+        indexRowC = indexRowB+1;
+
         subPlotColOffset = (indexLengths-1)*3;
-        addedReferenceForceLengthCurve = zeros(1,3);
+        addedReferenceForceLengthCurve = zeros(1,4);
         addHLData=0;
         switch indexLengths
             case 1
                 addHLData=1;
             case 2
-                addHLData=0;
+                addHLData=1;
             case 3
                 addHLData=1;
+            case 4
+                addHLData=0;                
             otherwise
                 assert(0,'Error: switch statement coded for [1,2]');
         end
+
+        if(addedReferenceForceLengthCurve(1,indexLengths)==0)
+            for indexColumn=1:1:3
+                subplot('Position',...
+                    reshape(subPlotLayout(indexRowC,indexColumn+subPlotColOffset,:),1,4));
+    
+                falFile = fullfile(referenceCurveFolder,'felineSoleus_activeForceLengthCurve.dat');
+                fpeFile = fullfile(referenceCurveFolder,'felineSoleus_fiberForceLengthCurve.dat');
+    
+                falFcn = readBezierCurveFromCSV(falFile);
+                fpeFcn = readBezierCurveFromCSV(fpeFile);
+                
+                npts=200;
+                xDomain = xLimRampNorm(indexLengths,:);%[falFcn.xEnd(1,1),fpeFcn.xEnd(1,2)];
+                xDelta = xDomain(1,2)-xDomain(1,1);
+                xSample = [xDomain(1,1):(xDelta/(npts-1)):xDomain(1,2)]';
+                ySample = zeros(length(xSample),3);
+
+                for i=1:1:length(xSample)
+                    ySample(i,1)=calcQuadraticBezierYFcnXDerivative(xSample(i,1), falFcn, 0);
+                    ySample(i,2)=calcQuadraticBezierYFcnXDerivative(xSample(i,1), fpeFcn, 0);
+                    ySample(i,3)=ySample(i,1)+ySample(i,2);
+                end
+                    
+                fill([xSample;xSample(end,1);xSample(1,1)],...
+                     [ySample(:,1);ySample(1,1);ySample(1,1)],...
+                     [1,1,1].*0.65,...
+                     'EdgeColor','none',...
+                     'HandleVisibility','off');
+                hold on;
+    
+                fill([xSample;xSample(end,1);xSample(1,1)],...
+                     [ySample(:,2);ySample(1,2);ySample(1,2)],...
+                     [1,1,1].*0.55,...
+                     'EdgeColor','none',...
+                     'HandleVisibility','off');
+                hold on;
+    
+                plot(xSample,ySample(:,3),'Color',[1,1,1].*0.75,...
+                     'LineWidth',lineWidthData*2,'HandleVisibility','off');
+                hold on;                    
+    
+                addedReferenceForceLengthCurve(1,indexColumn) = 1;
+            end
+        end        
 
         for indexFile = 1:1:length(dataFiles)
             data = importdata([referenceDataFolder,'/',dataFiles{indexFile}]);
@@ -142,9 +201,6 @@ if(flag_addReferenceData==1)
             end
     
             %Plot the data
-            indexRowA = 1;
-            indexRowB = indexRowA+1;
-            indexRowC = indexRowB+1;
             
             %Plot the reference isometric force datda
             indexPlotedLine = 1;
@@ -204,57 +260,13 @@ if(flag_addReferenceData==1)
                     
                     errVel = [1,1,1].*rampVelRough - [3,9,27];
                     [errVelMin, indexVel] = min(abs(errVel));
-    
+                        
                     indexColumn = indexVel;
-    
-                    if(addedReferenceForceLengthCurve(1,indexColumn)==0)
-                        subplot('Position',...
-                        reshape(subPlotLayout(indexRowC,indexColumn+subPlotColOffset,:),1,4));
-    
-                        falFile = fullfile(referenceCurveFolder,'felineSoleus_activeForceLengthCurve.dat');
-                        fpeFile = fullfile(referenceCurveFolder,'felineSoleus_fiberForceLengthCurve.dat');
-    
-                        falFcn = readBezierCurveFromCSV(falFile);
-                        fpeFcn = readBezierCurveFromCSV(fpeFile);
-                        
-                        npts=200;
-                        xDomain = xLimRampNorm(indexLengths,:);%[falFcn.xEnd(1,1),fpeFcn.xEnd(1,2)];
-                        xDelta = xDomain(1,2)-xDomain(1,1);
-                        xSample = [xDomain(1,1):(xDelta/(npts-1)):xDomain(1,2)]';
-                        ySample = zeros(length(xSample),3);
-                        for i=1:1:length(xSample)
-                            ySample(i,1)=calcQuadraticBezierYFcnXDerivative(xSample(i,1), falFcn, 0);
-                            ySample(i,2)=calcQuadraticBezierYFcnXDerivative(xSample(i,1), fpeFcn, 0);
-                            ySample(i,3)=ySample(i,1)+ySample(i,2);
-                        end
-                        
-    %                     fill([xSample;xSample(end,1);xSample(1,1)],...
-    %                          [ySample(:,3);ySample(1,3);ySample(1,3)],...
-    %                          [1,1,1].*0.75,...
-    %                          'EdgeColor','none',...
-    %                          'HandleVisibility','off');
-    %                     hold on;
+                    
 
-                        fill([xSample;xSample(end,1);xSample(1,1)],...
-                             [ySample(:,1);ySample(1,1);ySample(1,1)],...
-                             [1,1,1].*0.65,...
-                             'EdgeColor','none',...
-                             'HandleVisibility','off');
-                        hold on;
-    
-                        fill([xSample;xSample(end,1);xSample(1,1)],...
-                             [ySample(:,2);ySample(1,2);ySample(1,2)],...
-                             [1,1,1].*0.55,...
-                             'EdgeColor','none',...
-                             'HandleVisibility','off');
-                        hold on;
-    
-                        plot(xSample,ySample(:,3),'Color',[1,1,1].*0.75,...
-                             'LineWidth',lineWidthData*2,'HandleVisibility','off');
-                        hold on;                    
-    
-                        addedReferenceForceLengthCurve(1,indexColumn) = 1;
-                    end
+
+
+
     
                     subplot('Position',...
                         reshape(subPlotLayout(indexRowA,indexColumn+subPlotColOffset,:),1,4));  
@@ -485,9 +497,11 @@ if(flag_addReferenceData==1)
                 case 1
                     yticks([0,9]);
                 case 2
-                    yticks([0,52]);
+                    yticks([0,9]);
                 case 3
                     yticks([0,9]);
+                case 4
+                    yticks([0,52]);
                 otherwise
                     assert(0,'Error: switch case not coded for that index')
             end
@@ -503,7 +517,7 @@ if(flag_addReferenceData==1)
             box off;
             hold on;
 
-            if(indexLengths==2)
+            if(indexLengths==4)
 
                 subplot('Position',reshape(subPlotLayout(indexRowC,indexSubplotColumn+subPlotColOffset,:),1,4));
                 
@@ -548,13 +562,17 @@ if(flag_addReferenceData==1)
             switch (indexLengths)
                 case 1
                     xticks([0.5:0.1:1.3]);
-                    yticks([0:0.25:1.75])
+                    yticks([0:0.25:1.75]);
                 case 2
-                    xticks([0.5:0.25:2.0]);
-                    yticks([0:0.25:4.0])
+                    xticks([0.5:0.1:1.3]);
+                    yticks([0:0.25:1.75]);    
                 case 3
                     xticks([0.5:0.1:1.3]);
-                    yticks([0:0.25:1.75])    
+                    yticks([0:0.25:1.75]);
+                case 4
+                    xticks([0.5:0.25:2.0]);
+                    yticks([0:0.25:4.0]);
+                    
                 otherwise
                     assert(0,'Error: switch statement not coded for indexLengths outside of [1,2]');
             end
@@ -752,7 +770,7 @@ if(flag_addSimulationData)
                      'LineWidth',lineWidthModel);
                 hold on;
                                 
-                if(indexLengths==2)
+                if(indexLengths==indexInjury)
 
     
     

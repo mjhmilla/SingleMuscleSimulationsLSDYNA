@@ -4,7 +4,8 @@ function [subPlotPanel,pageWidth,pageHeight]  = ...
                       plotWidth,...
                       plotHeight,...
                       plotHorizMarginCm,...
-                      plotVertMarginCm)
+                      plotVertMarginCm,...
+                      baseFontSize)
 
 pageWidth   = numberOfHorizontalPlotColumns*(plotWidth+plotHorizMarginCm)...
                 +2*plotHorizMarginCm;
@@ -47,16 +48,16 @@ end
 
 plotFontName = 'latex';
 
-set(groot, 'defaultAxesFontSize',8);
-set(groot, 'defaultTextFontSize',8);
-set(groot, 'defaultAxesLabelFontSizeMultiplier',1.2);
-set(groot, 'defaultAxesTitleFontSizeMultiplier',1.2);
+set(groot, 'defaultAxesFontSize',baseFontSize);
+set(groot, 'defaultTextFontSize',baseFontSize);
+set(groot, 'defaultAxesLabelFontSizeMultiplier',1.1);
+set(groot, 'defaultAxesTitleFontSizeMultiplier',1.1);
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 %set(groot, 'defaultAxesFontName',plotFontName);
 %set(groot, 'defaultTextFontName',plotFontName);
 set(groot, 'defaultLegendInterpreter','latex');
 set(groot, 'defaultTextInterpreter','latex');
-set(groot, 'defaultAxesTitleFontWeight','bold');  
+set(groot, 'defaultAxesTitleFontWeight','normal');  
 set(groot, 'defaultFigurePaperUnits','centimeters');
 set(groot, 'defaultFigurePaperSize',[pageWidth pageHeight]);
 set(groot,'defaultFigurePaperType','A4');
