@@ -55,29 +55,32 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 0;
+flag_runSimulations                 = 1;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
-flag_sizePlotsForSlides = 1; %0: means use journal paper slides
+flag_sizePlotsForSlides = 0; %0: means use journal paper slides
 excludeSimulationsNamesThatContain = [];%[{'52mm'}];
 
-flag_generateGenericPlots           = 0;
+flag_generateGenericPlots           = 1;
 flag_generateSpecificPlots          = 0;
-flag_generatePublicationPlots       = 1;
+flag_generatePublicationPlots       = 0;
 
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
-flag_enableEccentricExperiment          = 1;
+flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 0;
 flag_enableReflexExperiment_kN_mm_ms    = 0;
 
-flag_aniType = 1; 
+flag_enableHumanIsometricExperiment     = 1;
+
+
+flag_sinusoid_aniType = 0; 
 % This is only relevant when post-processing SinusoidExperiment
 %0. human
 %1. feline
@@ -414,22 +417,22 @@ if(flag_postProcessSimulationData==1)
 
 
                 switch simulationType(indexSimulationType).type
-                    case 'isometric'
+                    case 'isometric_Guenther2007'
                         referenceCurveFolder = [];
-                    case 'concentric'
+                    case 'concentric_Guenther2007'
                         referenceCurveFolder = [];
-                    case 'quickrelease'
+                    case 'quickrelease_Guenther2007'
                         referenceCurveFolder = [];
-                    case 'eccentric'
+                    case 'eccentric_HerzogLeonard2002'
                         referenceCurveFolder = fullfile(matlabScriptPath,'ReferenceCurves','eccentric');
-                    case 'impedance'
+                    case 'impedance_Kirsch1997'
                         referenceCurveFolder = [];
                     case 'reflex'
                         referenceCurveFolder = [];
                     case 'reflex_kN_mm_ms'
                         referenceCurveFolder = [];
                     case 'sinusoid'
-                        switch flag_aniType
+                        switch flag_sinusoid_aniType
                             case 0
                                 referenceDataFolder = [referenceDataFolder,...
                                                 '/QuadraticBezierHumanCurves'];
@@ -437,8 +440,10 @@ if(flag_postProcessSimulationData==1)
                                 referenceDataFolder = [referenceDataFolder,...
                                                 '/QuadraticBezierFelineCurves'];
                             otherwise 
-                                assert(0,'flag_aniType should be 0 (human) or 1 (feline)');
+                                assert(0,'flag_sinusoid_aniType should be 0 (human) or 1 (feline)');
                         end
+                    case 'isometric_generic'
+                        referenceCurveFolder = [];                        
                     otherwise
                         assert(0,'Error: simulation type not yet coded with reference data');
                 end
@@ -464,7 +469,7 @@ if(flag_postProcessSimulationData==1)
                 numberOfVerticalPlotRowsPublication       = 1;
 
                 switch (simulationTypeStr)
-                    case 'eccentric'
+                    case 'eccentric_HerzogLeonard2002'
 
                       numberOfHorizontalPlotColumnsSpecific     = 1;
                       numberOfVerticalPlotRowsSpecific          = 6;
@@ -473,16 +478,16 @@ if(flag_postProcessSimulationData==1)
                       numberOfVerticalPlotRowsPublication       = 3;
 
 
-                    case 'isometric'
+                    case 'isometric_Guenther2007'
                       numberOfHorizontalPlotColumnsSpecific = 1;
                       numberOfVerticalPlotRowsSpecific      = 1;
-                    case 'concentric'
+                    case 'concentric_Guenther2007'
                       numberOfHorizontalPlotColumnsSpecific = 1;
                       numberOfVerticalPlotRowsSpecific      = 1;
-                    case 'quickrelease'
+                    case 'quickrelease_Guenther2007'
                       numberOfHorizontalPlotColumnsSpecific = 1;
                       numberOfVerticalPlotRowsSpecific      = 1;                 
-                    case 'impedance'
+                    case 'impedance_Kirsch1997'
                       numberOfHorizontalPlotColumnsSpecific = 1;
                       numberOfVerticalPlotRowsSpecific      = 6; 
                       sampleTimeK = getParameterFieldValue('impedance.k','dtsignal');
@@ -498,7 +503,10 @@ if(flag_postProcessSimulationData==1)
                       numberOfVerticalPlotRowsSpecific      = 12; 
                     case 'reflex_kN_mm_ms'
                       numberOfHorizontalPlotColumnsSpecific = 3;
-                      numberOfVerticalPlotRowsSpecific      = 12;    
+                      numberOfVerticalPlotRowsSpecific      = 12; 
+                    case 'isometric_generic'
+                      numberOfHorizontalPlotColumnsSpecific = 1;
+                      numberOfVerticalPlotRowsSpecific      = 2;
                       
                 end
 

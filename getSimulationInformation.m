@@ -46,7 +46,7 @@ if(strcmp(modelName,'umat41')==1)
 
     if(flag_enableIsometricExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'isometric';
+      simulationType(idx).type = 'isometric_Guenther2007';
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).simulationConstantFile = 'isometric.k';
@@ -61,7 +61,7 @@ if(strcmp(modelName,'umat41')==1)
     
     if(flag_enableConcentricExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'concentric';
+      simulationType(idx).type = 'concentric_Guenther2007';
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).type               = simulationInformation(idx).type;
@@ -79,7 +79,7 @@ if(strcmp(modelName,'umat41')==1)
 
     if(flag_enableQuickReleaseExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'quickrelease';
+      simulationType(idx).type = 'quickrelease_Guenther2007';
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).type                   = 'quickrelease';
@@ -94,7 +94,7 @@ if(strcmp(modelName,'umat41')==1)
 
     if(flag_enableEccentricExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'eccentric';
+      simulationType(idx).type = 'eccentric_HerzogLeonard2002';
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).type                   = 'eccentric';
@@ -111,7 +111,7 @@ if(strcmp(modelName,'umat41')==1)
 
     if(flag_enableImpedanceExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'impedance';
+      simulationType(idx).type = 'impedance_Kirsch1997';
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).type                   = 'impedance';
@@ -173,7 +173,7 @@ if(strcmp(modelName,'umat43')==1)
 
     if(flag_enableIsometricExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'isometric';
+      simulationType(idx).type = 'isometric_Guenther2007';
       simulationInformation(idx).type               = simulationType(idx).type;
       simulationInformation(idx).simulationConstantFile = 'isometric.k';
       simulationInformation(idx).musclePropertyCard     = 'matpiglet.k';
@@ -188,7 +188,7 @@ if(strcmp(modelName,'umat43')==1)
 
     if(flag_enableConcentricExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'concentric';
+      simulationType(idx).type = 'concentric_Guenther2007';
       simulationInformation(idx).type               = simulationType(idx).type;
       simulationInformation(idx).simulationConstantFile = 'concentric.k';
       simulationInformation(idx).musclePropertyCard     = 'matpiglet.k';      
@@ -204,7 +204,7 @@ if(strcmp(modelName,'umat43')==1)
 
     if(flag_enableQuickReleaseExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'quickrelease';
+      simulationType(idx).type = 'quickrelease_Guenther2007';
       simulationInformation(idx).type               = simulationType(idx).type;
       simulationInformation(idx).simulationConstantFile = 'quick_release.k';      
       simulationInformation(idx).musclePropertyCard     = 'matpiglet.k';
@@ -218,7 +218,7 @@ if(strcmp(modelName,'umat43')==1)
 
     if(flag_enableEccentricExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'eccentric';
+      simulationType(idx).type = 'eccentric_HerzogLeonard2002';
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).simulationConstantFile = 'eccentric.k';      
@@ -235,7 +235,7 @@ if(strcmp(modelName,'umat43')==1)
 
     if(flag_enableImpedanceExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'impedance';
+      simulationType(idx).type = 'impedance_Kirsch1997';
       simulationInformation(idx).type               = simulationType(idx).type;
       simulationInformation(idx).simulationConstantFile = 'impedance.k';  
       simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';      
@@ -316,6 +316,23 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).model = modelName;  
 
     end
+
+    if(flag_enableHumanIsometricExperimentHuman==1)
+      idx=idx+1;
+      simulationType(idx).type = 'isometric_generic';
+      simulationInformation(idx).type               = simulationType(idx).type;
+
+      simulationInformation(idx).simulationConstantFile     = 'isometric.k';      
+      simulationInformation(idx).musclePropertyCard         = 'muscle_generic.k';      
+      simulationInformation(idx).optimalFiberLength         = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength          = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees      = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard     = 0;
+      simulationInformation(idx).model                      = modelName;  
+
+    end     
 end
   
 
@@ -338,7 +355,7 @@ if(strcmp(modelName,'mat156')==1)
 
     if(flag_enableEccentricExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'eccentric';
+      simulationType(idx).type = 'eccentric_HerzogLeonard2002';
       simulationInformation(idx).type                   = simulationType(idx).type;
 
       simulationInformation(idx).simulationConstantFile = 'eccentric.k';      

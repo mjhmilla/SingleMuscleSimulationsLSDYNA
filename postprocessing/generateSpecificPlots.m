@@ -26,7 +26,7 @@ ltslk   = muscleArchitecture.ltslk;
 alpha   = muscleArchitecture.alpha;
 
 switch (simulationTypeStr)
-    case 'eccentric'
+    case 'eccentric_HerzogLeonard2002'
         flag_addSimulationData=1;
         flag_addReferenceData =1;                
         if(flag_figSpecificDirty==0)
@@ -48,7 +48,7 @@ switch (simulationTypeStr)
                 flag_addReferenceData,flag_addSimulationData,...
                 simulationColorA,simulationColorB,...
                 dataColorA,dataColorB);
-    case 'concentric'
+    case 'concentric_Guenther2007'
         flag_addSimulationData=1;
         if(flag_figSpecificDirty==0)
           flag_addReferenceData=1;
@@ -68,7 +68,7 @@ switch (simulationTypeStr)
                 flag_addReferenceData,flag_addSimulationData,...
                 simulationColorA,simulationColorB,...
                 dataColorA,dataColorB);
-    case 'isometric'
+    case 'isometric_Guenther2007'
         flag_addSimulationData=1;
         if(flag_figSpecificDirty==0)
           flag_addReferenceData=1;
@@ -89,7 +89,7 @@ switch (simulationTypeStr)
                 simulationColorA,simulationColorB,...
                 dataColorA,dataColorB);
 
-    case 'quickrelease'
+    case 'quickrelease_Guenther2007'
         flag_addSimulationData=1;
         if(flag_figSpecificDirty==0)
           flag_addReferenceData=1;
@@ -109,7 +109,7 @@ switch (simulationTypeStr)
                 flag_addReferenceData,flag_addSimulationData,...
                 simulationColorA,simulationColorB,...
                 dataColorA,dataColorB);   
-    case 'impedance'
+    case 'impedance_Kirsch1997'
         flag_addSimulationData=1;
         if(flag_figSpecificDirty==0)                        
           flag_figSpecificDirty=1;
@@ -356,6 +356,8 @@ switch (simulationTypeStr)
                         numberOfHorizontalPlotColumnsSpecific,...                              
                         simulationDirectoryName,...
                         indexSimulationTrial,...
-                        numberOfSimulationDirectories);                                            
+                        numberOfSimulationDirectories); 
+    case 'isometric_generic'
+        assert(0,'Nothing yet added for isometric_generic');                                                               
         
 end

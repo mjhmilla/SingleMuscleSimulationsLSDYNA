@@ -20,7 +20,7 @@ function [figPublication,...
 
 
 switch (simulationTypeStr)
-    case 'eccentric'
+    case 'eccentric_HerzogLeonard2002'
         flag_addSimulationData  = 1;
         flag_addReferenceData   = 1;                
         if(flag_figPublicationDirty==1)
@@ -47,13 +47,13 @@ switch (simulationTypeStr)
 
         flag_figPublicationDirty=1;
         
-    case 'concentric'
+    case 'concentric_Guenther2007'
         disp('No concentric publication plot');
-    case 'isometric'
+    case 'isometric_Guenther2007'
         disp('No isometric publication plot');
-    case 'quickrelease'
+    case 'quickrelease_Guenther2007'
         disp('No quickrelease publication plot'); 
-    case 'impedance'
+    case 'impedance_Kirsch1997'
         disp('No impedance publication plot'); 
     case 'force_length'
         disp('No force_length publication plot'); 
@@ -63,6 +63,7 @@ switch (simulationTypeStr)
         disp('No reflex publication plot'); 
     case 'reflex_kN_mm_ms'    
         disp('No reflex_kN_mm_ms publication plot'); 
-                                           
+    case 'isometric_generic'    
+        disp('No isometric_generic publication plot');                                            
         
 end
