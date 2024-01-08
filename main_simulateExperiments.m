@@ -34,18 +34,18 @@ redB = redA.*0.5 + [1,1,1].*0.5;
 dataColorA=greyA;
 dataColorB=greyB;
 
-indexMat56                = 1;
-models(indexMat56).id     = 1;
-models(indexMat56).name   ='mat156';
-models(indexMat56).colors = [redA;redB];
+%indexMat56                = 1;
+%models(indexMat56).id     = 1;
+%models(indexMat56).name   ='mat156';
+%models(indexMat56).colors = [redA;redB];
 
 % indexUmat41              = 2;
 % models(indexUmat41).id   = 2;
 % models(indexUmat41).name ='umat41';
 % models(indexUmat41).colors= [magentaA;magentaB];
 
-indexUmat43              = 2;
-models(indexUmat43).id   = 2;
+indexUmat43              = 1;
+models(indexUmat43).id   = 1;
 models(indexUmat43).name ='umat43';
 models(indexUmat43).colors= [blueA;blueB];
 
@@ -55,7 +55,7 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
@@ -77,7 +77,7 @@ flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 0;
 flag_enableReflexExperiment_kN_mm_ms    = 0;
 
-flag_enableHumanIsometricExperiment     = 1;
+flag_enableGenericIsometricExperiment   = 1;
 
 
 flag_sinusoid_aniType = 0; 
@@ -131,7 +131,8 @@ numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableForceLengthExperiment...
                      +flag_enableSinusoidExperiment...
                      +flag_enableReflexExperiment...
-                     +flag_enableReflexExperiment_kN_mm_ms;
+                     +flag_enableReflexExperiment_kN_mm_ms...
+                     +flag_enableGenericIsometricExperiment;
 
 
 if(numberOfSimulationTypes==0)
@@ -214,7 +215,8 @@ if(flag_preProcessSimulationData==1)
                         flag_enableForceLengthExperiment,...
                         flag_enableSinusoidExperiment,...
                         flag_enableReflexExperiment,...
-                        flag_enableReflexExperiment_kN_mm_ms);
+                        flag_enableReflexExperiment_kN_mm_ms,...
+                        flag_enableGenericIsometricExperiment);
 
             for indexSimulationType = 1:length(simulationType)
 
@@ -291,7 +293,8 @@ if(flag_runSimulations==1)
                         flag_enableForceLengthExperiment,...
                         flag_enableSinusoidExperiment,...
                         flag_enableReflexExperiment,...
-                        flag_enableReflexExperiment_kN_mm_ms);
+                        flag_enableReflexExperiment_kN_mm_ms,...
+                        flag_enableGenericIsometricExperiment);
                     
             switch Release
                 case 'SMP_R931'
@@ -366,7 +369,8 @@ if(flag_postProcessSimulationData==1)
                         flag_enableForceLengthExperiment,...
                         flag_enableSinusoidExperiment,...
                         flag_enableReflexExperiment,...
-                        flag_enableReflexExperiment_kN_mm_ms);            
+                        flag_enableReflexExperiment_kN_mm_ms,...
+                        flag_enableGenericIsometricExperiment);            
               
             simulationColorA = models(indexModel).colors(1,:);
             simulationColorB = models(indexModel).colors(2,:);

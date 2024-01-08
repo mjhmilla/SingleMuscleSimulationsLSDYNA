@@ -16,7 +16,7 @@ R   vceMax      10.0
 $
 *PARAMETER_EXPRESSION
 $#    name expression
-R pathLenO &pathLenN*&lceOpt*cos(&penOpt)+&ltSlk
+R  pathLen &pathLenN*&lceOpt*cos(&penOpt)+&ltSlk
 R    timeE 2.0
 $
 *TITLE
@@ -96,6 +96,13 @@ $
 $#   nid               x               y               z      tc      rc
        1             0.0             0.0             0.0       7       7
        2             0.0             0.0       -&pathLen       7       7
+*DEFINE_CURVE
+$#    lcid      sidr       sfa       sfo      offa      offo    dattyp
+         9         0  1.000000  1.000000     0.000     0.000         0
+$#                a1                  o1
+            0.000000              0.0005
+              &timeE              0.0005
+$
 *INCLUDE
 muscle_generic.k
 *END
