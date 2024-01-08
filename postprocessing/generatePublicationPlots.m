@@ -63,7 +63,7 @@ switch (simulationTypeStr)
         disp('No reflex publication plot'); 
     case 'reflex_kN_mm_ms'    
         disp('No reflex_kN_mm_ms publication plot'); 
-    case 'isometric_generic'    
-        disp('No isometric_generic publication plot');                                            
+    case 'active_passive_force_length'    
+        disp('No active_passive_force_length publication plot');                                            
         
 end

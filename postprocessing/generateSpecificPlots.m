@@ -357,7 +357,7 @@ switch (simulationTypeStr)
                         simulationDirectoryName,...
                         indexSimulationTrial,...
                         numberOfSimulationDirectories); 
-    case 'isometric_generic'
-        assert(0,'Nothing yet added for isometric_generic');                                                               
+    case 'active_passive_force_length'
+        assert(0,'Nothing yet added for active_passive_force_length');                                                               
         
 end

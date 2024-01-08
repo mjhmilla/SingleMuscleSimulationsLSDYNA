@@ -1,13 +1,14 @@
 *KEYWORD
 *PARAMETER
 $#    name       val
-R pathLenN     0.500
+RpathLenN0     1.600
+RpathLenN1     1.600
 R   actVal     1.000
 $
 *INCLUDE_PATH_RELATIVE
 ../
 $
 *INCLUDE
-../isometric.k
+../active_passive_force_length.k
 $
 *END

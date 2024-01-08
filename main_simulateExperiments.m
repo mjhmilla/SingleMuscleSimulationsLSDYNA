@@ -77,7 +77,7 @@ flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 0;
 flag_enableReflexExperiment_kN_mm_ms    = 0;
 
-flag_enableGenericIsometricExperiment   = 1;
+flag_enableActivePassiveForceLengthExperiment   = 1;
 
 
 flag_sinusoid_aniType = 0; 
@@ -132,7 +132,7 @@ numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableSinusoidExperiment...
                      +flag_enableReflexExperiment...
                      +flag_enableReflexExperiment_kN_mm_ms...
-                     +flag_enableGenericIsometricExperiment;
+                     +flag_enableActivePassiveForceLengthExperiment;
 
 
 if(numberOfSimulationTypes==0)
@@ -216,7 +216,7 @@ if(flag_preProcessSimulationData==1)
                         flag_enableSinusoidExperiment,...
                         flag_enableReflexExperiment,...
                         flag_enableReflexExperiment_kN_mm_ms,...
-                        flag_enableGenericIsometricExperiment);
+                        flag_enableActivePassiveForceLengthExperiment);
 
             for indexSimulationType = 1:length(simulationType)
 
@@ -294,7 +294,7 @@ if(flag_runSimulations==1)
                         flag_enableSinusoidExperiment,...
                         flag_enableReflexExperiment,...
                         flag_enableReflexExperiment_kN_mm_ms,...
-                        flag_enableGenericIsometricExperiment);
+                        flag_enableActivePassiveForceLengthExperiment);
                     
             switch Release
                 case 'SMP_R931'
@@ -370,7 +370,7 @@ if(flag_postProcessSimulationData==1)
                         flag_enableSinusoidExperiment,...
                         flag_enableReflexExperiment,...
                         flag_enableReflexExperiment_kN_mm_ms,...
-                        flag_enableGenericIsometricExperiment);            
+                        flag_enableActivePassiveForceLengthExperiment);            
               
             simulationColorA = models(indexModel).colors(1,:);
             simulationColorB = models(indexModel).colors(2,:);
@@ -446,7 +446,7 @@ if(flag_postProcessSimulationData==1)
                             otherwise 
                                 assert(0,'flag_sinusoid_aniType should be 0 (human) or 1 (feline)');
                         end
-                    case 'isometric_generic'
+                    case 'active_passive_force_length'
                         referenceCurveFolder = [];                        
                     otherwise
                         assert(0,'Error: simulation type not yet coded with reference data');
@@ -508,7 +508,7 @@ if(flag_postProcessSimulationData==1)
                     case 'reflex_kN_mm_ms'
                       numberOfHorizontalPlotColumnsSpecific = 3;
                       numberOfVerticalPlotRowsSpecific      = 12; 
-                    case 'isometric_generic'
+                    case 'active_passive_force_length'
                       numberOfHorizontalPlotColumnsSpecific = 1;
                       numberOfVerticalPlotRowsSpecific      = 2;
                       

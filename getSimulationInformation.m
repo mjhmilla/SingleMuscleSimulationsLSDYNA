@@ -9,7 +9,7 @@ function [simulationType, simulationInformation]=...
             flag_enableSinusoidExperiment,...
             flag_enableReflexExperiment,...
             flag_enableReflexExperiment_kN_mm_ms,...
-            flag_enableGenericIsometricExperiment)
+            flag_enableActivePassiveForceLengthExperiment)
 
 numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableConcentricExperiment ... 
@@ -20,7 +20,7 @@ numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableSinusoidExperiment...
                      +flag_enableReflexExperiment...
                      +flag_enableReflexExperiment_kN_mm_ms...
-                     +flag_enableGenericIsometricExperiment;
+                     +flag_enableActivePassiveForceLengthExperiment;
 
 if(numberOfSimulationTypes==0)
     numberOfSimulationTypes=1;
@@ -319,12 +319,12 @@ if(strcmp(modelName,'umat43')==1)
 
     end
 
-    if(flag_enableGenericIsometricExperiment==1)
+    if(flag_enableActivePassiveForceLengthExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'isometric_generic';
+      simulationType(idx).type = 'active_passive_force_length';
       simulationInformation(idx).type               = simulationType(idx).type;
 
-      simulationInformation(idx).simulationConstantFile     = 'isometric.k';      
+      simulationInformation(idx).simulationConstantFile     = 'active_passive_force_length.k';      
       simulationInformation(idx).musclePropertyCard         = 'muscle_generic.k';      
       simulationInformation(idx).optimalFiberLength         = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce      = 'fceOpt';

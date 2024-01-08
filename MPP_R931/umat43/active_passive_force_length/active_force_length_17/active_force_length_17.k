@@ -1,0 +1,14 @@
+*KEYWORD
+*PARAMETER
+$#    name       val
+RpathLenN0     1.600
+RpathLenN1     1.600
+R   actVal     0.700
+$
+*INCLUDE_PATH_RELATIVE
+../
+$
+*INCLUDE
+../active_passive_force_length.k
+$
+*END
