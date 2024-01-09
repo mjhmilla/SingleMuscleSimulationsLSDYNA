@@ -5,7 +5,7 @@ $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout     0.001                                     
+R    dtout      0.01                                     
 R   lceOpt     0.137
 R   fceOpt      62.0
 R   penOpt       0.0

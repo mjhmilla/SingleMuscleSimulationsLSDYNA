@@ -101,7 +101,7 @@ if(flag_addSimulationData==1)
                   sprintf('(%1.1f)',lsdynaMuscleUniform.act(end,1))];
             handleVisibility='on';
         end
-        if(contains(simulationFile,'active_force_length_10'))
+        if(contains(simulationFile,'active_force_length_15'))
             displayNameStr=[lsdynaMuscleUniform.nameLabel,...
                 sprintf('(%1.1f)',lsdynaMuscleUniform.act(end,1))];
             handleVisibility='on';
@@ -117,8 +117,8 @@ if(flag_addSimulationData==1)
             'MarkerSize',markerSize);
         hold on;
 
-        if(contains(simulationFile,'active_force_length_04') ...
-                || contains(simulationFile,'active_force_length_14'))
+        if(contains(simulationFile,'active_force_length_06') ...
+                || contains(simulationFile,'active_force_length_16'))
             text(lceATN,faeATN,...
                  sprintf('*',lsdynaMuscleUniform.act(end,1)),...
                  'Color',lineColor,...
@@ -160,7 +160,7 @@ if(flag_addSimulationData==1)
     end
     
 
-    if(contains(simulationFile,'active_force_length_04'))
+    if(contains(simulationFile,'active_force_length_06'))
         subplot('Position',reshape(subPlotLayout(1,2,:),1,4));
         
         plot(   lsdynaMuscleUniform.time(:,1),...
