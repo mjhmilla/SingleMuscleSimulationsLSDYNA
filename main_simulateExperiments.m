@@ -55,7 +55,7 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
@@ -64,9 +64,9 @@ flag_postProcessSimulationData      = 1;
 flag_sizePlotsForSlides = 0; %0: means use journal paper slides
 excludeSimulationsNamesThatContain = [];%[{'52mm'}];
 
-flag_generateGenericPlots           = 1;
+flag_generateGenericPlots           = 0;
 flag_generateSpecificPlots          = 0;
-flag_generatePublicationPlots       = 0;
+flag_generatePublicationPlots       = 1;
 
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
@@ -509,8 +509,10 @@ if(flag_postProcessSimulationData==1)
                       numberOfHorizontalPlotColumnsSpecific = 3;
                       numberOfVerticalPlotRowsSpecific      = 12; 
                     case 'active_passive_force_length'
-                      numberOfHorizontalPlotColumnsSpecific = 1;
-                      numberOfVerticalPlotRowsSpecific      = 2;
+                      numberOfHorizontalPlotColumnsSpecific     = 1;
+                      numberOfVerticalPlotRowsSpecific          = 2;
+                      numberOfHorizontalPlotColumnsPublication  = 2; 
+                      numberOfVerticalPlotRowsPublication       = 1;                      
                       
                 end
 

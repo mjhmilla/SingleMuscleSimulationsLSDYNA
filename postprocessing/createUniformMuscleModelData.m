@@ -75,7 +75,8 @@ uniformModelData = struct('lceOpt',optimalFiberLength,...
                           'name','',...
                           'nameLabel','',...
                           'authorship','',...
-                          'authorshipShort','');
+                          'authorshipShort','',...
+                          'marker','');
 
 switch modelName
     case 'umat41'
@@ -143,6 +144,7 @@ switch modelName
         uniformModelData.nameLabel  = 'EHTMM';
         uniformModelData.authorship = 'Kleinbach et al. (2017)';
         uniformModelData.authorshipShort = 'Kleinbach (2017)';
+        uniformModelData.mark = 's';
         
     case 'umat43'
         uniformModelData.time = lsdynaMusout.data(:,lsdynaMusout.indexTime);
@@ -173,9 +175,10 @@ switch modelName
           lsdynaBinout.elout.beam.axial ./ maxActiveIsometricForce;
 
         uniformModelData.name               = modelName;
-        uniformModelData.nameLabel          = 'Model';
+        uniformModelData.nameLabel          = 'VEXAT';
         uniformModelData.authorship         = 'Millard et al. (2023)';
         uniformModelData.authorshipShort    = 'Millard (2023)';
+        uniformModelData.mark = 'o';
 
 
         
@@ -224,6 +227,8 @@ switch modelName
         uniformModelData.nameLabel          = 'MAT156';
         uniformModelData.authorship         = 'Weiss (2016)';
         uniformModelData.authorshipShort    = 'Weiss (2016)';
+        uniformModelData.mark = 'd';
+        
 
     otherwise
         assert(0,['modelName (',modelName,') is not yet coded'])
