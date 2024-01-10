@@ -5,20 +5,20 @@ $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout      0.01                                     
-R   lceOpt     0.137
-R   fceOpt      62.0
+R    dtout       100                                     
+R   lceOpt  137.1721
+R   fceOpt     0.062
 R   penOpt       0.0
 R  penOptD       0.0
-R    ltSlk    0.0419
-R       et     0.049
-R   vceMax      10.0
+R    ltSlk   41.9137
+R       et     0.068
+R   vceMax      0.01
 $
 *PARAMETER_EXPRESSION
 $#    name expression
 R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk
 R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk
-R    timeE 2.0
+R    timeE 2000
 $
 *TITLE
 $#                                                                         title
@@ -77,8 +77,8 @@ $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
                  0.0                 0.0
-                0.99                 0.0
-                1.00             &actVal
+                 999                 0.0
+                1000             &actVal
               &timeE             &actVal
 *ELEMENT_BEAM
 $#   eid     pid      n1      n2      n3     rt1     rr1     rt2     rr2   local
@@ -101,8 +101,8 @@ $#   nid               x               y               z      tc      rc
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
-            0.000000              0.0005
-              &timeE              0.0005
+            0.000000                0.01
+              &timeE                0.01
 $
 *INCLUDE
 muscle_generic.k

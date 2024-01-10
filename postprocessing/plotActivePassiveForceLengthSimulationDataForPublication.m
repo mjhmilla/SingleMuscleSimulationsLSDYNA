@@ -22,6 +22,12 @@ lineWidthData=1;
 lineWidthModel=1;
 
 
+fileNameMaxActStart     = 'active_force_length_00';
+fileNameSubMaxActStart  = 'active_force_length_15';
+fileNameMaxActOpt       = 'active_force_length_06';
+fileNameSubMaxActOpt    = 'active_force_length_16';
+
+
 
 plotSettings(2) = struct('yLim',[],'xLim',[],'yTicks',[],'xTicks',[]);
 
@@ -73,35 +79,44 @@ if(flag_addSimulationData==1)
         markerSize=3;
     end
 
+    timeEnd   = lsdynaMuscleUniform.time(end,1);
+    timeStart = lsdynaMuscleUniform.time(1,1);
+    
+    timeA = timeStart + (timeEnd-timeStart)*(0.25);
+    timeB = timeStart + (timeEnd-timeStart)*(0.75);
+    
+    indexA = find(lsdynaMuscleUniform.time > timeA,1);
+    indexB = find(lsdynaMuscleUniform.time > timeB,1);
+    timeA = lsdynaMuscleUniform.time(indexA,1);
+    timeB = lsdynaMuscleUniform.time(indexB,1);
 
     subplot('Position',reshape(subPlotLayout(1,1,:),1,4));
 
     if(flag_activeData)
-        f0N = interp1(lsdynaMuscleUniform.time,...
-                      lsdynaMuscleUniform.fseN,0.5);
-        f1N = interp1(lsdynaMuscleUniform.time,...
-                      lsdynaMuscleUniform.fseN,1.5);
-        act = lsdynaMuscleUniform.act(end,1);
-        lceN= lsdynaMuscleUniform.lceN(end,1);
 
-        fpeATN =(f0N);
-        faeATN =(f1N-f0N);
+        fAN = lsdynaMuscleUniform.fseN(indexA,1);
 
-        lp1 = interp1(lsdynaMuscleUniform.time,...
-                      lsdynaMuscleUniform.lp,1.5);
-        ltN = interp1(lsdynaMuscleUniform.time,...
-                      lsdynaMuscleUniform.ltN,1.5);
+        fBN = lsdynaMuscleUniform.fseN(indexB,1);
+
+        act = lsdynaMuscleUniform.act(indexB,1);
+        lceN= lsdynaMuscleUniform.lceN(indexB,1);
+
+        fpeATN =(fAN);
+        faeATN =(fBN-fAN);
+
+        lp1 = lsdynaMuscleUniform.lp(indexB,1);
+        ltN = lsdynaMuscleUniform.ltN(indexB,1);
         
         lceATN = (lp1-ltN*tendonSlackLength)/optimalFiberLength;
         displayNameStr ='';
         handleVisibility='off';
 
-        if(contains(simulationFile,'active_force_length_00'))
+        if(contains(simulationFile,fileNameMaxActStart))
             displayNameStr=[lsdynaMuscleUniform.nameLabel,...
                   sprintf('(%1.1f)',lsdynaMuscleUniform.act(end,1))];
             handleVisibility='on';
         end
-        if(contains(simulationFile,'active_force_length_15'))
+        if(contains(simulationFile,fileNameSubMaxActStart))
             displayNameStr=[lsdynaMuscleUniform.nameLabel,...
                 sprintf('(%1.1f)',lsdynaMuscleUniform.act(end,1))];
             handleVisibility='on';
@@ -117,8 +132,8 @@ if(flag_addSimulationData==1)
             'MarkerSize',markerSize);
         hold on;
 
-        if(contains(simulationFile,'active_force_length_06') ...
-                || contains(simulationFile,'active_force_length_16'))
+        if(contains(simulationFile,fileNameMaxActOpt) ...
+                || contains(simulationFile,fileNameMaxActOpt))
             text(lceATN,faeATN,...
                  sprintf('*',lsdynaMuscleUniform.act(end,1)),...
                  'Color',lineColor,...
@@ -160,7 +175,7 @@ if(flag_addSimulationData==1)
     end
     
 
-    if(contains(simulationFile,'active_force_length_06'))
+    if(contains(simulationFile,fileNameMaxActOpt))
         subplot('Position',reshape(subPlotLayout(1,2,:),1,4));
         
         plot(   lsdynaMuscleUniform.time(:,1),...
@@ -172,12 +187,12 @@ if(flag_addSimulationData==1)
                 'HandleVisibility','on');
         hold on;
 
-        f0N = interp1(lsdynaMuscleUniform.time,...
+        fAN = interp1(lsdynaMuscleUniform.time,...
                       lsdynaMuscleUniform.fseN,0.5);
-        f1N = interp1(lsdynaMuscleUniform.time,...
+        fBN = interp1(lsdynaMuscleUniform.time,...
                       lsdynaMuscleUniform.fseN,1.5);
 
-        plot(0.5,f0N,...
+        plot(timeA,fAN,...
              lsdynaMuscleUniform.mark,...
              'Color',lineColor,...
              'MarkerFaceColor',lineColor,...
@@ -185,13 +200,13 @@ if(flag_addSimulationData==1)
              'MarkerSize',markerSize,...
              'HandleVisibility','off');
         hold on;
-        text(0.5,f0N,'A',...
+        text(timeA,fAN,'A',...
              'HorizontalAlignment','center',...
              'VerticalAlignment','bottom',...
              'Color',lineColor);
         hold on;
 
-        plot(1.5,f1N,...
+        plot(timeB,fBN,...
              lsdynaMuscleUniform.mark,...
              'Color',lineColor,...
              'MarkerFaceColor',lineColor,...             
@@ -200,7 +215,7 @@ if(flag_addSimulationData==1)
              'HandleVisibility','off');
         hold on;
 
-        text(1.5,f1N,'B',...
+        text(timeB,fBN,'B',...
              'HorizontalAlignment','center',...
              'VerticalAlignment','bottom',...
              'Color',lineColor);
