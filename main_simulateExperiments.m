@@ -39,15 +39,15 @@ dataColorB=greyB;
 %models(indexMat56).name   ='mat156';
 %models(indexMat56).colors = [redA;redB];
 
-% indexUmat41              = 2;
-% models(indexUmat41).id   = 2;
-% models(indexUmat41).name ='umat41';
-% models(indexUmat41).colors= [magentaA;magentaB];
+indexUmat41              = 1;
+models(indexUmat41).id   = 1;
+models(indexUmat41).name ='umat41';
+models(indexUmat41).colors= [magentaA;magentaB];
 
-indexUmat43              = 1;
-models(indexUmat43).id   = 1;
-models(indexUmat43).name ='umat43';
-models(indexUmat43).colors= [blueA;blueB];
+%indexUmat43              = 1;
+%models(indexUmat43).id   = 1;
+%models(indexUmat43).name ='umat43';
+%models(indexUmat43).colors= [blueA;blueB];
 
 
 flag_preProcessSimulationData       = 0; 
