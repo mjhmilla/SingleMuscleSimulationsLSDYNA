@@ -26,7 +26,7 @@ subPlotPanelIndex = zeros(numberOfVerticalPlotRows,numberOfHorizontalPlotColumns
 
 
 switch (simulationTypeStr)
-    case 'eccentric'
+    case 'eccentric_HerzogLeonard2002'
         assert(numberOfVerticalPlotRows==3);
         idx=1;
         scalePlotHeight = 0.;

@@ -55,7 +55,7 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
@@ -706,7 +706,9 @@ if(flag_postProcessSimulationData==1)
                         if(flag_figGenericDirty==0)
                           flag_figGenericDirty=1;
                         end
-                        
+                        if(contains(simulationDirectories(indexSimulationTrial).name,'active_force_length_16'))
+                            here=1;
+                        end
                         uniformModelData = createUniformMuscleModelData(...
                             models(indexModel).name,...
                             musout, binout, d3hspFileName, lceOpt,fiso,ltslk,alpha,...

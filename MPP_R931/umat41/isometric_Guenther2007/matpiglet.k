@@ -6,7 +6,7 @@ $#     mid        ro        mt       lmc       nhv    iortho     ibulk        ig
 $#   ivect     ifail    itherm    ihyper      ieos      lmca    unused    unused
          0         0         0         0         0         0                    
 $#  ActOpt   STIM_ID        q0    tauq/c betaq/eta         k         m
-         1         3    1.0E-4     0.025       0.5                
+         1        -3    1.0E-4     0.025       0.5                
 $#    Fmax    lCEopt     dWdes   nuCEdes     dWasc   nuCEasc     Arel0     Brel0      
       30.0     0.015      0.14       3.0      0.57       4.0       0.1       1.0
 $#    Secc      Fecc     LPEE0     nuPEE      FPEE     lSEE0  dUSEEnll    duSEEl
