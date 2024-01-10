@@ -1,18 +1,18 @@
 *KEYWORD
-*MAT_USER_DEFINED_MATERIAL_MODELS                                            
-$# Millard 2023 VEXAT Muscle                                                   
+*MAT_USER_DEFINED_MATERIAL_MODELS                                               
+$# Millard 2023 VEXAT Muscle                                                    
 $#     mid        ro        mt       lmc       nhv    iortho  ibulkIdx     igIdx
-         1       1.0        43        33      1000         0         3         4
+   2008622  0.000001        43        35      1000         0        29        30
 $#   ivect     ifail    itherm    ihyper      ieos      lmca    unused    unused
-         0         0         0         0         0         0                    
+         0         1         0         0         0         0                    
 $#  stimId exDefault    tauAct  tauDeact fceOptIso    lceOpt alphaOptD useRgdTdn
-         3        0.     0.010      0.04      24.5    0.0955        0.         0
+         0    &exLow       10.       40.   0.02445   95.4523        0.         0
 $#   ltSlk     etIso       dtN  scalePEE lambdaECM  lPevkPtN lceHNLb1A   act1AHN
-    0.0529     0.068    0.0556        1.      0.56       0.5       0.4       0.1
+   52.9138     0.068      55.6        1.      0.56       0.5       0.4       0.1
 $#beta1AHN  beta1PHN kxOptIsoN dxOptIsoN   gainTrk    actTrk    vceMax   taudvst
-      65.0      0.01      47.8     0.354     1000.      0.05       10.     0.001
+  &betaAHN      250.      47.8     0.354     0.001      0.05      0.01     1000.
 $# dvsBeta    dtNumN   aniType   ctlType  ctlDelay  ctlThrsh ctlOnTime    output
-       1.0    0.0001         0         0       0.0       0.0       0.0         1
-$#   dtout
-      0.01
+     0.001       0.1         0         3     &cDly     &cThr  &cOnTime         1
+$#   dtout     IBULK        IG
+        1.      0.13      0.13
 *END

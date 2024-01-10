@@ -31,16 +31,30 @@ fileNameSubMaxActOpt    = 'active_force_length_16';
 
 plotSettings(2) = struct('yLim',[],'xLim',[],'yTicks',[],'xTicks',[]);
 
+timeEnd   = lsdynaMuscleUniform.time(end,1);
+timeStart = lsdynaMuscleUniform.time(1,1);
+timeEpsilon = (timeEnd-timeStart)/1000;
+timeDelta   = (timeEnd-timeStart)/100;
+
+timeA = timeStart + (timeEnd-timeStart)*(0.25);
+timeMid=timeStart + (timeEnd-timeStart)*(0.5);
+timeB = timeStart + (timeEnd-timeStart)*(0.75);
+
+indexA = find(lsdynaMuscleUniform.time > timeA,1);
+indexB = find(lsdynaMuscleUniform.time > timeB,1);
+timeA = lsdynaMuscleUniform.time(indexA,1);
+timeB = lsdynaMuscleUniform.time(indexB,1);
+
 idx=1;
 plotSettings(idx).xLim  = [0,2.0];
-plotSettings(idx).yLim  = [0,1.101];
+plotSettings(idx).yLim  = [0,1.501];
 plotSettings(idx).xTicks = [0.2:0.2:1.8];
-plotSettings(idx).yTicks = [0,1,1.1];
+plotSettings(idx).yTicks = [0,1,5.1];
 
 idx=2;
-plotSettings(idx).xLim  = [0,2.01];
+plotSettings(idx).xLim  = [(timeStart-timeEpsilon),(timeEnd+timeEpsilon)];
 plotSettings(idx).yLim  = [0,1.101];
-plotSettings(idx).xTicks = [0:0.5:2];
+plotSettings(idx).xTicks = round([timeStart,timeA,timeMid,timeB,timeEnd],2,'significant');
 plotSettings(idx).yTicks = [0,1,1.1];
 
 
@@ -73,22 +87,15 @@ if(flag_addSimulationData==1)
 
     lineColor = lineColorA;    
     markerFaceColor = lineColorA;
+    markerLineWidth = 0.1;
     markerSize = 4;
     if(abs(lsdynaMuscleUniform.act(end,1)-1) > 1e-3)
         markerFaceColor = [1,1,1];
         markerSize=3;
+        markerLineWidth = lineWidthModel;        
     end
 
-    timeEnd   = lsdynaMuscleUniform.time(end,1);
-    timeStart = lsdynaMuscleUniform.time(1,1);
-    
-    timeA = timeStart + (timeEnd-timeStart)*(0.25);
-    timeB = timeStart + (timeEnd-timeStart)*(0.75);
-    
-    indexA = find(lsdynaMuscleUniform.time > timeA,1);
-    indexB = find(lsdynaMuscleUniform.time > timeB,1);
-    timeA = lsdynaMuscleUniform.time(indexA,1);
-    timeB = lsdynaMuscleUniform.time(indexB,1);
+
 
     subplot('Position',reshape(subPlotLayout(1,1,:),1,4));
 
@@ -125,7 +132,7 @@ if(flag_addSimulationData==1)
         plot(lceATN,faeATN,...
              lsdynaMuscleUniform.mark,...
             'Color',lineColor,...
-            'LineWidth',lineWidthModel,...
+            'LineWidth',markerLineWidth,...
             'DisplayName',displayNameStr,...
             'HandleVisibility',handleVisibility,...
             'MarkerFaceColor',markerFaceColor,...
@@ -133,7 +140,7 @@ if(flag_addSimulationData==1)
         hold on;
 
         if(contains(simulationFile,fileNameMaxActOpt) ...
-                || contains(simulationFile,fileNameMaxActOpt))
+                || contains(simulationFile,fileNameSubMaxActOpt))
             text(lceATN,faeATN,...
                  sprintf('*',lsdynaMuscleUniform.act(end,1)),...
                  'Color',lineColor,...
@@ -187,10 +194,8 @@ if(flag_addSimulationData==1)
                 'HandleVisibility','on');
         hold on;
 
-        fAN = interp1(lsdynaMuscleUniform.time,...
-                      lsdynaMuscleUniform.fseN,0.5);
-        fBN = interp1(lsdynaMuscleUniform.time,...
-                      lsdynaMuscleUniform.fseN,1.5);
+        fAN = lsdynaMuscleUniform.fseN(indexA,1);
+        fBN = lsdynaMuscleUniform.fseN(indexB,1);
 
         plot(timeA,fAN,...
              lsdynaMuscleUniform.mark,...
@@ -221,7 +226,11 @@ if(flag_addSimulationData==1)
              'Color',lineColor);
         hold on;
  
-        xlabel('Time (s)');
+        if(timeEnd > 10)
+            xlabel('Time (ms)');            
+        else
+            xlabel('Time (s)');
+        end
         ylabel('Norm. Force ($$f^{M} \cos \alpha /f^{M}_o$$)');  
         title('B. Example time series data');        
 

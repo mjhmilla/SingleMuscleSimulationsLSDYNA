@@ -28,7 +28,7 @@ $#  endtim    endcyc     dtmin    endeng    endmas
     &timeE         0       0.0       0.01.000000E8
 *CONTROL_TIMESTEP
 $#  dtinit    tssfac      isdo    tslimt     dt2ms      lctm     erode     ms1st
-     0.003 0.8999999         0       0.0  -3.33e-3         9         0         0
+       1.0 0.8999999         0       0.0  -3.33e-3         9         0         0
 $#  dt2msf   dt2mslc     imscl    unused    unused     rmscl     
        0.0         0         0                           0.0
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
@@ -101,8 +101,8 @@ $#   nid               x               y               z      tc      rc
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
-            0.000000                0.01
-              &timeE                0.01
+            0.000000                  1.
+              &timeE                  1.
 $
 *INCLUDE
 muscle_generic.k
