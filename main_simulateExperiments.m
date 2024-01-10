@@ -620,7 +620,10 @@ if(flag_postProcessSimulationData==1)
                         muscleArchitecture.ltslk  = ltslk;
                         muscleArchitecture.alpha  = alpha;
     
-                
+                        fprintf('%i. %s\n', ...
+                            indexSimulationTrial, ...
+                            simulationDirectories(indexSimulationTrial).name);
+
                         cd(simulationDirectories(indexSimulationTrial).name);
                         fileList = dir;
                       

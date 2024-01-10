@@ -13,15 +13,19 @@ R  penOptD       0.0
 R    ltSlk   41.9137
 R    dUSEE    0.0425
 R   vceMax      0.01
+R      q0F   5.0E-03
 R      q0S   2.0E-03
 R     tauA       25.
 R     tauD      500.
+R      tpm     100.0
+R      thm     0.010
+R    timeE     2000.
 $
 *PARAMETER_EXPRESSION
 $#    name expression
 R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk
 R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk
-R    timeE 2000
+
 $
 *TITLE
 $#                                                                         title
