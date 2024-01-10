@@ -44,10 +44,10 @@ models(indexUmat41).id   = 1;
 models(indexUmat41).name ='umat41';
 models(indexUmat41).colors= [magentaA;magentaB];
 
-%indexUmat43              = 2;
-%models(indexUmat43).id   = 2;
-%models(indexUmat43).name ='umat43';
-%models(indexUmat43).colors= [blueA;blueB];
+indexUmat43              = 2;
+models(indexUmat43).id   = 2;
+models(indexUmat43).name ='umat43';
+models(indexUmat43).colors= [blueA;blueB];
 
 
 flag_preProcessSimulationData       = 0; 
@@ -55,7 +55,7 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
 flag_postProcessSimulationData      = 1;
@@ -511,8 +511,8 @@ if(flag_postProcessSimulationData==1)
                     case 'active_passive_force_length'
                       numberOfHorizontalPlotColumnsSpecific     = 1;
                       numberOfVerticalPlotRowsSpecific          = 2;
-                      numberOfHorizontalPlotColumnsPublication  = 2; 
-                      numberOfVerticalPlotRowsPublication       = 1;                      
+                      numberOfHorizontalPlotColumnsPublication  = 3; 
+                      numberOfVerticalPlotRowsPublication       = length(models);                      
                       
                 end
 

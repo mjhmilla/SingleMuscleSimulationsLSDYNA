@@ -1,7 +1,7 @@
 function [figH] = ...
     plotActivePassiveForceLengthSimulationDataForPublication(figH,...
                       lsdynaBinout,lsdynaMuscleUniform,d3hspFileName, ...
-                      subPlotLayout,subPlotRows,subPlotColumns,...                      
+                      indexModel,subPlotLayout,subPlotRows,subPlotColumns,...                      
                       simulationFile,indexSimulation, totalSimulations,... 
                       referenceDataFolder,...                       
                       referenceCurveFolder,...
@@ -13,6 +13,11 @@ function [figH] = ...
 
 figure(figH);
 
+trialFolder=pwd;
+cd ..;
+simulationFolder=pwd;
+cd(trialFolder);
+
 optimalFiberLength      =muscleArchitecture.lceOpt;
 maximumIsometricForce   =muscleArchitecture.fiso;
 tendonSlackLength       =muscleArchitecture.ltslk;
@@ -21,6 +26,10 @@ pennationAngle          =muscleArchitecture.alpha;
 lineWidthData=1;
 lineWidthModel=1;
 
+fileNameMaxActStart     = 'active_force_length_00';
+fileNameMaxActLast      = 'active_force_length_14';
+fileNameSubMaxActStart  = 'active_force_length_15';
+fileNameSubMaxActLast   = 'active_force_length_19';
 
 fileNameMaxActStart     = 'active_force_length_00';
 fileNameSubMaxActStart  = 'active_force_length_15';
@@ -29,7 +38,7 @@ fileNameSubMaxActOpt    = 'active_force_length_16';
 
 
 
-plotSettings(2) = struct('yLim',[],'xLim',[],'yTicks',[],'xTicks',[]);
+plotSettings(3) = struct('yLim',[],'xLim',[],'yTicks',[],'xTicks',[]);
 
 timeEnd   = lsdynaMuscleUniform.time(end,1);
 timeStart = lsdynaMuscleUniform.time(1,1);
@@ -47,11 +56,17 @@ timeB = lsdynaMuscleUniform.time(indexB,1);
 
 idx=1;
 plotSettings(idx).xLim  = [0,2.0];
-plotSettings(idx).yLim  = [0,1.501];
+plotSettings(idx).yLim  = [0,1.201];
 plotSettings(idx).xTicks = [0.2:0.2:1.8];
-plotSettings(idx).yTicks = [0,1,5.1];
+plotSettings(idx).yTicks = [0,1];
 
 idx=2;
+plotSettings(idx).xLim  = [0,2.0];
+plotSettings(idx).yLim  = [0,1.201];
+plotSettings(idx).xTicks = [0.2:0.2:1.8];
+plotSettings(idx).yTicks = [0,1];
+
+idx=3;
 plotSettings(idx).xLim  = [(timeStart-timeEpsilon),(timeEnd+timeEpsilon)];
 plotSettings(idx).yLim  = [0,1.101];
 plotSettings(idx).xTicks = round([timeStart,timeA,timeMid,timeB,timeEnd],2,'significant');
@@ -87,19 +102,18 @@ if(flag_addSimulationData==1)
 
     lineColor = lineColorA;    
     markerFaceColor = lineColorA;
-    markerLineWidth = 0.1;
+    markerLineWidth = lineWidthModel;
     markerSize = 4;
     if(abs(lsdynaMuscleUniform.exc(end,1)-1) > 1e-3)
         markerFaceColor = [1,1,1];
-        markerSize=3;
+        markerSize=4;
         markerLineWidth = lineWidthModel;        
     end
 
 
 
-    subplot('Position',reshape(subPlotLayout(1,1,:),1,4));
-
     if(flag_activeData)
+        subplot('Position',reshape(subPlotLayout(indexModel,2,:),1,4));
 
         fAN = lsdynaMuscleUniform.fseN(indexA,1);
 
@@ -118,26 +132,76 @@ if(flag_addSimulationData==1)
         displayNameStr ='';
         handleVisibility='off';
 
-        if(contains(simulationFile,fileNameMaxActOpt))
+        if(contains(lsdynaMuscleUniform.nameLabel,'EHTMM'))
             displayNameStr=[lsdynaMuscleUniform.nameLabel,...
                   sprintf('(%1.1f)',lsdynaMuscleUniform.act(end,1))];
-            handleVisibility='on';
-        end
-        if(contains(simulationFile,fileNameSubMaxActOpt))
+            
+        else
             displayNameStr=[lsdynaMuscleUniform.nameLabel,...
-                sprintf('(%1.1f)',lsdynaMuscleUniform.act(end,1))];
-            handleVisibility='on';
+                  sprintf('(%1.1f)',lsdynaMuscleUniform.act(end,1))];
+            
         end
+
+
 
         plot(lceATN,faeATN,...
              lsdynaMuscleUniform.mark,...
             'Color',lineColor,...
             'LineWidth',markerLineWidth,...
             'DisplayName',displayNameStr,...
-            'HandleVisibility',handleVisibility,...
+            'HandleVisibility','off',...
             'MarkerFaceColor',markerFaceColor,...
             'MarkerSize',markerSize);
         hold on;
+
+        entryHeadings = {'act','lN','fN'};
+        entryData = [act,lceATN,faeATN];
+
+        %Start a new file
+        if(contains(simulationFile,fileNameMaxActStart))
+            fid=fopen([simulationFolder,filesep,'record.csv'],'w');
+            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lceATN,faeATN);
+            fclose(fid);
+        elseif(contains(simulationFile,fileNameMaxActLast))
+            fid=fopen([simulationFolder,filesep,'record.csv'],'a');
+            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lceATN,faeATN);
+            fclose(fid);
+            dataMax = csvread([simulationFolder,filesep,'record.csv']);
+            plot(dataMax(:,2),dataMax(:,3),...
+                 '-',...
+                'Color',lineColor,...
+                'LineWidth',lineWidthModel,...
+                'DisplayName',displayNameStr,...
+                'HandleVisibility','on',...
+                'MarkerFaceColor',markerFaceColor,...
+                'MarkerSize',markerSize);
+            hold on;
+        elseif(contains(simulationFile,fileNameSubMaxActStart))
+            fid=fopen([simulationFolder,filesep,'record.csv'],'w');
+            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lceATN,faeATN);
+            fclose(fid);
+        elseif(contains(simulationFile,fileNameSubMaxActLast))
+            fid=fopen([simulationFolder,filesep,'record.csv'],'a');
+            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lceATN,faeATN);
+            fclose(fid);
+            dataMax = csvread([simulationFolder,filesep,'record.csv']);
+            plot(dataMax(:,2),dataMax(:,3),...
+                 '--',...
+                'Color',lineColor,...
+                'LineWidth',lineWidthModel,...
+                'DisplayName',displayNameStr,...
+                'HandleVisibility','on',...
+                'MarkerFaceColor',markerFaceColor,...
+                'MarkerSize',markerSize);
+            hold on;
+
+            legend('Location','NorthEast');
+            legend box off;
+        else
+            fid=fopen([simulationFolder,filesep,'record.csv'],'a');
+            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lceATN,faeATN);
+            fclose(fid);
+        end
 
         if(contains(simulationFile,fileNameMaxActOpt) ...
                 || contains(simulationFile,fileNameSubMaxActOpt))
@@ -148,42 +212,60 @@ if(flag_addSimulationData==1)
                  'VerticalAlignment','bottom');           
             hold on;
         end
+
+        box off;    
+        idx=2;
+        xlim(plotSettings(idx).xLim);
+        ylim(plotSettings(idx).yLim);
+        xticks(plotSettings(idx).xTicks);
+        yticks(plotSettings(idx).yTicks); 
+    
+        xlabel('Norm. Length ($$\ell^{M} \cos \alpha / \ell^{M}_o$$)');
+        ylabel('Norm. Force ($$f^{M} \cos \alpha / f^{M}_o$$)');   
+        title('B. Active force-length relations',...
+              'HorizontalAlignment','right');        
     end
 
     if(flag_passiveData)
-        displayNameStr ='';
-        if(contains(simulationFile,'passive_force_length'))
-            displayNameStr=[lsdynaMuscleUniform.nameLabel,' $$\tilde{f}^{PE} \cos \alpha$$'];
-        end
+
+        subplot('Position',reshape(subPlotLayout(indexModel,1,:),1,4));
+        
+
+        %if(contains(simulationFile,'passive_force_length'))
+        %    displayNameStr=[lsdynaMuscleUniform.nameLabel,' $$\tilde{f}^{PE} \cos \alpha$$'];
+        %end
+        displayNameStr=lsdynaMuscleUniform.nameLabel;
 
         plot(lsdynaMuscleUniform.lceATN,...
              lsdynaMuscleUniform.fseN,'-',...
             'Color',lineColor,...
             'LineWidth',lineWidthModel,...
             'DisplayName',displayNameStr,...
-            'HandleVisibility','off');
+            'HandleVisibility','on');
         hold on;
    
+        box off;    
+        idx=1;
+        xlim(plotSettings(idx).xLim);
+        ylim(plotSettings(idx).yLim);
+        xticks(plotSettings(idx).xTicks);
+        yticks(plotSettings(idx).yTicks); 
+    
+        xlabel('Norm. Length ($$\ell^{M} \cos \alpha / \ell^{M}_o$$)');
+        ylabel('Norm. Force ($$f^{M} \cos \alpha / f^{M}_o$$)');   
+        title('A. Passive force-length relations',...
+              'HorizontalAlignment','right');
+    
+        legend('Location','NorthWest');
+        legend box off;
     end    
 
-    box off;    
-    idx=1;
-    xlim(plotSettings(idx).xLim);
-    ylim(plotSettings(idx).yLim);
-    xticks(plotSettings(idx).xTicks);
-    yticks(plotSettings(idx).yTicks); 
 
-    xlabel('Norm. Length ($$\ell^{M} \cos \alpha / \ell^{M}_o$$)');
-    ylabel('Norm. Force ($$f^{M} \cos \alpha / f^{M}_o$$)');   
-    title('A. Active and passive force-length relations');
-
-    if(contains(simulationFile,'passive_force_length'))
-        legend('Location','NorthWest');
-    end
     
 
     if(contains(simulationFile,fileNameMaxActOpt))
-        subplot('Position',reshape(subPlotLayout(1,2,:),1,4));
+        subplot('Position',reshape(subPlotLayout(indexModel,3,:),1,4));        
+        %subplot('Position',reshape(subPlotLayout(1,2,:),1,4));
         
         plot(   lsdynaMuscleUniform.time(:,1),...
                 lsdynaMuscleUniform.fseN(:,1),...
@@ -232,18 +314,19 @@ if(flag_addSimulationData==1)
             xlabel('Time (s)');
         end
         ylabel('Norm. Force ($$f^{M} \cos \alpha /f^{M}_o$$)');  
-        title('B. Example time series data');        
+        title('C. Example time series data',...
+              'HorizontalAlignment','right');        
 
         box off;
     
-        idx=2;
+        idx=3;
         xlim(plotSettings(idx).xLim);
         ylim(plotSettings(idx).yLim);
         xticks(plotSettings(idx).xTicks);
         yticks(plotSettings(idx).yTicks);      
 
         legend('Location','NorthWest');
-
+        legend box off;
 
         here=1;
     end

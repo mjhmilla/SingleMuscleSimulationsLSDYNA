@@ -71,15 +71,14 @@ switch (simulationTypeStr)
         end       
 
     case 'active_passive_force_length'
-        assert(numberOfVerticalPlotRows==1);
         idx=1;
         scalePlotHeight=1;
         subPlotHeight = scalePlotHeight*plotHeight;
-        ai=1;
-        for(aj=1:1:numberOfHorizontalPlotColumns)
-            subPlotPanelIndex(ai,aj) = idx;
-            scaleHorizMargin=1;
-            
+        for(ai=1:1:numberOfVerticalPlotRows)
+            for(aj=1:1:numberOfHorizontalPlotColumns)
+                subPlotPanelIndex(ai,aj) = idx;
+                scaleHorizMargin=1;
+                
               if(ai==1)
                   subPlotPanel(ai,aj,1) = topLeft(1) + plotHorizMargin...
                                         + (aj-1)*(plotWidth + plotHorizMargin);
@@ -87,9 +86,18 @@ switch (simulationTypeStr)
                   subPlotPanel(ai,aj,2) = topLeft(2) -subPlotHeight -plotVertMargin...                            
                                         + (ai-1)*(-subPlotHeight -plotVertMargin);
                   subPlotPanel(ai,aj,3) = (plotWidth);
-                  subPlotPanel(ai,aj,4) = (subPlotHeight);            
+                  subPlotPanel(ai,aj,4) = (subPlotHeight);
+              else
+                  subPlotPanel(ai,aj,1) = subPlotPanel(ai-1,aj,1);
+                     
+                  subPlotPanel(ai,aj,2) = subPlotPanel(ai-1,aj,2) ...                            
+                                      + (-subPlotHeight-plotVertMargin );
+                  subPlotPanel(ai,aj,3) = subPlotPanel(ai-1,aj,3);
+                  subPlotPanel(ai,aj,4) = (subPlotHeight);
+
               end
-              idx=idx+1;
+                  idx=idx+1;
+            end
         end
 
     otherwise
