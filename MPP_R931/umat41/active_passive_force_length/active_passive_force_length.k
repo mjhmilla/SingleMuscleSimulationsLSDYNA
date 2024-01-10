@@ -25,7 +25,6 @@ $
 $#    name expression
 R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk
 R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk
-
 $
 *TITLE
 $#                                                                         title
