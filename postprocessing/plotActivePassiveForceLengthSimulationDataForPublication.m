@@ -118,12 +118,12 @@ if(flag_addSimulationData==1)
         displayNameStr ='';
         handleVisibility='off';
 
-        if(contains(simulationFile,fileNameMaxActStart))
+        if(contains(simulationFile,fileNameMaxActOpt))
             displayNameStr=[lsdynaMuscleUniform.nameLabel,...
                   sprintf('(%1.1f)',lsdynaMuscleUniform.act(end,1))];
             handleVisibility='on';
         end
-        if(contains(simulationFile,fileNameSubMaxActStart))
+        if(contains(simulationFile,fileNameSubMaxActOpt))
             displayNameStr=[lsdynaMuscleUniform.nameLabel,...
                 sprintf('(%1.1f)',lsdynaMuscleUniform.act(end,1))];
             handleVisibility='on';
