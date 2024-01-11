@@ -6,11 +6,11 @@ $
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
 R    dtout       100                                     
-R   lceOpt  137.1721
-R   fceOpt     0.062
+R   lceOpt   115.480
+R   fceOpt    0.0237
 R   penOpt       0.0
 R  penOptD       0.0
-R    ltSlk   41.9137
+R    ltSlk    33.489
 R    dUSEE    0.0425
 R   vceMax      0.01
 R      q0F   5.0E-03
