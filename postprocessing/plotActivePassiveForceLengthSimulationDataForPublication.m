@@ -40,8 +40,8 @@ fileNameSubMaxActOpt    = 'active_force_length_16';
 
 plotSettings(3) = struct('yLim',[],'xLim',[],'yTicks',[],'xTicks',[]);
 
-timeEnd   = lsdynaMuscleUniform.time(end,1);
-timeStart = lsdynaMuscleUniform.time(1,1);
+timeEnd   = lsdynaMuscleUniform.eloutTime(end,1);
+timeStart = lsdynaMuscleUniform.eloutTime(1,1);
 timeEpsilon = (timeEnd-timeStart)/1000;
 timeDelta   = (timeEnd-timeStart)/100;
 
@@ -49,8 +49,8 @@ timeA = timeStart + (timeEnd-timeStart)*(0.25);
 timeMid=timeStart + (timeEnd-timeStart)*(0.5);
 timeB = timeStart + (timeEnd-timeStart)*(0.75);
 
-indexA = find(lsdynaMuscleUniform.time > timeA,1);
-indexB = find(lsdynaMuscleUniform.time > timeB,1);
+indexA = find(lsdynaMuscleUniform.eloutTime > timeA,1);
+indexB = find(lsdynaMuscleUniform.eloutTime > timeB,1);
 timeA = lsdynaMuscleUniform.time(indexA,1);
 timeB = lsdynaMuscleUniform.time(indexB,1);
 
@@ -120,9 +120,9 @@ if(flag_addSimulationData==1)
     if(flag_activeData)
         subplot('Position',reshape(subPlotLayout(indexModel,2,:),1,4));
 
-        fAN = lsdynaMuscleUniform.fseN(indexA,1);
+        fAN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexA,1);
 
-        fBN = lsdynaMuscleUniform.fseN(indexB,1);
+        fBN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexB,1);
 
         act = lsdynaMuscleUniform.act(indexB,1);
         lceN= lsdynaMuscleUniform.lceN(indexB,1);
@@ -211,7 +211,7 @@ if(flag_addSimulationData==1)
         if(contains(simulationFile,fileNameMaxActOpt) ...
                 || contains(simulationFile,fileNameSubMaxActOpt))
             text(lceATN,faeATN,...
-                 sprintf('*%1.1f',lsdynaMuscleUniform.act(end,1)),...
+                 sprintf('*%1.1f',lsdynaMuscleUniform.act(indexB,1)),...
                  'Color',lineColor,...
                  'HorizontalAlignment','center',...
                  'VerticalAlignment','bottom');           
@@ -241,8 +241,14 @@ if(flag_addSimulationData==1)
         %end
         displayNameStr=lsdynaMuscleUniform.nameLabel;
 
+        idxA = 1;
+        if(length(lsdynaMuscleUniform.eloutAxialBeamForceNorm) ...
+                > length(lsdynaMuscleUniform.lceATN))
+            idxA=2;
+        end
+
         plot(lsdynaMuscleUniform.lceATN,...
-             lsdynaMuscleUniform.fseN,'-',...
+             lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1),'-',...
             'Color',lineColor,...
             'LineWidth',lineWidthModel,...
             'DisplayName',displayNameStr,...
@@ -275,8 +281,8 @@ if(flag_addSimulationData==1)
         
 
 
-        plot(   lsdynaMuscleUniform.time(:,1),...
-                lsdynaMuscleUniform.fseN(:,1),...
+        plot(   lsdynaMuscleUniform.eloutTime(:,1),...
+                lsdynaMuscleUniform.eloutAxialBeamForceNorm(:,1),...
                 lineType,...
                 'Color',lineColor,...
                 'LineWidth',lineWidthModel,...
@@ -284,8 +290,8 @@ if(flag_addSimulationData==1)
                 'HandleVisibility','on');
         hold on;
 
-        fAN = lsdynaMuscleUniform.fseN(indexA,1);
-        fBN = lsdynaMuscleUniform.fseN(indexB,1);
+        fAN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexA,1);
+        fBN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexB,1);
 
         plot(timeA,fAN,...
              lsdynaMuscleUniform.mark,...

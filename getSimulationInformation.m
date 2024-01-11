@@ -40,6 +40,27 @@ simulationInformation(numberOfSimulationTypes) = ...
           'model',[]);
 idx=0;
 
+
+if(strcmp(modelName,'viva')==1)
+    if(flag_enableActivePassiveForceLengthExperiment==1)
+      idx=idx+1;
+      simulationType(idx).type = 'active_passive_force_length';
+      simulationInformation(idx).type               = simulationType(idx).type;
+
+      simulationInformation(idx).simulationConstantFile     = 'active_passive_force_length.k';      
+      simulationInformation(idx).musclePropertyCard         = 'muscle_generic.k';      
+      simulationInformation(idx).optimalFiberLength         = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength          = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees      = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard     = 0;
+      simulationInformation(idx).model                      = modelName;  
+
+    end 
+end
+
+
 %% umat41 
 %% Kleinbach et al.
 

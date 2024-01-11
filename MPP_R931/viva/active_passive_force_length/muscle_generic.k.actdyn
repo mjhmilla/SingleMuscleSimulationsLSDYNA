@@ -2,7 +2,35 @@
 $#     mid        ro       sno       srm       pis       ssm       cer       dmp
          1 1.0000E-9  1.000000  4.000000      &pis  0.375000  6.000000 0.0000e-2
 $#     alm       sfr       svs       svr       ssp
-        -3     1.000  -2008001  -2008002     0.000
+  -2899501     1.000  -2008001  -2008002     0.000
+$--------------------------------------------------------------------------------
+$ 6.2.1.1 activation dynamics filter
+$--------------------------------------------------------------------------------
+*DEFINE_FUNCTION
+28990210,1ode Ne/Na filter
+float ode28990210(float u,float tne,float tna1,float tna2, float tt)
+{
+float na,ne,t,tts,dt;
+dt=tt-tts;
+tts=tt;
+ne=ne+dt*(u-ne)/tne;
+t=tna1;
+if(ne<na) t=tna2;
+na=na+dt*(ne-na)/t;
+return na;
+}
+$--------------------------------------------------------------------------------
+$ 6.2.1.2 filtered signal
+$--------------------------------------------------------------------------------
+*DEFINE_CURVE_FUNCTION
+28990310
+ode28990210(ft_SCM_Ex(TIME),35,10,40,TIME)
+$--------------------------------------------------------------------------------
+$ 6.2.1.3 activation signal going to muscle activation
+$--------------------------------------------------------------------------------
+*DEFINE_CURVE_FUNCTION
+2899501
+MIN(MAX(LC28990310,0.0),1.0)
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
    2008001         0  1.000000  1.000000     0.000     0.000         0

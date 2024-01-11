@@ -228,6 +228,53 @@ switch modelName
         uniformModelData.authorship         = 'Weiss (2016)';
         uniformModelData.authorshipShort    = 'Weiss (2016)';
         uniformModelData.mark = 'd';
+
+    case 'viva'
+
+        disp(' update mat156 createUniformMuscleModelData to somehow read u, a, fpe, dpe')
+        uniformModelData.time = lsdynaBinout.elout.beam.time';
+        uniformModelData.exc  = ones(size(uniformModelData.time)).*nan;
+        uniformModelData.act  = ones(size(uniformModelData.time)).*nan;
+
+        if(strcmp(simulationTypeStr,'eccentric') ...
+                || strcmp(simulationTypeStr,'active_passive_force_length'))
+            stimTimeS = getParameterValueFromD3HSPFile(d3hspFileName,'STIMTIMES');
+            stimTimeE = getParameterValueFromD3HSPFile(d3hspFileName,'STIMTIMEE');
+            stimLow =  getParameterValueFromD3HSPFile(d3hspFileName,'STIMLOW');
+            stimHigh =  getParameterValueFromD3HSPFile(d3hspFileName,'STIMHIGH');
+
+            uniformModelData.act = ones(size(uniformModelData.time)).*stimLow;
+            uniformModelData.act( uniformModelData.time >= stimTimeS ...
+                                & uniformModelData.time <= stimTimeE) = stimHigh;
+        end
+
+        uniformModelData.lp     = -lsdynaBinout.nodout.z_coordinate;
+        uniformModelData.vp     = -lsdynaBinout.nodout.z_velocity;
+        
+        uniformModelData.lceN   = uniformModelData.lp./optimalFiberLength;
+        uniformModelData.lceATN = uniformModelData.lceN; 
+        uniformModelData.ltN    = zeros(size(uniformModelData.time));
+        uniformModelData.alpha  = zeros(size(uniformModelData.time));
+
+        uniformModelData.lceNDot    = uniformModelData.vp./optimalFiberLength;
+        uniformModelData.ltNDot     = zeros(size(uniformModelData.time));
+        uniformModelData.alphaDot   = zeros(size(uniformModelData.time));
+
+        uniformModelData.fceN       = lsdynaBinout.elout.beam.axial ./ maxActiveIsometricForce;
+        uniformModelData.fpeN       = zeros(size(uniformModelData.time));
+        uniformModelData.fseN       = uniformModelData.fceN;
+        uniformModelData.dseN       = zeros(size(uniformModelData.time));        
+        uniformModelData.fmtN       = uniformModelData.fceN;       
+
+        uniformModelData.eloutTime           = lsdynaBinout.elout.beam.time';
+        uniformModelData.eloutAxialBeamForceNorm = ...
+          lsdynaBinout.elout.beam.axial ./ maxActiveIsometricForce;
+
+        uniformModelData.name               = modelName;
+        uniformModelData.nameLabel          = 'VIVA+';
+        uniformModelData.authorship         = 'Weiss (2016)';
+        uniformModelData.authorshipShort    = 'Weiss (2016)';
+        uniformModelData.mark = 'd';        
         
 
     otherwise

@@ -39,15 +39,20 @@ dataColorB=greyB;
 %models(indexMat56).name   ='mat156';
 %models(indexMat56).colors = [redA;redB];
 
-indexUmat41              = 1;
-models(indexUmat41).id   = 1;
-models(indexUmat41).name ='umat41';
-models(indexUmat41).colors= [magentaA;magentaB];
+indexVIVA              = 1;
+models(indexVIVA).id   = 1;
+models(indexVIVA).name ='viva';
+models(indexVIVA).colors= [greenA;greenB];
 
-indexUmat43              = 2;
-models(indexUmat43).id   = 2;
-models(indexUmat43).name ='umat43';
-models(indexUmat43).colors= [blueA;blueB];
+%indexUmat41              = 1;
+%models(indexUmat41).id   = 1;
+%models(indexUmat41).name ='umat41';
+%models(indexUmat41).colors= [magentaA;magentaB];
+
+%indexUmat43              = 2;
+%models(indexUmat43).id   = 2;
+%models(indexUmat43).name ='umat43';
+%models(indexUmat43).colors= [blueA;blueB];
 
 
 flag_preProcessSimulationData       = 0; 
@@ -64,9 +69,9 @@ flag_postProcessSimulationData      = 1;
 flag_sizePlotsForSlides = 0; %0: means use journal paper slides
 excludeSimulationsNamesThatContain = [];%[{'52mm'}];
 
-flag_generateGenericPlots           = 1;
+flag_generateGenericPlots           = 0;
 flag_generateSpecificPlots          = 0;
-flag_generatePublicationPlots       = 0;
+flag_generatePublicationPlots       = 1;
 
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
@@ -674,6 +679,8 @@ if(flag_postProcessSimulationData==1)
                                     readUmat43MusDebugData(musdebugFileList{1});
                             case 'mat156'
                                 disp('  mat156: does not have any musout files');
+                            case 'viva'
+                                disp('  viva: does not have any musout files');
                             otherwise assert(0)
                         end
     
@@ -703,7 +710,8 @@ if(flag_postProcessSimulationData==1)
     
                         %% Add to the generic plots
                         indexColumn = (indexSimulationTrial-3)+1;
-                        if(flag_figGenericDirty==0)
+                        if(flag_figGenericDirty==0 ...
+                                && flag_generateGenericPlots==1)
                           flag_figGenericDirty=1;
                         end
                         if(contains(simulationDirectories(indexSimulationTrial).name,'active_force_length_16'))

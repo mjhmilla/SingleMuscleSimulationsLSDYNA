@@ -13,12 +13,18 @@ R   fceOpt    0.0237
 R   penOpt       0.0
 R  penOptD       0.0
 R    ltSlk   41.9137
+R   vceMax      4.00 
+R    timeE   2000.00
+RstimTimeS   1000.00
+RstimTimeE   2000.00
+R  stimLow      0.00
+
 *PARAMETER_EXPRESSION
 $#    name expression
 R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk
 R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk
 R pathLenA &lceOpt*cos(&penOpt)+&ltSlk
-R    timeE 2000
+R stimHigh &actVal
 $
 *TITLE
 $#                                                                         title
@@ -65,17 +71,17 @@ $#     pid     secid       mid     eosid      hgid      grav    adpopt      tmid
 $#   secid    elform      shrf   qr/irid       cst     scoor       nsm   
          1         3       1.0         2         0       0.0       0.0
 $#       a     rampt    stress      
-     $area       0.0       0.0
+     &area       0.0       0.0
 *DATABASE_HISTORY_BEAM
 $#     id1       id2       id3       id4       id5       id6       id7       id8
          1         0         0         0         0         0         0         0       
 *DATABASE_ELOUT
     &dtout         2
 $#
-*DEFINE_FUNCTION_TABULATED
-28000015
-ft_SCM_Ex
-$#                a1                  o1
+*DEFINE_CURVE
+$#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
+         3         0       1.0       1.0       0.0       0.0         0         0
+$#                a1                  o1  
                  0.0                 0.0
                  999                 0.0
                 1000             &actVal
@@ -103,8 +109,8 @@ $#   nid               x               y               z      tc      rc
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
-            0.000000                  1.
-              &timeE                  1.
+            0.000000                 0.5
+              &timeE                 0.5
 $
 *INCLUDE
 muscle_generic.k
