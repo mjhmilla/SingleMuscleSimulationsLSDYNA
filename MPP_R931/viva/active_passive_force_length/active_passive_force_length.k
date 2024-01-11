@@ -6,19 +6,18 @@ $
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
 R    dtout       100                                     
-R   lceOpt  137.1721
-R     area 4.740E+01
+R   lceOpt  142.4421
+R     area      48.9
 R      pis 0.5000E-3  
-R   fceOpt    0.0237
+R   fceOpt   0.02445
 R   penOpt       0.0
 R  penOptD       0.0
-R    ltSlk   41.9137
 R   vceMax      4.00 
 R    timeE   2000.00
 RstimTimeS   1000.00
 RstimTimeE   2000.00
 R  stimLow      0.00
-
+R    ltSlk       0.0
 *PARAMETER_EXPRESSION
 $#    name expression
 R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk
