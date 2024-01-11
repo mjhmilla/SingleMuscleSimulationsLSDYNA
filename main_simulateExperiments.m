@@ -11,7 +11,7 @@ opengl('save','software');
 % Define which Releases shall be tested
 Releases    =  {'MPP_R931'};
 
-models(1) = struct('id',0,'name','');
+models(3) = struct('id',0,'name','');
 
 greyA = [0,0,0];
 greyB = [1,1,1].*0.5;
@@ -44,15 +44,15 @@ models(indexVIVA).id   = 1;
 models(indexVIVA).name ='viva';
 models(indexVIVA).colors= [greenA;greenB];
 
-%indexUmat41              = 1;
-%models(indexUmat41).id   = 1;
-%models(indexUmat41).name ='umat41';
-%models(indexUmat41).colors= [magentaA;magentaB];
+indexUmat41              = 2;
+models(indexUmat41).id   = 2;
+models(indexUmat41).name ='umat41';
+models(indexUmat41).colors= [magentaA;magentaB];
 
-%indexUmat43              = 2;
-%models(indexUmat43).id   = 2;
-%models(indexUmat43).name ='umat43';
-%models(indexUmat43).colors= [blueA;blueB];
+indexUmat43              = 3;
+models(indexUmat43).id   = 3;
+models(indexUmat43).name ='umat43';
+models(indexUmat43).colors= [blueA;blueB];
 
 
 flag_preProcessSimulationData       = 0; 

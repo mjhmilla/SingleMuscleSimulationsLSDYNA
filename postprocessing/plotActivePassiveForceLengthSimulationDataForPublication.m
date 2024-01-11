@@ -18,6 +18,8 @@ cd ..;
 simulationFolder=pwd;
 cd(trialFolder);
 
+scaleF=1000;
+
 optimalFiberLength      =muscleArchitecture.lceOpt;
 maximumIsometricForce   =muscleArchitecture.fiso;
 tendonSlackLength       =muscleArchitecture.ltslk;
@@ -33,6 +35,8 @@ fileNameSubMaxActLast   = 'active_force_length_19';
 
 fileNameMaxActStart     = 'active_force_length_00';
 fileNameSubMaxActStart  = 'active_force_length_15';
+numberSubMaxActStart    = 16;
+
 fileNameMaxActOpt       = 'active_force_length_06';
 fileNameSubMaxActOpt    = 'active_force_length_16';
 
@@ -55,25 +59,34 @@ timeA = lsdynaMuscleUniform.time(indexA,1);
 timeB = lsdynaMuscleUniform.time(indexB,1);
 
 idx=1;
-plotSettings(idx).xLim  = [0,2.0];
-plotSettings(idx).yLim  = [0,1.201];
-plotSettings(idx).xTicks = [0.2:0.2:1.8];
-plotSettings(idx).yTicks = [0,1];
+plotSettings(idx).xLim  = round([0,2.0].*optimalFiberLength,2,'significant');
+plotSettings(idx).yLim  = round([0,1.201].*maximumIsometricForce.*scaleF,2,'significant');
+plotSettings(idx).xTicks = round([0.2:0.2:1.8].*optimalFiberLength,2,'significant');
+plotSettings(idx).yTicks = round([0,1].*maximumIsometricForce.*scaleF,2,'significant');
 
 idx=2;
-plotSettings(idx).xLim  = [0,2.0];
-plotSettings(idx).yLim  = [0,1.201];
-plotSettings(idx).xTicks = [0.2:0.2:1.8];
-plotSettings(idx).yTicks = [0,1];
+plotSettings(idx).xLim  = round([0,2.0].*optimalFiberLength,2,'significant');
+plotSettings(idx).yLim  = round([0,1.201].*maximumIsometricForce.*scaleF,2,'significant');
+plotSettings(idx).xTicks = round([0.2:0.2:1.8].*optimalFiberLength,2,'significant');
+plotSettings(idx).yTicks = round([0,1].*maximumIsometricForce.*scaleF,2,'significant');
 
 idx=3;
-plotSettings(idx).xLim  = [(timeStart-timeEpsilon),(timeEnd+timeEpsilon)];
-plotSettings(idx).yLim  = [0,1.101];
+plotSettings(idx).xLim  = round([(timeStart-timeEpsilon),(timeEnd+timeEpsilon)],2,'significant');
+plotSettings(idx).yLim  = round([0,1.101].*maximumIsometricForce.*scaleF,2,'significant');
 plotSettings(idx).xTicks = round([timeStart,timeA,timeMid,timeB,timeEnd],2,'significant');
-plotSettings(idx).yTicks = [0,1,1.1];
+plotSettings(idx).yTicks = round([0,1,1.1].*maximumIsometricForce.*scaleF,2,'significant');
 
 
 lineType = '-';
+
+lastTwoChar = simulationFile(1,end-1:1:end);
+lastTwoNum  = str2num(lastTwoChar);
+if(isempty(lastTwoNum) == 0)
+    if(lastTwoNum >= numberSubMaxActStart)
+        lineType='--';
+    end
+end
+
 if (contains(simulationFile,fileNameSubMaxActOpt))
     lineType = '--';
 end
@@ -121,19 +134,19 @@ if(flag_addSimulationData==1)
         subplot('Position',reshape(subPlotLayout(indexModel,2,:),1,4));
 
         fAN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexA,1);
-
+        fA  = fAN.*maximumIsometricForce.*scaleF;
         fBN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexB,1);
+        fB  = fBN.*maximumIsometricForce.*scaleF;
 
         act = lsdynaMuscleUniform.act(indexB,1);
-        lceN= lsdynaMuscleUniform.lceN(indexB,1);
 
-        fpeATN =(fAN);
-        faeATN =(fBN-fAN);
+        fpeAT =(fA);
+        faeAT =(fB-fA);
 
         lp1 = lsdynaMuscleUniform.lp(indexB,1);
         ltN = lsdynaMuscleUniform.ltN(indexB,1);
         
-        lceATN = (lp1-ltN*tendonSlackLength)/optimalFiberLength;
+        lp     = lp1;
         displayNameStr ='';
         handleVisibility='off';
 
@@ -149,7 +162,7 @@ if(flag_addSimulationData==1)
 
 
 
-        plot(lceATN,faeATN,...
+        plot(lp,faeAT,...
              lsdynaMuscleUniform.mark,...
             'Color',lineColor,...
             'LineWidth',markerLineWidth,...
@@ -160,16 +173,16 @@ if(flag_addSimulationData==1)
         hold on;
 
         entryHeadings = {'act','lN','fN'};
-        entryData = [act,lceATN,faeATN];
+        entryData = [act,lp,faeAT];
 
         %Start a new file
         if(contains(simulationFile,fileNameMaxActStart))
             fid=fopen([simulationFolder,filesep,'record.csv'],'w');
-            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lceATN,faeATN);
+            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lp,faeAT);
             fclose(fid);
         elseif(contains(simulationFile,fileNameMaxActLast))
             fid=fopen([simulationFolder,filesep,'record.csv'],'a');
-            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lceATN,faeATN);
+            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lp,faeAT);
             fclose(fid);
             dataMax = csvread([simulationFolder,filesep,'record.csv']);
             plot(dataMax(:,2),dataMax(:,3),...
@@ -183,11 +196,11 @@ if(flag_addSimulationData==1)
             hold on;
         elseif(contains(simulationFile,fileNameSubMaxActStart))
             fid=fopen([simulationFolder,filesep,'record.csv'],'w');
-            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lceATN,faeATN);
+            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lp,faeAT);
             fclose(fid);
         elseif(contains(simulationFile,fileNameSubMaxActLast))
             fid=fopen([simulationFolder,filesep,'record.csv'],'a');
-            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lceATN,faeATN);
+            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lp,faeAT);
             fclose(fid);
             dataMax = csvread([simulationFolder,filesep,'record.csv']);
             plot(dataMax(:,2),dataMax(:,3),...
@@ -204,13 +217,13 @@ if(flag_addSimulationData==1)
             legend box off;
         else
             fid=fopen([simulationFolder,filesep,'record.csv'],'a');
-            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lceATN,faeATN);
+            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lp,faeAT);
             fclose(fid);
         end
 
         if(contains(simulationFile,fileNameMaxActOpt) ...
                 || contains(simulationFile,fileNameSubMaxActOpt))
-            text(lceATN,faeATN,...
+            text(lp,faeAT,...
                  sprintf('*%1.1f',lsdynaMuscleUniform.act(indexB,1)),...
                  'Color',lineColor,...
                  'HorizontalAlignment','center',...
@@ -247,8 +260,9 @@ if(flag_addSimulationData==1)
             idxA=2;
         end
 
-        plot(lsdynaMuscleUniform.lceATN,...
-             lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1),'-',...
+        plot(lsdynaMuscleUniform.lp,...
+             lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1).*maximumIsometricForce.*scaleF,...
+             '-',...
             'Color',lineColor,...
             'LineWidth',lineWidthModel,...
             'DisplayName',displayNameStr,...
@@ -282,7 +296,7 @@ if(flag_addSimulationData==1)
 
 
         plot(   lsdynaMuscleUniform.eloutTime(:,1),...
-                lsdynaMuscleUniform.eloutAxialBeamForceNorm(:,1),...
+                lsdynaMuscleUniform.eloutAxialBeamForceNorm(:,1).*maximumIsometricForce.*scaleF,...
                 lineType,...
                 'Color',lineColor,...
                 'LineWidth',lineWidthModel,...
@@ -291,9 +305,11 @@ if(flag_addSimulationData==1)
         hold on;
 
         fAN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexA,1);
+        fA  = fAN.*maximumIsometricForce.*scaleF;
         fBN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexB,1);
-
-        plot(timeA,fAN,...
+        fB  = fBN.*maximumIsometricForce.*scaleF;
+        
+        plot(timeA,fA,...
              lsdynaMuscleUniform.mark,...
              'Color',lineColor,...
              'MarkerFaceColor',lineColor,...
@@ -301,13 +317,13 @@ if(flag_addSimulationData==1)
              'MarkerSize',markerSize,...
              'HandleVisibility','off');
         hold on;
-        text(timeA,fAN,'A',...
+        text(timeA,fA,'A',...
              'HorizontalAlignment','center',...
              'VerticalAlignment','bottom',...
              'Color',lineColor);
         hold on;
 
-        plot(timeB,fBN,...
+        plot(timeB,fB,...
              lsdynaMuscleUniform.mark,...
              'Color',lineColor,...
              'MarkerFaceColor',lineColor,...             
@@ -316,7 +332,7 @@ if(flag_addSimulationData==1)
              'HandleVisibility','off');
         hold on;
 
-        text(timeB,fBN,'B',...
+        text(timeB,fB,'B',...
              'HorizontalAlignment','center',...
              'VerticalAlignment','bottom',...
              'Color',lineColor);
