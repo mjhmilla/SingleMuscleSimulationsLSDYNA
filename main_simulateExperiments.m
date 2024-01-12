@@ -390,6 +390,9 @@ if(flag_postProcessSimulationData==1)
                 clf(figSpecific);
                 flag_figSpecificDirty=0;
 
+                if(contains(simulationTypeStr,'active_passive_force_length'))
+                    flag_figPublicationDirty=0;  
+                end
 
                 clf(figDebug);
                 flag_figDebugDirty=0;
