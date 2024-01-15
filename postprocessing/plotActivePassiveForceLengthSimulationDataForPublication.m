@@ -13,6 +13,10 @@ function [figH] = ...
 
 figure(figH);
 
+fontSizeLegend=6;
+
+flag_plotInNormalizedCoordinates=1;
+
 trialFolder=pwd;
 cd ..;
 simulationFolder=pwd;
@@ -62,8 +66,6 @@ indexB = find(lsdynaMuscleUniform.eloutTime > timeB,1);
 timeA = lsdynaMuscleUniform.time(indexA,1);
 timeB = lsdynaMuscleUniform.time(indexB,1);
 
-
-
 idx=1;
 plotSettings(idx).xLim  = round([50,240],3,'significant');
 plotSettings(idx).yLim  = round([0,1.501].*maximumIsometricForce.*scaleF,3,'significant');
@@ -77,22 +79,38 @@ end
 plotSettings(idx).yTicks = round([0,1].*maximumIsometricForce.*scaleF,3,'significant');
 
 idx=2;
-plotSettings(idx).xLim  = round([50,240],3,'significant');
-plotSettings(idx).yLim  = round([0,1.501].*maximumIsometricForce.*scaleF,3,'significant');
-if(flag_viva)
-    plotSettings(idx).xTicks = ...
-        round([60,optimalFiberLength,240],3,'significant');
-else
-    plotSettings(idx).xTicks = ...
-        round([60,optimalFiberLength,(optimalFiberLength+tendonSlackLength),240],3,'significant');
-end
-plotSettings(idx).yTicks = round([0,1].*maximumIsometricForce.*scaleF,3,'significant');
+plotSettings(idx).xLim   = plotSettings(1).xLim;
+plotSettings(idx).yLim   = plotSettings(1).yLim;
+plotSettings(idx).xTicks = plotSettings(1).xTicks;
+plotSettings(idx).yTicks = plotSettings(1).yTicks;
 
 idx=3;
-plotSettings(idx).xLim  = round([(timeStart-timeEpsilon),(timeEnd+timeEpsilon)],3,'significant');
-plotSettings(idx).yLim  = round([0,1.501].*maximumIsometricForce.*scaleF,3,'significant');
+plotSettings(idx).xLim   = round([(timeStart-timeEpsilon),(timeEnd+timeEpsilon)],3,'significant');
+plotSettings(idx).yLim   = plotSettings(1).yLim;
 plotSettings(idx).xTicks = round([timeStart,timeA,timeMid,timeB,timeEnd],3,'significant');
-plotSettings(idx).yTicks = round([0,1].*maximumIsometricForce.*scaleF,3,'significant');
+plotSettings(idx).yTicks = plotSettings(1).yTicks;
+
+if(flag_plotInNormalizedCoordinates==1)    
+    idx=1;
+    plotSettings(idx).xLim   = round([0.2,2.0],3,'significant');
+    plotSettings(idx).yLim   = round([0,1.501],3,'significant');
+    plotSettings(idx).xTicks = round([0.5,1,1.6],3,'significant');
+    plotSettings(idx).yTicks = round([0,1],3,'significant');
+    
+    idx=2;
+    plotSettings(idx).xLim   = plotSettings(1).xLim;
+    plotSettings(idx).yLim   = plotSettings(1).yLim;
+    plotSettings(idx).xTicks = plotSettings(1).xTicks;
+    plotSettings(idx).yTicks = plotSettings(1).yTicks;
+
+    
+    idx=3;
+    plotSettings(idx).xLim  = round([(timeStart-timeEpsilon),(timeEnd+timeEpsilon)],3,'significant');
+    plotSettings(idx).yLim  = plotSettings(1).yLim;
+    plotSettings(idx).xTicks = round([timeStart,timeA,timeMid,timeB,timeEnd],3,'significant');
+    plotSettings(idx).yTicks = plotSettings(1).yTicks;
+end
+
 
 
 lineType = '-';
@@ -117,9 +135,9 @@ if(flag_addReferenceData==1)
     %             'dataHerzogLeonard2002Figure7C.dat'};
     %dataLabels = {'3mm/s','9mm/s','27mm/s'};
 
-    labelWTLW2011 = 'Exp: WTLW2011 Rabbit WM';
-    labelGL2009 = 'Exp: GL2009 Human SF';
-    labelSLRWS2015 ='Exp: SLRWS2015 Rabbit WM';
+    labelWTLW2011  = 'Exp: WTLW2011 Rabbit EDII/EDL/TA WM';
+    labelGL2009    = 'Exp: GL2009 Human LGAS SF';
+    labelSLRWS2015 ='Exp: SLRWS2015 Rabbit GAS WM';
 
     fileWTLW2011EDLIIflN = ['..',filesep,'..',filesep,'..',filesep,'..',filesep,...
                'ReferenceExperiments',filesep,...
@@ -189,22 +207,32 @@ if(flag_addReferenceData==1)
     %%
     %Plot Siebert et al. 2015
     %%
-    lceExpFalN  = ...
-        (dataSLRWS2015FalN(:,1))*optimalFiberLength...
-       +tendonSlackLength;
-    fceExpFalN   = ...
-        dataSLRWS2015FalN(:,2).*(maximumIsometricForce*scaleF);
-
-
     lceOptExp=17.7;
-    lpee=12.9;
-    lceSLRWS2015ExpFpeN = dataSLRWS2015FpeN(:,1)*lpee+lpee;
-    lceSLRWS2015ExpFpeN = lceSLRWS2015ExpFpeN./lceOptExp;
-    lceExpFpeN  = ...
-        (lceSLRWS2015ExpFpeN)*optimalFiberLength...
-       +tendonSlackLength;
-    fceExpFpeN   = ...
-        dataSLRWS2015FpeN(:,2).*(maximumIsometricForce*scaleF);
+    lpee=12.9;    
+    if(flag_plotInNormalizedCoordinates==1)
+        lceExpFalN  =  dataSLRWS2015FalN(:,1);
+        fceExpFalN  =  dataSLRWS2015FalN(:,2);    
+        lceSLRWS2015ExpFpeN = dataSLRWS2015FpeN(:,1)*lpee+lpee;
+        lceSLRWS2015ExpFpeN = lceSLRWS2015ExpFpeN./lceOptExp;
+        fceExpFpeN  = dataSLRWS2015FpeN(:,2); 
+        lceExpFpeN  = lceSLRWS2015ExpFpeN;
+        fceExpFpeN  = dataSLRWS2015FpeN(:,2);         
+    else
+        lceExpFalN  = ...
+            (dataSLRWS2015FalN(:,1))*optimalFiberLength...
+           +tendonSlackLength;
+        fceExpFalN   = ...
+            dataSLRWS2015FalN(:,2).*(maximumIsometricForce*scaleF);
+        lceSLRWS2015ExpFpeN = dataSLRWS2015FpeN(:,1)*lpee+lpee;
+        lceSLRWS2015ExpFpeN = lceSLRWS2015ExpFpeN./lceOptExp;
+        lceExpFpeN  = ...
+            (lceSLRWS2015ExpFpeN)*optimalFiberLength...
+           +tendonSlackLength;
+        fceExpFpeN   = ...
+            dataSLRWS2015FpeN(:,2).*(maximumIsometricForce*scaleF);        
+    end
+
+
 
     subplot('Position',reshape(subPlotLayout(indexRow,2,:),1,4));
     expColor = [1,1,1].*0.9;
@@ -227,17 +255,26 @@ if(flag_addReferenceData==1)
     %%
     %EDLII
     expColor = [1,1,1].*0.7;  
-    lceExpEDLIIFalN  = ...
+    if(flag_plotInNormalizedCoordinates==1)
+        lceExpEDLIIFalN  = (dataWTLW2011EDLIIFalN(:,1).*(1/100)+1);
+        fceExpEDLIIFalN  = dataWTLW2011EDLIIFalN(:,2).*(1/100);
+    
+        lceExpEDLIIFpeN  = (dataWTLW2011EDLIIFpeN(:,1).*(1/100) + 1);
+        fceExpEDLIIFpeN  =  dataWTLW2011EDLIIFpeN(:,2).*(1/100);
+    else
+        lceExpEDLIIFalN  = ...
         (dataWTLW2011EDLIIFalN(:,1).*(1/100)+1)*optimalFiberLength...
-       +tendonSlackLength;
-    fceExpEDLIIFalN   = ...
-        dataWTLW2011EDLIIFalN(:,2).*(1/100).*(maximumIsometricForce*scaleF);
-
-    lceExpEDLIIFpeN  = ...
-        (dataWTLW2011EDLIIFpeN(:,1).*(1/100) + 1)*optimalFiberLength...
-       +tendonSlackLength;
-    fceExpEDLIIFpeN   = ...
-        dataWTLW2011EDLIIFpeN(:,2).*(1/100).*(maximumIsometricForce*scaleF);
+           +tendonSlackLength;
+        fceExpEDLIIFalN   = ...
+            dataWTLW2011EDLIIFalN(:,2).*(1/100).*(maximumIsometricForce*scaleF);
+    
+        lceExpEDLIIFpeN  = ...
+            (dataWTLW2011EDLIIFpeN(:,1).*(1/100) + 1)*optimalFiberLength...
+           +tendonSlackLength;
+        fceExpEDLIIFpeN   = ...
+            dataWTLW2011EDLIIFpeN(:,2).*(1/100).*(maximumIsometricForce*scaleF);
+    end
+    
 
     subplot('Position',reshape(subPlotLayout(indexRow,2,:),1,4));
     plot(lceExpEDLIIFalN,...
@@ -263,17 +300,26 @@ if(flag_addReferenceData==1)
 
     %EDL
     expColor = [1,1,1].*0.5;  
-    lceExpEDLFalN  = ...
-        (dataWTLW2011EDLFalN(:,1).*(1/100)+1)*optimalFiberLength...
-       +tendonSlackLength;
-    fceExpEDLFalN   = ...
-        dataWTLW2011EDLFalN(:,2).*(1/100).*(maximumIsometricForce*scaleF);
+    if(flag_plotInNormalizedCoordinates==1)
+        lceExpEDLFalN  = (dataWTLW2011EDLFalN(:,1).*(1/100)+1);
+        fceExpEDLFalN  = dataWTLW2011EDLFalN(:,2).*(1/100);
+    
+        lceExpEDLFpeN  = (dataWTLW2011EDLFpeN(:,1).*(1/100) + 1);
+        fceExpEDLFpeN  =  dataWTLW2011EDLFpeN(:,2).*(1/100);
+    else
+        lceExpEDLFalN  = ...
+            (dataWTLW2011EDLFalN(:,1).*(1/100)+1)*optimalFiberLength...
+           +tendonSlackLength;
+        fceExpEDLFalN   = ...
+            dataWTLW2011EDLFalN(:,2).*(1/100).*(maximumIsometricForce*scaleF);
+    
+        lceExpEDLFpeN  = ...
+            (dataWTLW2011EDLFpeN(:,1).*(1/100) + 1)*optimalFiberLength...
+           +tendonSlackLength;
+        fceExpEDLFpeN   = ...
+            dataWTLW2011EDLFpeN(:,2).*(1/100).*(maximumIsometricForce*scaleF);
+    end
 
-    lceExpEDLFpeN  = ...
-        (dataWTLW2011EDLFpeN(:,1).*(1/100) + 1)*optimalFiberLength...
-       +tendonSlackLength;
-    fceExpEDLFpeN   = ...
-        dataWTLW2011EDLFpeN(:,2).*(1/100).*(maximumIsometricForce*scaleF);
 
     subplot('Position',reshape(subPlotLayout(indexRow,2,:),1,4));
     plot(lceExpEDLFalN,...
@@ -299,17 +345,26 @@ if(flag_addReferenceData==1)
 
     %TA
     expColor = [1,1,1].*0.3;  
-    lceExpTAFalN  = ...
-        (dataWTLW2011TAFalN(:,1).*(1/100)+1)*optimalFiberLength...
-       +tendonSlackLength;
-    fceExpTAFalN   = ...
-        dataWTLW2011TAFalN(:,2).*(1/100).*(maximumIsometricForce*scaleF);
-
-    lceExpTAFpeN  = ...
-        (dataWTLW2011TAFpeN(:,1).*(1/100) + 1)*optimalFiberLength...
-       +tendonSlackLength;
-    fceExpTAFpeN   = ...
-        dataWTLW2011TAFpeN(:,2).*(1/100).*(maximumIsometricForce*scaleF);
+    if(flag_plotInNormalizedCoordinates==1)
+        lceExpTAFalN  = (dataWTLW2011TAFalN(:,1).*(1/100)+1);
+        fceExpTAFalN  = dataWTLW2011TAFalN(:,2).*(1/100);
+    
+        lceExpTAFpeN  = (dataWTLW2011TAFpeN(:,1).*(1/100) + 1);
+        fceExpTAFpeN  = dataWTLW2011TAFpeN(:,2).*(1/100);    
+    else
+        lceExpTAFalN  = ...
+            (dataWTLW2011TAFalN(:,1).*(1/100)+1)*optimalFiberLength...
+           +tendonSlackLength;
+        fceExpTAFalN   = ...
+            dataWTLW2011TAFalN(:,2).*(1/100).*(maximumIsometricForce*scaleF);
+    
+        lceExpTAFpeN  = ...
+            (dataWTLW2011TAFpeN(:,1).*(1/100) + 1)*optimalFiberLength...
+           +tendonSlackLength;
+        fceExpTAFpeN   = ...
+            dataWTLW2011TAFpeN(:,2).*(1/100).*(maximumIsometricForce*scaleF);        
+    end
+    
 
     subplot('Position',reshape(subPlotLayout(indexRow,2,:),1,4));
     plot(lceExpTAFalN,...
@@ -334,17 +389,26 @@ if(flag_addReferenceData==1)
     %Plot Gollapudi and Lin
     %%
     expColor = [1,1,1].*0;    
-    lceExpFalN  = ...
-        (dataGL2009FalN(:,1)./ceOpt)*optimalFiberLength...
-       +tendonSlackLength;
-    fceExpFalN   = ...
-        dataGL2009FalN(:,2).*(maximumIsometricForce*scaleF);
+    if(flag_plotInNormalizedCoordinates==1)
+        lceExpFalN  = (dataGL2009FalN(:,1)./ceOpt);
+        fceExpFalN  = dataGL2009FalN(:,2);
+    
+        lceExpFpeN  = (dataGL2009FpeN(:,1)./ceOpt);
+        fceExpFpeN  = dataGL2009FpeN(:,2);
+    else
+        lceExpFalN  = ...
+            (dataGL2009FalN(:,1)./ceOpt)*optimalFiberLength...
+           +tendonSlackLength;
+        fceExpFalN   = ...
+            dataGL2009FalN(:,2).*(maximumIsometricForce*scaleF);
+    
+        lceExpFpeN  = ...
+            (dataGL2009FpeN(:,1)./ceOpt)*optimalFiberLength...
+           +tendonSlackLength;
+        fceExpFpeN   = ...
+            dataGL2009FpeN(:,2).*(maximumIsometricForce*scaleF);
+    end
 
-    lceExpFpeN  = ...
-        (dataGL2009FpeN(:,1)./ceOpt)*optimalFiberLength...
-       +tendonSlackLength;
-    fceExpFpeN   = ...
-        dataGL2009FpeN(:,2).*(maximumIsometricForce*scaleF);
 
     subplot('Position',reshape(subPlotLayout(indexRow,2,:),1,4));
     plot(lceExpFalN,...
@@ -418,6 +482,11 @@ if(flag_addSimulationData==1)
         displayNameStr ='';
         handleVisibility='off';
 
+        fpeN  = fAN;
+        faeN  = (fBN-fAN);
+        lceN  = lsdynaMuscleUniform.lceN(indexB,1);
+
+
 %         if(contains(lsdynaMuscleUniform.nameLabel,'EHTMM'))
 %             displayNameStr=[lsdynaMuscleUniform.nameLabel,...
 %                   sprintf('(%1.1f)',lsdynaMuscleUniform.act(end,1))];
@@ -430,31 +499,38 @@ if(flag_addSimulationData==1)
 
 
 
-        entryHeadings = {'act','lN','fN'};
+        entryHeadings = {'act','lp','fae','lceN','fceN'};
         entryData = [act,lp,faeAT];
 
         %Start a new file
         if(contains(simulationFile,fileNameMaxActStart))
             fid=fopen([simulationFolder,filesep,'record.csv'],'w');
-            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lp,faeAT);
+            fprintf(fid,'%1.3e,%1.3e,%1.3e,%1.3e,%1.3e\n',act,lp,faeAT,lceN,faeN);
             fclose(fid);
         elseif(contains(simulationFile,fileNameMaxActLast))
             fid=fopen([simulationFolder,filesep,'record.csv'],'a');
-            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lp,faeAT);
+            fprintf(fid,'%1.3e,%1.3e,%1.3e,%1.3e,%1.3e\n',act,lp,faeAT,lceN,faeN);
             fclose(fid);
             dataMax = csvread([simulationFolder,filesep,'record.csv']);
 
             displayNameStr = [lsdynaMuscleUniform.nameLabel,...
                    sprintf('(%1.1f)',dataMax(1,1))];            
 
-            plot(dataMax(:,2),dataMax(:,3),...
+            idxX = 2;
+            idxY = 3;
+            if(flag_plotInNormalizedCoordinates==1)
+                idxX = 4;
+                idxY = 5;
+            end
+
+            plot(dataMax(:,idxX),dataMax(:,idxY),...
                  '-',...
                 'Color',[1,1,1],...
                 'LineWidth',lineWidthModel+2,...
                 'DisplayName',displayNameStr,...
                 'HandleVisibility','off');
             hold on;
-            plot(dataMax(:,2),dataMax(:,3),...
+            plot(dataMax(:,idxX),dataMax(:,idxY),...
                  lineType,...
                 'Color',lineColor,...
                 'LineWidth',lineWidthModel,...
@@ -465,7 +541,7 @@ if(flag_addSimulationData==1)
             hold on;
             
             for idxPoint=1:1:size(dataMax,1)
-                plot(dataMax(idxPoint,2),dataMax(idxPoint,3),...
+                plot(dataMax(idxPoint,idxX),dataMax(idxPoint,idxY),...
                      lsdynaMuscleUniform.mark,...
                     'Color',[1,1,1],...
                     'LineWidth',markerLineWidth,...
@@ -475,7 +551,7 @@ if(flag_addSimulationData==1)
                     'MarkerSize',markerSize+2);
                 hold on;
         
-                plot(dataMax(idxPoint,2),dataMax(idxPoint,3),...
+                plot(dataMax(idxPoint,idxX),dataMax(idxPoint,idxY),...
                      lsdynaMuscleUniform.mark,...
                     'Color',lineColor,...
                     'LineWidth',markerLineWidth,...
@@ -493,7 +569,7 @@ if(flag_addSimulationData==1)
             yDelta=abs(diff(plotSettings(idx).yLim))*0.05;
             xText = min(plotSettings(idx).xLim)+xDelta;
 
-            text(xText,max(dataMax(:,3)),...
+            text(xText,max(dataMax(:,idxY))-yDelta*0.5,...
                  sprintf('%s: %1.0f mm\n%s: %1.1f N',...
                  '$$\ell^{*}$$',dataMax(idxMax,2),...
                  '$$f^{*}$$',dataMax(idxMax,3)),...
@@ -503,16 +579,16 @@ if(flag_addSimulationData==1)
             hold on;
 
 
-            plot([xText,dataMax(idxMax,2)],...
-                 [1,1].*dataMax(idxMax,3),...
+            plot([xText,dataMax(idxMax,idxX)],...
+                 [1,1].*dataMax(idxMax,idxY),...
                  '-',...
                 'Color',[1,1,1],...
                 'LineWidth',0.5+2,...
                 'DisplayName','',...
                 'HandleVisibility','off');
             hold on;            
-            plot([xText,dataMax(idxMax,2)],...
-                 [1,1].*dataMax(idxMax,3),...
+            plot([xText,dataMax(idxMax,idxX)],...
+                 [1,1].*dataMax(idxMax,idxY),...
                  '-',...
                 'Color',[0,0,0],...
                 'LineWidth',0.5,...
@@ -520,10 +596,10 @@ if(flag_addSimulationData==1)
                 'HandleVisibility','off');
             hold on;
 
-            xText = max(plotSettings(idx).xLim)-xDelta*4;
+            xText = max(plotSettings(idx).xLim)-5*xDelta;
 
             text(xText,...
-                 max(plotSettings(idx).yLim),...
+                 1,...
                  sprintf('Properties\n%s: %1.0f mm\n%s: %1.0f mm\n%s: %1.1f N',...
                  '$$\ell^{M}_o$$',optimalFiberLength,...
                  '$$\ell^{T}_s$$',tendonSlackLength,...
@@ -535,24 +611,31 @@ if(flag_addSimulationData==1)
 
         elseif(contains(simulationFile,fileNameSubMaxActStart))
             fid=fopen([simulationFolder,filesep,'record.csv'],'w');
-            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lp,faeAT);
+            fprintf(fid,'%1.3e,%1.3e,%1.3e,%1.3e,%1.3e\n',act,lp,faeAT,lceN,faeN);
             fclose(fid);
         elseif(contains(simulationFile,fileNameSubMaxActLast))
             fid=fopen([simulationFolder,filesep,'record.csv'],'a');
-            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lp,faeAT);
+            fprintf(fid,'%1.3e,%1.3e,%1.3e,%1.3e,%1.3e\n',act,lp,faeAT,lceN,faeN);
             fclose(fid);
             dataMax = csvread([simulationFolder,filesep,'record.csv']); 
 
+            idxX = 2;
+            idxY = 3;
+            if(flag_plotInNormalizedCoordinates==1)
+                idxX = 4;
+                idxY = 5;
+            end
+
             displayNameStr = [lsdynaMuscleUniform.nameLabel,...
                    sprintf('(%1.1f)',dataMax(1,1))];            
-            plot(dataMax(:,2),dataMax(:,3),...
+            plot(dataMax(:,idxX),dataMax(:,idxY),...
                  '-',...
                 'Color',[1,1,1],...
                 'LineWidth',lineWidthModel+2,...
                 'DisplayName',displayNameStr,...
                 'HandleVisibility','off');
             hold on;
-            plot(dataMax(:,2),dataMax(:,3),...
+            plot(dataMax(:,idxX),dataMax(:,idxY),...
                  lineType,...
                 'Color',lineColor,...
                 'LineWidth',lineWidthModel,...
@@ -563,7 +646,7 @@ if(flag_addSimulationData==1)
             hold on;
 
             for idxPoint=1:1:size(dataMax,1)
-                plot(dataMax(idxPoint,2),dataMax(idxPoint,3),...
+                plot(dataMax(idxPoint,idxX),dataMax(idxPoint,idxY),...
                      lsdynaMuscleUniform.mark,...
                     'Color',[1,1,1],...
                     'LineWidth',markerLineWidth,...
@@ -573,7 +656,7 @@ if(flag_addSimulationData==1)
                     'MarkerSize',markerSize+2);
                 hold on;
         
-                plot(dataMax(idxPoint,2),dataMax(idxPoint,3),...
+                plot(dataMax(idxPoint,idxX),dataMax(idxPoint,idxY),...
                      lsdynaMuscleUniform.mark,...
                     'Color',lineColor,...
                     'LineWidth',markerLineWidth,...
@@ -584,10 +667,11 @@ if(flag_addSimulationData==1)
                 hold on;
             end
 
-            legend('Location','NorthWest');
+            lgdH = legend('Location','NorthWest');
+            lgdH.FontSize=fontSizeLegend;
             legend box off;
          
-            [valMax,idxMax] = max(dataMax(:,3));
+            [valMax,idxMax] = max(dataMax(:,idxY));
             
             idx=2;
             xDelta=abs(diff(plotSettings(idx).xLim))*0.05;
@@ -595,7 +679,7 @@ if(flag_addSimulationData==1)
             xText = min(plotSettings(idx).xLim)+xDelta;
             
 
-            text(xText,max(dataMax(:,3)),...
+            text(xText,max(dataMax(:,idxY))-yDelta*0.5,...
                  sprintf('%s: %1.0f mm\n%s: %1.1f N',...                 
                  '$$\ell^{+}$$',dataMax(idxMax,2),...
                  '$$f^{+}$$',dataMax(idxMax,3)),...
@@ -604,8 +688,8 @@ if(flag_addSimulationData==1)
                  'FontSize',6);
             hold on;
             
-            plot([xText,dataMax(idxMax,2)],...
-                 [1,1].*dataMax(idxMax,3),...
+            plot([xText,dataMax(idxMax,idxX)],...
+                 [1,1].*dataMax(idxMax,idxY),...
                  '-',...
                 'Color',[1,1,1],...
                 'LineWidth',0.5+2,...
@@ -613,8 +697,8 @@ if(flag_addSimulationData==1)
                 'HandleVisibility','off');
             hold on;
 
-            plot([xText,dataMax(idxMax,2)],...
-                 [1,1].*dataMax(idxMax,3),...
+            plot([xText,dataMax(idxMax,idxX)],...
+                 [1,1].*dataMax(idxMax,idxY),...
                  '-',...
                 'Color',[0,0,0],...
                 'LineWidth',0.5,...
@@ -623,7 +707,7 @@ if(flag_addSimulationData==1)
             hold on;
         else
             fid=fopen([simulationFolder,filesep,'record.csv'],'a');
-            fprintf(fid,'%1.3e,%1.3e,%1.3e\n',act,lp,faeAT);
+            fprintf(fid,'%1.3e,%1.3e,%1.3e,%1.3e,%1.3e\n',act,lp,faeAT,lceN,faeN);
             fclose(fid);
         end
 
@@ -650,8 +734,13 @@ if(flag_addSimulationData==1)
         xticks(plotSettings(idx).xTicks);
         yticks(plotSettings(idx).yTicks); 
     
-        xlabel('Path Length (mm)');
-        ylabel('Tendon Force (N)');   
+        if(flag_plotInNormalizedCoordinates==1)
+            xlabel('Norm. Length ($$\ell/\ell^{M}_o$$)');
+            ylabel('Norm. Force ($$f/f^{M}_o$$)');   
+        else
+            xlabel('Path Length (mm)');
+            ylabel('Tendon Force (N)');   
+        end
         title('B. Active force-length relations',...
               'HorizontalAlignment','right');        
     end
@@ -664,7 +753,6 @@ if(flag_addSimulationData==1)
         %if(contains(simulationFile,'passive_force_length'))
         %    displayNameStr=[lsdynaMuscleUniform.nameLabel,' $$\tilde{f}^{PE} \cos \alpha$$'];
         %end
-        displayNameStr=lsdynaMuscleUniform.nameLabel;
 
         idxA = 1;
         if(length(lsdynaMuscleUniform.eloutAxialBeamForceNorm) ...
@@ -672,16 +760,27 @@ if(flag_addSimulationData==1)
             idxA=2;
         end
 
-        plot(lsdynaMuscleUniform.lp,...
-             lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1).*maximumIsometricForce.*scaleF,...
+        if(flag_plotInNormalizedCoordinates==1)
+            lengthPlot = lsdynaMuscleUniform.lceN;
+            forcePlot  = lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1);
+        else
+            lengthPlot  = lsdynaMuscleUniform.lp;
+            forcePlot   = lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1).*maximumIsometricForce.*scaleF;
+        end
+
+        displayNameStr=lsdynaMuscleUniform.nameLabel;
+
+
+        plot(lengthPlot,...
+             forcePlot,...
              '-',...
             'Color',[1,1,1],...
             'LineWidth',lineWidthModel+2,...
             'DisplayName',displayNameStr,...
             'HandleVisibility','off');
         hold on;        
-        plot(lsdynaMuscleUniform.lp,...
-             lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1).*maximumIsometricForce.*scaleF,...
+        plot(lengthPlot,...
+             forcePlot,...
              '-',...
             'Color',lineColor,...
             'LineWidth',lineWidthModel,...
@@ -689,10 +788,17 @@ if(flag_addSimulationData==1)
             'HandleVisibility','on');
         hold on;
         
-        fpeN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1).*maximumIsometricForce.*scaleF;
-
-        fpeMin = 0.01*maximumIsometricForce*scaleF;
-        fpeIso = maximumIsometricForce*scaleF;
+        if(flag_plotInNormalizedCoordinates==1)
+            fpeN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1);
+            lceN = lsdynaMuscleUniform.lceN;
+            fpeMin = 0.01;
+            fpeIso = 1;
+        else
+            fpeN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1).*maximumIsometricForce.*scaleF;
+            lceN = lsdynaMuscleUniform.lp;            
+            fpeMin = 0.01*maximumIsometricForce*scaleF;
+            fpeIso = maximumIsometricForce*scaleF;
+        end
 
         fpeMax = max(fpeN);
         [idxValid] = find(fpeN >= fpeMin);
@@ -700,17 +806,19 @@ if(flag_addSimulationData==1)
 
         while(fpeN(idxMin,1) > fpeMin*0.5 && idxMin > 1)
             idxMin=idxMin-1;
-        end        
-        lp0 = lsdynaMuscleUniform.lp(idxMin,1);
-        fp0 = fpeN(idxMin,1);
+        end    
+        
+        lp0 = lceN(idxMin,1);
+        fp0 = fpeN(idxMin,1);            
+
 
         lp1 = interp1(fpeN(idxValid,:), ...
-                      lsdynaMuscleUniform.lp(idxValid,:), fpeIso);
+                      lceN(idxValid,:), fpeIso);
         
         dfdl = calcCentralDifferenceDataSeries(...
-                 lsdynaMuscleUniform.lp(idxValid,:),...
+                 lceN(idxValid,:),...
                  fpeN(idxValid,:));
-        dfdl1 = interp1(lsdynaMuscleUniform.lp(idxValid,:),...
+        dfdl1 = interp1(lceN(idxValid,:),...
                         dfdl,lp1);
         idx=1;
         lpLeft= min(plotSettings(idx).xLim);
@@ -756,12 +864,19 @@ if(flag_addSimulationData==1)
         xticks(plotSettings(idx).xTicks);
         yticks(plotSettings(idx).yTicks); 
     
-        xlabel('Path Length (mm)');
-        ylabel('Tendon Force (N)');   
+        if(flag_plotInNormalizedCoordinates==1)
+            xlabel('Norm. Length ($$\ell/\ell^{M}_o$$)');
+            ylabel('Norm. Force ($$f/f^{M}_o$$)');             
+        else
+            xlabel('Path Length (mm)');
+            ylabel('Tendon Force (N)');             
+        end
+  
         title('A. Passive force-length relations',...
               'HorizontalAlignment','right');
     
-        legend('Location','NorthWest');
+        lgdH=legend('Location','NorthWest');
+        lgdH.FontSize=fontSizeLegend;
         legend box off;
 
     end    
@@ -774,10 +889,15 @@ if(flag_addSimulationData==1)
         subplot('Position',reshape(subPlotLayout(indexRow,3,:),1,4));        
         %subplot('Position',reshape(subPlotLayout(1,2,:),1,4));
         
+        timePlot = lsdynaMuscleUniform.eloutTime(:,1);
+        if(flag_plotInNormalizedCoordinates==1)
+            forcePlot=lsdynaMuscleUniform.eloutAxialBeamForceNorm(:,1);
+        else
+            forcePlot=lsdynaMuscleUniform.eloutAxialBeamForceNorm(:,1).*maximumIsometricForce.*scaleF;
+        end
 
-
-        plot(   lsdynaMuscleUniform.eloutTime(:,1),...
-                lsdynaMuscleUniform.eloutAxialBeamForceNorm(:,1).*maximumIsometricForce.*scaleF,...
+        plot(   timePlot,...
+                forcePlot,...
                 lineType,...
                 'Color',lineColor,...
                 'LineWidth',lineWidthModel,...
@@ -785,11 +905,20 @@ if(flag_addSimulationData==1)
                 'HandleVisibility','on');
         hold on;
 
-        fAN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexA,1);
-        fA  = fAN.*maximumIsometricForce.*scaleF;
-        fBN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexB,1);
-        fB  = fBN.*maximumIsometricForce.*scaleF;
+
         
+        if(flag_plotInNormalizedCoordinates==1)
+            fAN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexA,1);
+            fA  = fAN;
+            fBN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexB,1);
+            fB  = fBN;
+        else
+            fAN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexA,1);
+            fA  = fAN.*maximumIsometricForce.*scaleF;
+            fBN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexB,1);
+            fB  = fBN.*maximumIsometricForce.*scaleF;
+        end
+
         plot(timeA,fA,...
              lsdynaMuscleUniform.mark,...
              'Color',lineColor,...
@@ -824,7 +953,13 @@ if(flag_addSimulationData==1)
         else
             xlabel('Time (s)');
         end
-        ylabel('Tendon Force (N)');  
+
+        if(flag_plotInNormalizedCoordinates==1)
+            ylabel('Norm. Tendon Force ($$f^T/f^T_o$$)');
+        else
+            ylabel('Tendon Force (N)');
+        end
+          
         title('C. Example time series data',...
               'HorizontalAlignment','right');        
 
@@ -836,7 +971,8 @@ if(flag_addSimulationData==1)
         xticks(plotSettings(idx).xTicks);
         yticks(plotSettings(idx).yTicks);      
 
-        legend('Location','NorthWest');
+        lgdH =legend('Location','NorthWest');
+        lgdH.FontSize=fontSizeLegend;
         legend box off;
 
 
