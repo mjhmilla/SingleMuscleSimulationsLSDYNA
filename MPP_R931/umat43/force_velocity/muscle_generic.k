@@ -14,5 +14,5 @@ $#beta1AHN  beta1PHN kxOptIsoN dxOptIsoN   gainTrk    actTrk    vceMax   taudvst
 $# dvsBeta    dtNumN   aniType   ctlType  ctlDelay  ctlThrsh ctlOnTime    output
      0.001       0.1         0         0       0.0       0.0       0.0         1
 $#   dtout
-       100
+        10
 *END

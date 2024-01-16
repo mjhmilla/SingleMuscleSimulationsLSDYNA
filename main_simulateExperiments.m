@@ -33,7 +33,7 @@ redB = redA.*0.5 + [1,1,1].*0.5;
 dataColorA=greyA;
 dataColorB=greyB;
 
-models(3) = struct('id',0,'name','');
+models(1) = struct('id',0,'name','');
 
 %indexMat56                = 1;
 %models(indexMat56).id     = 1;
@@ -61,18 +61,18 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 0;
+flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_sizePlotsForSlides = 0; %0: means use journal paper slides
 excludeSimulationsNamesThatContain = [];%[{'52mm'}];
 
-flag_generateGenericPlots           = 0;
+flag_generateGenericPlots           = 1;
 flag_generateSpecificPlots          = 0;
-flag_generatePublicationPlots       = 1;
+flag_generatePublicationPlots       = 0;
 
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
@@ -477,7 +477,9 @@ if(flag_postProcessSimulationData==1)
                                 assert(0,'flag_sinusoid_aniType should be 0 (human) or 1 (feline)');
                         end
                     case 'active_passive_force_length'
-                        referenceCurveFolder = [];                        
+                        referenceCurveFolder = [];   
+                    case 'force_velocity'
+                        referenceCurveFolder = [];  
                     otherwise
                         assert(0,'Error: simulation type not yet coded with reference data');
                 end
@@ -542,8 +544,12 @@ if(flag_postProcessSimulationData==1)
                       numberOfHorizontalPlotColumnsSpecific     = 1;
                       numberOfVerticalPlotRowsSpecific          = 2;
                       numberOfHorizontalPlotColumnsPublication  = 3; 
-                      numberOfVerticalPlotRowsPublication       = length(models);                      
-                      
+                      numberOfVerticalPlotRowsPublication       = length(models); 
+                    case 'force_velocity'
+                      numberOfHorizontalPlotColumnsSpecific     = 1;
+                      numberOfVerticalPlotRowsSpecific          = 2;
+                      numberOfHorizontalPlotColumnsPublication  = 3; 
+                      numberOfVerticalPlotRowsPublication       = length(models);
                 end
 
 
