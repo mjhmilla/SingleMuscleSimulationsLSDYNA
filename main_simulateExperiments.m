@@ -33,25 +33,25 @@ redB = redA.*0.5 + [1,1,1].*0.5;
 dataColorA=greyA;
 dataColorB=greyB;
 
-models(1) = struct('id',0,'name','');
+models(3) = struct('id',0,'name','');
 
 %indexMat56                = 1;
 %models(indexMat56).id     = 1;
 %models(indexMat56).name   ='mat156';
 %models(indexMat56).colors = [redA;redB];
 
-%indexVIVA              = 1;
-%models(indexVIVA).id   = 1;
-%models(indexVIVA).name ='viva';
-%models(indexVIVA).colors= [greenA;greenB];
+indexVIVA              = 1;
+models(indexVIVA).id   = 1;
+models(indexVIVA).name ='viva';
+models(indexVIVA).colors= [greenA;greenB];
 
-%indexUmat41              = 2;
-%models(indexUmat41).id   = 2;
-%models(indexUmat41).name ='umat41';
-%models(indexUmat41).colors= [magentaA;magentaB];
+indexUmat41              = 2;
+models(indexUmat41).id   = 2;
+models(indexUmat41).name ='umat41';
+models(indexUmat41).colors= [magentaA;magentaB];
 
-indexUmat43              = 1;
-models(indexUmat43).id   = 1;
+indexUmat43              = 3;
+models(indexUmat43).id   = 3;
 models(indexUmat43).name ='umat43';
 models(indexUmat43).colors= [blueA;blueB];
 
@@ -70,9 +70,9 @@ flag_postProcessSimulationData      = 1;
 flag_sizePlotsForSlides = 0; %0: means use journal paper slides
 excludeSimulationsNamesThatContain = [];%[{'52mm'}];
 
-flag_generateGenericPlots           = 1;
+flag_generateGenericPlots           = 0;
 flag_generateSpecificPlots          = 0;
-flag_generatePublicationPlots       = 0;
+flag_generatePublicationPlots       = 1;
 
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
@@ -82,8 +82,8 @@ flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 0;
 flag_enableReflexExperiment_kN_mm_ms    = 0;
-flag_enableActivePassiveForceLengthExperiment   = 0;
-flag_enableForceVelocityExperiment      = 1;
+flag_enableActivePassiveForceLengthExperiment   = 1;
+flag_enableForceVelocityExperiment      = 0;
 
 runOneTrial = [];
 
