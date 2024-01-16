@@ -33,7 +33,7 @@ redB = redA.*0.5 + [1,1,1].*0.5;
 dataColorA=greyA;
 dataColorB=greyB;
 
-models(2) = struct('id',0,'name','');
+models(3) = struct('id',0,'name','');
 
 %indexMat56                = 1;
 %models(indexMat56).id     = 1;
@@ -85,6 +85,8 @@ flag_enableReflexExperiment_kN_mm_ms    = 0;
 flag_enableActivePassiveForceLengthExperiment   = 1;
 flag_enableForceVelocityExperiment      = 0;
 
+runOneTrial = 'passive_force_length';
+
 flag_sinusoid_aniType = 0; 
 % This is only relevant when post-processing SinusoidExperiment
 %0. human
@@ -92,6 +94,7 @@ flag_sinusoid_aniType = 0;
 
 %Lengthens muscle to sample force-length curves
 flag_enableForceLengthExperiment        = 0; 
+
 
 %Test to see if the Matlab terminal is in the correct directory
 currDirContents = dir;
@@ -323,18 +326,33 @@ if(flag_runSimulations==1)
                 simulationDirectories = ...
                   simulationDirectories([simulationDirectories.isdir]==true);
 
-                for indexSimulationTrial=3:deltaPoints:length(simulationDirectories)
-                    
-                    cd(simulationDirectories(indexSimulationTrial).name);
-                    
+                if(isempty(runOneTrial)==1)
+
+                    for indexSimulationTrial=3:deltaPoints:length(simulationDirectories)
+                        
+                        cd(simulationDirectories(indexSimulationTrial).name);
+                        
+                        %% generate output signals                        
+                        %system(['rm -f binout* *.csv d3* matsum musout* messag* glstat',...
+                        %         ' nodout spcforc lspost*']);
+                        system('find . -type f -not \( -name ''*k'' -or -name ''*m'' \) -delete');
+                        system([lsdynaBin,' i=',...
+                                simulationDirectories(indexSimulationTrial).name,...
+                                '.k']);                    
+                        cd(simulationTypePath);
+                    end
+                else
+                     cd(runOneTrial);
+                        
                     %% generate output signals                        
                     %system(['rm -f binout* *.csv d3* matsum musout* messag* glstat',...
                     %         ' nodout spcforc lspost*']);
                     system('find . -type f -not \( -name ''*k'' -or -name ''*m'' \) -delete');
                     system([lsdynaBin,' i=',...
-                            simulationDirectories(indexSimulationTrial).name,...
+                            runOneTrial,...
                             '.k']);                    
                     cd(simulationTypePath);
+
                 end
             end
         end
