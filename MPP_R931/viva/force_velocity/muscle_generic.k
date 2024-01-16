@@ -8,8 +8,8 @@ $#     alm       sfr       svs       svr       ssp
 ef_SCM_R
 $#                a1                  o1
                  0.0                 0.0
-                 999                 0.0
-                1000             &actVal
+             &timeS0                 0.0
+             &timeS1             &actVal
               &timeE             &actVal
 $--------------------------------------------------------------------------------
 $ 6.2.1.1 activation dynamics filter

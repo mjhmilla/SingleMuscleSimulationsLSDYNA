@@ -61,7 +61,7 @@ if(strcmp(modelName,'viva')==1)
       simulationInformation(idx).model                      = modelName;  
 
     end
-    if(flag_enableForceLengthExperiment==1)
+    if(flag_enableForceVelocityExperiment==1)
       idx=idx+1;
       simulationType(idx).type = 'force_velocity';
       simulationInformation(idx).type               = simulationType(idx).type;
@@ -223,7 +223,7 @@ if(strcmp(modelName,'umat41')==1)
 
     end 
 
-    if(flag_enableForceLengthExperiment==1)
+    if(flag_enableForceVelocityExperiment==1)
       idx=idx+1;
       simulationType(idx).type = 'force_velocity';
       simulationInformation(idx).type               = simulationType(idx).type;
