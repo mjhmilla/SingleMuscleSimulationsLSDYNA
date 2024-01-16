@@ -16,6 +16,7 @@ figure(figH);
 fontSizeLegend=6;
 
 flag_plotInNormalizedCoordinates=1;
+flag_plotSmeulders2004=0;
 
 trialFolder=pwd;
 cd ..;
@@ -137,7 +138,13 @@ if(flag_addReferenceData==1)
 
     labelWTLW2011  = 'Exp: WTLW2011 Rabbit EDII/EDL/TA WM';
     labelGL2009    = 'Exp: GL2009 Human LGAS SF';
-    labelSLRWS2015 ='Exp: SLRWS2015 Rabbit GAS WM';
+    labelSLRWS2015 = 'Exp: SLRWS2015 Rabbit GAS WM';
+    labelSKHHH2004 = 'Exp: SKHHH2004 Human FCU WM';
+
+    fileSKHHH2004 = ['..',filesep,'..',filesep,'..',filesep,'..',filesep,...
+               'ReferenceExperiments',filesep,...
+               'active_passive_force_length',filesep,...
+               'SmeuldersKreulenHageHuijingHorst2004_Fig4.csv'];
 
     fileWTLW2011EDLIIflN = ['..',filesep,'..',filesep,'..',filesep,'..',filesep,...
                'ReferenceExperiments',filesep,...
@@ -384,7 +391,63 @@ if(flag_addReferenceData==1)
          'MarkerFaceColor',expColor,...
          'MarkerSize',8,...         
          'DisplayName',labelWTLW2011);
-    hold on     
+    hold on  
+
+    %%
+    %Plot Smeulders et al.
+    %%
+    dataSKHHH2004 = loadDigitizedData(fileSKHHH2004,...
+                    'Length (cm)','Norm. Force ($$f/f^M_o$$)',...
+                    {'falLow','falMean','falHigh'},...
+                    {'Smeulders et al. 2004'});
+    %Smeulders et al. reports the total MTU length at which lopt occurs,
+    %which is not the same as the fiber length. Feiden et al. report
+    %the optimal fiber length of the FCU as
+    %
+    % Fridén J, Lovering RM, Lieber RL. Fiber length variability within the 
+    % flexor carpi ulnaris and flexor carpi radialis muscles: implications 
+    % for surgical tendon transfer. The Journal of hand surgery. 
+    % 2004 Sep 1;29(5):909-14.
+    % 63.1 ± 4.0 mm
+
+    lceOptMean = 6.31;
+    expColor=[0,0,0];
+
+    if(flag_plotSmeulders2004==1)
+        if(flag_plotInNormalizedCoordinates==1)
+            
+            subplot('Position',reshape(subPlotLayout(indexRow,2,:),1,4));
+    
+            xFill = [dataSKHHH2004(1).x;...
+                     fliplr(dataSKHHH2004(3).x')'];
+            yFill = [dataSKHHH2004(1).y;...
+                     fliplr(dataSKHHH2004(3).y')'];
+            fill(xFill./lceOptMean + 1,...
+                 yFill./100,...
+                 [1,1,1],...
+                 'DisplayName',labelSKHHH2004,...
+                 'EdgeColor',[0,0,0],...
+                 'HandleVisibility','on');
+            hold on;
+    
+    
+        else
+            subplot('Position',reshape(subPlotLayout(indexRow,2,:),1,4));
+    
+            xFill = [dataSKHHH2004(1).x;...
+                     fliplr(dataSKHHH2004(3).x')'];
+            yFill = [dataSKHHH2004(1).y;...
+                     fliplr(dataSKHHH2004(3).y')'];
+            fill((xFill./lceOptMean + 1),...
+                 (yFill./100).*maximumIsometricForce,...
+                 [1,1,1],...
+                 'DisplayName',labelSKHHH2004,...
+                 'EdgeColor',[0,0,0],...
+                 'HandleVisibility','on');
+            hold on;
+    
+        end    
+    end
     %%
     %Plot Gollapudi and Lin
     %%
@@ -435,7 +498,10 @@ if(flag_addReferenceData==1)
     %dataFig7B = importdata([referenceDataFolder,'/','dataHerzogLeonard2002Figure7B.csv']);
     %dataFig7C = importdata([referenceDataFolder,'/','dataHerzogLeonard2002Figure7C.csv']);  
 
+    
     flag_addReferenceData=0;
+
+
 end
 
 % Add the simulation data
@@ -567,7 +633,7 @@ if(flag_addSimulationData==1)
             idx=2;
             xDelta=abs(diff(plotSettings(idx).xLim))*0.05;
             yDelta=abs(diff(plotSettings(idx).yLim))*0.05;
-            xText = min(plotSettings(idx).xLim)+xDelta;
+            xText = min(plotSettings(idx).xLim)+0.5*xDelta;
 
             text(xText,max(dataMax(:,idxY))-yDelta*0.5,...
                  sprintf('%s: %1.0f mm\n%s: %1.1f N',...
@@ -676,7 +742,7 @@ if(flag_addSimulationData==1)
             idx=2;
             xDelta=abs(diff(plotSettings(idx).xLim))*0.05;
             yDelta=abs(diff(plotSettings(idx).yLim))*0.05;
-            xText = min(plotSettings(idx).xLim)+xDelta;
+            xText = min(plotSettings(idx).xLim)+0.5*xDelta;
             
 
             text(xText,max(dataMax(:,idxY))-yDelta*0.5,...
@@ -788,17 +854,21 @@ if(flag_addSimulationData==1)
             'HandleVisibility','on');
         hold on;
         
+
         if(flag_plotInNormalizedCoordinates==1)
             fpeN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1);
             lceN = lsdynaMuscleUniform.lceN;
             fpeMin = 0.01;
-            fpeIso = 1;
+            fpeIso = 1;            
         else
             fpeN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1).*maximumIsometricForce.*scaleF;
             lceN = lsdynaMuscleUniform.lp;            
             fpeMin = 0.01*maximumIsometricForce*scaleF;
             fpeIso = maximumIsometricForce*scaleF;
         end
+        fpeMinNewton = 0.001*maximumIsometricForce*scaleF;
+        fpeIsoNewton = 1*maximumIsometricForce*scaleF;
+        
 
         fpeMax = max(fpeN);
         [idxValid] = find(fpeN >= fpeMin);
@@ -807,19 +877,31 @@ if(flag_addSimulationData==1)
         while(fpeN(idxMin,1) > fpeMin*0.5 && idxMin > 1)
             idxMin=idxMin-1;
         end    
+        idxMin=idxMin-1;
         
         lp0 = lceN(idxMin,1);
-        fp0 = fpeN(idxMin,1);            
-
+        fp0 = fpeN(idxMin,1); 
 
         lp1 = interp1(fpeN(idxValid,:), ...
                       lceN(idxValid,:), fpeIso);
-        
+
+        lp0MM       = lsdynaMuscleUniform.lp(idxMin,1);
+        fp0Newton   = lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA+idxMin,1);                    
+        fp0Newton   = fp0Newton*maximumIsometricForce*scaleF;
+
+        lp1MM       = interp1(lsdynaMuscleUniform.eloutAxialBeamForceNorm((idxValid)+(idxA-1),1).*maximumIsometricForce.*scaleF, ...
+                              lsdynaMuscleUniform.lp(idxValid,:), ...
+                              fpeIsoNewton);
+        fp1Newton   = fpeIsoNewton; 
+
+
         dfdl = calcCentralDifferenceDataSeries(...
-                 lceN(idxValid,:),...
-                 fpeN(idxValid,:));
+                 lsdynaMuscleUniform.lp(idxValid,:),...
+                 lsdynaMuscleUniform.eloutAxialBeamForceNorm((idxValid)+(idxA-1),1).*maximumIsometricForce.*scaleF);
         dfdl1 = interp1(lceN(idxValid,:),...
                         dfdl,lp1);
+
+
         idx=1;
         lpLeft= min(plotSettings(idx).xLim);
 
@@ -834,8 +916,19 @@ if(flag_addSimulationData==1)
              'MarkerSize',markerSize,...
              'HandleVisibility','off');
         hold on;
-        text(lp0,fp0+yDelta,...
-              sprintf('%1.0f mm, %1.1f N', lp0, fp0),...
+        plot([lp0,lp0],[fp0,fp0+3*yDelta],...
+             'Color',[1,1,1],...
+             'LineWidth',1,...
+             'HandleVisibility','off');
+        hold on;
+        plot([lp0,lp0],[fp0,fp0+3*yDelta],...
+             'Color',[0,0,0],...
+             'LineWidth',0.5,...
+             'HandleVisibility','off');
+        hold on;
+        
+        text(lp0,fp0+3*yDelta,...
+              sprintf('(%1.0f mm, %1.1f N)', lp0MM, fp0Newton),...
              'HorizontalAlignment','right',...
              'VerticalAlignment','bottom',...
              'FontSize',6);
@@ -849,9 +942,19 @@ if(flag_addSimulationData==1)
              'MarkerSize',markerSize,...
              'HandleVisibility','off');
         hold on;
-        text(lp1-6*xDelta,fpeIso,...
-              sprintf('%1.0f mm, %1.1f N\n %1.1f N/mm', lp1, fpeIso, dfdl1),...
-             'HorizontalAlignment','left',...
+        plot([lp1-3*xDelta,lp1],[fpeIso,fpeIso],...
+             'Color',[1,1,1],...
+             'LineWidth',1,...
+             'HandleVisibility','off');
+        hold on;
+        plot([lp1-3*xDelta,lp1],[fpeIso,fpeIso],...
+             'Color',[0,0,0],...
+             'LineWidth',0.5,...
+             'HandleVisibility','off');
+        hold on;        
+        text(lp1-3*xDelta,fpeIso,...
+              sprintf('(%1.0f mm, %1.1f N)\n %1.1f N/mm', lp1MM, fp1Newton, dfdl1),...
+             'HorizontalAlignment','right',...
              'VerticalAlignment','top',...
              'FontSize',6);
         hold on;
