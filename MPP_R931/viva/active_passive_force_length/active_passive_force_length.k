@@ -5,7 +5,7 @@ $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout       100                                     
+R    dtout        10                                     
 R   lceOpt  142.4421
 R     area      48.9
 R      pis 0.5000E-3  

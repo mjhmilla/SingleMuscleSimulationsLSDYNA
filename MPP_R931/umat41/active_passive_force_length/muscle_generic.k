@@ -12,7 +12,7 @@ $#    Fmax    lCEopt     dWdes   nuCEdes     dWasc   nuCEasc     Arel0     Brel0
 $#    Secc      Fecc     LPEE0     nuPEE      FPEE     lSEE0  dUSEEnll    duSEEl
          2       1.5      0.95       2.5         2    &ltSlk    &dUSEE     0.017
 $#  dFSEE0   Damping      Dsde      Rsde    Output     dtOut     IBULK        IG
-    0.0248       3.0       0.3      0.01       2.0       100      0.13      0.13
+    0.0248       3.0       0.3      0.01       2.0        10      0.13      0.13
 $#  Regler    Lambda        kp        kd     delay    Switch    thresh          
          0         0         0         0        25      &tpm      &thm    
 *END

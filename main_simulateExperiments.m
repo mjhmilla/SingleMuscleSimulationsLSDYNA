@@ -82,9 +82,8 @@ flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 0;
 flag_enableReflexExperiment_kN_mm_ms    = 0;
-
 flag_enableActivePassiveForceLengthExperiment   = 1;
-
+flag_enableForceVelocityExperiment      = 0;
 
 flag_sinusoid_aniType = 0; 
 % This is only relevant when post-processing SinusoidExperiment
