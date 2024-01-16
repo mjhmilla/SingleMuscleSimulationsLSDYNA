@@ -1,29 +1,28 @@
 $
 $ Matthew Millard
-$ 16/1/2023
+$ 16/01/2023
 $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
 R    dtout       100                                     
-R   lceOpt  142.4421
-R     area      48.9
-R      pis 0.5000E-3  
-R   fceOpt   0.02445
+R   lceOpt   115.480
+R   fceOpt    0.0237
 R   penOpt       0.0
 R  penOptD       0.0
-R   vceMax      4.00 
-R    timeE   2000.00
-RstimTimeS   1000.00
-RstimTimeE   2000.00
-R  stimLow      0.00
-R    ltSlk       0.0
+R    ltSlk    33.489
+R       et     0.068
+R   vceMax      0.01
+R   timeS0     249.0
+R   timeS1     250.0
+R    timeE    4100.0
+RtimeRamp0    1500.0
+$
 *PARAMETER_EXPRESSION
 $#    name expression
 R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk
 R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk
-R pathLenA &lceOpt*cos(&penOpt)+&ltSlk
-R stimHigh &actVal
+RtimeRamp1 &timeRamp0+&rampTime
 $
 *TITLE
 $#                                                                         title
@@ -70,7 +69,7 @@ $#     pid     secid       mid     eosid      hgid      grav    adpopt      tmid
 $#   secid    elform      shrf   qr/irid       cst     scoor       nsm   
          1         3       1.0         2         0       0.0       0.0
 $#       a     rampt    stress      
-     &area       0.0       0.0
+       1.0       0.0       0.0
 *DATABASE_HISTORY_BEAM
 $#     id1       id2       id3       id4       id5       id6       id7       id8
          1         0         0         0         0         0         0         0       
@@ -82,8 +81,8 @@ $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
                  0.0                 0.0
-                 999                 0.0
-                1000             &actVal
+             &timeS0                 0.0
+             &timeS1             &actVal
               &timeE             &actVal
 *ELEMENT_BEAM
 $#   eid     pid      n1      n2      n3     rt1     rr1     rt2     rr2   local
@@ -95,21 +94,23 @@ $#  typeid       dof       vad      lcid        sf       vid     death     birth
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          4         0       1.0       1.0       0.0       0.0
 $#                a1                  o1
-                 0.0          -&pathLenA                 
-                 100          -&pathLenA                 
-                 200          -&pathLen0                 
+                 0.0          -&pathLen0
+          &timeRamp0          -&pathLen0
+          &timeRamp1          -&pathLen1          
               &timeE          -&pathLen1
 $
 *NODE
 $#   nid               x               y               z      tc      rc
        1             0.0             0.0             0.0       7       7
-       2             0.0             0.0      -&pathLenA       7       7
+       2             0.0             0.0      -&pathLen0       7       7
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
-            0.000000                 0.5
-              &timeE                 0.5
+            0.000000                0.50
+          &timeRamp0                0.25
+          &timeRamp1                0.25
+              &timeE                0.50
 $
 *INCLUDE
 muscle_generic.k
