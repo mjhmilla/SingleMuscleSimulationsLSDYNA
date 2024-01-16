@@ -9,7 +9,8 @@ function [simulationType, simulationInformation]=...
             flag_enableSinusoidExperiment,...
             flag_enableReflexExperiment,...
             flag_enableReflexExperiment_kN_mm_ms,...
-            flag_enableActivePassiveForceLengthExperiment)
+            flag_enableActivePassiveForceLengthExperiment,...
+            flag_enableForceVelocityExperiment)
 
 numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableConcentricExperiment ... 
@@ -20,7 +21,8 @@ numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableSinusoidExperiment...
                      +flag_enableReflexExperiment...
                      +flag_enableReflexExperiment_kN_mm_ms...
-                     +flag_enableActivePassiveForceLengthExperiment;
+                     +flag_enableActivePassiveForceLengthExperiment...
+                     +flag_enableForceVelocityExperiment;
 
 if(numberOfSimulationTypes==0)
     numberOfSimulationTypes=1;
@@ -372,7 +374,23 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).parametersInMuscleCard     = 0;
       simulationInformation(idx).model                      = modelName;  
 
-    end     
+    end
+
+    if(flag_enableForceVelocityExperiment==1)
+      idx=idx+1;
+      simulationType(idx).type = 'force_velocity';
+      simulationInformation(idx).type               = simulationType(idx).type;
+
+      simulationInformation(idx).simulationConstantFile     = 'force_velocity.k';      
+      simulationInformation(idx).musclePropertyCard         = 'muscle_generic.k';      
+      simulationInformation(idx).optimalFiberLength         = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength          = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees      = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard     = 0;
+      simulationInformation(idx).model                      = modelName;  
+    end 
 end
   
 
