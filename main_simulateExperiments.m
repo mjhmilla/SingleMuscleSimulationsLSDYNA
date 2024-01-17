@@ -70,9 +70,9 @@ flag_postProcessSimulationData      = 1;
 flag_sizePlotsForSlides = 0; %0: means use journal paper slides
 excludeSimulationsNamesThatContain = [];%[{'52mm'}];
 
-flag_generateGenericPlots           = 0;
+flag_generateGenericPlots           = 1;
 flag_generateSpecificPlots          = 0;
-flag_generatePublicationPlots       = 1;
+flag_generatePublicationPlots       = 0;
 
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
@@ -82,8 +82,8 @@ flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 0;
 flag_enableReflexExperiment_kN_mm_ms    = 0;
-flag_enableActivePassiveForceLengthExperiment   = 1;
-flag_enableForceVelocityExperiment      = 0;
+flag_enableActivePassiveForceLengthExperiment   = 0;
+flag_enableForceVelocityExperiment      = 1;
 
 runOneTrial = [];
 
