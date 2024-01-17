@@ -1,6 +1,6 @@
 *MAT_MUSCLE
 $#     mid        ro       sno       srm       pis       ssm       cer       dmp
-         1 1.0000E-9  1.000000  4.000000      &pis  0.375000  6.000000 0.0000e-2
+         1 1.0000E-9  1.000000   &vceMax      &pis  0.375000  6.000000 0.0000e-2
 $#     alm       sfr       svs       svr       ssp
   -2899501     1.000  -2008001  -2008002     0.000        
 *DEFINE_FUNCTION_TABULATED
@@ -79,7 +79,9 @@ DEFINE_CURVE_2008001
                   2.          1.12535E-7
 *DEFINE_CURVE_TITLE
 DEFINE_CURVE_2008002
-   2008002         0        1.        1.        0.        0.         0          
+$#    lcid      sidr       sfa       sfo      offa      offo    dattyp
+   2008002         0        1.        1.        0.        0.         0  
+$#                a1                  o1           
                  -2.                  0.
                 -1.8                  0.
                 -1.6                  0.
@@ -140,3 +142,4 @@ DEFINE_CURVE_2008002
                 1.75             1.47297
                 1.95             1.47561
                   2.             1.47619
+*END
