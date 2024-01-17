@@ -23,6 +23,7 @@ $
 $#    name expression
 R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk
 R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk
+R pathLenA &lceOpt*cos(&penOpt)+&ltSlk
 RtimeRamp1 &timeRamp0+&rampTime
 $
 *TITLE
@@ -70,7 +71,7 @@ $#     pid     secid       mid     eosid      hgid      grav    adpopt      tmid
 $#   secid    elform      shrf   qr/irid       cst     scoor       nsm   
          1         3       1.0         2         0       0.0       0.0
 $#       a     rampt    stress      
-       1.0       0.0       0.0
+     &area       0.0       0.0
 *DATABASE_HISTORY_BEAM
 $#     id1       id2       id3       id4       id5       id6       id7       id8
          1         0         0         0         0         0         0         0       
@@ -95,7 +96,9 @@ $#  typeid       dof       vad      lcid        sf       vid     death     birth
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          4         0       1.0       1.0       0.0       0.0
 $#                a1                  o1
-                 0.0          -&pathLen0
+                 0.0          -&pathLenA
+                49.0          -&pathLenA
+                50.0          -&pathLen0                                     
           &timeRamp0          -&pathLen0
           &timeRamp1          -&pathLen1          
               &timeE          -&pathLen1
@@ -103,7 +106,7 @@ $
 *NODE
 $#   nid               x               y               z      tc      rc
        1             0.0             0.0             0.0       7       7
-       2             0.0             0.0      -&pathLen0       7       7
+       2             0.0             0.0      -&pathLenA       7       7
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
