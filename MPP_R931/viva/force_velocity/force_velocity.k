@@ -12,7 +12,7 @@ R      pis 0.5000E-3
 R   fceOpt   0.02445
 R   penOpt       0.0
 R  penOptD       0.0
-R   vceMax      4.00
+R   vceMax     0.004
 R    ltSlk      0.00
 R   timeS0     249.0
 R   timeS1     250.0
