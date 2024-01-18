@@ -548,8 +548,8 @@ if(flag_postProcessSimulationData==1)
                     case 'force_velocity'
                       numberOfHorizontalPlotColumnsSpecific     = 1;
                       numberOfVerticalPlotRowsSpecific          = 2;
-                      numberOfHorizontalPlotColumnsPublication  = 3; 
-                      numberOfVerticalPlotRowsPublication       = length(models);
+                      numberOfHorizontalPlotColumnsPublication  = length(models); 
+                      numberOfVerticalPlotRowsPublication       = 2;
                 end
 
 

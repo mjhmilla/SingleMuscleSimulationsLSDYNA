@@ -190,14 +190,14 @@ end
 
 cd(rootDir);
 
-disp('Generating: isometric');
+disp('Generating: isometric max');
 
 cd(releaseName);
 cd(modelName);
 cd(simulationName);
 
 
-simName = 'isometric';
+simName = 'isometric_max';
 if(exist(simName)~=7)
     mkdir(simName);
 end
@@ -207,23 +207,72 @@ fid=fopen([simName,'.k'],'w');
 
 timeRamp = 1;
 
-
+lceNIso = lceN1;
+vceNIso = 0;
 
 fprintf(fid,'*KEYWORD\n');
 fprintf(fid,'*PARAMETER\n');
 fprintf(fid,'$#    name       val\n');
-fprintf(fid,'RpathLenN0    %1.4f\n',lceN0);
-fprintf(fid,'RpathLenN1    %1.4f\n',lceN1);
+fprintf(fid,'RpathLenN0    %1.4f\n',lceNIso);
+fprintf(fid,'RpathLenN1    %1.4f\n',lceNIso);
 vceStr = sprintf('%1.4f',vceN);
 if(length(vceStr)==6)
-    fprintf(fid,'R  pathVel    %1.4f\n',vceN);
+    fprintf(fid,'R  pathVel    %1.4f\n',vceNIso);
 elseif(length(vceStr)==7)
-    fprintf(fid,'R  pathVel   %1.4f\n',vceN);    
+    fprintf(fid,'R  pathVel   %1.4f\n',vceNIso);    
 else
     assert(0,'Error: vceStr is too short or too long');
 end
 fprintf(fid,'R rampTime    %1.1f\n',timeRamp);
-fprintf(fid,'R   actVal    %1.4f\n',exVal);
+fprintf(fid,'R   actVal    %1.4f\n',exMax);
+fprintf(fid,'$\n');
+fprintf(fid,'*INCLUDE_PATH_RELATIVE\n');
+fprintf(fid,'../\n');
+fprintf(fid,'$\n');
+fprintf(fid,'*INCLUDE\n');
+fprintf(fid,'../force_velocity.k\n');
+fprintf(fid,'$\n');
+fprintf(fid,'*END\n'); 
+fclose(fid);
+cd ..
+
+cd(rootDir);
+
+disp('Generating: isometric sub-max');
+
+cd(releaseName);
+cd(modelName);
+cd(simulationName);
+
+
+simName = 'isometric_sub_max';
+if(exist(simName)~=7)
+    mkdir(simName);
+end
+
+cd(simName);
+fid=fopen([simName,'.k'],'w');
+
+timeRamp = 1;
+
+lceNIso = lceN1;
+vceNIso = 0;
+
+fprintf(fid,'*KEYWORD\n');
+fprintf(fid,'*PARAMETER\n');
+fprintf(fid,'$#    name       val\n');
+fprintf(fid,'RpathLenN0    %1.4f\n',lceNIso);
+fprintf(fid,'RpathLenN1    %1.4f\n',lceNIso);
+vceStr = sprintf('%1.4f',vceN);
+if(length(vceStr)==6)
+    fprintf(fid,'R  pathVel    %1.4f\n',vceNIso);
+elseif(length(vceStr)==7)
+    fprintf(fid,'R  pathVel   %1.4f\n',vceNIso);    
+else
+    assert(0,'Error: vceStr is too short or too long');
+end
+fprintf(fid,'R rampTime    %1.1f\n',timeRamp);
+fprintf(fid,'R   actVal    %1.4f\n',exSubMax);
 fprintf(fid,'$\n');
 fprintf(fid,'*INCLUDE_PATH_RELATIVE\n');
 fprintf(fid,'../\n');
