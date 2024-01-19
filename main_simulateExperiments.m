@@ -16,19 +16,19 @@ greyA = [0,0,0];
 greyB = [1,1,1].*0.5;
 
 blueA  = [0, 0.4470, 0.7410];
-blueB  = blueA.*0.5 + [1,1,1].*0.5;
+blueB  = blueA.*0.5;% + [1,1,1].*0.5;
 
 greenA = [0, 0.75, 0.75];
-greenB = greenA.*0.5 + [1,1,1].*0.5;
+greenB = greenA.*0.5;% + [1,1,1].*0.5;
 
 maroonA= [0.6350, 0.0780, 0.1840];
-maroonB= maroonA.*0.5 + [1,1,1].*0.5;
+maroonB= maroonA.*0.5;% + [1,1,1].*0.5;
 
 magentaA = [0.75, 0, 0.75];
-magentaB = magentaA.*0.5 + [1,1,1].*0.5;
+magentaB = magentaA.*0.5;% + [1,1,1].*0.5;
 
 redA = [193, 39, 45]./255;
-redB = redA.*0.5 + [1,1,1].*0.5;
+redB = redA.*0.5;% + [1,1,1].*0.5;
 
 dataColorA=greyA;
 dataColorB=greyB;
@@ -548,8 +548,8 @@ if(flag_postProcessSimulationData==1)
                     case 'force_velocity'
                       numberOfHorizontalPlotColumnsSpecific     = 1;
                       numberOfVerticalPlotRowsSpecific          = 2;
-                      numberOfHorizontalPlotColumnsPublication  = length(models); 
-                      numberOfVerticalPlotRowsPublication       = 2;
+                      numberOfHorizontalPlotColumnsPublication  = 3; 
+                      numberOfVerticalPlotRowsPublication       = 1+length(models);
                 end
 
 
