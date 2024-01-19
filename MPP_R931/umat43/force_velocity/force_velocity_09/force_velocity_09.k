@@ -3,8 +3,8 @@
 $#    name       val
 RpathLenN0    0.9068
 RpathLenN1    1.0000
-R  pathVel    0.3500
-R rampTime    266.4
+R  pathVel    0.0583
+R rampTime    1599.3
 R   actVal    1.0000
 $
 *INCLUDE_PATH_RELATIVE

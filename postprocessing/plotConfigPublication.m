@@ -100,6 +100,35 @@ switch (simulationTypeStr)
             end
         end
 
+    case 'force_velocity'   
+        idx=1;
+        scalePlotHeight=1;
+        subPlotHeight = scalePlotHeight*plotHeight;
+        for(ai=1:1:numberOfVerticalPlotRows)
+            for(aj=1:1:numberOfHorizontalPlotColumns)
+                subPlotPanelIndex(ai,aj) = idx;
+                scaleHorizMargin=1;
+                
+              if(ai==1)
+                  subPlotPanel(ai,aj,1) = topLeft(1) + plotHorizMargin...
+                                        + (aj-1)*(plotWidth + plotHorizMargin);
+                  %-plotVertMargin*scaleVerticalMargin ...                             
+                  subPlotPanel(ai,aj,2) = topLeft(2) -subPlotHeight -plotVertMargin...                            
+                                        + (ai-1)*(-subPlotHeight -plotVertMargin);
+                  subPlotPanel(ai,aj,3) = (plotWidth);
+                  subPlotPanel(ai,aj,4) = (subPlotHeight);
+              else
+                  subPlotPanel(ai,aj,1) = subPlotPanel(ai-1,aj,1);
+                     
+                  subPlotPanel(ai,aj,2) = subPlotPanel(ai-1,aj,2) ...                            
+                                      + (-subPlotHeight-plotVertMargin );
+                  subPlotPanel(ai,aj,3) = subPlotPanel(ai-1,aj,3);
+                  subPlotPanel(ai,aj,4) = (subPlotHeight);
+
+              end
+                  idx=idx+1;
+            end
+        end
     otherwise
         assert(0,['Error: publication plot configuration not',...
                   ' yet added for: ',simulationTypeStr]);

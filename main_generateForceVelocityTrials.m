@@ -9,7 +9,7 @@ clear all;
 
 rootDir = pwd;
 
-modelName       = 'umat43';
+modelName       = 'viva';
 
 %Fixed
 releaseName     ='MPP_R931';
@@ -50,7 +50,7 @@ exVal = exMax;
 % comprehensive dynamic properties of rabbit gastrocnemius, plantaris and 
 % soleus: input for simulation studies. PLoS one. 2015 Jun 26;10(6):e0130985.
 
-vceNVPos = [0.0583, 0.117, 0.233, 0.350, 0.7, 1.4];
+vceNVPos = [0.0583, 0.117, 0.233, 0.350, 0.7, 1.4, 2.8, 5.6, 11.2];
 
 vceNV = [-1.*vceNVPos,vceNVPos];
 
@@ -94,13 +94,11 @@ for i=1:1:length(vceNV)
     fprintf(fid,'RpathLenN0    %1.4f\n',lceN0);
     fprintf(fid,'RpathLenN1    %1.4f\n',lceN1);
     vceStr = sprintf('%1.4f',vceN);
-    if(length(vceStr)==6)
-        fprintf(fid,'R  pathVel    %1.4f\n',vceN);
-    elseif(length(vceStr)==7)
-        fprintf(fid,'R  pathVel   %1.4f\n',vceN);    
-    else
-        assert(0,'Error: vceStr is too short or too long');
+    spStr = ' ';
+    for j=length(vceStr):1:8
+        spStr = [spStr,' '];
     end
+    fprintf(fid,'R  pathVel%s%1.4f\n',spStr,vceN);
     fprintf(fid,'R rampTime    %1.1f\n',timeRamp);
     fprintf(fid,'R   actVal    %1.4f\n',exVal);
     fprintf(fid,'$\n');
@@ -124,8 +122,10 @@ disp('Generating: sub-max force-velocity trials');
 
 exVal = exSubMax;
 
-vceNVPos = [0.350, 0.7, 1.4];
+%vceNVPos = [0.350, 0.7, 1.4];
+%vceNV = [-1.*vceNVPos,vceNVPos];
 
+vceNVPos = [0.0583, 0.117, 0.233, 0.350, 0.7, 1.4, 2.8, 5.6, 11.2];
 vceNV = [-1.*vceNVPos,vceNVPos];
 
 cd(releaseName);
@@ -164,13 +164,11 @@ for i=1:1:length(vceNV)
     fprintf(fid,'RpathLenN0    %1.4f\n',lceN0);
     fprintf(fid,'RpathLenN1    %1.4f\n',lceN1);
     vceStr = sprintf('%1.4f',vceN);
-    if(length(vceStr)==6)
-        fprintf(fid,'R  pathVel    %1.4f\n',vceN);
-    elseif(length(vceStr)==7)
-        fprintf(fid,'R  pathVel   %1.4f\n',vceN);    
-    else
-        assert(0,'Error: vceStr is too short or too long');
+    spStr = ' ';
+    for j=length(vceStr):1:8
+        spStr = [spStr,' '];
     end
+    fprintf(fid,'R  pathVel%s%1.4f\n',spStr,vceN);
     fprintf(fid,'R rampTime    %1.1f\n',timeRamp);
     fprintf(fid,'R   actVal    %1.4f\n',exVal);
     fprintf(fid,'$\n');
@@ -216,13 +214,11 @@ fprintf(fid,'$#    name       val\n');
 fprintf(fid,'RpathLenN0    %1.4f\n',lceNIso);
 fprintf(fid,'RpathLenN1    %1.4f\n',lceNIso);
 vceStr = sprintf('%1.4f',vceN);
-if(length(vceStr)==6)
-    fprintf(fid,'R  pathVel    %1.4f\n',vceNIso);
-elseif(length(vceStr)==7)
-    fprintf(fid,'R  pathVel   %1.4f\n',vceNIso);    
-else
-    assert(0,'Error: vceStr is too short or too long');
+spStr = ' ';
+for j=length(vceStr):1:8
+    spStr = [spStr,' '];
 end
+fprintf(fid,'R  pathVel%s%1.4f\n',spStr,vceN);
 fprintf(fid,'R rampTime    %1.1f\n',timeRamp);
 fprintf(fid,'R   actVal    %1.4f\n',exMax);
 fprintf(fid,'$\n');
@@ -264,13 +260,11 @@ fprintf(fid,'$#    name       val\n');
 fprintf(fid,'RpathLenN0    %1.4f\n',lceNIso);
 fprintf(fid,'RpathLenN1    %1.4f\n',lceNIso);
 vceStr = sprintf('%1.4f',vceN);
-if(length(vceStr)==6)
-    fprintf(fid,'R  pathVel    %1.4f\n',vceNIso);
-elseif(length(vceStr)==7)
-    fprintf(fid,'R  pathVel   %1.4f\n',vceNIso);    
-else
-    assert(0,'Error: vceStr is too short or too long');
+spStr = ' ';
+for j=length(vceStr):1:8
+    spStr = [spStr,' '];
 end
+fprintf(fid,'R  pathVel%s%1.4f\n',spStr,vceN);
 fprintf(fid,'R rampTime    %1.1f\n',timeRamp);
 fprintf(fid,'R   actVal    %1.4f\n',exSubMax);
 fprintf(fid,'$\n');

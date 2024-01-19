@@ -70,9 +70,9 @@ flag_postProcessSimulationData      = 1;
 flag_sizePlotsForSlides = 0; %0: means use journal paper slides
 excludeSimulationsNamesThatContain = [];%[{'52mm'}];
 
-flag_generateGenericPlots           = 1;
+flag_generateGenericPlots           = 0;
 flag_generateSpecificPlots          = 0;
-flag_generatePublicationPlots       = 0;
+flag_generatePublicationPlots       = 1;
 
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
