@@ -41,30 +41,29 @@ lineWidthData=1;
 lineWidthModel=1;
 
 fileNameShorteningStart         = 'force_velocity_00';
-fileNameShorteningEnd           = 'force_velocity_05';
+fileNameShorteningEnd           = 'force_velocity_08';
 numberMaxShorteningStart        = 0; 
-numberMaxShorteningEnd          = 5;
+numberMaxShorteningEnd          = 8;
 
-fileNameLengtheningStart        = 'force_velocity_06';
-fileNameLengtheningEnd          = 'force_velocity_11';
-numberMaxLengtheningStart       = 6;
-numberMaxLengtheningEnd         = 11;
+fileNameLengtheningStart        = 'force_velocity_09';
+fileNameLengtheningEnd          = 'force_velocity_17';
+numberMaxLengtheningStart       = 9;
+numberMaxLengtheningEnd         = 17;
 
 fileNameMaxActStart             = 'force_velocity_00';
-fileNameMaxActEnd               = 'force_velocity_11';
+fileNameMaxActEnd               = 'force_velocity_17';
 numberMaxActStart               = 0;
-numberMaxActEnd                 = 11;
+numberMaxActEnd                 = 17;
 
-fileNameSubMaxActStart          = 'force_velocity_12';
-fileNameSubMaxActEnd            = 'force_velocity_17';
-numberSubMaxActStart            = 12;
-numberSubMaxActEnd              = 17;
+fileNameSubMaxActStart          = 'force_velocity_18';
+fileNameSubMaxActEnd            = 'force_velocity_35';
+numberSubMaxActStart            = 18;
+numberSubMaxActEnd              = 35;
 
-numberSubMaxShorteningStart     = 12;
-numberSubMaxShorteningEnd       = 14;
-numberSubMaxLengtheningStart    = 15;
-numberSubMaxLengtheningEnd      = 17;
-
+numberHL1997ShorteningStart     = 0;
+numberHL1997ShorteningEnd       = 8;%4;
+numberHL1997LengtheningStart    = 9;
+numberHL1997LengtheningEnd      = 17;%13;
 
 fileNameIsometric           = 'isometric';
 
@@ -460,7 +459,11 @@ if(flag_addSimulationData==1)
             dfR =(lsdynaMuscleUniform.vp(idx,1)...
                 - lsdynaMuscleUniform.vp(idx-1,1));                
         end        
-        assert(idx > indexRamp0,...
+        if(idx <= indexRamp0)
+            [val,idx]=max(abs(lsdynaMuscleUniform.vp(indexRamp0:indexRamp1,1)));
+            idx = indexRamp0+idx-1;
+        end
+        assert(idx >= indexRamp0,...
             ['Error: the loop used to refine the end of'...
              ' the ramp continued to the beginning of the ramp']);
     else
@@ -494,35 +497,39 @@ if(flag_addSimulationData==1)
     %%
     % Plot the time domain signals
     %%
-    if(       (trialNumber >= numberMaxActStart ...
-            && trialNumber <= numberMaxActEnd)) 
+  
+    if(      (   trialNumber >= numberHL1997ShorteningStart ...
+              && trialNumber <= numberHL1997ShorteningEnd) ...
+          || (   trialNumber >= numberHL1997LengtheningStart ...
+              && trialNumber <= numberHL1997LengtheningEnd) ) 
 
         flag_firstTrial=0;
         flag_lastTrial=0;
-        if(trialNumber >= numberMaxShorteningStart ...
-                && trialNumber <=numberMaxShorteningEnd)
+        if(    (   trialNumber >= numberHL1997ShorteningStart ...
+                && trialNumber <=numberHL1997ShorteningEnd) )
+
             subplot('Position',reshape(subPlotLayout(indexModel+1,2,:),1,4));
-            n = (trialNumber-numberMaxShorteningStart)...
-                /(numberMaxShorteningEnd-numberMaxShorteningStart);
+            n = (trialNumber-numberHL1997ShorteningStart)...
+                /(numberHL1997ShorteningEnd-numberHL1997ShorteningStart);
             dySign=-1;
             idxColumn =2;
-            if(trialNumber==numberMaxShorteningStart)
+            if(trialNumber==numberHL1997ShorteningStart)
                 flag_firstTrial=1;
             end
-            if(trialNumber==numberMaxShorteningEnd)
+            if(trialNumber==numberHL1997ShorteningEnd)
                 flag_lastTrial=1;
             end            
-        elseif(trialNumber >= numberMaxLengtheningStart ...
-                && trialNumber <=numberMaxLengtheningEnd)
+        elseif( (   trialNumber >= numberHL1997LengtheningStart ...
+                 && trialNumber <= numberHL1997LengtheningEnd) )
             subplot('Position',reshape(subPlotLayout(indexModel+1,3,:),1,4));
-            n = (trialNumber-numberMaxLengtheningStart)...
-                /(numberMaxLengtheningEnd-numberMaxLengtheningStart);            
+            n = (trialNumber-numberHL1997LengtheningStart)...
+                /(numberHL1997LengtheningEnd-numberHL1997LengtheningStart);            
             dySign=1;            
             idxColumn =3;
-            if(trialNumber==numberMaxLengtheningStart)
+            if(trialNumber==numberHL1997LengtheningStart)
                 flag_firstTrial=1;
             end
-            if(trialNumber==numberMaxLengtheningEnd)
+            if(trialNumber==numberHL1997LengtheningEnd)
                 flag_lastTrial=1;
             end
         else

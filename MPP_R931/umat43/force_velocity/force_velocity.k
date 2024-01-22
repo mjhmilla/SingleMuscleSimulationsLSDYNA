@@ -107,11 +107,12 @@ $#   nid               x               y               z      tc      rc
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
-            0.000000                0.50
-          &timeRamp0                0.25
-          &timeRamp1                0.25
-              &timeE                0.50
+            0.000000                0.10
+          &timeRamp0                0.10
+          &timeRamp1                0.10
+              &timeE                0.10
 $
 *INCLUDE
 muscle_generic.k
 *END
+

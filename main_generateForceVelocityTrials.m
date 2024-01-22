@@ -9,7 +9,7 @@ clear all;
 
 rootDir = pwd;
 
-modelName       = 'viva';
+modelName       = 'umat41';
 
 %Fixed
 releaseName     ='MPP_R931';
@@ -49,8 +49,9 @@ exVal = exMax;
 % Blickhan R, Böl M. Three-dimensional muscle architecture and 
 % comprehensive dynamic properties of rabbit gastrocnemius, plantaris and 
 % soleus: input for simulation studies. PLoS one. 2015 Jun 26;10(6):e0130985.
-
-vceNVPos = [0.0583, 0.117, 0.233, 0.350, 0.7, 1.4, 2.8, 5.6, 11.2];
+%           00         01     02     03   04   05   06  
+%           07         08     09     10   11   12   13  
+vceNVPos = [0.0583, 0.117, 0.233, 0.350, 0.7, 1.4, 2.8 ];
 
 vceNV = [-1.*vceNVPos,vceNVPos];
 
@@ -125,7 +126,7 @@ exVal = exSubMax;
 %vceNVPos = [0.350, 0.7, 1.4];
 %vceNV = [-1.*vceNVPos,vceNVPos];
 
-vceNVPos = [0.0583, 0.117, 0.233, 0.350, 0.7, 1.4, 2.8, 5.6, 11.2];
+vceNVPos = [0.0583, 0.117, 0.233, 0.350, 0.7, 1.4, 2.8];
 vceNV = [-1.*vceNVPos,vceNVPos];
 
 cd(releaseName);
