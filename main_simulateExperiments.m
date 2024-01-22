@@ -40,18 +40,18 @@ models(3) = struct('id',0,'name','');
 % models(indexMat56).name   ='mat156';
 % models(indexMat56).colors = [redA;redB];
 
-% indexVIVA              = 1;
-% models(indexVIVA).id   = 1;
-% models(indexVIVA).name ='viva';
-% models(indexVIVA).colors= [greenA;greenB];
-% 
+indexVIVA              = 1;
+models(indexVIVA).id   = 1;
+models(indexVIVA).name ='viva';
+models(indexVIVA).colors= [greenA;greenB];
+ 
 indexUmat41              = 2;
 models(indexUmat41).id   = 2;
 models(indexUmat41).name ='umat41';
 models(indexUmat41).colors= [magentaA;magentaB];
 
-indexUmat43              = 1;
-models(indexUmat43).id   = 1;
+indexUmat43              = 3;
+models(indexUmat43).id   = 3;
 models(indexUmat43).name ='umat43';
 models(indexUmat43).colors= [blueA;blueB];
 
@@ -61,10 +61,10 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 0;
+flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_sizePlotsForSlides = 0; %0: means use journal paper slides
@@ -82,8 +82,19 @@ flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 0;
 flag_enableReflexExperiment_kN_mm_ms    = 0;
-flag_enableActivePassiveForceLengthExperiment   = 0;
-flag_enableForceVelocityExperiment      = 1;
+
+flag_enableActivePassiveForceLengthExperimentViva   = 0;
+flag_enableForceVelocityExperimentViva              = 0;
+flag_enableActivePassiveForceLengthExperiment       = 0;
+flag_enableForceVelocityExperiment                  = 1;
+
+if(flag_enableForceVelocityExperimentViva ...
+        || flag_enableActivePassiveForceLengthExperimentViva)
+    disp('Warning: The VIVA SCM element simulated is not');
+    disp('         the strongest. Update the architectural');
+    disp('         properties before using these results in');
+    disp('         a publication.');
+end
 
 runOneTrial = [];
 
@@ -140,8 +151,10 @@ numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableSinusoidExperiment...
                      +flag_enableReflexExperiment...
                      +flag_enableReflexExperiment_kN_mm_ms...
+                     +flag_enableActivePassiveForceLengthExperimentViva...
+                     +flag_enableForceVelocityExperimentViva...
                      +flag_enableActivePassiveForceLengthExperiment...
-                     +flag_enableForceVelocityExperiment;
+                     +flag_enableForceVelocityExperiment...;
 
 
 if(numberOfSimulationTypes==0)
@@ -225,6 +238,8 @@ if(flag_preProcessSimulationData==1)
                         flag_enableSinusoidExperiment,...
                         flag_enableReflexExperiment,...
                         flag_enableReflexExperiment_kN_mm_ms,...
+                        flag_enableActivePassiveForceLengthExperimentViva,...
+                        flag_enableForceVelocityExperimentViva,...
                         flag_enableActivePassiveForceLengthExperiment,...
                         flag_enableForceVelocityExperiment);
 
@@ -304,6 +319,8 @@ if(flag_runSimulations==1)
                         flag_enableSinusoidExperiment,...
                         flag_enableReflexExperiment,...
                         flag_enableReflexExperiment_kN_mm_ms,...
+                        flag_enableActivePassiveForceLengthExperimentViva,...
+                        flag_enableForceVelocityExperimentViva,...
                         flag_enableActivePassiveForceLengthExperiment,...
                         flag_enableForceVelocityExperiment);
                     
@@ -396,6 +413,8 @@ if(flag_postProcessSimulationData==1)
                         flag_enableSinusoidExperiment,...
                         flag_enableReflexExperiment,...
                         flag_enableReflexExperiment_kN_mm_ms,...
+                        flag_enableActivePassiveForceLengthExperimentViva,...
+                        flag_enableForceVelocityExperimentViva,...
                         flag_enableActivePassiveForceLengthExperiment,...
                         flag_enableForceVelocityExperiment);            
               
@@ -476,6 +495,10 @@ if(flag_postProcessSimulationData==1)
                             otherwise 
                                 assert(0,'flag_sinusoid_aniType should be 0 (human) or 1 (feline)');
                         end
+                    case 'active_passive_force_length_viva'
+                        referenceCurveFolder = [];   
+                    case 'force_velocity_viva'
+                        referenceCurveFolder = []; 
                     case 'active_passive_force_length'
                         referenceCurveFolder = [];   
                     case 'force_velocity'
@@ -540,6 +563,16 @@ if(flag_postProcessSimulationData==1)
                     case 'reflex_kN_mm_ms'
                       numberOfHorizontalPlotColumnsSpecific = 3;
                       numberOfVerticalPlotRowsSpecific      = 12; 
+                    case 'active_passive_force_length_viva'
+                      numberOfHorizontalPlotColumnsSpecific     = 1;
+                      numberOfVerticalPlotRowsSpecific          = 2;
+                      numberOfHorizontalPlotColumnsPublication  = 3; 
+                      numberOfVerticalPlotRowsPublication       = length(models); 
+                    case 'force_velocity_viva'
+                      numberOfHorizontalPlotColumnsSpecific     = 1;
+                      numberOfVerticalPlotRowsSpecific          = 2;
+                      numberOfHorizontalPlotColumnsPublication  = 3; 
+                      numberOfVerticalPlotRowsPublication       = 1+length(models);
                     case 'active_passive_force_length'
                       numberOfHorizontalPlotColumnsSpecific     = 1;
                       numberOfVerticalPlotRowsSpecific          = 2;

@@ -41,29 +41,29 @@ lineWidthData=1;
 lineWidthModel=1;
 
 fileNameShorteningStart         = 'force_velocity_00';
-fileNameShorteningEnd           = 'force_velocity_08';
+fileNameShorteningEnd           = 'force_velocity_06';
 numberMaxShorteningStart        = 0; 
-numberMaxShorteningEnd          = 8;
+numberMaxShorteningEnd          = 6;
 
-fileNameLengtheningStart        = 'force_velocity_09';
-fileNameLengtheningEnd          = 'force_velocity_17';
-numberMaxLengtheningStart       = 9;
-numberMaxLengtheningEnd         = 17;
+fileNameLengtheningStart        = 'force_velocity_07';
+fileNameLengtheningEnd          = 'force_velocity_13';
+numberMaxLengtheningStart       = 7;
+numberMaxLengtheningEnd         = 13;
 
 fileNameMaxActStart             = 'force_velocity_00';
-fileNameMaxActEnd               = 'force_velocity_17';
+fileNameMaxActEnd               = 'force_velocity_13';
 numberMaxActStart               = 0;
-numberMaxActEnd                 = 17;
+numberMaxActEnd                 = 13;
 
-fileNameSubMaxActStart          = 'force_velocity_18';
-fileNameSubMaxActEnd            = 'force_velocity_35';
-numberSubMaxActStart            = 18;
-numberSubMaxActEnd              = 35;
+fileNameSubMaxActStart          = 'force_velocity_14';
+fileNameSubMaxActEnd            = 'force_velocity_27';
+numberSubMaxActStart            = 14;
+numberSubMaxActEnd              = 27;
 
 numberHL1997ShorteningStart     = 0;
-numberHL1997ShorteningEnd       = 8;%4;
-numberHL1997LengtheningStart    = 9;
-numberHL1997LengtheningEnd      = 17;%13;
+numberHL1997ShorteningEnd       = 4;
+numberHL1997LengtheningStart    = 7;
+numberHL1997LengtheningEnd      = 11;%13;
 
 fileNameIsometric           = 'isometric';
 
@@ -380,6 +380,8 @@ if(flag_addSimulationData==1)
                     readUmat43MusoutData('musout.0000000002');             
             case 'viva'
                 musout=[];
+            case 'mat156'
+                musout=[];
             otherwise assert(0)
         end
     
@@ -398,6 +400,8 @@ if(flag_addSimulationData==1)
                 [musout,success] = ...
                     readUmat43MusoutData('musout.0000000002');             
             case 'viva'
+                musout=[];
+            case 'mat156'
                 musout=[];
             otherwise assert(0)
         end    
@@ -423,6 +427,10 @@ if(flag_addSimulationData==1)
         case 'viva'
             lceNSample = -binoutIsometric.nodout.z_coordinate(idxActiveSample,1)...
                             /optimalFiberLength;
+        case 'mat156'
+            lceNSample = -binoutIsometric.nodout.z_coordinate(idxActiveSample,1)...
+                            /optimalFiberLength;
+            
         otherwise assert(0)
     end     
 
@@ -487,6 +495,8 @@ if(flag_addSimulationData==1)
         case 'umat43'
             vsN = vsN;           
         case 'viva'
+            vsN = vsN.*(1/vceNMax);
+        case 'mat156'
             vsN = vsN.*(1/vceNMax);
         otherwise assert(0)
     end    
@@ -787,6 +797,10 @@ if(trialNumber==numberSubMaxActEnd)
             subPlotLabel1 = 'L.';
             subPlotLabel2 = 'M.';
         case 'viva'
+            subPlotLabel0 = 'D.';
+            subPlotLabel1 = 'E.';
+            subPlotLabel2 = 'F.';
+        case 'mat156'
             subPlotLabel0 = 'D.';
             subPlotLabel1 = 'E.';
             subPlotLabel2 = 'F.';

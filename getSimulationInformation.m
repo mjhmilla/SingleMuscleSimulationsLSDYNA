@@ -9,6 +9,8 @@ function [simulationType, simulationInformation]=...
             flag_enableSinusoidExperiment,...
             flag_enableReflexExperiment,...
             flag_enableReflexExperiment_kN_mm_ms,...
+            flag_enableActivePassiveForceLengthExperimentViva,...
+            flag_enableForceVelocityExperimentViva,...
             flag_enableActivePassiveForceLengthExperiment,...
             flag_enableForceVelocityExperiment)
 
@@ -21,6 +23,8 @@ numberOfSimulationTypes = flag_enableIsometricExperiment ...
                      +flag_enableSinusoidExperiment...
                      +flag_enableReflexExperiment...
                      +flag_enableReflexExperiment_kN_mm_ms...
+                     +flag_enableActivePassiveForceLengthExperimentViva...
+                     +flag_enableForceVelocityExperimentViva...
                      +flag_enableActivePassiveForceLengthExperiment...
                      +flag_enableForceVelocityExperiment;
 
@@ -46,12 +50,19 @@ idx=0;
 if(strcmp(modelName,'viva')==1)
 
     if(flag_enableActivePassiveForceLengthExperiment==1)
+      assert(0, 'Error: Experiment is not yet implemented');
+    end
+    if(flag_enableForceVelocityExperiment==1)
+      assert(0, 'Error: Experiment is not yet implemented');
+    end    
+
+    if(flag_enableActivePassiveForceLengthExperimentViva==1)
       idx=idx+1;
-      simulationType(idx).type = 'active_passive_force_length';
+      simulationType(idx).type = 'active_passive_force_length_viva';
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).simulationConstantFile     = 'active_passive_force_length.k';      
-      simulationInformation(idx).musclePropertyCard         = 'muscle_generic.k';      
+      simulationInformation(idx).musclePropertyCard         = 'muscle_viva50f_scm_s_clavicle_1.k';      
       simulationInformation(idx).optimalFiberLength         = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
       simulationInformation(idx).tendonSlackLength          = 'ltSlk';
@@ -61,13 +72,13 @@ if(strcmp(modelName,'viva')==1)
       simulationInformation(idx).model                      = modelName;  
 
     end
-    if(flag_enableForceVelocityExperiment==1)
+    if(flag_enableForceVelocityExperimentViva==1)
       idx=idx+1;
-      simulationType(idx).type = 'force_velocity';
+      simulationType(idx).type = 'force_velocity_viva';
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).simulationConstantFile     = 'force_velocity.k';      
-      simulationInformation(idx).musclePropertyCard         = 'muscle_generic.k';      
+      simulationInformation(idx).musclePropertyCard         = 'muscle_viva50f_scm_s_clavicle_1.k';      
       simulationInformation(idx).optimalFiberLength         = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
       simulationInformation(idx).tendonSlackLength          = 'ltSlk';
@@ -206,6 +217,40 @@ if(strcmp(modelName,'umat41')==1)
 
     end
 
+    if(flag_enableActivePassiveForceLengthExperimentViva==1)
+      idx=idx+1;
+      simulationType(idx).type = 'active_passive_force_length_viva';
+      simulationInformation(idx).type               = simulationType(idx).type;
+
+      simulationInformation(idx).simulationConstantFile     = 'active_passive_force_length.k';      
+      simulationInformation(idx).musclePropertyCard         = 'muscle_viva50f_scm_s_clavicle_1.k';      
+      simulationInformation(idx).optimalFiberLength         = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength          = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees      = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard     = 0;
+      simulationInformation(idx).model                      = modelName;  
+
+    end 
+
+    if(flag_enableForceVelocityExperimentViva==1)
+      idx=idx+1;
+      simulationType(idx).type = 'force_velocity_viva';
+      simulationInformation(idx).type               = simulationType(idx).type;
+
+      simulationInformation(idx).simulationConstantFile     = 'force_velocity.k';      
+      simulationInformation(idx).musclePropertyCard         = 'muscle_viva50f_scm_s_clavicle_1.k';      
+      simulationInformation(idx).optimalFiberLength         = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength          = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees      = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard     = 0;
+      simulationInformation(idx).model                      = modelName;  
+
+    end       
+
     if(flag_enableActivePassiveForceLengthExperiment==1)
       idx=idx+1;
       simulationType(idx).type = 'active_passive_force_length';
@@ -239,6 +284,7 @@ if(strcmp(modelName,'umat41')==1)
       simulationInformation(idx).model                      = modelName;  
 
     end       
+
 end
   
 
@@ -393,6 +439,39 @@ if(strcmp(modelName,'umat43')==1)
 
     end
 
+    if(flag_enableActivePassiveForceLengthExperimentViva==1)
+      idx=idx+1;
+      simulationType(idx).type = 'active_passive_force_length_viva';
+      simulationInformation(idx).type               = simulationType(idx).type;
+
+      simulationInformation(idx).simulationConstantFile     = 'active_passive_force_length.k';      
+      simulationInformation(idx).musclePropertyCard         = 'muscle_viva50f_scm_s_clavicle_1.k';      
+      simulationInformation(idx).optimalFiberLength         = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength          = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees      = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard     = 0;
+      simulationInformation(idx).model                      = modelName;  
+
+    end
+
+    if(flag_enableForceVelocityExperimentViva==1)
+      idx=idx+1;
+      simulationType(idx).type = 'force_velocity_viva';
+      simulationInformation(idx).type               = simulationType(idx).type;
+
+      simulationInformation(idx).simulationConstantFile     = 'force_velocity.k';      
+      simulationInformation(idx).musclePropertyCard         = 'muscle_viva50f_scm_s_clavicle_1.k';      
+      simulationInformation(idx).optimalFiberLength         = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength          = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees      = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard     = 0;
+      simulationInformation(idx).model                      = modelName;  
+    end
+
     if(flag_enableActivePassiveForceLengthExperiment==1)
       idx=idx+1;
       simulationType(idx).type = 'active_passive_force_length';
@@ -461,6 +540,39 @@ if(strcmp(modelName,'mat156')==1)
       simulationInformation(idx).model = modelName;  
 
     end 
+
+    if(flag_enableActivePassiveForceLengthExperiment==1)
+      idx=idx+1;
+      simulationType(idx).type = 'active_passive_force_length';
+      simulationInformation(idx).type               = simulationType(idx).type;
+
+      simulationInformation(idx).simulationConstantFile     = 'active_passive_force_length.k';      
+      simulationInformation(idx).musclePropertyCard         = 'muscle_generic.k';      
+      simulationInformation(idx).optimalFiberLength         = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength          = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees      = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard     = 0;
+      simulationInformation(idx).model                      = modelName;  
+
+    end
+    if(flag_enableForceVelocityExperiment==1)
+      idx=idx+1;
+      simulationType(idx).type = 'force_velocity';
+      simulationInformation(idx).type               = simulationType(idx).type;
+
+      simulationInformation(idx).simulationConstantFile     = 'force_velocity.k';      
+      simulationInformation(idx).musclePropertyCard         = 'muscle_generic.k';      
+      simulationInformation(idx).optimalFiberLength         = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength          = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees      = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard     = 0;
+      simulationInformation(idx).model                      = modelName;  
+
+    end   
 
     if(flag_enableImpedanceExperiment==1)
       assert(0, 'Error: Experiment is not yet implemented');
