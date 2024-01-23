@@ -9,14 +9,44 @@ clear all;
 
 rootDir = pwd;
 
-modelName       = 'umat41';
 
-%Fixed
-releaseName     ='MPP_R931';
-simulationName  = 'force_velocity';
+%Settings
+
+
+modelName       = 'mat156'; 
+%Options:
+%   umat41
+%   umat43
+%   mat156
+%   viva
+
+simulationName  = 'force_velocity'; 
+%Options:
+%   force_velocity                   (not with viva)
+%   active_passive_force_length      (not with viva)
+%   force_velocity_viva              (not with mat156)
+%   active_passive_force_length_viva (not with mat156)
+
 
 exMax       = 1.0;
 exSubMax    = 0.7;
+
+%Fixed
+releaseName     ='MPP_R931';
+
+
+units_kNmmms = 0;
+units_Nms    = 1; 
+switch simulationName
+    case 'force_velocity'
+        unitsSetting = units_Nms;   
+        assert(strcmp(modelName,'viva')==0,'Error: simulation and model incompatible'); 
+    case 'force_velocity_viva'
+        unitsSetting = units_kNmmms;
+        assert(strcmp(modelName,'mat156')==0,'Error: simulation and model incompatible');
+    otherwise assert(0,'Error: invalid simulationName');
+end    
+
 
 switch modelName
     case 'umat41'
@@ -25,14 +55,17 @@ switch modelName
         exSubMax = 0.7;
     case 'viva'
         exSubMax = 0.7;
+    case 'mat156'
+        exSubMax = 0.7;
     case 'thums'
         exSubMax = 0.7;
     otherwise
         assert(0,'Error: invalid modelName selection');
 end
 
-
+%===============================================================================
 disp('Generating: max. isometric activations');
+%===============================================================================
 
 exVal = exMax;
  
@@ -63,6 +96,7 @@ cd(releaseName);
 cd(modelName);
 cd(simulationName);
 
+
 for i=1:1:length(vceNV)
 
     vceN = vceNV(1,i);
@@ -87,21 +121,30 @@ for i=1:1:length(vceNV)
         lceN1 = 1;
     end
 
-    timeRamp = abs((lceN0-lceN1)/vceN)*1000;
+  
+    switch unitsSetting
+        case units_Nms
+            timeRamp = abs((lceN0-lceN1)/vceN);
+        case units_kNmmms
+            timeRamp = abs((lceN0-lceN1)/vceN)*1000;
+        otherwise assert(0, 'Error: invalid unitsSettings');
+    end
+
+
 
     fprintf(fid,'*KEYWORD\n');
     fprintf(fid,'*PARAMETER\n');
     fprintf(fid,'$#    name       val\n');
-    fprintf(fid,'RpathLenN0    %1.4f\n',lceN0);
-    fprintf(fid,'RpathLenN1    %1.4f\n',lceN1);
-    vceStr = sprintf('%1.4f',vceN);
+    fprintf(fid,'RpathLenN0  %1.6f\n',lceN0);
+    fprintf(fid,'RpathLenN1  %1.6f\n',lceN1);
+    vceStr = sprintf('%1.6f',vceN);
     spStr = ' ';
     for j=length(vceStr):1:8
         spStr = [spStr,' '];
     end
-    fprintf(fid,'R  pathVel%s%1.4f\n',spStr,vceN);
-    fprintf(fid,'R rampTime    %1.1f\n',timeRamp);
-    fprintf(fid,'R   actVal    %1.4f\n',exVal);
+    fprintf(fid,'R  pathVel%s%s\n',spStr,vceStr);
+    fprintf(fid,'R rampTime  %1.6f\n',timeRamp);
+    fprintf(fid,'R   actVal  %1.6f\n',exVal);
     fprintf(fid,'$\n');
     fprintf(fid,'*INCLUDE_PATH_RELATIVE\n');
     fprintf(fid,'../\n');
@@ -119,7 +162,10 @@ end
 
 cd(rootDir);
 
+%===============================================================================
 disp('Generating: sub-max force-velocity trials');
+%===============================================================================
+
 
 exVal = exSubMax;
 
@@ -157,21 +203,28 @@ for i=1:1:length(vceNV)
         lceN1 = 1;
     end
 
-    timeRamp = abs((lceN0-lceN1)/vceN)*1000;
+
+    switch unitsSetting
+        case units_Nms
+            timeRamp = abs((lceN0-lceN1)/vceN);
+        case units_kNmmms
+            timeRamp = abs((lceN0-lceN1)/vceN)*1000;
+        otherwise assert(0, 'Error: invalid unitsSettings');
+    end    
 
     fprintf(fid,'*KEYWORD\n');
     fprintf(fid,'*PARAMETER\n');
     fprintf(fid,'$#    name       val\n');
-    fprintf(fid,'RpathLenN0    %1.4f\n',lceN0);
-    fprintf(fid,'RpathLenN1    %1.4f\n',lceN1);
-    vceStr = sprintf('%1.4f',vceN);
+    fprintf(fid,'RpathLenN0  %1.6f\n',lceN0);
+    fprintf(fid,'RpathLenN1  %1.6f\n',lceN1);
+    vceStr = sprintf('%1.6f',vceN);
     spStr = ' ';
     for j=length(vceStr):1:8
         spStr = [spStr,' '];
     end
-    fprintf(fid,'R  pathVel%s%1.4f\n',spStr,vceN);
-    fprintf(fid,'R rampTime    %1.1f\n',timeRamp);
-    fprintf(fid,'R   actVal    %1.4f\n',exVal);
+    fprintf(fid,'R  pathVel%s%s\n',spStr,vceStr);
+    fprintf(fid,'R rampTime  %1.6f\n',timeRamp);
+    fprintf(fid,'R   actVal  %1.6f\n',exVal);
     fprintf(fid,'$\n');
     fprintf(fid,'*INCLUDE_PATH_RELATIVE\n');
     fprintf(fid,'../\n');
@@ -189,7 +242,9 @@ end
 
 cd(rootDir);
 
+%===============================================================================
 disp('Generating: isometric max');
+%===============================================================================
 
 cd(releaseName);
 cd(modelName);
@@ -204,7 +259,13 @@ end
 cd(simName);
 fid=fopen([simName,'.k'],'w');
 
-timeRamp = 1;
+switch unitsSetting
+    case units_Nms
+        timeRamp = 0.001;
+    case units_kNmmms
+        timeRamp = 1;
+    otherwise assert(0, 'Error: invalid unitsSettings');
+end
 
 lceNIso = lceN1;
 vceNIso = 0;
@@ -212,16 +273,16 @@ vceNIso = 0;
 fprintf(fid,'*KEYWORD\n');
 fprintf(fid,'*PARAMETER\n');
 fprintf(fid,'$#    name       val\n');
-fprintf(fid,'RpathLenN0    %1.4f\n',lceNIso);
-fprintf(fid,'RpathLenN1    %1.4f\n',lceNIso);
-vceStr = sprintf('%1.4f',vceN);
+fprintf(fid,'RpathLenN0  %1.6f\n',lceNIso);
+fprintf(fid,'RpathLenN1  %1.6f\n',lceNIso);
+vceStr = sprintf('%1.6f',vceN);
 spStr = ' ';
 for j=length(vceStr):1:8
     spStr = [spStr,' '];
 end
-fprintf(fid,'R  pathVel%s%1.4f\n',spStr,vceN);
-fprintf(fid,'R rampTime    %1.1f\n',timeRamp);
-fprintf(fid,'R   actVal    %1.4f\n',exMax);
+fprintf(fid,'R  pathVel%s%s\n',spStr,vceStr);
+fprintf(fid,'R rampTime  %1.6f\n',timeRamp);
+fprintf(fid,'R   actVal  %1.6f\n',exMax);
 fprintf(fid,'$\n');
 fprintf(fid,'*INCLUDE_PATH_RELATIVE\n');
 fprintf(fid,'../\n');
@@ -235,7 +296,10 @@ cd ..
 
 cd(rootDir);
 
+%===============================================================================
 disp('Generating: isometric sub-max');
+%===============================================================================
+
 
 cd(releaseName);
 cd(modelName);
@@ -250,7 +314,13 @@ end
 cd(simName);
 fid=fopen([simName,'.k'],'w');
 
-timeRamp = 1;
+switch unitsSetting
+    case units_Nms
+        timeRamp = 0.001;
+    case units_kNmmms
+        timeRamp = 1.0;
+    otherwise assert(0, 'Error: invalid unitsSettings');
+end
 
 lceNIso = lceN1;
 vceNIso = 0;
@@ -258,16 +328,16 @@ vceNIso = 0;
 fprintf(fid,'*KEYWORD\n');
 fprintf(fid,'*PARAMETER\n');
 fprintf(fid,'$#    name       val\n');
-fprintf(fid,'RpathLenN0    %1.4f\n',lceNIso);
-fprintf(fid,'RpathLenN1    %1.4f\n',lceNIso);
+fprintf(fid,'RpathLenN0  %1.6f\n',lceNIso);
+fprintf(fid,'RpathLenN1  %1.6f\n',lceNIso);
 vceStr = sprintf('%1.4f',vceN);
 spStr = ' ';
 for j=length(vceStr):1:8
     spStr = [spStr,' '];
 end
-fprintf(fid,'R  pathVel%s%1.4f\n',spStr,vceN);
-fprintf(fid,'R rampTime    %1.1f\n',timeRamp);
-fprintf(fid,'R   actVal    %1.4f\n',exSubMax);
+fprintf(fid,'R  pathVel%s%s\n',spStr,vceStr);
+fprintf(fid,'R rampTime  %1.6f\n',timeRamp);
+fprintf(fid,'R   actVal  %1.6f\n',exSubMax);
 fprintf(fid,'$\n');
 fprintf(fid,'*INCLUDE_PATH_RELATIVE\n');
 fprintf(fid,'../\n');

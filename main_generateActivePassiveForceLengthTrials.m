@@ -9,11 +9,22 @@ clear all;
 
 rootDir = pwd;
 
-modelName       = 'viva';
+
+modelName       = 'umat43'; 
+%Options:
+%   umat41
+%   umat43
+%   mat156
+%   viva
+
+simulationName  = 'active_passive_force_length'; 
+%Options:
+%   active_passive_force_length      (not with viva)
+%   active_passive_force_length_viva (not with mat156)
 
 %Fixed
 releaseName     ='MPP_R931';
-simulationName  = 'active_passive_force_length';
+
 
 exMax       = 1.0;
 exSubMax    = 0.7;
@@ -25,7 +36,7 @@ switch modelName
         exSubMax = 0.7;
     case 'viva'
         exSubMax = 0.7;
-    case 'thums'
+    case 'mat156'
         exSubMax = 0.7;
     otherwise
         assert(0,'Error: invalid modelName selection');
@@ -58,16 +69,18 @@ for i=1:1:length(lceNV)
     end
 
     simName = ['active_force_length_',simNumber];
-    mkdir(simName);
+    if(exist(simName)~=7)
+        mkdir(simName);
+    end
     cd(simName);
     fid=fopen([simName,'.k'],'w');
 
     fprintf(fid,'*KEYWORD\n');
     fprintf(fid,'*PARAMETER\n');
     fprintf(fid,'$#    name       val\n');
-    fprintf(fid,'RpathLenN0     %1.3f\n',lceN);
-    fprintf(fid,'RpathLenN1     %1.3f\n',lceN);
-    fprintf(fid,'R   actVal     %1.3f\n',exVal);
+    fprintf(fid,'RpathLenN0  %1.6f\n',lceN);
+    fprintf(fid,'RpathLenN1  %1.6f\n',lceN);
+    fprintf(fid,'R   actVal  %1.6f\n',exVal);
     fprintf(fid,'$\n');
     fprintf(fid,'*INCLUDE_PATH_RELATIVE\n');
     fprintf(fid,'../\n');
@@ -109,16 +122,18 @@ for i=1:1:length(lceNVSub)
     end
 
     simName = ['active_force_length_',simNumber];
-    mkdir(simName);
+    if(exist(simName)~=7)
+        mkdir(simName);
+    end
 
     cd(simName);
     fid=fopen([simName,'.k'],'w');
     fprintf(fid,'*KEYWORD\n');
     fprintf(fid,'*PARAMETER\n');
     fprintf(fid,'$#    name       val\n');
-    fprintf(fid,'RpathLenN0     %1.3f\n',lceN);
-    fprintf(fid,'RpathLenN1     %1.3f\n',lceN);
-    fprintf(fid,'R   actVal     %1.3f\n',exVal);
+    fprintf(fid,'RpathLenN0  %1.6f\n',lceN);
+    fprintf(fid,'RpathLenN1  %1.6f\n',lceN);
+    fprintf(fid,'R   actVal  %1.6f\n',exVal);
     fprintf(fid,'$\n');
     fprintf(fid,'*INCLUDE_PATH_RELATIVE\n');
     fprintf(fid,'../\n');
@@ -143,16 +158,18 @@ cd(simulationName);
 
 
 simName = ['passive_force_length'];
-mkdir(simName);
+if(exist(simName)~=7)
+    mkdir(simName);
+end
 
 cd(simName);
 fid=fopen([simName,'.k'],'w');
 fprintf(fid,'*KEYWORD\n');
 fprintf(fid,'*PARAMETER\n');
 fprintf(fid,'$#    name       val\n');
-fprintf(fid,'RpathLenN0     %1.3f\n',0.4);
-fprintf(fid,'RpathLenN1     %1.3f\n',1.8);
-fprintf(fid,'R   actVal     %1.3f\n',0);
+fprintf(fid,'RpathLenN0  %1.6f\n',0.4);
+fprintf(fid,'RpathLenN1  %1.6f\n',1.8);
+fprintf(fid,'R   actVal  %1.6f\n',0);
 fprintf(fid,'$\n');
 fprintf(fid,'*INCLUDE_PATH_RELATIVE\n');
 fprintf(fid,'../\n');

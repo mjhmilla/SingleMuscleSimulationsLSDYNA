@@ -1,9 +1,9 @@
 *KEYWORD
 *PARAMETER
 $#    name       val
-RpathLenN0     0.700
-RpathLenN1     0.700
-R   actVal     1.000
+RpathLenN0  0.700000
+RpathLenN1  0.700000
+R   actVal  1.000000
 $
 *INCLUDE_PATH_RELATIVE
 ../

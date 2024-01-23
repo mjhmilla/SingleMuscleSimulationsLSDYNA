@@ -5,26 +5,30 @@ $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout        10                                     
-R   lceOpt  142.4421
-R     area      48.9
-R      pis 0.5000E-3  
-R   fceOpt   0.02445
-R   penOpt       0.0
-R  penOptD       0.0
-R   vceMax     0.004
-R    ltSlk      0.00
-R   timeS0     249.0
-R   timeS1     250.0
-R    timeE    4100.0
-RtimeRamp0    1500.0
+R    dtout      0.01                                     
+R   lceOpt 0.0428571
+R   fceOpt 21.760954  
+R lceOptAT 0.0425377
+R fceOptAT 21.598751
+R   penOpt 0.0
+R  penOptD 0.0
+R   vceMax 4.50 
+RlceNScale 0.95
+R    ltSlk 0.0304511
+R       et 0.0458333
+R   timeS0 0.341
+R   timeS1 0.342
+R    timeE 4.100
+RtimeRamp0 1.500
+R timeStep 0.5E-3
 $
 *PARAMETER_EXPRESSION
 $#    name expression
-R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk
-R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk
-R pathLenA &lceOpt*cos(&penOpt)+&ltSlk
+R pathLen0 &pathLenN0*&lceOptAT+&ltSlk
+R pathLen1 &pathLenN1*&lceOptAT+&ltSlk
+R pathLenA &lceOptAT+&ltSlk
 RtimeRamp1 &timeRamp0+&rampTime
+R      sno &pathLen0/(&lceOptAT+&ltSlk)
 $
 *TITLE
 $#                                                                         title
@@ -71,7 +75,7 @@ $#     pid     secid       mid     eosid      hgid      grav    adpopt      tmid
 $#   secid    elform      shrf   qr/irid       cst     scoor       nsm   
          1         3       1.0         2         0       0.0       0.0
 $#       a     rampt    stress      
-     &area       0.0       0.0
+       1.0       0.0       0.0
 *DATABASE_HISTORY_BEAM
 $#     id1       id2       id3       id4       id5       id6       id7       id8
          1         0         0         0         0         0         0         0       
@@ -96,9 +100,7 @@ $#  typeid       dof       vad      lcid        sf       vid     death     birth
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          4         0       1.0       1.0       0.0       0.0
 $#                a1                  o1
-                 0.0          -&pathLenA
-                49.0          -&pathLenA
-                50.0          -&pathLen0                                     
+                 0.0          -&pathLen0                                     
           &timeRamp0          -&pathLen0
           &timeRamp1          -&pathLen1          
               &timeE          -&pathLen1
@@ -111,11 +113,11 @@ $#   nid               x               y               z      tc      rc
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
-            0.000000                0.50
-          &timeRamp0                0.25
-          &timeRamp1                0.25
-              &timeE                0.50
+            0.000000           &timeStep
+          &timeRamp0           &timeStep
+          &timeRamp1           &timeStep
+              &timeE           &timeStep
 $
 *INCLUDE
-muscle_generic.k
+catsoleusMat156.k
 *END

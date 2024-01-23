@@ -6,7 +6,6 @@ $
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
 R    dtout      0.01
-RstimTimeS      0.95
 R   lceOpt 0.0428571
 R   fceOpt 21.760954
 R lceOptAT 0.0425377
@@ -17,6 +16,7 @@ R   vceMax 4.5
 RlceNScale 0.95
 R    ltSlk 0.0304511
 R       et 0.0458333
+RstimTimeS      0.95
 R timeStep 1.0E-3
 $
 *PARAMETER_EXPRESSION
