@@ -192,10 +192,10 @@ switch modelName
 
         if(strcmp(simulationTypeStr,'active_passive_force_length') ...
            || strcmp(simulationTypeStr,'force_velocity') )
-            stimTimeS = getParameterValueFromD3HSPFile(d3hspFileName,'TIMES1');
-            stimTimeE = getParameterValueFromD3HSPFile(d3hspFileName,'TIMEE');
-            stimLow =  getParameterValueFromD3HSPFile(d3hspFileName,'STIMLOW');            
-            stimHigh =  getParameterValueFromD3HSPFile(d3hspFileName,'STIMHIGH');
+            stimTimeS   = getParameterValueFromD3HSPFile(d3hspFileName,'TIMES1');
+            stimTimeE   = getParameterValueFromD3HSPFile(d3hspFileName,'TIMEE');
+            stimLow     =  getParameterValueFromD3HSPFile(d3hspFileName,'STIMLOW');            
+            stimHigh    =  getParameterValueFromD3HSPFile(d3hspFileName,'STIMHIGH');
 
             uniformModelData.act = ones(size(uniformModelData.time)).*stimLow;
             uniformModelData.act( uniformModelData.time >= stimTimeS ...
@@ -203,10 +203,10 @@ switch modelName
         end
 
         if(strcmp(simulationTypeStr,'eccentric'))
-            stimTimeS = getParameterValueFromD3HSPFile(d3hspFileName,'STIMTIMES');
-            stimTimeE = getParameterValueFromD3HSPFile(d3hspFileName,'STIMTIMEE');
-            stimLow =  getParameterValueFromD3HSPFile(d3hspFileName,'STIMLOW');
-            stimHigh =  getParameterValueFromD3HSPFile(d3hspFileName,'STIMHIGH');
+            stimTimeS   = getParameterValueFromD3HSPFile(d3hspFileName,'STIMTIMES');
+            stimTimeE   = getParameterValueFromD3HSPFile(d3hspFileName,'STIMTIMEE');
+            stimLow     =  getParameterValueFromD3HSPFile(d3hspFileName,'STIMLOW');
+            stimHigh    =  getParameterValueFromD3HSPFile(d3hspFileName,'STIMHIGH');
 
             uniformModelData.act = ones(size(uniformModelData.time)).*stimLow;
             uniformModelData.act( uniformModelData.time >= stimTimeS ...
