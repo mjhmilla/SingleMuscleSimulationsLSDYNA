@@ -40,15 +40,15 @@ models(1) = struct('id',0,'name','');
 %models(indexVIVA).name ='viva';
 %models(indexVIVA).colors= [greenA;greenB];
 
-indexMat56                = 1;
-models(indexMat56).id     = 1;
-models(indexMat56).name   ='mat156';
-models(indexMat56).colors = [redA;redB];
+%indexMat56                = 1;
+%models(indexMat56).id     = 1;
+%models(indexMat56).name   ='mat156';
+%models(indexMat56).colors = [redA;redB];
  
-% indexUmat41              = 2;
-% models(indexUmat41).id   = 2;
-% models(indexUmat41).name ='umat41';
-% models(indexUmat41).colors= [magentaA;magentaB];
+indexUmat41              = 1;
+models(indexUmat41).id   = 1;
+models(indexUmat41).name ='umat41';
+models(indexUmat41).colors= [magentaA;magentaB];
  
 % indexUmat43              = 3;
 % models(indexUmat43).id   = 3;
