@@ -28,7 +28,7 @@ R pathLen0 &pathLenN0*&lceOptAT+&ltSlk
 R pathLen1 &pathLenN1*&lceOptAT+&ltSlk
 R stimHigh &actVal
 R      sno &pathLen0/(&lceOptAT+&ltSlk)
-R      srm &vceMaxN*&lceOptAT/(&lceOptAT+&ltSlk)
+R      srm &vceMax*&lceOptAT/(&lceOptAT+&ltSlk)
 $
 *TITLE
 $#                                                                         title

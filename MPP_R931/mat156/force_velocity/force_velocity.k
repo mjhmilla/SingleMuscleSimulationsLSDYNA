@@ -31,7 +31,7 @@ RtimeRamp1 &timeRamp0+&rampTime
 R      sno &pathLen0/(&lceOptAT+&ltSlk)
 R  stimLow 0.
 R stimHigh &actVal
-R      srm &vceMaxN*&lceOptAT/(&lceOptAT+&ltSlk)
+R      srm &vceMax*&lceOptAT/(&lceOptAT+&ltSlk)
 $
 *TITLE
 $#                                                                         title
