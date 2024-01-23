@@ -5,29 +5,25 @@ $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout        10                                     
-R   lceOpt   115.480
-R   fceOpt    0.0237
-R   penOpt       0.0
-R  penOptD       0.0
-R    ltSlk    33.489
-R    dUSEE    0.0425
-R   vceMax      0.01
-R      q0F   5.0E-03
-R      q0S   2.0E-03
-R     tauA       25.
-R     tauD      500.
-R      tpm     100.0
-R      thm     0.010
-R   timeS0     249.0
-R   timeS1     250.0
-R    timeE    4100.0
-RtimeRamp0    1500.0
+R    dtout      0.01                                     
+R   lceOpt 0.0428571
+R   fceOpt 21.612138
+R lceOptAT 0.0425376
+R fceOptAT 21.451044
+R   penOpt 0.0
+R  penOptD 0.0 
+R    ltSlk 0.0304511
+R       et 0.0458333
+R   timeS0 0.341
+R   timeS1 0.342
+RtimeRamp0 1.500
+R    timeE 4.10
+R timeStep 0.5E-3
 $
 *PARAMETER_EXPRESSION
 $#    name expression
-R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk
-R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk
+R pathLen0 &pathLenN0*&lceOptAT+&ltSlk
+R pathLen1 &pathLenN1*&lceOptAT+&ltSlk
 RtimeRamp1 &timeRamp0+&rampTime
 $
 *TITLE
@@ -113,11 +109,11 @@ $#   nid               x               y               z      tc      rc
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
-            0.000000                 0.1
-          &timeRamp0                 0.1
-          &timeRamp1                 0.1
-              &timeE                 0.1
+            0.000000           &timeStep
+          &timeRamp0           &timeStep
+          &timeRamp1           &timeStep
+              &timeE           &timeStep
 $
 *INCLUDE
-muscle_generic.k
+catsoleus.k
 *END

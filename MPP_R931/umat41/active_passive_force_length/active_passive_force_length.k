@@ -5,26 +5,27 @@ $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout        10                                     
-R   lceOpt   115.480
-R   fceOpt    0.0237
-R   penOpt       0.0
-R  penOptD       0.0
-R    ltSlk    33.489
-R    dUSEE    0.0425
-R   vceMax      0.01
-R      q0F   5.0E-03
-R      q0S   2.0E-03
-R     tauA       25.
-R     tauD      500.
-R      tpm     100.0
-R      thm     0.010
-R    timeE     2000.
+R    dtout      0.01                                     
+R   lceOpt 0.0428571
+R   fceOpt 21.612138
+R lceOptAT 0.0425376
+R fceOptAT 21.451044
+R   penOpt 0.0
+R  penOptD 0.0 
+R    ltSlk 0.0304511
+R       et 0.0458333
+R   timeS0 0.99
+R   timeS1 1.00
+R    timeE 2.00
+R  stimLow 0.00
+R timeStep 0.5E-3
+R   vceMax 4.50
+R    timeE 2.000
 $
 *PARAMETER_EXPRESSION
 $#    name expression
-R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk
-R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk
+R pathLen0 &pathLenN0*&lceOptAT+&ltSlk
+R pathLen1 &pathLenN1*&lceOptAT+&ltSlk
 $
 *TITLE
 $#                                                                         title
@@ -80,11 +81,11 @@ $#     id1       id2       id3       id4       id5       id6       id7       id8
 $#
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
-        13         0       1.0       1.0       0.0       0.0         0         0
+         3         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
                  0.0                 0.0
-                 999                 0.0
-                1000             &actVal
+             &timeS0                 0.0
+             &timeS1             &actVal
               &timeE             &actVal
 *ELEMENT_BEAM
 $#   eid     pid      n1      n2      n3     rt1     rr1     rt2     rr2   local
@@ -107,9 +108,9 @@ $#   nid               x               y               z      tc      rc
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
-            0.000000                 0.1
-              &timeE                 0.1
+            0.000000           &timeStep
+              &timeE           &timeStep
 $
 *INCLUDE
-muscle_generic.k
+catsoleus.k
 *END
