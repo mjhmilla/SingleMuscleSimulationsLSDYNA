@@ -548,7 +548,7 @@ if(strcmp(modelName,'mat156')==1)
 
       simulationInformation(idx).simulationConstantFile     = 'active_passive_force_length.k';      
       simulationInformation(idx).musclePropertyCard         = 'catsoleusMat156.k';      
-      simulationInformation(idx).optimalFiberLength         = 'lmtOptAT';
+      simulationInformation(idx).optimalFiberLength         = 'lceOptAT';
       simulationInformation(idx).maximumIsometricForce      = 'fceOptAT';
       simulationInformation(idx).tendonSlackLength          = 'ltSlk';
       simulationInformation(idx).pennationAngleDegrees      = 'penOptD';
@@ -564,7 +564,7 @@ if(strcmp(modelName,'mat156')==1)
 
       simulationInformation(idx).simulationConstantFile     = 'force_velocity.k';      
       simulationInformation(idx).musclePropertyCard         = 'catsoleusMat156.k';      
-      simulationInformation(idx).optimalFiberLength         = 'lmtOptAT';
+      simulationInformation(idx).optimalFiberLength         = 'lceOptAT';
       simulationInformation(idx).maximumIsometricForce      = 'fceOptAT';
       simulationInformation(idx).tendonSlackLength          = 'ltSlk';
       simulationInformation(idx).pennationAngleDegrees      = 'penOptD';

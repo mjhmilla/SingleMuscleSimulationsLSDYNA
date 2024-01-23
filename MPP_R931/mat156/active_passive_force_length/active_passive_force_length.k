@@ -21,13 +21,14 @@ R   timeS1 1.00
 R    timeE 2.00
 R  stimLow 0.00
 R timeStep 0.5E-3
+R   vceMax 4.50
 *PARAMETER_EXPRESSION
 $#    name expression
 R pathLen0 &pathLenN0*&lceOptAT+&ltSlk
 R pathLen1 &pathLenN1*&lceOptAT+&ltSlk
 R stimHigh &actVal
 R      sno &pathLen0/(&lceOptAT+&ltSlk)
-R   vceMax 4.50*&lceOptAT/(&lceOptAT+&ltSlk)
+R      srm &vceMaxN*&lceOptAT/(&lceOptAT+&ltSlk)
 $
 *TITLE
 $#                                                                         title
