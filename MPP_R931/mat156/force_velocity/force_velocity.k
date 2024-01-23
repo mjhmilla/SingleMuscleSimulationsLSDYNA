@@ -13,7 +13,6 @@ R fceOptAT 21.598751
 R lmtOptAT 0.0729888
 R   penOpt 0.0
 R  penOptD 0.0
-R   vceMax 4.50 
 RlceNScale 0.95
 R    ltSlk 0.0304511
 R       et 0.0458333

@@ -12,8 +12,7 @@ R lceOptAT 0.0425377
 R fceOptAT 21.598751
 R lmtOptAT 0.0729888
 R   penOpt 0.0
-R  penOptD 0.0
-R   vceMax 4.50 
+R  penOptD 0.0 
 RlceNScale 0.95
 R    ltSlk 0.0304511
 R       et 0.0458333
@@ -28,6 +27,7 @@ R pathLen0 &pathLenN0*&lceOptAT+&ltSlk
 R pathLen1 &pathLenN1*&lceOptAT+&ltSlk
 R stimHigh &actVal
 R      sno &pathLen0/(&lceOptAT+&ltSlk)
+R   vceMax 4.50*&lceOptAT/(&lceOptAT+&ltSlk)
 $
 *TITLE
 $#                                                                         title
