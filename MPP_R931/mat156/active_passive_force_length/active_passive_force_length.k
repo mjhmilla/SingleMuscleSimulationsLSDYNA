@@ -25,7 +25,6 @@ R timeStep 0.5E-3
 $#    name expression
 R pathLen0 &pathLenN0*&lceOptAT+&ltSlk
 R pathLen1 &pathLenN1*&lceOptAT+&ltSlk
-R pathLenA &lceOptAT+&ltSlk
 R stimHigh &actVal
 R      sno &pathLen0/(&lceOptAT+&ltSlk)
 $
@@ -86,8 +85,8 @@ $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
                  0.0                 0.0
-               0.999                 0.0
-               1.000             &actVal
+             &timeS0                 0.0
+             &timeS1             &actVal
               &timeE             &actVal
 *ELEMENT_BEAM
 $#   eid     pid      n1      n2      n3     rt1     rr1     rt2     rr2   local
@@ -100,13 +99,12 @@ $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          4         0       1.0       1.0       0.0       0.0
 $#                a1                  o1
                  0.0          -&pathLen0                 
-                 0.2          -&pathLen0                 
               &timeE          -&pathLen1
 $
 *NODE
 $#   nid               x               y               z      tc      rc
        1             0.0             0.0             0.0       7       7
-       2             0.0             0.0      -&pathLenA       7       7
+       2             0.0             0.0      -&pathLen0       7       7
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0

@@ -26,7 +26,6 @@ $
 $#    name expression
 R pathLen0 &pathLenN0*&lceOptAT+&ltSlk
 R pathLen1 &pathLenN1*&lceOptAT+&ltSlk
-R pathLenA &lceOptAT+&ltSlk
 RtimeRamp1 &timeRamp0+&rampTime
 R      sno &pathLen0/(&lceOptAT+&ltSlk)
 $
@@ -108,7 +107,7 @@ $
 *NODE
 $#   nid               x               y               z      tc      rc
        1             0.0             0.0             0.0       7       7
-       2             0.0             0.0      -&pathLenA       7       7
+       2             0.0             0.0      -&pathLen0       7       7
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0

@@ -543,7 +543,13 @@ if(flag_addSimulationData==1)
         fBN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexB,1);
         fB  = fBN.*maximumIsometricForce.*scaleF;
 
-        act = lsdynaMuscleUniform.act(indexB,1);
+        if(strcmp(lsdynaMuscleUniform.name,'mat156')==1)
+            act = lsdynaMuscleUniform.act(indexB,1);            
+        else
+            act = lsdynaMuscleUniform.act(indexB,1);
+        end
+       
+
 
         fpeAT =(fA);
         faeAT =(fB-fA);
