@@ -19,6 +19,7 @@ R   timeS1 0.342
 RtimeRamp0 1.500
 R    timeE 4.10
 R timeStep 0.5E-3
+R   vceMax 4.4744901
 $
 *PARAMETER_EXPRESSION
 $#    name expression

@@ -19,7 +19,7 @@ R   timeS1 1.00
 R    timeE 2.00
 R  stimLow 0.00
 R timeStep 0.5E-3
-R   vceMax 4.50
+R   vceMax 4.4744901
 R    timeE 2.000
 $
 *PARAMETER_EXPRESSION
