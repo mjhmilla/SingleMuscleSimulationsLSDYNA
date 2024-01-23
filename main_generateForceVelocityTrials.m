@@ -50,7 +50,7 @@ end
 
 switch modelName
     case 'umat41'
-        exSubMax = 0.7;
+        exSubMax = 0.538343204368895;
     case 'umat43'
         exSubMax = 0.7;
     case 'viva'
