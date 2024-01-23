@@ -3,7 +3,7 @@
 $#     mid        ro       sno       srm       pis       ssm       cer       dmp
          1       1.0      &sno   &vceMax &fceOptAT 1.4380893       0.0       0.0
 $#     alm       sfr       svs       svr       ssp
-        -3       1.0       -10       -12       -11
+  -2899501       1.0       -10       -12       -11              
 $
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
@@ -323,4 +323,55 @@ $#                a1                  o1
    0.196800000000000   1.257232000000000
    0.210000000000000   1.260400000000000
    1.000000000000000   1.450000000000001
+$         
+$--------------------------------------------------------------------------------
+$ Activation dynamics code (below) comes from the OpenHBM model and specifically
+$ the code of Putra et al. that is released as part of the OpenHBM project under
+$ the lgpl3 license.
+$  
+$ Putra, I P A, Iraeus J, Thomson R, Svensson M Y, Linder A, Sato F. 2019.
+$ Comparison of control strategies for the cervical muscles of an average female 
+$ head-neck finite element model. Traffic Injury Prevention
+$ https://doi.org/10.1080/15389588.2019.1670818
+$
+$--------------------------------------------------------------------------------
+*DEFINE_FUNCTION_TABULATED
+28000015
+stimFcn
+$#                a1                  o1
+                 0.0                 0.0
+             &timeS0                 0.0
+             &timeS1             &actVal
+              &timeE             &actVal
+$--------------------------------------------------------------------------------
+$ 6.2.1.1 activation dynamics filter
+$--------------------------------------------------------------------------------
+$
+*DEFINE_FUNCTION
+28990210,1ode Ne/Na filter
+float ode28990210(float u,float tne,float tna1,float tna2, float tt)
+{
+float na,ne,t,tts,dt;
+dt=tt-tts;
+tts=tt;
+ne=ne+dt*(u-ne)/tne;
+t=tna1;
+if(ne<na) t=tna2;
+na=na+dt*(ne-na)/t;
+return na;
+}
+$--------------------------------------------------------------------------------
+$ Filtered signal (from the viva 50f model)
+$--------------------------------------------------------------------------------
+$
+*DEFINE_CURVE_FUNCTION
+28990310
+ode28990210(stimFcn(TIME),35,10,40,TIME)
+$--------------------------------------------------------------------------------
+$ 6.2.1.3 activation signal going to muscle activation
+$--------------------------------------------------------------------------------
+$
+*DEFINE_CURVE_FUNCTION
+2899501
+MIN(MAX(LC28990310,0.0),1.0)   
 *END

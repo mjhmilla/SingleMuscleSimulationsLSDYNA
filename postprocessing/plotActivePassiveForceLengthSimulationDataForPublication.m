@@ -24,7 +24,7 @@ simulationFolder=pwd;
 cd(trialFolder);
 
 indexRow = indexModel;
-scaleF=1000;
+scaleF=1;
 
 optimalFiberLength      =muscleArchitecture.lceOpt;
 maximumIsometricForce   =muscleArchitecture.fiso;
