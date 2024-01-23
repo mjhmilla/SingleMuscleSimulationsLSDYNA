@@ -16,8 +16,8 @@ R   vceMax 4.50
 RlceNScale 0.95
 R    ltSlk 0.0304511
 R       et 0.0458333
-R   timeS0 1.00
-R   timeS1 2.00
+R   timeS0 0.99
+R   timeS1 1.00
 R    timeE 2.00
 R  stimLow 0.00
 R timeStep 0.5E-3
