@@ -13,7 +13,7 @@ rootDir = pwd;
 %Settings
 
 
-modelName       = 'mat156'; 
+modelName       = 'umat41'; 
 %Options:
 %   umat41
 %   umat43
@@ -50,7 +50,7 @@ end
 
 switch modelName
     case 'umat41'
-        exSubMax = 0.2;
+        exSubMax = 0.7;
     case 'umat43'
         exSubMax = 0.7;
     case 'viva'
