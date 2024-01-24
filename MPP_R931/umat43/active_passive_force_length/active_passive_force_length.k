@@ -2,23 +2,25 @@ $
 $ Matthew Millard
 $ 16/01/2023
 $
+*INCLUDE_PATH_RELATIVE
+../../../common/
+$
+*INCLUDE
+catsoleusHL2002Umat43Parameters.k
+$
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout        10                                     
-R   lceOpt   115.480
-R   fceOpt    0.0237
-R   penOpt       0.0
-R  penOptD       0.0
-R    ltSlk    33.489
-R       et     0.068
-R   vceMax      0.01
+R    dtout     0.010 
+R   timeS0     0.999
+R   timeS1     1.000  
+R timeStep    0.5E-3                                  
 $
 *PARAMETER_EXPRESSION
 $#    name expression
 R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk
 R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk
-R    timeE 2000
+R    timeE 2.000
 $
 *TITLE
 $#                                                                         title
@@ -77,8 +79,8 @@ $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
                  0.0                 0.0
-                 999                 0.0
-                1000             &actVal
+             &timeS0                 0.0
+             &timeS1             &actVal
               &timeE             &actVal
 *ELEMENT_BEAM
 $#   eid     pid      n1      n2      n3     rt1     rr1     rt2     rr2   local
@@ -101,9 +103,9 @@ $#   nid               x               y               z      tc      rc
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
-            0.000000                 0.5
-              &timeE                 0.5
+            0.000000           &timeStep
+              &timeE           &timeStep
 $
 *INCLUDE
-muscle_generic.k
+catsoleusHL2002Umat43.k
 *END
