@@ -11,12 +11,12 @@ $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout      0.01                                     
+R    dtout     0.001                                     
 R   timeS0 0.341
 R   timeS1 0.342
 RtimeRamp0 1.500
 R    timeE 4.10
-R timeStep 0.5E-3
+R timeStep 0.1E-3
 $
 *PARAMETER_EXPRESSION
 $#    name expression

@@ -8,13 +8,13 @@ catsoleusHL2002Mat156Parameters.k
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout      0.01                                     
+R    dtout     0.001                                     
 R   timeS0 0.341
 R   timeS1 0.342
 R    timeE 4.100
 RtimeRamp0 1.500
 R  stimLow 0.00
-R timeStep 0.5E-3
+R timeStep 0.1E-3
 $
 *PARAMETER_EXPRESSION
 $#    name expression
