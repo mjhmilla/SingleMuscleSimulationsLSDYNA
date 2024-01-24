@@ -2,26 +2,16 @@ $
 $ Matthew Millard
 $ 16/1/2023
 $
+*INCLUDE
+../../common/catsoleusHL2002Mat156Parameters.k
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout      0.01                                     
-R   lceOpt 0.0428571
-R   fceOpt 21.612138
-R lceOptAT 0.0425376
-R fceOptAT 21.451044
-R lmtOptAT 0.0729888
-R   penOpt 0.0
-R  penOptD 0.0 
-RlceNScale 0.95
-R    ltSlk 0.0304511
-R       et 0.0458333
 R   timeS0 0.99
 R   timeS1 1.00
 R    timeE 2.00
 R  stimLow 0.00
 R timeStep 0.5E-3
-R   vceMax 4.50
 *PARAMETER_EXPRESSION
 $#    name expression
 R pathLen0 &pathLenN0*&lceOptAT+&ltSlk
@@ -29,6 +19,9 @@ R pathLen1 &pathLenN1*&lceOptAT+&ltSlk
 R stimHigh &actVal
 R      sno &pathLen0/(&lceOptAT+&ltSlk)
 R      srm &vceMax*&lceOptAT/(&lceOptAT+&ltSlk)
+$
+*INCLUDE
+../../common/catsoleusHL2002Mat156.k
 $
 *TITLE
 $#                                                                         title
@@ -114,6 +107,4 @@ $#                a1                  o1
             0.000000           &timeStep
               &timeE           &timeStep
 $
-*INCLUDE
-catsoleusMat156.k
 *END
