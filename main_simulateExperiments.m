@@ -68,7 +68,7 @@ flag_postProcessSimulationData      = 0;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_sizePlotsForSlides = 0; %0: means use journal paper slides
-excludeSimulationsNamesThatContain = [];%[{'52mm'}];
+excludeSimulationsNamesThatContain = ['force_velocity_00'];%[{'52mm'}];
 
 flag_generateGenericPlots           = 0;
 flag_generateSpecificPlots          = 0;
@@ -96,7 +96,7 @@ if(flag_enableForceVelocityExperimentViva ...
     disp('         a publication.');
 end
 
-runOneTrial = [];
+runOneTrial = ['force_velocity_00'];
 
 flag_sinusoid_aniType = 0; 
 % This is only relevant when post-processing SinusoidExperiment

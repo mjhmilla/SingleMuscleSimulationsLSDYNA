@@ -1,9 +1,11 @@
 $
 $ Matthew Millard
 $ 16/01/2023
+*INCLUDE_PATH_RELATIVE
+../../common/
 $
 *INCLUDE
-../../../common/catsoleusHL2002Mat156Parameters.k
+../../common/catsoleusHL2002Mat156Parameters.k
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
@@ -15,7 +17,7 @@ RtimeRamp0 1.500
 R timeStep 0.5E-3
 $
 *INCLUDE
-../../../common/catsoleusHL2002Mat156.k
+../../common/catsoleusHL2002Mat156.k
 $
 *PARAMETER_EXPRESSION
 $#    name expression
