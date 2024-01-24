@@ -12,9 +12,5 @@ R  penOptD 7.0
 R    ltSlk 0.0304511
 R       et 0.0458333
 R   vceMax 4.50
-*PARAMETER_EXPRESSION
-$#    name expression
-R      sno &pathLen0/(&lceOptAT+&ltSlk)
-R      srm &vceMax*&lceOptAT/(&lceOptAT+&ltSlk)
 *END
 
