@@ -16,6 +16,7 @@ R   timeS1 1.00
 R    timeE 2.00
 R  stimLow 0.00
 R timeStep 0.5E-3
+$
 *PARAMETER_EXPRESSION
 $#    name expression
 R pathLen0 &pathLenN0*&lceOptAT+&ltSlk

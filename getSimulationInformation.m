@@ -529,7 +529,7 @@ if(strcmp(modelName,'mat156')==1)
       simulationType(idx).type = 'eccentric_HerzogLeonard2002';
       simulationInformation(idx).type                   = simulationType(idx).type;
 
-      simulationInformation(idx).simulationConstantFile = 'eccentric.k';      
+      simulationInformation(idx).simulationConstantFile = 'catsoleusHL2002Mat156Parameters.k';      
       simulationInformation(idx).musclePropertyCard     = 'catsoleusMat156.k';      
       simulationInformation(idx).optimalFiberLength     = 'lceOptAT';
       simulationInformation(idx).maximumIsometricForce  = 'fceOptAT';
@@ -546,8 +546,10 @@ if(strcmp(modelName,'mat156')==1)
       simulationType(idx).type = 'active_passive_force_length';
       simulationInformation(idx).type               = simulationType(idx).type;
 
-      simulationInformation(idx).simulationConstantFile     = 'active_passive_force_length.k';      
-      simulationInformation(idx).musclePropertyCard         = 'catsoleusMat156.k';      
+      simulationInformation(idx).simulationConstantFile = ...
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Mat156Parameters.k'];      
+      simulationInformation(idx).musclePropertyCard     = ...
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Mat156.k'];     
       simulationInformation(idx).optimalFiberLength         = 'lceOptAT';
       simulationInformation(idx).maximumIsometricForce      = 'fceOptAT';
       simulationInformation(idx).tendonSlackLength          = 'ltSlk';
@@ -562,8 +564,10 @@ if(strcmp(modelName,'mat156')==1)
       simulationType(idx).type = 'force_velocity';
       simulationInformation(idx).type               = simulationType(idx).type;
 
-      simulationInformation(idx).simulationConstantFile     = 'force_velocity.k';      
-      simulationInformation(idx).musclePropertyCard         = 'catsoleusMat156.k';      
+      simulationInformation(idx).simulationConstantFile = ...
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Mat156Parameters.k'];      
+      simulationInformation(idx).musclePropertyCard     = ...
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Mat156.k'];       
       simulationInformation(idx).optimalFiberLength         = 'lceOptAT';
       simulationInformation(idx).maximumIsometricForce      = 'fceOptAT';
       simulationInformation(idx).tendonSlackLength          = 'ltSlk';

@@ -2,24 +2,20 @@ $
 $ Matthew Millard
 $ 16/01/2023
 $
+*INCLUDE_PATH_RELATIVE
+../../../common/
+$
+*INCLUDE
+catsoleusHL2002Umat41Parameters.k
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
 R    dtout      0.01                                     
-R   lceOpt 0.0428571
-R   fceOpt 21.612138
-R lceOptAT 0.0425376
-R fceOptAT 21.451044
-R   penOpt 0.0
-R  penOptD 0.0 
-R    ltSlk 0.0304511
-R       et 0.0458333
 R   timeS0 0.341
 R   timeS1 0.342
 RtimeRamp0 1.500
 R    timeE 4.10
 R timeStep 0.5E-3
-R   vceMax 4.4744901
 $
 *PARAMETER_EXPRESSION
 $#    name expression
@@ -116,5 +112,5 @@ $#                a1                  o1
               &timeE           &timeStep
 $
 *INCLUDE
-catsoleus.k
+catsoleusHL2002Umat41.k
 *END
