@@ -14,10 +14,8 @@ R   timeS0 0.341
 R   timeS1 0.342
 R    timeE 4.100
 RtimeRamp0 1.500
+R  stimLow 0.00
 R timeStep 0.5E-3
-$
-*INCLUDE
-../../common/catsoleusHL2002Mat156.k
 $
 *PARAMETER_EXPRESSION
 $#    name expression
@@ -28,6 +26,9 @@ R      sno &pathLen0/(&lceOptAT+&ltSlk)
 R  stimLow 0.
 R stimHigh &actVal
 R      srm &vceMax*&lceOptAT/(&lceOptAT+&ltSlk)
+$
+*INCLUDE
+../../common/catsoleusHL2002Mat156.k
 $
 *TITLE
 $#                                                                         title

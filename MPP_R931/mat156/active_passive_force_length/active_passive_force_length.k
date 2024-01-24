@@ -2,11 +2,15 @@ $
 $ Matthew Millard
 $ 16/1/2023
 $
+*INCLUDE_PATH_RELATIVE
+../../common/
+$
 *INCLUDE
-../../../common/catsoleusHL2002Mat156Parameters.k
+../../common/catsoleusHL2002Mat156Parameters.k
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
+R    dtout 0.01                                     
 R   timeS0 0.99
 R   timeS1 1.00
 R    timeE 2.00
@@ -21,7 +25,7 @@ R      sno &pathLen0/(&lceOptAT+&ltSlk)
 R      srm &vceMax*&lceOptAT/(&lceOptAT+&ltSlk)
 $
 *INCLUDE
-../../../common/catsoleusHL2002Mat156.k
+../../common/catsoleusHL2002Mat156.k
 $
 *TITLE
 $#                                                                         title
