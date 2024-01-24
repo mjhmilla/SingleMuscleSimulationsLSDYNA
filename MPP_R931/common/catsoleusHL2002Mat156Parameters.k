@@ -16,4 +16,5 @@ R   vceMax 4.50
 $#    name expression
 R      sno &pathLen0/(&lceOptAT+&ltSlk)
 R      srm &vceMax*&lceOptAT/(&lceOptAT+&ltSlk)
+*END
 

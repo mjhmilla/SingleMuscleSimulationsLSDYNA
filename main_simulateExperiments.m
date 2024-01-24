@@ -40,15 +40,15 @@ models(1) = struct('id',0,'name','');
 %models(indexVIVA).name ='viva';
 %models(indexVIVA).colors= [greenA;greenB];
 
-%indexMat56                = 1;
-%models(indexMat56).id     = 1;
-%models(indexMat56).name   ='mat156';
-%models(indexMat56).colors = [redA;redB];
+indexMat56                = 1;
+models(indexMat56).id     = 1;
+models(indexMat56).name   ='mat156';
+models(indexMat56).colors = [redA;redB];
  
-indexUmat41              = 1;
-models(indexUmat41).id   = 1;
-models(indexUmat41).name ='umat41';
-models(indexUmat41).colors= [magentaA;magentaB];
+% indexUmat41              = 1;
+% models(indexUmat41).id   = 1;
+% models(indexUmat41).name ='umat41';
+% models(indexUmat41).colors= [magentaA;magentaB];
  
 % indexUmat43              = 3;
 % models(indexUmat43).id   = 3;
@@ -61,10 +61,10 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 0;
+flag_runSimulations                 = 1;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 1;
+flag_postProcessSimulationData      = 0;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_sizePlotsForSlides = 0; %0: means use journal paper slides
