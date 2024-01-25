@@ -11,10 +11,8 @@ $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout     0.010 
 R   timeS0     0.999
-R   timeS1     1.000  
-R timeStep    0.5E-3                                  
+R   timeS1     1.000                               
 $
 *PARAMETER_EXPRESSION
 $#    name expression
@@ -40,19 +38,19 @@ $                                                                              $
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 *DATABASE_GLSTAT
 $#      dt    binary      lcur     ioopt     
-&dtout             0         0         1
+&dtOut             0         0         1
 *DATABASE_MATSUM
 $#      dt    binary      lcur     ioopt     
-&dtout             0         0         1
+&dtOut             0         0         1
 *DATABASE_NODOUT
 $#      dt    binary      lcur     ioopt   option1   option2       
-&dtout             3         0         1       0.0         0
+&dtOut             3         0         1       0.0         0
 *DATABASE_SPCFORC
 $#      dt    binary      lcur     ioopt     
-&dtout             0         0         1
+&dtOut             0         0         1
 *DATABASE_BINARY_D3PLOT
 $#      dt      lcdt      beam     npltc    psetid      
-    &dtout         0         0         0         0
+    &dtOut         0         0         0         0
 $#   ioopt     
          0
 *DATABASE_HISTORY_NODE
@@ -72,7 +70,7 @@ $#       a     rampt    stress
 $#     id1       id2       id3       id4       id5       id6       id7       id8
          1         0         0         0         0         0         0         0       
 *DATABASE_ELOUT
-    &dtout         2
+    &dtOut         2
 $#
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
@@ -103,8 +101,8 @@ $#   nid               x               y               z      tc      rc
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp
          9         0  1.000000  1.000000     0.000     0.000         0
 $#                a1                  o1
-            0.000000           &timeStep
-              &timeE           &timeStep
+            0.000000              &dtInt
+              &timeE              &dtInt
 $
 *INCLUDE
 catsoleusHL2002Umat43.k
