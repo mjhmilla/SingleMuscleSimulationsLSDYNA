@@ -33,7 +33,7 @@ redB = redA.*0.5;% + [1,1,1].*0.5;
 dataColorA=greyA;
 dataColorB=greyB;
 
-models(3) = struct('id',0,'name','');
+models(1) = struct('id',0,'name','');
 
 %indexVIVA              = 1;
 %models(indexVIVA).id   = 1;
@@ -49,7 +49,7 @@ indexUmat41              = 2;
 models(indexUmat41).id   = 2;
 models(indexUmat41).name ='umat41';
 models(indexUmat41).colors= [magentaA;magentaB];
- 
+%  
 indexUmat43              = 3;
 models(indexUmat43).id   = 3;
 models(indexUmat43).name ='umat43';
@@ -85,8 +85,8 @@ flag_enableReflexExperiment_kN_mm_ms    = 0;
 
 flag_enableActivePassiveForceLengthExperimentViva   = 0;
 flag_enableForceVelocityExperimentViva              = 0;
-flag_enableActivePassiveForceLengthExperiment       = 0;
-flag_enableForceVelocityExperiment                  = 1;
+flag_enableActivePassiveForceLengthExperiment       = 1;
+flag_enableForceVelocityExperiment                  = 0;
 
 if(flag_enableForceVelocityExperimentViva ...
         || flag_enableActivePassiveForceLengthExperimentViva)
@@ -876,14 +876,17 @@ if(flag_postProcessSimulationData==1)
                           Release,'/',models(indexModel).name,'/',fileName]);
                 end
                 if(flag_figPublicationDirty==1 && indexModel ==length(models))
-                    figure(figPublication);      
+                    figure();      
                     figPublication=configPlotExporter(figPublication, ...
                                 pageWidthPublication, pageHeightPublication);
                     fileName =    ['fig_',Release,'_',...                    
                                   simulationInformation(indexSimulationInfo).type,...
-                                  '_Publication.pdf'];
+                                  '_Publication'];
                     print('-dpdf', [matlabScriptPath,'/',outputFolder,'/',...
-                          Release,'/',fileName]);
+                          Release,'/',fileName,'.pdf']);
+                   
+                    saveas(figPublication,[matlabScriptPath,'/',outputFolder,'/',...
+                          Release,'/',fileName],'fig');
                 end
                 if(flag_figDebugDirty==1)
                     figure(figDebug);      

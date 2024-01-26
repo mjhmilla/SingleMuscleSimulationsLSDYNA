@@ -21,7 +21,8 @@ R pathLen1 &pathLenN1*&lceOptAT+&ltSlk
 RtimeRamp1 &timeRamp0+&rampTime
 R      sno &pathLen0/(&lceOptAT+&ltSlk)
 R stimHigh &actVal
-R      srm &vceMax*&lceOptAT/(&lceOptAT+&ltSlk)
+R      srm &vceMax
+$#R      srm &vceMax*&lceOptAT/(&lceOptAT+&ltSlk)
 $
 *TITLE
 $#                                                                         title
@@ -112,5 +113,5 @@ $#                a1                  o1
               &timeE              &dtInt
 $
 *INCLUDE
-catsoleusHL2002Mat156.k
+catsoleusHL2002Mat156ImplicitRigidTendon.k
 *END
