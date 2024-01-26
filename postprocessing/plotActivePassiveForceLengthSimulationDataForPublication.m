@@ -180,7 +180,7 @@ if(flag_addReferenceData==1)
 
     end
     labelBSL1996 = 'Exp: BSL1996 Cat Sol WM';
-    colorBSL1996 = [1,1,1].*0.5;    
+    colorBSL1996 = [0,0,0];    
     if(flag_plotBrownScottLoeb1996_fig7==1)
         figH = addBrownScottLoeb1996ActiveForceLength(...
                         figH,subplotFl, labelBSL1996, ...

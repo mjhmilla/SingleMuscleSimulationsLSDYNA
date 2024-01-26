@@ -33,7 +33,7 @@ redB = redA.*0.5;% + [1,1,1].*0.5;
 dataColorA=greyA;
 dataColorB=greyB;
 
-models(1) = struct('id',0,'name','');
+models(3) = struct('id',0,'name','');
 
 %indexVIVA              = 1;
 %models(indexVIVA).id   = 1;
@@ -876,7 +876,7 @@ if(flag_postProcessSimulationData==1)
                           Release,'/',models(indexModel).name,'/',fileName]);
                 end
                 if(flag_figPublicationDirty==1 && indexModel ==length(models))
-                    figure();      
+                    figure(figPublication);      
                     figPublication=configPlotExporter(figPublication, ...
                                 pageWidthPublication, pageHeightPublication);
                     fileName =    ['fig_',Release,'_',...                    

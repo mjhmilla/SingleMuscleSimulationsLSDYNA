@@ -15,6 +15,11 @@ figure(figH);
 
 fontSizeLegend=6;
 
+flag_addHerzogLeonard1997=1;
+flag_addBrownScottLoeb1996=1;
+flag_addScottBrownLoeb1996=1;
+flag_addMashimaAkazawaKushimaFujii1972=1;
+
 if(contains(simulationDirectoryName,'isometric'))
     flag_addSimulationData=0;
 end
@@ -160,72 +165,107 @@ if(flag_addReferenceData==1)
     subplotFvExp              = reshape(subPlotLayout(1,1,:),1,4);
     subplotFvConTimeSeriesExp = reshape(subPlotLayout(1,2,:),1,4);
     subplotFvEccTimeSeriesExp = reshape(subPlotLayout(1,3,:),1,4);
+
+
+
+    if(flag_addScottBrownLoeb1996==1)
+        labelSBL1996='Exp: SBL1996 Cat Sol WM';
+        expColor = [1,1,1].*0.8;
+        vceMaxExp=4.5;
+        figH = addScottBrownLoeb1996ForceVelocity(...
+                figH,subplotFvExp, labelSBL1996, ...
+                expColor,...
+                vceMaxExp);
+
+    end
+
+    if(flag_addBrownScottLoeb1996==1)
+        labelBSL1996='Exp: BSL1996 Cat Sol WM';
+        expColor = [1,1,1].*0.65;
+        vceMaxExp=4;
+        figH = addBrownScottLoeb1996ForceVelocity(...
+                figH,subplotFvExp, labelBSL1996, ...
+                expColor,...
+                vceMaxExp);
     
-    %%
-    % Plot Herzog & Leonard 1997
-    %%
-    labelHL1997='Exp: HL1997 Cat S WM';
- 
-    % Graphically measured from Herzog and Leonard 1997 Fig. 1A    
-    fisoHL1997 = 37.4576;
+    end
 
-    % Graphically measured from Figure 4 of Scott, Brown, Loeb
-    %Scott SH, Brown IE, Loeb GE. Mechanics of feline soleus: I. Effect of 
-    % fascicle length and velocity on force output. Journal of Muscle 
-    % Research & Cell Motility. 1996 Apr;17:207-19.
-    vmaxSBL1996 = 4.65; 
+    if(flag_addMashimaAkazawaKushimaFujii1972==1)
+        labelMAKF1972='Exp: MAKF1972 Frog F';
+        expColor = [1,1,1].*0.5;
+        vceMaxExp=3.75;
+        figH = addMashimaAkazawaKushimaFujii1972ForceVelocity(...
+                figH,subplotFvExp, labelMAKF1972, ...
+                expColor,...
+                vceMaxExp);
+    end
 
-    % Optimal fiber length from 
-    % Scott SH, Loeb GE. Mechanical properties of aponeurosis and tendon 
-    % of the cat soleus muscle during whole‐muscle isometric contractions. 
-    % Journal of Morphology. 1995 Apr;224(1):73-86.
-    lceOptHL1997 = 38.0/1000;
-
-    musclePropertiesHL1997.fiso     = fisoHL1997;
-    musclePropertiesHL1997.lceOpt   = lceOptHL1997;
-    musclePropertiesHL1997.vmax     = vmaxSBL1996;
+    if(flag_addHerzogLeonard1997==1)
+        %%
+        % Plot Herzog & Leonard 1997
+        %%
+        labelHL1997='Exp: HL1997 Cat S WM';
+     
+        % Graphically measured from Herzog and Leonard 1997 Fig. 1A    
+        fisoHL1997 = 37.4576;
     
-    expColorA = [1,1,1].*0.75;
-    expColorB = [1,1,1].*0.5;
-
-    addConcentricData = -1;
-    addEccentricData  =  1;
-
-    [figH, dataFvConcSample] = ...
-        addHerzogLeonard1997TimeSeries(...
-            figH,subplotFvConTimeSeriesExp,labelHL1997,...
-            expColorA,expColorB,...
-            lineColorRampA,lineColorRampB,...
-            lineAndMarkerSettings.lineWidth,...  
-            plotSettings,...            
-            musclePropertiesHL1997,...
-            addConcentricData);
-
-    [figH, dataFvEccSample] = ...
-        addHerzogLeonard1997TimeSeries(...
-            figH,subplotFvEccTimeSeriesExp,labelHL1997,...
-            expColorA,expColorB,...
-            lineColorRampA,lineColorRampB,...
-            lineAndMarkerSettings.lineWidth,...  
-            plotSettings,...
-            musclePropertiesHL1997,...
-            addEccentricData);
-
-
-
-    dataFvSample = [dataFvConcSample;dataFvEccSample];
-    [val,idxMap] = sort(dataFvSample(:,1));
-    dataFvSample = dataFvSample(idxMap,:);
-
-    expColor = expColorB;
-    figH = addHerzogLeonard1997ForceVelocity(...
-                    figH,subplotFvExp,labelHL1997,...
-                    dataFvSample, ...
-                    expColor,...
-                    lineAndMarkerSettings.lineWidth,...
-                    plotSettings,...
-                    musclePropertiesHL1997);    
-
+        % Graphically measured from Figure 4 of Scott, Brown, Loeb
+        %Scott SH, Brown IE, Loeb GE. Mechanics of feline soleus: I. Effect of 
+        % fascicle length and velocity on force output. Journal of Muscle 
+        % Research & Cell Motility. 1996 Apr;17:207-19.
+        vmaxSBL1996 = 4.65; 
+    
+        % Optimal fiber length from 
+        % Scott SH, Loeb GE. Mechanical properties of aponeurosis and tendon 
+        % of the cat soleus muscle during whole‐muscle isometric contractions. 
+        % Journal of Morphology. 1995 Apr;224(1):73-86.
+        lceOptHL1997 = 38.0/1000;
+    
+        musclePropertiesHL1997.fiso     = fisoHL1997;
+        musclePropertiesHL1997.lceOpt   = lceOptHL1997;
+        musclePropertiesHL1997.vmax     = vmaxSBL1996;
+        
+        expColorA = [1,1,1].*0.75;
+        expColorB = [1,1,1].*0;
+    
+        addConcentricData = -1;
+        addEccentricData  =  1;
+    
+        [figH, dataFvConcSample] = ...
+            addHerzogLeonard1997TimeSeries(...
+                figH,subplotFvConTimeSeriesExp,labelHL1997,...
+                expColorA,expColorB,...
+                lineColorRampA,lineColorRampB,...
+                lineAndMarkerSettings.lineWidth,...  
+                plotSettings,...            
+                musclePropertiesHL1997,...
+                addConcentricData);
+    
+        [figH, dataFvEccSample] = ...
+            addHerzogLeonard1997TimeSeries(...
+                figH,subplotFvEccTimeSeriesExp,labelHL1997,...
+                expColorA,expColorB,...
+                lineColorRampA,lineColorRampB,...
+                lineAndMarkerSettings.lineWidth,...  
+                plotSettings,...
+                musclePropertiesHL1997,...
+                addEccentricData);
+    
+    
+    
+        dataFvSample = [dataFvConcSample;dataFvEccSample];
+        [val,idxMap] = sort(dataFvSample(:,1));
+        dataFvSample = dataFvSample(idxMap,:);
+    
+        expColor = expColorB;
+        figH = addHerzogLeonard1997ForceVelocity(...
+                        figH,subplotFvExp,labelHL1997,...
+                        dataFvSample, ...
+                        expColor,...
+                        lineAndMarkerSettings.lineWidth,...
+                        plotSettings,...
+                        musclePropertiesHL1997);    
+    end
 
 end
 
