@@ -6,12 +6,12 @@
         <General CursorSize="3" ExtraPrecision="1"/>
         <Coords Type="0" TypeString="Cartesian" Coords="0" ScaleXTheta="0" ScaleXThetaString="Linear" ScaleYRadius="0" ScaleYRadiusString="Linear" UnitsX="0" UnitsXString="Number" UnitsY="0" UnitsYString="Number" UnitsTheta="0" UnitsThetaString="Degrees (DDD.DDDDD)" UnitsRadius="0" UnitsRadiusString="Number" UnitsDate="3" UnitsDateString="YYYY/MM/DD" UnitsTime="2" UnitsTimeString="HH:MM:SS"/>
         <DigitizeCurve CursorInnerRadius="5" CursorLineWidth="2" CursorSize="1" CursorStandardCross="True"/>
-        <Export PointsSelectionFunctions="0" PointsSelectionFunctionsString="InterpolateAllCurves" PointsIntervalFunctions="10" PointsIntervalUnitsFunctions="1" PointsSelectionRelations="1" PointsSelectionRelationsString="Raw" PointsIntervalUnitsRelations="1" PointsIntervalRelations="10" LayoutFunctions="0" LayoutFunctionsString="AllPerLine" Delimiter="0" OverrideCsvTsv="False" DelimiterString="Commas" ExtrapolateOutsideEndpoints="True" Header="1" HeaderString="Simple" XLabel="x">
+        <Export PointsSelectionFunctions="0" PointsSelectionFunctionsString="InterpolateAllCurves" PointsIntervalFunctions="10" PointsIntervalUnitsFunctions="1" PointsSelectionRelations="1" PointsSelectionRelationsString="Raw" PointsIntervalUnitsRelations="1" PointsIntervalRelations="10" LayoutFunctions="1" LayoutFunctionsString="OnePerLine" Delimiter="0" OverrideCsvTsv="False" DelimiterString="Commas" ExtrapolateOutsideEndpoints="True" Header="1" HeaderString="Simple" XLabel="x">
             <CurveNamesNotExported/>
         </Export>
         <AxesChecker Mode="1" Seconds="3" LineColor="6"/>
         <GridDisplay Stable="True" DisableX="0" CountX="4" StartX="0" StepX="0.5" StopX="1.5" DisableY="0" CountY="5" StartY="0" StepY="0.25" StopY="1" Color="0" ColorString="Black"/>
-        <GridRemoval Stable="False" DefinedGridLines="False" CloseDistance="10" CoordDisableX="0" CoordDisableXString="Count" CountX="18" StartX="0.275902" StepX="0.0612514" StopX="1.31717" CoordDisableY="0" CoordDisableYString="Count" CountY="28" StartY="-1.67741" StepY="0.0990103" StopY="0.995873"/>
+        <GridRemoval Stable="False" DefinedGridLines="False" CloseDistance="10" CoordDisableX="0" CoordDisableXString="Count" CountX="18" StartX="0.275902" StepX="0.0612513" StopX="1.31717" CoordDisableY="0" CoordDisableYString="Count" CountY="28" StartY="-1.67741" StepY="0.0990103" StopY="0.995872"/>
         <PointMatch PointSize="48" ColorAccepted="4" ColorAcceptedString="Green" ColorCandidate="7" ColorCandidateString="Yellow" ColorRejected="6" ColorRejectedString="Red"/>
         <Segments PointSeparation="25" MinLength="2" FillCorners="False" LineWidth="4" LineColor="4" LineColorString="Green"/>
         <Curve CurveName="Axes">
@@ -21,252 +21,438 @@
                 <PointStyle Radius="10" LineWidth="1" Color="6" ColorString="Red" Shape="1" ShapeString="Cross"/>
             </CurveStyle>
             <CurvePoints>
-                <Point Identifier="Axes&#9;point&#9;1" Ordinal="1" IsAxisPoint="True" IsXOnly="False" Index="163">
+                <Point Identifier="Axes&#9;point&#9;1" Ordinal="1" IsAxisPoint="True" IsXOnly="False" Index="273">
                     <PositionScreen X="158.75" Y="330.729"/>
                     <PositionGraph X="0.4" Y="0"/>
                 </Point>
-                <Point Identifier="Axes&#9;point&#9;7" Ordinal="3" IsAxisPoint="True" IsXOnly="False" Index="163">
+                <Point Identifier="Axes&#9;point&#9;7" Ordinal="3" IsAxisPoint="True" IsXOnly="False" Index="273">
                     <PositionScreen X="157.49" Y="57.3264"/>
                     <PositionGraph X="0.4" Y="1"/>
                 </Point>
-                <Point Identifier="Axes&#9;point&#9;162" Ordinal="4" IsAxisPoint="True" IsXOnly="False" Index="163">
+                <Point Identifier="Axes&#9;point&#9;162" Ordinal="4" IsAxisPoint="True" IsXOnly="False" Index="273">
                     <PositionScreen X="801.94" Y="326.95"/>
                     <PositionGraph X="1.2" Y="0"/>
                 </Point>
             </CurvePoints>
         </Curve>
         <CurvesGraphs>
-            <Curve CurveName="fl">
-                <ColorFilter CurveName="fl" Mode="2" ModeString="Intensity" IntensityLow="0" IntensityHigh="50" ForegroundLow="0" ForegroundHigh="10" HueLow="180" HueHigh="360" SaturationLow="50" SaturationHigh="100" ValueLow="0" ValueHigh="50"/>
-                <CurveStyle CurveName="fl">
+            <Curve CurveName="fl08">
+                <ColorFilter CurveName="fl08" Mode="2" ModeString="Intensity" IntensityLow="0" IntensityHigh="50" ForegroundLow="0" ForegroundHigh="10" HueLow="180" HueHigh="360" SaturationLow="50" SaturationHigh="100" ValueLow="0" ValueHigh="50"/>
+                <CurveStyle CurveName="fl08">
                     <LineStyle Width="1" Color="1" ColorString="Blue" ConnectAs="3" ConnectAsString="RelationStraight"/>
-                    <PointStyle Radius="10" LineWidth="1" Color="1" ColorString="Blue" Shape="3" ShapeString="Square"/>
+                    <PointStyle Radius="5" LineWidth="1" Color="1" ColorString="Blue" Shape="1" ShapeString="Cross"/>
                 </CurveStyle>
                 <CurvePoints>
-                    <Point Identifier="fl&#9;point&#9;73" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="257.024" Y="296.081"/>
+                    <Point Identifier="fl08&#9;point&#9;163" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="287.892" Y="280.962"/>
                     </Point>
-                    <Point Identifier="fl&#9;point&#9;74" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="274.663" Y="254.504"/>
+                    <Point Identifier="fl08&#9;point&#9;164" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="312.46" Y="217.966"/>
                     </Point>
-                    <Point Identifier="fl&#9;point&#9;75" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="293.562" Y="223.006"/>
+                    <Point Identifier="fl08&#9;point&#9;165" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="337.659" Y="179.539"/>
                     </Point>
-                    <Point Identifier="fl&#9;point&#9;76" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="316.24" Y="190.248"/>
+                    <Point Identifier="fl08&#9;point&#9;166" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="361.597" Y="151.191"/>
                     </Point>
-                    <Point Identifier="fl&#9;point&#9;77" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="335.769" Y="164.42"/>
+                    <Point Identifier="fl08&#9;point&#9;167" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="388.056" Y="130.402"/>
                     </Point>
-                    <Point Identifier="fl&#9;point&#9;78" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="359.707" Y="137.961"/>
+                    <Point Identifier="fl08&#9;point&#9;168" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="418.294" Y="114.023"/>
                     </Point>
-                    <Point Identifier="fl&#9;point&#9;79" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="383.016" Y="119.692"/>
+                    <Point Identifier="fl08&#9;point&#9;169" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="449.162" Y="101.424"/>
                     </Point>
-                    <Point Identifier="fl&#9;point&#9;80" Ordinal="7" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="411.364" Y="108.353"/>
+                    <Point Identifier="fl08&#9;point&#9;170" Ordinal="7" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="478.14" Y="86.9346"/>
                     </Point>
-                    <Point Identifier="fl&#9;point&#9;81" Ordinal="8" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="439.082" Y="95.754"/>
+                    <Point Identifier="fl08&#9;point&#9;171" Ordinal="8" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="509.638" Y="80.005"/>
                     </Point>
-                    <Point Identifier="fl&#9;point&#9;82" Ordinal="9" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="471.84" Y="90.0844"/>
+                    <Point Identifier="fl08&#9;point&#9;172" Ordinal="9" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="539.876" Y="73.7054"/>
                     </Point>
-                    <Point Identifier="fl&#9;point&#9;83" Ordinal="10" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="501.449" Y="76.8552"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;84" Ordinal="11" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="531.057" Y="69.2957"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;85" Ordinal="12" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="549.956" Y="63.626"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;86" Ordinal="13" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="577.044" Y="57.9564"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;87" Ordinal="14" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="612.322" Y="54.1766"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;88" Ordinal="15" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="640.67" Y="51.6568"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;89" Ordinal="16" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="669.018" Y="52.9167"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;90" Ordinal="17" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="701.146" Y="54.1766"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;91" Ordinal="18" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="721.305" Y="62.9961"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;92" Ordinal="19" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="754.063" Y="71.8155"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;93" Ordinal="20" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="659.569" Y="63.626"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;94" Ordinal="21" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="620.511" Y="63.626"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;95" Ordinal="22" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="594.683" Y="69.2957"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;96" Ordinal="23" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="571.374" Y="73.7054"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;97" Ordinal="24" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="548.696" Y="79.375"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;98" Ordinal="25" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="527.907" Y="85.6746"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;99" Ordinal="26" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="502.079" Y="89.4544"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;100" Ordinal="27" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="483.81" Y="96.384"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;101" Ordinal="28" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="459.241" Y="107.723"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;102" Ordinal="29" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="438.453" Y="123.472"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;103" Ordinal="30" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="417.664" Y="159.38"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;104" Ordinal="31" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="377.346" Y="168.829"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;105" Ordinal="32" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="359.707" Y="198.438"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;106" Ordinal="33" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="342.699" Y="231.196"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;107" Ordinal="34" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="325.69" Y="269.623"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;108" Ordinal="35" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="287.262" Y="282.852"/>
-                    </Point>
-                    <Point Identifier="fl&#9;point&#9;109" Ordinal="36" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="257.024" Y="294.822"/>
+                    <Point Identifier="fl08&#9;point&#9;173" Ordinal="10" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="573.894" Y="68.6657"/>
                     </Point>
                 </CurvePoints>
             </Curve>
-            <Curve CurveName="fpe">
-                <ColorFilter CurveName="fpe" Mode="2" ModeString="Intensity" IntensityLow="0" IntensityHigh="50" ForegroundLow="0" ForegroundHigh="10" HueLow="180" HueHigh="360" SaturationLow="50" SaturationHigh="100" ValueLow="0" ValueHigh="50"/>
-                <CurveStyle CurveName="fpe">
-                    <LineStyle Width="1" Color="1" ColorString="Blue" ConnectAs="3" ConnectAsString="RelationStraight"/>
+            <Curve CurveName="fl09">
+                <ColorFilter CurveName="fl09" Mode="2" ModeString="Intensity" IntensityLow="0" IntensityHigh="50" ForegroundLow="0" ForegroundHigh="10" HueLow="180" HueHigh="360" SaturationLow="50" SaturationHigh="100" ValueLow="0" ValueHigh="50"/>
+                <CurveStyle CurveName="fl09">
+                    <LineStyle Width="1" Color="2" ColorString="Cyan" ConnectAs="3" ConnectAsString="RelationStraight"/>
                     <PointStyle Radius="10" LineWidth="1" Color="1" ColorString="Blue" Shape="5" ShapeString="X"/>
                 </CurveStyle>
                 <CurvePoints>
-                    <Point Identifier="fpe&#9;point&#9;126" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="517.828" Y="329.469"/>
+                    <Point Identifier="fl09&#9;point&#9;174" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="259.544" Y="293.562"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;127" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="527.277" Y="329.469"/>
+                    <Point Identifier="fl09&#9;point&#9;175" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="274.663" Y="254.504"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;128" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="545.546" Y="325.69"/>
+                    <Point Identifier="fl09&#9;point&#9;176" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="294.192" Y="223.006"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;129" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="570.744" Y="330.099"/>
+                    <Point Identifier="fl09&#9;point&#9;177" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="314.98" Y="191.508"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;130" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="599.092" Y="314.98"/>
+                    <Point Identifier="fl09&#9;point&#9;178" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="337.029" Y="163.79"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;131" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="624.921" Y="310.571"/>
+                    <Point Identifier="fl09&#9;point&#9;179" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="360.337" Y="139.221"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;132" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="648.229" Y="304.271"/>
+                    <Point Identifier="fl09&#9;point&#9;180" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="383.646" Y="119.063"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;133" Ordinal="7" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="670.908" Y="298.601"/>
+                    <Point Identifier="fl09&#9;point&#9;181" Ordinal="7" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="411.364" Y="109.613"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;134" Ordinal="8" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="697.996" Y="292.932"/>
+                    <Point Identifier="fl09&#9;point&#9;182" Ordinal="8" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="439.712" Y="97.6439"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;135" Ordinal="9" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="725.085" Y="279.702"/>
+                    <Point Identifier="fl09&#9;point&#9;183" Ordinal="9" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="470.581" Y="90.7143"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;136" Ordinal="10" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="750.913" Y="253.244"/>
+                    <Point Identifier="fl09&#9;point&#9;184" Ordinal="10" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="527.907" Y="79.375"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;137" Ordinal="11" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="780.521" Y="214.817"/>
+                    <Point Identifier="fl09&#9;point&#9;185" Ordinal="11" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="556.255" Y="73.7054"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;138" Ordinal="12" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="800.05" Y="154.97"/>
+                    <Point Identifier="fl09&#9;point&#9;186" Ordinal="12" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="583.343" Y="68.0357"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;139" Ordinal="13" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="800.68" Y="300.491"/>
+                    <Point Identifier="fl09&#9;point&#9;187" Ordinal="13" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="611.062" Y="59.8462"/>
                     </Point>
-                    <Point Identifier="fpe&#9;point&#9;140" Ordinal="14" IsAxisPoint="False" IsXOnly="False" Index="163">
+                </CurvePoints>
+            </Curve>
+            <Curve CurveName="fl10">
+                <ColorFilter CurveName="fl10" Mode="2" ModeString="Intensity" IntensityLow="0" IntensityHigh="50" ForegroundLow="0" ForegroundHigh="10" HueLow="180" HueHigh="360" SaturationLow="50" SaturationHigh="100" ValueLow="0" ValueHigh="50"/>
+                <CurveStyle CurveName="fl10">
+                    <LineStyle Width="1" Color="4" ColorString="Green" ConnectAs="3" ConnectAsString="RelationStraight"/>
+                    <PointStyle Radius="10" LineWidth="1" Color="1" ColorString="Blue" Shape="2" ShapeString="Diamond"/>
+                </CurveStyle>
+                <CurvePoints>
+                    <Point Identifier="fl10&#9;point&#9;188" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="417.664" Y="156.23"/>
+                    </Point>
+                    <Point Identifier="fl10&#9;point&#9;189" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="439.712" Y="122.842"/>
+                    </Point>
+                    <Point Identifier="fl10&#9;point&#9;190" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="460.501" Y="106.463"/>
+                    </Point>
+                    <Point Identifier="fl10&#9;point&#9;191" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="484.44" Y="96.384"/>
+                    </Point>
+                    <Point Identifier="fl10&#9;point&#9;192" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="503.338" Y="86.3046"/>
+                    </Point>
+                    <Point Identifier="fl10&#9;point&#9;193" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="527.277" Y="82.5248"/>
+                    </Point>
+                    <Point Identifier="fl10&#9;point&#9;194" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="549.956" Y="77.4851"/>
+                    </Point>
+                    <Point Identifier="fl10&#9;point&#9;195" Ordinal="7" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="572.634" Y="70.5556"/>
+                    </Point>
+                    <Point Identifier="fl10&#9;point&#9;196" Ordinal="8" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="595.943" Y="68.0357"/>
+                    </Point>
+                    <Point Identifier="fl10&#9;point&#9;197" Ordinal="9" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="619.251" Y="61.1062"/>
+                    </Point>
+                    <Point Identifier="fl10&#9;point&#9;198" Ordinal="10" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="661.459" Y="62.9961"/>
+                    </Point>
+                </CurvePoints>
+            </Curve>
+            <Curve CurveName="fl11">
+                <ColorFilter CurveName="fl11" Mode="2" ModeString="Intensity" IntensityLow="0" IntensityHigh="50" ForegroundLow="0" ForegroundHigh="10" HueLow="180" HueHigh="360" SaturationLow="50" SaturationHigh="100" ValueLow="0" ValueHigh="50"/>
+                <CurveStyle CurveName="fl11">
+                    <LineStyle Width="1" Color="5" ColorString="Magenta" ConnectAs="3" ConnectAsString="RelationStraight"/>
+                    <PointStyle Radius="10" LineWidth="1" Color="1" ColorString="Blue" Shape="3" ShapeString="Square"/>
+                </CurveStyle>
+                <CurvePoints>
+                    <Point Identifier="fl11&#9;point&#9;199" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="326.32" Y="269.623"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;200" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="341.439" Y="229.306"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;201" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="360.337" Y="196.548"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;202" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="377.346" Y="165.68"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;203" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="397.505" Y="141.111"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;204" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="418.924" Y="115.913"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;205" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="474.36" Y="85.6746"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;206" Ordinal="7" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="501.449" Y="76.8552"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;207" Ordinal="8" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="530.427" Y="69.9256"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;208" Ordinal="9" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="559.405" Y="65.5159"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;209" Ordinal="10" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="586.493" Y="59.2163"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;210" Ordinal="11" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="616.731" Y="55.4365"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;211" Ordinal="12" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="638.78" Y="53.5466"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;212" Ordinal="13" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="670.908" Y="52.9167"/>
+                    </Point>
+                    <Point Identifier="fl11&#9;point&#9;213" Ordinal="14" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="697.996" Y="53.5466"/>
+                    </Point>
+                </CurvePoints>
+            </Curve>
+            <Curve CurveName="fl12">
+                <ColorFilter CurveName="fl12" Mode="2" ModeString="Intensity" IntensityLow="0" IntensityHigh="50" ForegroundLow="0" ForegroundHigh="10" HueLow="180" HueHigh="360" SaturationLow="50" SaturationHigh="100" ValueLow="0" ValueHigh="50"/>
+                <CurveStyle CurveName="fl12">
+                    <LineStyle Width="1" Color="6" ColorString="Red" ConnectAs="3" ConnectAsString="RelationStraight"/>
+                    <PointStyle Radius="10" LineWidth="1" Color="1" ColorString="Blue" Shape="1" ShapeString="Cross"/>
+                </CurveStyle>
+                <CurvePoints>
+                    <Point Identifier="fl12&#9;point&#9;214" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="360.967" Y="156.23"/>
+                    </Point>
+                    <Point Identifier="fl12&#9;point&#9;215" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="385.536" Y="139.221"/>
+                    </Point>
+                    <Point Identifier="fl12&#9;point&#9;216" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="408.214" Y="117.173"/>
+                    </Point>
+                    <Point Identifier="fl12&#9;point&#9;217" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="434.673" Y="110.873"/>
+                    </Point>
+                    <Point Identifier="fl12&#9;point&#9;218" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="463.651" Y="103.943"/>
+                    </Point>
+                    <Point Identifier="fl12&#9;point&#9;219" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="488.219" Y="88.1945"/>
+                    </Point>
+                    <Point Identifier="fl12&#9;point&#9;220" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="520.347" Y="73.7054"/>
+                    </Point>
+                    <Point Identifier="fl12&#9;point&#9;221" Ordinal="7" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="548.696" Y="64.256"/>
+                    </Point>
+                    <Point Identifier="fl12&#9;point&#9;222" Ordinal="8" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="578.304" Y="59.2163"/>
+                    </Point>
+                    <Point Identifier="fl12&#9;point&#9;223" Ordinal="9" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="609.172" Y="54.8066"/>
+                    </Point>
+                    <Point Identifier="fl12&#9;point&#9;224" Ordinal="10" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="665.868" Y="52.2867"/>
+                    </Point>
+                    <Point Identifier="fl12&#9;point&#9;225" Ordinal="11" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="701.776" Y="57.9564"/>
+                    </Point>
+                    <Point Identifier="fl12&#9;point&#9;226" Ordinal="12" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="720.675" Y="62.9961"/>
+                    </Point>
+                    <Point Identifier="fl12&#9;point&#9;227" Ordinal="13" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="754.063" Y="73.0754"/>
+                    </Point>
+                </CurvePoints>
+            </Curve>
+            <Curve CurveName="fp08">
+                <ColorFilter CurveName="fp08" Mode="2" ModeString="Intensity" IntensityLow="0" IntensityHigh="50" ForegroundLow="0" ForegroundHigh="10" HueLow="180" HueHigh="360" SaturationLow="50" SaturationHigh="100" ValueLow="0" ValueHigh="50"/>
+                <CurveStyle CurveName="fp08">
+                    <LineStyle Width="1" Color="3" ColorString="Gold" ConnectAs="3" ConnectAsString="RelationStraight"/>
+                    <PointStyle Radius="10" LineWidth="1" Color="3" ColorString="Gold" Shape="5" ShapeString="X"/>
+                </CurveStyle>
+                <CurvePoints>
+                    <Point Identifier="fp08&#9;point&#9;228" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="519.717" Y="328.839"/>
+                    </Point>
+                    <Point Identifier="fp08&#9;point&#9;229" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="528.537" Y="330.099"/>
+                    </Point>
+                    <Point Identifier="fp08&#9;point&#9;230" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="546.806" Y="325.06"/>
+                    </Point>
+                    <Point Identifier="fp08&#9;point&#9;231" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="598.462" Y="313.72"/>
+                    </Point>
+                    <Point Identifier="fp08&#9;point&#9;232" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="625.551" Y="311.2"/>
+                    </Point>
+                    <Point Identifier="fp08&#9;point&#9;233" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="650.119" Y="304.901"/>
+                    </Point>
+                    <Point Identifier="fp08&#9;point&#9;234" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="674.688" Y="299.861"/>
+                    </Point>
+                    <Point Identifier="fp08&#9;point&#9;235" Ordinal="7" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="697.366" Y="292.302"/>
+                    </Point>
+                    <Point Identifier="fp08&#9;point&#9;236" Ordinal="8" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="725.715" Y="279.702"/>
+                    </Point>
+                    <Point Identifier="fp08&#9;point&#9;237" Ordinal="9" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="750.913" Y="253.874"/>
+                    </Point>
+                    <Point Identifier="fp08&#9;point&#9;238" Ordinal="10" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="778.631" Y="214.817"/>
+                    </Point>
+                    <Point Identifier="fp08&#9;point&#9;239" Ordinal="11" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="799.42" Y="154.97"/>
+                    </Point>
+                </CurvePoints>
+            </Curve>
+            <Curve CurveName="fp09">
+                <ColorFilter CurveName="fp09" Mode="2" ModeString="Intensity" IntensityLow="0" IntensityHigh="50" ForegroundLow="0" ForegroundHigh="10" HueLow="180" HueHigh="360" SaturationLow="50" SaturationHigh="100" ValueLow="0" ValueHigh="50"/>
+                <CurveStyle CurveName="fp09">
+                    <LineStyle Width="1" Color="2" ColorString="Cyan" ConnectAs="3" ConnectAsString="RelationStraight"/>
+                    <PointStyle Radius="10" LineWidth="1" Color="2" ColorString="Cyan" Shape="2" ShapeString="Diamond"/>
+                </CurveStyle>
+                <CurvePoints>
+                    <Point Identifier="fp09&#9;point&#9;240" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="570.114" Y="331.359"/>
+                    </Point>
+                    <Point Identifier="fp09&#9;point&#9;241" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="594.053" Y="328.209"/>
+                    </Point>
+                    <Point Identifier="fp09&#9;point&#9;242" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="623.661" Y="326.32"/>
+                    </Point>
+                    <Point Identifier="fp09&#9;point&#9;243" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="643.82" Y="323.17"/>
+                    </Point>
+                    <Point Identifier="fp09&#9;point&#9;244" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="667.758" Y="318.13"/>
+                    </Point>
+                    <Point Identifier="fp09&#9;point&#9;245" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="694.846" Y="308.681"/>
+                    </Point>
+                    <Point Identifier="fp09&#9;point&#9;246" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="717.525" Y="298.601"/>
+                    </Point>
+                </CurvePoints>
+            </Curve>
+            <Curve CurveName="fp10">
+                <ColorFilter CurveName="fp10" Mode="2" ModeString="Intensity" IntensityLow="0" IntensityHigh="50" ForegroundLow="0" ForegroundHigh="10" HueLow="180" HueHigh="360" SaturationLow="50" SaturationHigh="100" ValueLow="0" ValueHigh="50"/>
+                <CurveStyle CurveName="fp10">
+                    <LineStyle Width="1" Color="4" ColorString="Green" ConnectAs="3" ConnectAsString="RelationStraight"/>
+                    <PointStyle Radius="10" LineWidth="1" Color="4" ColorString="Green" Shape="3" ShapeString="Square"/>
+                </CurveStyle>
+                <CurvePoints>
+                    <Point Identifier="fp10&#9;point&#9;247" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="592.793" Y="331.989"/>
+                    </Point>
+                    <Point Identifier="fp10&#9;point&#9;248" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="612.952" Y="331.359"/>
+                    </Point>
+                    <Point Identifier="fp10&#9;point&#9;249" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="633.11" Y="331.359"/>
+                    </Point>
+                    <Point Identifier="fp10&#9;point&#9;250" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="653.899" Y="327.579"/>
+                    </Point>
+                    <Point Identifier="fp10&#9;point&#9;251" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="677.838" Y="324.43"/>
+                    </Point>
+                    <Point Identifier="fp10&#9;point&#9;252" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="689.177" Y="325.06"/>
+                    </Point>
+                    <Point Identifier="fp10&#9;point&#9;253" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="706.816" Y="324.43"/>
+                    </Point>
+                    <Point Identifier="fp10&#9;point&#9;254" Ordinal="7" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="725.715" Y="324.43"/>
+                    </Point>
+                    <Point Identifier="fp10&#9;point&#9;255" Ordinal="8" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="743.353" Y="320.65"/>
+                    </Point>
+                    <Point Identifier="fp10&#9;point&#9;256" Ordinal="9" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="762.882" Y="305.531"/>
+                    </Point>
+                </CurvePoints>
+            </Curve>
+            <Curve CurveName="fp11">
+                <ColorFilter CurveName="fp11" Mode="2" ModeString="Intensity" IntensityLow="0" IntensityHigh="50" ForegroundLow="0" ForegroundHigh="10" HueLow="180" HueHigh="360" SaturationLow="50" SaturationHigh="100" ValueLow="0" ValueHigh="50"/>
+                <CurveStyle CurveName="fp11">
+                    <LineStyle Width="1" Color="5" ColorString="Magenta" ConnectAs="3" ConnectAsString="RelationStraight"/>
+                    <PointStyle Radius="10" LineWidth="1" Color="5" ColorString="Magenta" Shape="1" ShapeString="Cross"/>
+                </CurveStyle>
+                <CurvePoints>
+                    <Point Identifier="fp11&#9;point&#9;257" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="648.859" Y="328.209"/>
+                    </Point>
+                    <Point Identifier="fp11&#9;point&#9;258" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="679.727" Y="326.95"/>
+                    </Point>
+                    <Point Identifier="fp11&#9;point&#9;259" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="708.706" Y="327.579"/>
+                    </Point>
+                    <Point Identifier="fp11&#9;point&#9;260" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="731.384" Y="325.69"/>
+                    </Point>
+                    <Point Identifier="fp11&#9;point&#9;261" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="756.583" Y="328.209"/>
+                    </Point>
+                    <Point Identifier="fp11&#9;point&#9;262" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="774.851" Y="323.17"/>
+                    </Point>
+                    <Point Identifier="fp11&#9;point&#9;263" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="795.64" Y="321.91"/>
+                    </Point>
+                </CurvePoints>
+            </Curve>
+            <Curve CurveName="fp12">
+                <ColorFilter CurveName="fp12" Mode="2" ModeString="Intensity" IntensityLow="0" IntensityHigh="50" ForegroundLow="0" ForegroundHigh="10" HueLow="180" HueHigh="360" SaturationLow="50" SaturationHigh="100" ValueLow="0" ValueHigh="50"/>
+                <CurveStyle CurveName="fp12">
+                    <LineStyle Width="1" Color="6" ColorString="Red" ConnectAs="3" ConnectAsString="RelationStraight"/>
+                    <PointStyle Radius="10" LineWidth="1" Color="6" ColorString="Red" Shape="5" ShapeString="X"/>
+                </CurveStyle>
+                <CurvePoints>
+                    <Point Identifier="fp12&#9;point&#9;264" Ordinal="0" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="610.432" Y="328.209"/>
+                    </Point>
+                    <Point Identifier="fp12&#9;point&#9;265" Ordinal="1" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="638.78" Y="328.839"/>
+                    </Point>
+                    <Point Identifier="fp12&#9;point&#9;266" Ordinal="2" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="664.608" Y="326.32"/>
+                    </Point>
+                    <Point Identifier="fp12&#9;point&#9;267" Ordinal="3" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="696.736" Y="325.69"/>
+                    </Point>
+                    <Point Identifier="fp12&#9;point&#9;268" Ordinal="4" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="717.525" Y="325.06"/>
+                    </Point>
+                    <Point Identifier="fp12&#9;point&#9;269" Ordinal="5" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="736.424" Y="323.17"/>
+                    </Point>
+                    <Point Identifier="fp12&#9;point&#9;270" Ordinal="6" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="759.732" Y="322.54"/>
+                    </Point>
+                    <Point Identifier="fp12&#9;point&#9;271" Ordinal="7" IsAxisPoint="False" IsXOnly="False" Index="273">
+                        <PositionScreen X="782.411" Y="319.39"/>
+                    </Point>
+                    <Point Identifier="fp12&#9;point&#9;272" Ordinal="8" IsAxisPoint="False" IsXOnly="False" Index="273">
                         <PositionScreen X="804.46" Y="314.35"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;141" Ordinal="15" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="796.9" Y="321.91"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;142" Ordinal="16" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="782.411" Y="321.28"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;143" Ordinal="17" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="760.992" Y="323.17"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;144" Ordinal="18" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="741.464" Y="323.17"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;145" Ordinal="19" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="722.565" Y="325.69"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;146" Ordinal="20" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="715.005" Y="325.69"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;147" Ordinal="21" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="704.926" Y="325.06"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;148" Ordinal="22" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="694.846" Y="327.579"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;149" Ordinal="23" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="686.657" Y="325.06"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;150" Ordinal="24" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="675.948" Y="325.69"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;151" Ordinal="25" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="666.498" Y="328.209"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;152" Ordinal="26" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="652.639" Y="328.209"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;153" Ordinal="27" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="640.04" Y="328.209"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;154" Ordinal="28" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="626.181" Y="328.209"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;155" Ordinal="29" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="612.952" Y="330.099"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;156" Ordinal="30" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="591.533" Y="331.359"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;157" Ordinal="31" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="568.854" Y="331.359"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;158" Ordinal="32" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="545.546" Y="329.469"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;159" Ordinal="33" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="528.537" Y="331.359"/>
-                    </Point>
-                    <Point Identifier="fpe&#9;point&#9;160" Ordinal="34" IsAxisPoint="False" IsXOnly="False" Index="163">
-                        <PositionScreen X="515.308" Y="330.729"/>
                     </Point>
                 </CurvePoints>
             </Curve>

@@ -18,8 +18,8 @@ RtimeRamp0     1.500
 $
 *PARAMETER_EXPRESSION
 $#    name expression
-R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk
-R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk
+R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk*(1.0+&et)
+R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk*(1.0+&et)
 RtimeRamp1 &timeRamp0+&rampTime
 $
 *TITLE

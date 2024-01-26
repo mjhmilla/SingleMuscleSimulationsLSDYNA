@@ -17,9 +17,12 @@ fontSizeLegend=6;
 
 flag_plotInNormalizedCoordinates=1;
 flag_plotSmeulders2004     =0;
-flag_plotGollapudiLin2009 = 1;
-flag_plotSiebert2015      = 1;
-flag_plotWinters2011      = 1;
+flag_plotGollapudiLin2009 = 0;
+flag_plotSiebert2015      = 0;
+flag_plotWinters2011      = 0;
+flag_plotScottBrownLoeb1996_fig3=1;
+flag_plotBrownScottLoeb1996_fig3=1;
+flag_plotBrownScottLoeb1996_fig7=1;
 
 
 trialFolder=pwd;
@@ -157,6 +160,35 @@ if(flag_addReferenceData==1)
                 muscleArchitecture, ...
                 flag_plotInNormalizedCoordinates);    
     end
+
+    if(flag_plotScottBrownLoeb1996_fig3==1)
+        labelSBL1996 = 'Exp: SBL1996 Cat Sol WM';
+        colorSBL1996A = [1,1,1].*0.25;
+        colorSBL1996B = [1,1,1].*0.75;
+
+        figH = addScottBrownLoeb1996ActiveForceLength(...
+                figH,subplotFl, labelSBL1996, ...
+                colorSBL1996A,colorSBL1996B,...
+                muscleArchitecture, ...
+                flag_plotInNormalizedCoordinates);
+
+        figH = addScottBrownLoeb1996PassiveForceLength(...
+                figH,subplotFpe, labelSBL1996, ...
+                colorSBL1996A,colorSBL1996B,...
+                muscleArchitecture, ...
+                flag_plotInNormalizedCoordinates);
+
+    end
+    labelBSL1996 = 'Exp: BSL1996 Cat Sol WM';
+    colorBSL1996 = [1,1,1].*0.5;    
+    if(flag_plotBrownScottLoeb1996_fig7==1)
+        figH = addBrownScottLoeb1996ActiveForceLength(...
+                        figH,subplotFl, labelBSL1996, ...
+                        colorBSL1996,...
+                        muscleArchitecture, ...
+                        flag_plotInNormalizedCoordinates);
+    end
+
 
     if(flag_plotWinters2011==1)
         expColorA = [1,1,1].*0.7; 

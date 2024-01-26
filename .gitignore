@@ -29,6 +29,7 @@ kill_by_pid
 *.swp
 *.msg
 *.pdf
+*.fig
 *.mat
 *.asv
 *.cfile

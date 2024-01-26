@@ -45,15 +45,15 @@ models(indexMat56).id     = 1;
 models(indexMat56).name   ='mat156';
 models(indexMat56).colors = [redA;redB];
  
-% indexUmat41              = 2;
-% models(indexUmat41).id   = 2;
-% models(indexUmat41).name ='umat41';
-% models(indexUmat41).colors= [magentaA;magentaB];
-% %  
-% indexUmat43              = 3;
-% models(indexUmat43).id   = 3;
-% models(indexUmat43).name ='umat43';
-% models(indexUmat43).colors= [blueA;blueB];
+indexUmat41              = 2;
+models(indexUmat41).id   = 2;
+models(indexUmat41).name ='umat41';
+models(indexUmat41).colors= [magentaA;magentaB];
+  
+indexUmat43              = 3;
+models(indexUmat43).id   = 3;
+models(indexUmat43).name ='umat43';
+models(indexUmat43).colors= [blueA;blueB];
 
 
 flag_preProcessSimulationData       = 0; 
