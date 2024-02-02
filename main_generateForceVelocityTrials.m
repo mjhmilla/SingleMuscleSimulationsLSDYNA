@@ -9,11 +9,12 @@ clear all;
 
 rootDir = pwd;
 
-
+assert(contains(rootDir(1,end-29:end),'SingleMuscleSimulationsLSDYNA'),...
+       'Error: must start this with matlam in the main directory');
 %Settings
 
 
-modelName       = 'umat41'; 
+modelName       = 'mat156'; 
 %Options:
 %   umat41
 %   umat43
@@ -27,9 +28,17 @@ simulationName  = 'force_velocity';
 %   force_velocity_viva              (not with mat156)
 %   active_passive_force_length_viva (not with mat156)
 
+if(contains(simulationName,'active_passive_force_length'))
+    exMax       = 1.0;
+    exSubMax    = 0.7;
+    exSubMaxEHTMM=0.538343204368895;
+end
+if(contains(simulationName,'force_velocity'))
+    exMax       = 1.0;
+    exSubMax    = 0.2;
+    exSubMaxEHTMM=0.111049386145214;
+end
 
-exMax       = 1.0;
-exSubMax    = 0.7;
 
 %Fixed
 releaseName     ='MPP_R931';
@@ -47,20 +56,42 @@ switch simulationName
     otherwise assert(0,'Error: invalid simulationName');
 end    
 
-
-switch modelName
-    case 'umat41'
-        exSubMax = 0.538343204368895;
-    case 'umat43'
-        exSubMax = 0.7;
-    case 'viva'
-        exSubMax = 0.7;
-    case 'mat156'
-        exSubMax = 0.7;
-    case 'thums'
-        exSubMax = 0.7;
+switch simulationName
+    case 'active_passive_force_length'
+        exMax       = 1.0;
+        exSubMax    = 0.7;
+        if(contains(modelName,'umat41'))
+            q0=1e-4;
+            q=exSubMax;
+            exSubMax=(0.5*(q-q0))/(1-(1-0.5)*(q-q0));
+        end
+    case 'active_passive_force_length_viva'
+        exMax       = 1.0;
+        exSubMax    = 0.7;
+        if(contains(modelName,'umat41'))
+            q0=1e-4;
+            q=exSubMax;
+            exSubMax=(0.5*(q-q0))/(1-(1-0.5)*(q-q0));
+        end
+    case 'force_velocity'
+        exMax       = 1.0;
+        exSubMax    = 0.2;
+        if(contains(modelName,'umat41'))
+            q0=1e-4;
+            q=exSubMax;
+            exSubMax=(0.5*(q-q0))/(1-(1-0.5)*(q-q0));
+        end
+    case 'force_velocity_viva'
+        exMax       = 1.0;
+        exSubMax    = 0.2;
+        if(contains(modelName,'umat41'))
+            q0=1e-4;
+            q=exSubMax;
+            exSubMax=(0.5*(q-q0))/(1-(1-0.5)*(q-q0));
+        end
     otherwise
-        assert(0,'Error: invalid modelName selection');
+        assert(0,'Error: invalid simulation type chosen');
+
 end
 
 %===============================================================================

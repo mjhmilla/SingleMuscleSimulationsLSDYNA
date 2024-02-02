@@ -5,7 +5,7 @@ RpathLenN0  0.906760
 RpathLenN1  1.000000
 R  pathVel  0.233000
 R rampTime  0.400172
-R   actVal  0.700000
+R   actVal  0.200000
 $
 *INCLUDE_PATH_RELATIVE
 ../
