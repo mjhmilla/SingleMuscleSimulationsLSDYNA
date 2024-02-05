@@ -29,6 +29,15 @@ cd ..;
 simulationFolder=pwd;
 cd(trialFolder);
 
+%These files hold the processed experimental data which is used to 
+%evaluate the RMSE of the (interpolated) model values
+fileExpDataForceVelocity        = [simulationFolder,filesep,'dataExpForceVelocity.csv'];
+fileExpDataForceVelocitySubmax  = [simulationFolder,filesep,'dataExpForceVelocitySubmax.csv'];
+idHerzogLeonard1997             = 1;
+idBrownScottLoeb1996            = 2;
+idScottBrownLoeb1996            = 3;
+idMashimaAkazawaKushimaFujii1972= 4;
+
 lineColorRampA = [149, 69, 53]./256;%[1,1,1].*0.5;
 lineColorRampB = lineColorRampA*0.5;
 markerFaceColor= lineColorRampA;
@@ -166,6 +175,11 @@ if(flag_addReferenceData==1)
     subplotFvConTimeSeriesExp = reshape(subPlotLayout(1,2,:),1,4);
     subplotFvEccTimeSeriesExp = reshape(subPlotLayout(1,3,:),1,4);
 
+    %Wipe the processed data files clean
+    fid=fopen(fileExpDataForceVelocity,'w');
+    fclose(fid);
+    fid=fopen(fileExpDataForceVelocitySubmax,'w');
+    fclose(fid);
 
 
     if(flag_addScottBrownLoeb1996==1)
@@ -175,7 +189,9 @@ if(flag_addReferenceData==1)
         figH = addScottBrownLoeb1996ForceVelocity(...
                 figH,subplotFvExp, labelSBL1996, ...
                 expColor,...
-                vceMaxExp);
+                vceMaxExp,...
+                fileExpDataForceVelocity,...
+                idScottBrownLoeb1996);
 
     end
 
@@ -186,7 +202,9 @@ if(flag_addReferenceData==1)
         figH = addBrownScottLoeb1996ForceVelocity(...
                 figH,subplotFvExp, labelBSL1996, ...
                 expColor,...
-                vceMaxExp);
+                vceMaxExp,...
+                fileExpDataForceVelocity,...
+                idBrownScottLoeb1996);
     
     end
 
@@ -197,7 +215,9 @@ if(flag_addReferenceData==1)
         figH = addMashimaAkazawaKushimaFujii1972ForceVelocity(...
                 figH,subplotFvExp, labelMAKF1972, ...
                 expColor,...
-                vceMaxExp);
+                vceMaxExp,...
+                fileExpDataForceVelocitySubmax,...
+                idMashimaAkazawaKushimaFujii1972);
     end
 
     if(flag_addHerzogLeonard1997==1)
@@ -264,7 +284,11 @@ if(flag_addReferenceData==1)
                         expColor,...
                         lineAndMarkerSettings.lineWidth,...
                         plotSettings,...
-                        musclePropertiesHL1997);    
+                        musclePropertiesHL1997,...
+                        fileExpDataForceVelocity,...
+                        idHerzogLeonard1997); 
+
+
     end
 
 end
@@ -314,12 +338,62 @@ if(flag_addSimulationData==1)
         end
 
         dataFv = csvread([simulationFolder,filesep,'record.csv']);
+       
 
         figH = addSimulationForceVelocity(...
                             figH,subplotFv,...
                             dataFv, ...
                             lsdynaMuscleUniform,...
                             lineAndMarkerSettings);
+
+        if(contains(simulationDirectoryName,simMetaData.fileNameMaxActEnd))
+
+            idxSimE = find(dataFv(:,4)>0);
+            idxSimC = find(dataFv(:,4)<0);
+            
+
+            dataExp=readmatrix(fileExpDataForceVelocity,'Delimiter',',');
+
+            errVec = zeros(size(dataExp,1),2).*nan;
+            for indexData=1:1:size(dataExp,1)
+                vceNExp = dataExp(indexData,1);
+                fceNExp = dataExp(indexData,2);
+                if(vceNExp < 0)
+                    errVec(indexData,1) = ...
+                             interp1(dataFv(idxSimC,4),...
+                                     dataFv(idxSimC,5),...
+                                     vceNExp,...
+                                     'linear',...
+                                     'extrap')-fceNExp;
+                else
+                    errVec(indexData,2) = ...
+                             interp1(dataFv(idxSimE,4),...
+                                     dataFv(idxSimE,5),...
+                                     vceNExp,...
+                                     'linear',...
+                                     'extrap')-fceNExp;
+                end
+             end
+
+             idxC = find(~isnan(errVec(:,1)));
+             idxE = find(~isnan(errVec(:,2)));
+
+             errRmseC = sqrt(mean(errVec(idxC,1).^2)); 
+             errRmseE = sqrt(mean(errVec(idxE,2).^2)); 
+
+             text(-1,1.0,sprintf('RMSE Conc.\n%1.3e',errRmseC),...
+                 'HorizontalAlignment','left',...
+                 'VerticalAlignment','middle',...
+                 'FontSize',6);
+             hold on;
+
+             text( 1,1.0,sprintf('RMSE Ecc.\n%1.3e',errRmseE),...
+                 'HorizontalAlignment','right',...
+                 'VerticalAlignment','middle',...
+                 'FontSize',6);
+             hold on;
+
+        end
 
         if(contains(simulationDirectoryName,simMetaData.fileNameSubMaxActEnd))
             figure(figH);

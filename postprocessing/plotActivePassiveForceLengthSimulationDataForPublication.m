@@ -20,9 +20,14 @@ flag_plotSmeulders2004     =0;
 flag_plotGollapudiLin2009 = 0;
 flag_plotSiebert2015      = 0;
 flag_plotWinters2011      = 0;
-flag_plotScottBrownLoeb1996_fig3=1;
+flag_plotScottBrownLoeb1996_fig3_active=1;
+flag_plotScottBrownLoeb1996_fig3_passive=0;
+
+
 flag_plotBrownScottLoeb1996_fig7=1;
 flag_plotRodeSiebertHerzogBlickhan2009=1;
+
+flag_passiveStiffnessRmse=0;
 
 xTextRmse=1.6;
 yTextRmse=0.2;
@@ -201,11 +206,11 @@ if(flag_addReferenceData==1)
         
     end
 
-    if(flag_plotScottBrownLoeb1996_fig3==1)
-        labelSBL1996 = 'Exp: SBL1996 Cat Sol WM';
-        colorSBL1996A = [1,1,1].*0.5;
-        colorSBL1996B = [1,1,1].*0.5;
+    labelSBL1996 = 'Exp: SBL1996 Cat Sol WM';
+    colorSBL1996A = [1,1,1].*0.5;
+    colorSBL1996B = [1,1,1].*0.5;  
 
+    if(flag_plotScottBrownLoeb1996_fig3_active==1)
         figH = addScottBrownLoeb1996ActiveForceLength(...
                 figH,subplotFl, labelSBL1996, ...
                 colorSBL1996A,colorSBL1996B,...
@@ -213,7 +218,9 @@ if(flag_addReferenceData==1)
                 flag_plotInNormalizedCoordinates,...
                 fileExpDataActiveForceLength,...
                 idScottBrownLoeb1996);
+    end
 
+    if(flag_plotScottBrownLoeb1996_fig3_passive==1)
         figH = addScottBrownLoeb1996PassiveForceLength(...
                 figH,subplotFpe, labelSBL1996, ...
                 colorSBL1996A,colorSBL1996B,...
@@ -221,7 +228,6 @@ if(flag_addReferenceData==1)
                 flag_plotInNormalizedCoordinates,...
                 fileExpDataPassiveForceLength,...
                 idScottBrownLoeb1996);
-
     end
     labelBSL1996 = 'Exp: BSL1996 Cat Sol WM';
     colorBSL1996 = [0,0,0];    
@@ -383,9 +389,12 @@ if(flag_addSimulationData==1)
                  for indexData=1:1:size(dataExp,1)
                     lceNExp = dataExp(indexData,1);
                     fceNExp = dataExp(indexData,2);
-                    errVec = interp1(dataForceLength(:,idxX),...
+                    errVec(indexData,1) = ...
+                                     interp1(dataForceLength(:,idxX),...
                                      dataForceLength(:,idxY),...
-                                     lceNExp)-fceNExp;
+                                     lceNExp,...
+                                     'linear',...
+                                     'extrap')-fceNExp;
                     
                  end
     
@@ -506,27 +515,66 @@ if(flag_addSimulationData==1)
         end        
         lengthPlot = lsdynaMuscleUniform.lceN;
         forcePlot  = lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1);
+        stiffnessPlot = calcCentralDifferenceDataSeries(lengthPlot,forcePlot);
+        indexPlot = find(forcePlot > 0.05);
 
          %Evaluate the RMSE
          dataExp=readmatrix(fileExpDataPassiveForceLength,'Delimiter',',');
-         errVec = zeros(size(dataExp,1),1);
-         for indexData=1:1:size(dataExp,1)
-            lceNExp = dataExp(indexData,1);
-            fceNExp = dataExp(indexData,2);
-            errVec = interp1(lengthPlot,...
-                             forcePlot,...
-                             lceNExp)-fceNExp;
-            
+         errVec = zeros(size(dataExp,1),1).*nan;
+
+         if(flag_passiveStiffnessRmse==1)
+             count=1;
+             for indexTrial=1:1:max(dataExp(:,4))
+                indexData =find(dataExp(:,4)==indexTrial);
+    
+                lceNExp = dataExp(indexData,1);
+                fceNExp = dataExp(indexData,2);
+                stiffnessExp = calcCentralDifferenceDataSeries(lceNExp,fceNExp);
+                
+                for indexData=1:1:length(lceNExp)
+                    if(fceNExp(indexData,1)>0.025)
+                        errVec(count,1) = ...
+                                 interp1(forcePlot(indexPlot,1),...
+                                         stiffnessPlot(indexPlot,1),...
+                                         fceNExp(indexData,1),...
+                                         'linear',...
+                                         'extrap')-stiffnessExp(indexData,1);
+                        count=count+1;
+                    end
+                end
+                
+             end
+             idxEntry = ~isnan(errVec);
+             errRmse = sqrt(mean(errVec(idxEntry).^2));  
+    
+             text(xTextRmse,yTextRmse,...
+                sprintf('RMSE\n%1.2e%s',errRmse,'$$f^{M}_o/l^M_o$$'),...
+                'HorizontalAlignment','left',...
+                 'VerticalAlignment','top',...
+                 'FontSize',6);
+            hold on;
+         else
+             for indexData=1:1:size(dataExp,1)
+                lceNExp = dataExp(indexData,1);
+                fceNExp = dataExp(indexData,2);                 
+                errVec(indexData,1) = ...
+                     interp1(lengthPlot(:,1),...
+                             forcePlot(:,1),...
+                             lceNExp,...
+                             'linear',...
+                             'extrap')-fceNExp;
+             end
+             idxEntry = ~isnan(errVec);
+             errRmse = sqrt(mean(errVec(idxEntry).^2));  
+    
+             text(xTextRmse,yTextRmse,...
+                sprintf('RMSE\n%1.2e%s',errRmse,'$$f^{M}_o$$'),...
+                'HorizontalAlignment','left',...
+                 'VerticalAlignment','top',...
+                 'FontSize',6);
+             hold on;
+
          end
-
-         errRmse = sqrt(mean(errVec.^2));  
-
-         text(xTextRmse,yTextRmse,...
-            sprintf('RMSE\n%1.2e%s',errRmse,'$$f^{M}_o$$'),...
-            'HorizontalAlignment','left',...
-             'VerticalAlignment','top',...
-             'FontSize',6);
-        hold on;
 
     end    
    

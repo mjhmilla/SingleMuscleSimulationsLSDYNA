@@ -14,7 +14,7 @@ assert(contains(rootDir(1,end-29:end),'SingleMuscleSimulationsLSDYNA'),...
 %Settings
 
 
-modelName       = 'mat156'; 
+modelName       = 'umat43'; 
 %Options:
 %   umat41
 %   umat43
