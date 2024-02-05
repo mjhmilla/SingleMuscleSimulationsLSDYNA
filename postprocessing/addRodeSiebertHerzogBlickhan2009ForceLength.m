@@ -4,7 +4,9 @@ function figH = addRodeSiebertHerzogBlickhan2009ForceLength(...
                 muscleArchitecture, ...
                 plotActiveData,...
                 plotPassiveData,...
-                flag_plotInNormalizedCoordinates)
+                flag_plotInNormalizedCoordinates,...
+                fileNameToAppendProcessedData,...
+                idData)
 
 assert(flag_plotInNormalizedCoordinates==1,...
        ['Error: addRodeSiebertHerzogBlickhan2009ForceLength only works in ',...
@@ -18,7 +20,7 @@ pennationAngle          =muscleArchitecture.alpha;
 figure(figH);
 subplot('Position',subplotPosition);
 
-
+fid=fopen(fileNameToAppendProcessedData,'a');
 
 settingHandleVisibility = 'on';
 
@@ -52,7 +54,8 @@ for indexSeries=1:1:6
         else
             fp(i,1) = interp1(dataRSHB2009(idxFp).x,...
                               dataRSHB2009(idxFp).y,...
-                              xMM(i,1));
+                              xMM(i,1),...
+                              'linear','extrap');
         end
     end
     
@@ -95,4 +98,14 @@ for indexSeries=1:1:6
     hold on;
     settingHandleVisibility = 'off';        
     
+    for indexData=1:1:length(lenN)
+        if(isnan(f(indexData,1)))
+            here=1;
+        end
+        fprintf(fid,'%1.3f,%1.3f,%i,%i\n',...
+            lenN(indexData,1),f(indexData,1),...
+            idData,indexSeries);
+    end
 end
+
+fclose(fid);

@@ -22,14 +22,23 @@ flag_plotSiebert2015      = 0;
 flag_plotWinters2011      = 0;
 flag_plotScottBrownLoeb1996_fig3=1;
 flag_plotBrownScottLoeb1996_fig7=1;
-
 flag_plotRodeSiebertHerzogBlickhan2009=1;
 
+xTextRmse=1.6;
+yTextRmse=0.2;
 
 trialFolder=pwd;
 cd ..;
 simulationFolder=pwd;
 cd(trialFolder);
+
+%These files hold the processed experimental data which is used to 
+%evaluate the RMSE of the (interpolated) model values
+fileExpDataActiveForceLength    = [simulationFolder,filesep,'dataExpActive.csv'];
+fileExpDataPassiveForceLength   = [simulationFolder,filesep,'dataExpPassive.csv'];
+idRodeSiebertHerzogBlickhan2009 = 1;
+idScottBrownLoeb1996            = 2;
+idBrownScottLoeb1996            = 3;
 
 indexRow = indexModel;
 
@@ -144,11 +153,17 @@ subplotFlTime   = reshape(subPlotLayout(indexRow,3,:),1,4);
 
 % Add the reference data
 if(flag_addReferenceData==1)
-
+    
+    %Wipe the processed data files clean
+    fid=fopen(fileExpDataActiveForceLength,'w');
+    fclose(fid);
+    fid=fopen(fileExpDataPassiveForceLength,'w');
+    fclose(fid);
+    
     if(flag_plotSiebert2015==1)
         labelSLRWS2015 = 'Exp: SLRWS2015 Rabbit GAS WM';
         expColor = [1,1,1].*0.9;
-    
+        disp('Warning: Siebert et al. experimental data not used in RMSE calculation');  
         figH = addSiebert2015ActiveForceLength(...
                 figH,subplotFl, labelSLRWS2015, ...
                 expColor,...
@@ -171,14 +186,18 @@ if(flag_addReferenceData==1)
                     colorRSHB2009a,colorRSHB2009b,...
                     muscleArchitecture,...
                     1,0,...
-                    flag_plotInNormalizedCoordinates);
+                    flag_plotInNormalizedCoordinates,...
+                    fileExpDataActiveForceLength,...
+                    idRodeSiebertHerzogBlickhan2009);
 
         figH = addRodeSiebertHerzogBlickhan2009ForceLength(...
                     figH,subplotFpe,labelRSHB2009,...
                     colorRSHB2009a,colorRSHB2009b,...
                     muscleArchitecture,...
                     0,1,...
-                    flag_plotInNormalizedCoordinates);
+                    flag_plotInNormalizedCoordinates,...
+                    fileExpDataPassiveForceLength,...
+                    idRodeSiebertHerzogBlickhan2009);
         
     end
 
@@ -191,13 +210,17 @@ if(flag_addReferenceData==1)
                 figH,subplotFl, labelSBL1996, ...
                 colorSBL1996A,colorSBL1996B,...
                 muscleArchitecture, ...
-                flag_plotInNormalizedCoordinates);
+                flag_plotInNormalizedCoordinates,...
+                fileExpDataActiveForceLength,...
+                idScottBrownLoeb1996);
 
         figH = addScottBrownLoeb1996PassiveForceLength(...
                 figH,subplotFpe, labelSBL1996, ...
                 colorSBL1996A,colorSBL1996B,...
                 muscleArchitecture, ...
-                flag_plotInNormalizedCoordinates);
+                flag_plotInNormalizedCoordinates,...
+                fileExpDataPassiveForceLength,...
+                idScottBrownLoeb1996);
 
     end
     labelBSL1996 = 'Exp: BSL1996 Cat Sol WM';
@@ -207,7 +230,9 @@ if(flag_addReferenceData==1)
                         figH,subplotFl, labelBSL1996, ...
                         colorBSL1996,...
                         muscleArchitecture, ...
-                        flag_plotInNormalizedCoordinates);
+                        flag_plotInNormalizedCoordinates,...
+                        fileExpDataActiveForceLength,...
+                        idBrownScottLoeb1996);
     end
 
 
@@ -216,7 +241,7 @@ if(flag_addReferenceData==1)
         expColorA = [1,1,1].*0.7; 
         expColorB = [1,1,1].*0.3;     
         labelWTLW2011  = 'Exp: WTLW2011 Rabbit EDII/EDL/TA WM';
-    
+        disp('Warning: Winters et al. experimental data not used in RMSE calculation');      
         figH = addWinters2011ActiveForceLengthData(...
                         figH,subplotFl,labelWTLW2011,...
                         expColorA,expColorB,...
@@ -234,7 +259,7 @@ if(flag_addReferenceData==1)
         expColor        = [0,0,0];
         labelGL2009     = 'Exp: GL2009 Human LGAS SF';
         lceOptHuman = 2.725;
-    
+        disp('Warning: Gollapudi et al. experimental data not used in RMSE calculation');    
         figH = addGollapudiLin2009ActiveForceLength(...
                 figH,subplotFl,labelGL2009,expColor,...
                 lceOptHuman,muscleArchitecture,...
@@ -249,6 +274,7 @@ if(flag_addReferenceData==1)
     if(flag_plotSmeulders2004==1)
         labelSKHHH2004 = 'Exp: SKHHH2004 Human FCU WM';
         expColor =[0,0,0];
+        disp('Warning: Smeulders experimental data not used in RMSE calculation');
         figH = addSmeulders2004ActiveForceLength(figH,subplotFl, ...
                     labelSKHHH2004, expColor,...
                     muscleArchitecture, ...
@@ -345,6 +371,25 @@ if(flag_addSimulationData==1)
                 yDelta=abs(diff(plotSettings(idx).yLim))*0.05;               
                 xText = max(plotSettings(idx).xLim)-5*xDelta;
          
+                idxX = 2;
+                idxY = 3;
+                if(flag_plotInNormalizedCoordinates==1)
+                    idxX = 4;
+                    idxY = 5;
+                end
+                 %Evaluate the RMSE
+                 dataExp=readmatrix(fileExpDataActiveForceLength,'Delimiter',',');
+                 errVec = zeros(size(dataExp,1),1);
+                 for indexData=1:1:size(dataExp,1)
+                    lceNExp = dataExp(indexData,1);
+                    fceNExp = dataExp(indexData,2);
+                    errVec = interp1(dataForceLength(:,idxX),...
+                                     dataForceLength(:,idxY),...
+                                     lceNExp)-fceNExp;
+                    
+                 end
+    
+                 errRmse = sqrt(mean(errVec.^2));                
                 
                 text(xText,...
                      1,...
@@ -355,7 +400,17 @@ if(flag_addSimulationData==1)
                      'HorizontalAlignment','left',...
                      'VerticalAlignment','top',...
                      'FontSize',6);
-                hold on;            
+                hold on; 
+             
+                text(xTextRmse,yTextRmse,...
+                    sprintf('RMSE\n%1.2e%s',errRmse,'$$f^{M}_o$$'),...
+                    'HorizontalAlignment','left',...
+                     'VerticalAlignment','top',...
+                     'FontSize',6);
+                hold on;
+
+
+
 
         elseif(contains(simulationFile,fileNameSubMaxActStart))
             fid=fopen([simulationFolder,filesep,'record.csv'],'w');
@@ -440,6 +495,38 @@ if(flag_addSimulationData==1)
         lgdH=legend('Location','NorthWest');
         lgdH.FontSize=fontSizeLegend;
         legend box off;
+
+        assert(flag_plotInNormalizedCoordinates==1,...
+            'Error: RMSE calculations only implemeneted for normalized data');
+
+        idxA = 1;
+        if(length(lsdynaMuscleUniform.eloutAxialBeamForceNorm) ...
+                > length(lsdynaMuscleUniform.lceATN))
+            idxA=2;
+        end        
+        lengthPlot = lsdynaMuscleUniform.lceN;
+        forcePlot  = lsdynaMuscleUniform.eloutAxialBeamForceNorm(idxA:end,1);
+
+         %Evaluate the RMSE
+         dataExp=readmatrix(fileExpDataPassiveForceLength,'Delimiter',',');
+         errVec = zeros(size(dataExp,1),1);
+         for indexData=1:1:size(dataExp,1)
+            lceNExp = dataExp(indexData,1);
+            fceNExp = dataExp(indexData,2);
+            errVec = interp1(lengthPlot,...
+                             forcePlot,...
+                             lceNExp)-fceNExp;
+            
+         end
+
+         errRmse = sqrt(mean(errVec.^2));  
+
+         text(xTextRmse,yTextRmse,...
+            sprintf('RMSE\n%1.2e%s',errRmse,'$$f^{M}_o$$'),...
+            'HorizontalAlignment','left',...
+             'VerticalAlignment','top',...
+             'FontSize',6);
+        hold on;
 
     end    
    
