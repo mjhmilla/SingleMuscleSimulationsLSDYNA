@@ -7,12 +7,17 @@ function [figH, simDataVector] = ...
         lineColorRampA,lineColorRampB,...
         lineAndMarkerSettings,...
         plotSettings,...
-        muscleArchitecture,...        
+        muscleArchitecture,...   
+        musclePropertiesHL1997,...
         contractionDirection)
 
 figure(figH);
 
 
+
+%%
+%Plot meta data
+%%
 lastTwoChar = simulationDirectoryName(1,end-1:1:end);
 trialNumber  = str2num(lastTwoChar);
 flag_subMax = 0;
@@ -36,6 +41,7 @@ maximumIsometricForce   =muscleArchitecture.fiso;
 tendonSlackLength       =muscleArchitecture.ltslk;
 pennationAngle          =muscleArchitecture.alpha;
 vceNMax                 = getParameterValueFromD3HSPFile(d3hspFileName, 'VCEMAX');
+
 
 timeRamp0   = getParameterValueFromD3HSPFile(d3hspFileName, 'TIMERAMP0');
 timeRamp1   = getParameterValueFromD3HSPFile(d3hspFileName, 'TIMERAMP1');
@@ -287,6 +293,96 @@ if(      (   trialNumber >= simMetaData.numberHL1997ShorteningStart ...
         'MarkerFaceColor',markerFaceColor,...
         'MarkerSize',markerSize); 
     hold on;
+
+    %%
+    % Evaluate the RMSE error against the corresponding data series
+    % from Herzog & Leonard 1997
+    %%
+    yyaxis left;
+
+    %%
+    %Experimental reference data
+    %%
+    
+    fileHL1997Length = ['..',filesep,'..',filesep,'..',filesep,'..',filesep,...
+               'ReferenceExperiments',filesep,...
+               'force_velocity',filesep,...
+               'fig_HerzogLeonard1997Fig1A_length.csv'];
+    
+    fileHL1997Force = ['..',filesep,'..',filesep,'..',filesep,'..',filesep,...
+               'ReferenceExperiments',filesep,...
+               'force_velocity',filesep,...
+               'fig_HerzogLeonard1997Fig1A_forces.csv'];
+    
+    dataHL1997Length = loadDigitizedData(fileHL1997Length,...
+                    'Time ($$s$$)','Length ($$mm$$)',...
+                    {'c01','c02','c03','c04','c05',...
+                     'c06','c07','c08','c09','c010'},...
+                    {'Herzog and Leonard 1997'}); 
+    
+    dataHL1997Force = loadDigitizedData(fileHL1997Force,...
+                    'Time ($$s$$)','Force ($$N$$)',...
+                    {'c01','c02','c03','c04','c05',...
+                     'c06','c07','c08','c09','c010'},...
+                    {'Herzog and Leonard 1997'}); 
+
+    timeRamp0 = getParameterValueFromD3HSPFile(d3hspFileName, 'TIMERAMP0');
+    timeRamp1 = getParameterValueFromD3HSPFile(d3hspFileName, 'TIMERAMP1');
+
+    pathLen0 = getParameterValueFromD3HSPFile(d3hspFileName, 'PATHLEN0');
+    pathLen1 = getParameterValueFromD3HSPFile(d3hspFileName, 'PATHLEN1');
+    rampTime = getParameterValueFromD3HSPFile(d3hspFileName, 'RAMPTIME');
+    pathVelMM = ((pathLen1-pathLen0)./rampTime)*1000;
+
+    idxClosest=nan;
+    errSmallest=inf;
+
+    for idx=1:1:length(dataHL1997Length)
+        vel = diff(dataHL1997Length(idx).y)./diff(dataHL1997Length(idx).x);       
+        err = abs(vel(2,1)-pathVelMM);
+        if(err < errSmallest)
+            idxClosest=idx;
+            errSmallest=err;
+        end
+    end
+
+    %Found a candidate. Evaluate the RMSE of the force signal
+    errForce = zeros(size(lsdynaMuscleUniform.time,1),1).*nan;
+    for i=1:1:length(lsdynaMuscleUniform.time)
+        fexp = interp1(dataHL1997Force(idxClosest).x,...
+                       dataHL1997Force(idxClosest).y,...
+                       lsdynaMuscleUniform.time(i,1),...
+                       'linear','extrap');
+        fexpN = fexp./musclePropertiesHL1997.fiso;
+        fsimN = lsdynaMuscleUniform.fmtN(i,1);
+        errForce(i,1)=fsimN-fexpN;
+    end
+
+    idxRamp = find(lsdynaMuscleUniform.time>=timeRamp0 & ...
+                   lsdynaMuscleUniform.time<=timeRamp1);
+    idxRecovery=find(lsdynaMuscleUniform.time>timeRamp1);
+
+    errRamp = errForce(idxRamp,1);
+    errRecovery=errForce(idxRecovery,1);
+
+    errRampRMSE = sqrt(mean(errRamp.^2));
+    errRecoveryRMSE = sqrt(mean(errRecovery.^2));
+
+    dx = (max(lsdynaMuscleUniform.time)-min(lsdynaMuscleUniform.time))./100;
+    th=text( lsdynaMuscleUniform.time(indexSample,1)+2*dx,...
+           lsdynaMuscleUniform.fmtN(indexSample,1),...
+           sprintf(' %1.1e',errRampRMSE),...
+           'HorizontalAlignment','left',...
+           'VerticalAlignment','middle',...
+           'FontSize',6);
+    if(pathVelMM<0)
+        th.Rotation=-45;
+    else
+        th.Rotation=45;
+    end
+    
+    hold on;
+    
 
 
 end

@@ -111,6 +111,25 @@ timePreRamp = round((timeRamp0-timeExcitation1)*0.9)+timeExcitation1;
 indexRamp0  = find(lsdynaMuscleUniform.time>=timeRamp0,1);
 indexRamp1  = find(lsdynaMuscleUniform.time>=timeRamp1,1);
 
+% Graphically measured from Herzog and Leonard 1997 Fig. 1A    
+fisoHL1997 = 37.4576;
+
+% Graphically measured from Figure 4 of Scott, Brown, Loeb
+%Scott SH, Brown IE, Loeb GE. Mechanics of feline soleus: I. Effect of 
+% fascicle length and velocity on force output. Journal of Muscle 
+% Research & Cell Motility. 1996 Apr;17:207-19.
+vmaxSBL1996 = 4.65; 
+
+% Optimal fiber length from 
+% Scott SH, Loeb GE. Mechanical properties of aponeurosis and tendon 
+% of the cat soleus muscle during whole‐muscle isometric contractions. 
+% Journal of Morphology. 1995 Apr;224(1):73-86.
+lceOptHL1997 = 38.0/1000;
+
+musclePropertiesHL1997.fiso     = fisoHL1997;
+musclePropertiesHL1997.lceOpt   = lceOptHL1997;
+musclePropertiesHL1997.vmax     = vmaxSBL1996;
+
 %%
 %Plotting settings
 %%
@@ -226,24 +245,6 @@ if(flag_addReferenceData==1)
         %%
         labelHL1997='Exp: HL1997 Cat S WM';
      
-        % Graphically measured from Herzog and Leonard 1997 Fig. 1A    
-        fisoHL1997 = 37.4576;
-    
-        % Graphically measured from Figure 4 of Scott, Brown, Loeb
-        %Scott SH, Brown IE, Loeb GE. Mechanics of feline soleus: I. Effect of 
-        % fascicle length and velocity on force output. Journal of Muscle 
-        % Research & Cell Motility. 1996 Apr;17:207-19.
-        vmaxSBL1996 = 4.65; 
-    
-        % Optimal fiber length from 
-        % Scott SH, Loeb GE. Mechanical properties of aponeurosis and tendon 
-        % of the cat soleus muscle during whole‐muscle isometric contractions. 
-        % Journal of Morphology. 1995 Apr;224(1):73-86.
-        lceOptHL1997 = 38.0/1000;
-    
-        musclePropertiesHL1997.fiso     = fisoHL1997;
-        musclePropertiesHL1997.lceOpt   = lceOptHL1997;
-        musclePropertiesHL1997.vmax     = vmaxSBL1996;
         
         expColorA = [1,1,1].*0.75;
         expColorB = [1,1,1].*0;
@@ -308,7 +309,8 @@ if(flag_addSimulationData==1)
             lineColorRampA,lineColorRampB,...
             lineAndMarkerSettings,...
             plotSettings,...
-            muscleArchitecture,...        
+            muscleArchitecture,... 
+            musclePropertiesHL1997,...
             contractionDirection);
 
 
@@ -346,6 +348,74 @@ if(flag_addSimulationData==1)
                             lsdynaMuscleUniform,...
                             lineAndMarkerSettings);
 
+        if(contains(simulationDirectoryName,simMetaData.fileNameSubMaxActEnd))
+            figure(figH);
+            subplot('Position',subplotFv);
+            
+            fileIsometricSubMax= ['..',filesep,'isometric_sub_max',filesep,'binout0000'];
+            [isometricBinout,status] = ...
+                binoutreader('dynaOutputFile',fileIsometricSubMax,...
+                             'ignoreUnknownDataError',true);
+            isometric.time=isometricBinout.elout.beam.time';
+            isometric.force=isometricBinout.elout.beam.axial./maximumIsometricForce;
+            idxPassive = find(isometric.time>0.1,1);
+            idxActive  = length(isometric.time);
+            fpN = isometric.force(idxPassive,1);
+            faN = isometric.force(idxActive,1);
+            fisoSubMax = faN-fpN;
+
+            idxC = find(dataFv(:,4)<0);
+
+            x0 =[0.2,-1];
+            s0 = x0;
+            xN0 = [1,1];
+            dataFit = [dataFv(idxC,4),dataFv(idxC,5)];
+            errFcn = @(arg)calcHillError(arg,s0,dataFit,fisoSubMax);
+            [xN1,err1]=lsqnonlin(errFcn,xN0);
+            x = xN1.*s0;
+            vceMax=x(1,2);
+
+            vmaxSubMax=-0.51; %Mashima et al 1972 at 0.18 isometric force
+
+            plot([1,1].*vceMax,[0,0.2],'-k','HandleVisibility','off');
+            hold on;            
+            plot([1,1].*(vmaxSubMax),[0,0.2],'-k','HandleVisibility','off');
+            hold on;
+            plot([vceMax,vmaxSubMax],[0.025,0.025],'-k','HandleVisibility','off');
+            hold on;
+            dx = abs(vceMax-vmaxSubMax).*0.05;
+            plot([vceMax+2*dx],[0.025],'<k',...
+                'MarkerSize',4,...
+                'MarkerFaceColor',[0,0,0],...
+                'HandleVisibility','off');
+            hold on;
+            plot([vmaxSubMax-2*dx],[0.025],'>k',...
+                'MarkerSize',4,...
+                'MarkerFaceColor',[0,0,0],...
+                'HandleVisibility','off');
+            hold on;            
+            text((vmaxSubMax+vceMax)*0.5,0.15,...
+                 sprintf('%1.2f%s',abs(vceMax-vmaxSubMax),'$$v^M_o$$'),...
+                 'HorizontalAlignment','center',...
+                 'VerticalAlignment','middle',...
+                 'FontSize',6);
+            hold on;
+            th=text(vceMax+dx,0.2,sprintf('%1.2f%s',vceMax,'$$v^M_o$$'),...
+                 'HorizontalAlignment','left',...
+                 'VerticalAlignment','bottom',...
+                 'FontSize',6);
+            th.Rotation=45;
+            hold on;
+            th=text(vmaxSubMax+dx,0.2,sprintf('%1.2f%s',vmaxSubMax,'$$v^M_o$$'),...
+                 'HorizontalAlignment','left',...
+                 'VerticalAlignment','bottom',...
+                 'FontSize',6);
+            th.Rotation=45;
+            hold on;
+            
+
+        end
+
         if(contains(simulationDirectoryName,simMetaData.fileNameMaxActEnd))
 
             idxSimE = find(dataFv(:,4)>0);
@@ -381,6 +451,8 @@ if(flag_addSimulationData==1)
              errRmseC = sqrt(mean(errVec(idxC,1).^2)); 
              errRmseE = sqrt(mean(errVec(idxE,2).^2)); 
 
+             figure(figH);
+             subplot('Position',subplotFv);
              text(-1,1.0,sprintf('RMSE Conc.\n%1.3e',errRmseC),...
                  'HorizontalAlignment','left',...
                  'VerticalAlignment','middle',...
@@ -510,7 +582,7 @@ if(contains(simulationDirectoryName,simMetaData.fileNameSubMaxActEnd)==1 || ...
             ax=gca;
             ax.YAxis(1).Color = [0,0,0];
             ax.YAxis(2).Color = lineColorRampA;        
-            legend('Location','NorthWest');
+            legend('Location','West');
         
         yyaxis right;
         %ylabel('Norm. Length ($$(\ell^P-\ell^T_s)/\ell^{M}_o$$)');

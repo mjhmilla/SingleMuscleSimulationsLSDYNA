@@ -28,17 +28,6 @@ simulationName  = 'force_velocity';
 %   force_velocity_viva              (not with mat156)
 %   active_passive_force_length_viva (not with mat156)
 
-if(contains(simulationName,'active_passive_force_length'))
-    exMax       = 1.0;
-    exSubMax    = 0.7;
-    exSubMaxEHTMM=0.538343204368895;
-end
-if(contains(simulationName,'force_velocity'))
-    exMax       = 1.0;
-    exSubMax    = 0.2;
-    exSubMaxEHTMM=0.111049386145214;
-end
-
 
 %Fixed
 releaseName     ='MPP_R931';
@@ -75,7 +64,7 @@ switch simulationName
         end
     case 'force_velocity'
         exMax       = 1.0;
-        exSubMax    = 0.2;
+        exSubMax    = 0.18;
         if(contains(modelName,'umat41'))
             q0=1e-4;
             q=exSubMax;
@@ -83,7 +72,7 @@ switch simulationName
         end
     case 'force_velocity_viva'
         exMax       = 1.0;
-        exSubMax    = 0.2;
+        exSubMax    = 0.18;
         if(contains(modelName,'umat41'))
             q0=1e-4;
             q=exSubMax;
