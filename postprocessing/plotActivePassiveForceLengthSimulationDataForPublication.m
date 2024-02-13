@@ -37,6 +37,26 @@ cd ..;
 simulationFolder=pwd;
 cd(trialFolder);
 
+%%
+%Active and passive data points of the starting of the Herzog & Leonard
+%1997 force-velocity data
+%%
+dataHL1997.dl   = [0.894242,1.10606]-0.894242;
+dataHL1997.fpe  = [0.0264486,0.08545676];
+dataHL1997.fa   = [0.856798,1.15101]-dataHL1997.fpe;
+dataHL1997.fa   = dataHL1997.fa-dataHL1997.fa(1,1);
+dataHL1997.rectangle.fl =   [dl(1,1),dfa(1,1);...
+                             dl(1,2),dfa(1,1);...
+                             dl(1,2),dfa(1,2);...
+                             dl(1,1),dfa(1,2);...
+                             dl(1,1),dfa(1,1)];
+dataHL1997.rectangle.fpe =  [dl(1,1),dfpe(1,1);...
+                             dl(1,2),dfpe(1,1);...
+                             dl(1,2),dfpe(1,2);...
+                             dl(1,1),dfpe(1,2);...
+                             dl(1,1),dfpe(1,1)];
+
+
 %These files hold the processed experimental data which is used to 
 %evaluate the RMSE of the (interpolated) model values
 fileExpDataActiveForceLength    = [simulationFolder,filesep,'dataExpActive.csv'];
@@ -418,7 +438,9 @@ if(flag_addSimulationData==1)
                      'FontSize',6);
                 hold on;
 
+            if(flag_solveForHerzogLeonard1997Params==1)
 
+            end
 
 
         elseif(contains(simulationFile,fileNameSubMaxActStart))

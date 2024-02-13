@@ -32,6 +32,8 @@ simulationName  = 'force_velocity';
 %Fixed
 releaseName     ='MPP_R931';
 
+lceNMid = 0.794736842105263;
+
 
 units_kNmmms = 0;
 units_Nms    = 1; 
@@ -134,11 +136,11 @@ for i=1:1:length(vceNV)
     fid=fopen([simName,'.k'],'w');
 
     if(vceN > 0)
-        lceN0 = 1 - dlopt;
-        lceN1 = 1;
+        lceN0 = lceNMid - dlopt;
+        lceN1 = lceNMid;
     else
-        lceN0 = 1 + dlopt;
-        lceN1 = 1;
+        lceN0 = lceNMid + dlopt;
+        lceN1 = lceNMid;
     end
 
   

@@ -116,7 +116,8 @@ indexRamp0  = find(lsdynaMuscleUniform.time>=timeRamp0,1);
 indexRamp1  = find(lsdynaMuscleUniform.time>=timeRamp1,1);
 
 % Graphically measured from Herzog and Leonard 1997 Fig. 1A    
-fisoHL1997 = 37.4576;
+flNStart   = 0.9593; 
+fisoHL1997 = (43.0392-3.073)/flNStart;
 
 % Graphically measured from Figure 4 of Scott, Brown, Loeb
 %Scott SH, Brown IE, Loeb GE. Mechanics of feline soleus: I. Effect of 
@@ -130,9 +131,10 @@ vmaxSBL1996 = 4.65;
 % Journal of Morphology. 1995 Apr;224(1):73-86.
 lceOptHL1997 = 38.0/1000;
 
-musclePropertiesHL1997.fiso     = fisoHL1997;
-musclePropertiesHL1997.lceOpt   = lceOptHL1997;
-musclePropertiesHL1997.vmax     = vmaxSBL1996;
+musclePropertiesHL1997.fiso         = fisoHL1997;
+musclePropertiesHL1997.lceOpt       = lceOptHL1997;
+musclePropertiesHL1997.lceNOffset   = 0.9-(4/1000)/lceOptHL1997;
+musclePropertiesHL1997.vmax         = vmaxSBL1996;
 
 %%
 %Plotting settings
@@ -159,7 +161,7 @@ plotSettings(idx).yTicks = [0,1];
 idx=4;
 plotSettings(idx).xLim   = [0,timeEnd];
 plotSettings(idx).xTicks = round([0,timeExcitation1,timeRamp0],3,'significant');
-plotSettings(idx).yTicks = [1,1.1];
+plotSettings(idx).yTicks = [0.8,0.9];
 
 
 leftPos = 0.15;%max(plotSettings(idx-2).yLim)-leftPos;
@@ -169,12 +171,12 @@ d = max(plotSettings(idx).yTicks)-min(plotSettings(idx).yTicks);
 c = d*a/b;
 yMax = max(plotSettings(idx).yTicks)+c;
 
-plotSettings(idx).yLim   = [0.85,yMax];
+plotSettings(idx).yLim   = [0.65,yMax];
 
 idx=5;
 plotSettings(idx).xLim   = plotSettings(idx-1).xLim;
 plotSettings(idx).xTicks = plotSettings(idx-1).xTicks;
-plotSettings(idx).yTicks = [0.9,1];
+plotSettings(idx).yTicks = [0.7,0.8];
 
 leftPos = 0.15;%max(plotSettings(idx-2).yLim)-leftPos;
 a = max(plotSettings(idx-2).yLim)-leftPos;
@@ -183,7 +185,7 @@ d = max(plotSettings(idx).yTicks)-min(plotSettings(idx).yTicks);
 c = d*a/b;
 yMax = max(plotSettings(idx).yTicks)+c;
 
-plotSettings(idx).yLim   = [0.85,yMax];
+plotSettings(idx).yLim   = [0.65,yMax];
 
 lineType = '-';
 
