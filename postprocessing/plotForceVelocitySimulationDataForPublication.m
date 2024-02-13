@@ -133,7 +133,7 @@ lceOptHL1997 = 38.0/1000;
 
 musclePropertiesHL1997.fiso         = fisoHL1997;
 musclePropertiesHL1997.lceOpt       = lceOptHL1997;
-musclePropertiesHL1997.lceNOffset   = 0.9-(4/1000)/lceOptHL1997;
+musclePropertiesHL1997.lceNOffset   = 0.900-(4/1000)/lceOptHL1997;
 musclePropertiesHL1997.vmax         = vmaxSBL1996;
 
 %%

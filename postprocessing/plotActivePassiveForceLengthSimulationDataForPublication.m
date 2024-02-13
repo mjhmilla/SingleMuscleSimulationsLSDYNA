@@ -41,20 +41,22 @@ cd(trialFolder);
 %Active and passive data points of the starting of the Herzog & Leonard
 %1997 force-velocity data
 %%
-dataHL1997.dl   = [0.894242,1.10606]-0.894242;
-dataHL1997.fpe  = [0.0264486,0.08545676];
-dataHL1997.fa   = [0.856798,1.15101]-dataHL1997.fpe;
-dataHL1997.fa   = dataHL1997.fa-dataHL1997.fa(1,1);
-dataHL1997.rectangle.fl =   [dl(1,1),dfa(1,1);...
-                             dl(1,2),dfa(1,1);...
-                             dl(1,2),dfa(1,2);...
-                             dl(1,1),dfa(1,2);...
-                             dl(1,1),dfa(1,1)];
-dataHL1997.rectangle.fpe =  [dl(1,1),dfpe(1,1);...
-                             dl(1,2),dfpe(1,1);...
-                             dl(1,2),dfpe(1,2);...
-                             dl(1,1),dfpe(1,2);...
-                             dl(1,1),dfpe(1,1)];
+flag_solveForHerzogLeonard1997Params=1;
+dataHL1997.l    = [0.688979,0.9011];
+dataHL1997.dl   = dataHL1997.l-0.688979;
+dataHL1997.fpe  = [0.0237796,0.0760336];
+dataHL1997.fa   = [0.770336,1.03486]-dataHL1997.fpe;
+dataHL1997.dfa   = dataHL1997.fa-dataHL1997.fa(1,1);
+dataHL1997.rectangle.fl =   [dataHL1997.dl(1,1),dataHL1997.fa(1,1);...
+                             dataHL1997.dl(1,2),dataHL1997.fa(1,1);...
+                             dataHL1997.dl(1,2),dataHL1997.fa(1,2);...
+                             dataHL1997.dl(1,1),dataHL1997.fa(1,2);...
+                             dataHL1997.dl(1,1),dataHL1997.fa(1,1)];
+dataHL1997.rectangle.fpe =  [dataHL1997.dl(1,1),dataHL1997.fpe(1,1);...
+                             dataHL1997.dl(1,2),dataHL1997.fpe(1,1);...
+                             dataHL1997.dl(1,2),dataHL1997.fpe(1,2);...
+                             dataHL1997.dl(1,1),dataHL1997.fpe(1,2);...
+                             dataHL1997.dl(1,1),dataHL1997.fpe(1,1)];
 
 
 %These files hold the processed experimental data which is used to 
@@ -103,7 +105,7 @@ timeDelta   = (timeEnd-timeStart)/100;
 
 timeA = timeStart + (timeEnd-timeStart)*(0.25);
 timeMid=timeStart + (timeEnd-timeStart)*(0.5);
-timeB = timeStart + (timeEnd-timeStart)*(0.75);
+timeB = timeStart + (timeEnd-timeStart)*(0.95);
 
 indexA = find(lsdynaMuscleUniform.eloutTime > timeA,1);
 indexB = find(lsdynaMuscleUniform.eloutTime > timeB,1);
@@ -439,7 +441,7 @@ if(flag_addSimulationData==1)
                 hold on;
 
             if(flag_solveForHerzogLeonard1997Params==1)
-
+                here=1;
             end
 
 

@@ -86,8 +86,8 @@ flag_enableReflexExperiment_kN_mm_ms    = 0;
 
 flag_enableActivePassiveForceLengthExperimentViva   = 0;
 flag_enableForceVelocityExperimentViva              = 0;
-flag_enableActivePassiveForceLengthExperiment       = 0;
-flag_enableForceVelocityExperiment                  = 1;
+flag_enableActivePassiveForceLengthExperiment       = 1;
+flag_enableForceVelocityExperiment                  = 0;
 
 if(flag_enableForceVelocityExperimentViva ...
         || flag_enableActivePassiveForceLengthExperimentViva)
