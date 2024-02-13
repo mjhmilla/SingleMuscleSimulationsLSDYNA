@@ -2,7 +2,7 @@ function errH = calcHillError(params,argScale,data,fiso)
 
 
 params = params.*argScale;
-fvAtHalfVmax = params(1,1);
+fvAtHalfVmax = params(1,1)*fiso;
 vMaxC        = params(1,2);
 
 w = 0.5*vMaxC;

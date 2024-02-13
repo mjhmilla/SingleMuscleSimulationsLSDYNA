@@ -373,11 +373,12 @@ if(flag_addSimulationData==1)
             idxC = find(dataFv(:,4)<0);
 
             x0 =[0.2,-1];
-            s0 = x0;
-            xN0 = [1,1];
+            s0 = [1,1];
+            xN0 = x0./s0;
             dataFit = [dataFv(idxC,4),dataFv(idxC,5)];
             errFcn = @(arg)calcHillError(arg,s0,dataFit,fisoSubMax);
             [xN1,err1]=lsqnonlin(errFcn,xN0);
+            err2=errFcn(xN1);
             x = xN1.*s0;
             vceMax=x(1,2);
 
