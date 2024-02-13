@@ -27,12 +27,16 @@ end
 trialFolder=pwd;
 cd ..;
 simulationFolder=pwd;
+cd ..;
+cd ..;
+cd 'common';
+commonFolder= pwd; 
 cd(trialFolder);
 
 %These files hold the processed experimental data which is used to 
 %evaluate the RMSE of the (interpolated) model values
-fileExpDataForceVelocity        = [simulationFolder,filesep,'dataExpForceVelocity.csv'];
-fileExpDataForceVelocitySubmax  = [simulationFolder,filesep,'dataExpForceVelocitySubmax.csv'];
+fileExpDataForceVelocity        = [commonFolder,filesep,'dataExpForceVelocity.csv'];
+fileExpDataForceVelocitySubmax  = [commonFolder,filesep,'dataExpForceVelocitySubmax.csv'];
 idHerzogLeonard1997             = 1;
 idBrownScottLoeb1996            = 2;
 idScottBrownLoeb1996            = 3;
