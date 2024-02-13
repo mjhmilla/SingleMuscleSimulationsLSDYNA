@@ -218,11 +218,11 @@ for i=1:1:length(vceNV)
     fid=fopen([simName,'.k'],'w');
 
     if(vceN > 0)
-        lceN0 = 1 - dlopt;
-        lceN1 = 1;
+        lceN0 = lceNMid - dlopt;
+        lceN1 = lceNMid;
     else
-        lceN0 = 1 + dlopt;
-        lceN1 = 1;
+        lceN0 = lceNMid + dlopt;
+        lceN1 = lceNMid;
     end
 
 
@@ -289,14 +289,13 @@ switch unitsSetting
     otherwise assert(0, 'Error: invalid unitsSettings');
 end
 
-lceNIso = lceN1;
 vceNIso = 0;
 
 fprintf(fid,'*KEYWORD\n');
 fprintf(fid,'*PARAMETER\n');
 fprintf(fid,'$#    name       val\n');
-fprintf(fid,'RpathLenN0  %1.6f\n',lceNIso);
-fprintf(fid,'RpathLenN1  %1.6f\n',lceNIso);
+fprintf(fid,'RpathLenN0  %1.6f\n',lceNMid);
+fprintf(fid,'RpathLenN1  %1.6f\n',lceNMid);
 vceStr = sprintf('%1.6f',vceN);
 spStr = ' ';
 for j=length(vceStr):1:8
@@ -344,14 +343,13 @@ switch unitsSetting
     otherwise assert(0, 'Error: invalid unitsSettings');
 end
 
-lceNIso = lceN1;
 vceNIso = 0;
 
 fprintf(fid,'*KEYWORD\n');
 fprintf(fid,'*PARAMETER\n');
 fprintf(fid,'$#    name       val\n');
-fprintf(fid,'RpathLenN0  %1.6f\n',lceNIso);
-fprintf(fid,'RpathLenN1  %1.6f\n',lceNIso);
+fprintf(fid,'RpathLenN0  %1.6f\n',lceNMid);
+fprintf(fid,'RpathLenN1  %1.6f\n',lceNMid);
 vceStr = sprintf('%1.4f',vceN);
 spStr = ' ';
 for j=length(vceStr):1:8
