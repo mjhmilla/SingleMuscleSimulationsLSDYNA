@@ -257,9 +257,9 @@ if(strcmp(modelName,'umat41')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).simulationConstantFile = ...
-          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat41Parameters.k'];      
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL1997Umat41Parameters.k'];      
       simulationInformation(idx).musclePropertyCard     = ...
-          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat41.k'];       
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL1997Umat41.k'];       
       simulationInformation(idx).optimalFiberLength         = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
       simulationInformation(idx).tendonSlackLength          = 'ltSlk';
@@ -276,9 +276,9 @@ if(strcmp(modelName,'umat41')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).simulationConstantFile = ...
-          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat41Parameters.k'];      
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL1997Umat41Parameters.k'];      
       simulationInformation(idx).musclePropertyCard     = ...
-          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat41.k'];      
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL1997Umat41.k'];      
       simulationInformation(idx).optimalFiberLength         = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
       simulationInformation(idx).tendonSlackLength          = 'ltSlk';
@@ -482,9 +482,9 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).simulationConstantFile = ...
-          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat43Parameters.k'];      
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL1997Umat43Parameters.k'];      
       simulationInformation(idx).musclePropertyCard     = ...
-          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat43.k'];      
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL1997Umat43.k'];      
       simulationInformation(idx).optimalFiberLength         = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
       simulationInformation(idx).tendonSlackLength          = 'ltSlk';
@@ -501,9 +501,9 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).simulationConstantFile = ...
-          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat43Parameters.k'];      
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL1997Umat43Parameters.k'];      
       simulationInformation(idx).musclePropertyCard     = ...
-          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat43.k'];         
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL1997Umat43.k'];         
       simulationInformation(idx).optimalFiberLength         = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
       simulationInformation(idx).tendonSlackLength          = 'ltSlk';
@@ -555,9 +555,9 @@ if(strcmp(modelName,'mat156')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).simulationConstantFile = ...
-          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Mat156Parameters.k'];      
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL1997Mat156Parameters.k'];      
       simulationInformation(idx).musclePropertyCard     = ...
-          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Mat156.k'];     
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL1997Mat156.k'];     
       simulationInformation(idx).optimalFiberLength         = 'lceOptAT';
       simulationInformation(idx).maximumIsometricForce      = 'fceOptAT';
       simulationInformation(idx).tendonSlackLength          = 'ltSlk';
@@ -573,9 +573,9 @@ if(strcmp(modelName,'mat156')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).simulationConstantFile = ...
-          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Mat156Parameters.k'];      
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL1997Mat156Parameters.k'];      
       simulationInformation(idx).musclePropertyCard     = ...
-          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Mat156.k'];       
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL1997Mat156.k'];       
       simulationInformation(idx).optimalFiberLength         = 'lceOptAT';
       simulationInformation(idx).maximumIsometricForce      = 'fceOptAT';
       simulationInformation(idx).tendonSlackLength          = 'ltSlk';
