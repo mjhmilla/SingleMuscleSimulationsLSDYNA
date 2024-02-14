@@ -6,13 +6,13 @@ $
 ../../../common/
 $
 *INCLUDE
-catsoleusHL2002Umat43Parameters.k
+catsoleusHL1997Umat43Parameters.k
 $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4                                   
-R   timeS0     0.249
-R   timeS1     0.250
+R   timeS0     0.341
+R   timeS1     0.342
 R    timeE     4.100
 RtimeRamp0     1.500
 $
@@ -111,6 +111,6 @@ $#                a1                  o1
               &timeE              &dtInt
 $
 *INCLUDE
-catsoleusHL2002Umat43.k
+catsoleusHL1997Umat43.k
 *END
 

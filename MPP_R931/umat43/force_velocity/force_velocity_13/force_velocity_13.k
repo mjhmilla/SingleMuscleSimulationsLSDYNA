@@ -1,10 +1,10 @@
 *KEYWORD
 *PARAMETER
 $#    name       val
-RpathLenN0  0.701497
-RpathLenN1  0.794737
+RpathLenN0  0.687878
+RpathLenN1  0.793939
 R  pathVel  2.800000
-R rampTime  0.033300
+R rampTime  0.037879
 R   actVal  1.000000
 $
 *INCLUDE_PATH_RELATIVE

@@ -589,7 +589,7 @@ if(contains(simulationDirectoryName,simMetaData.fileNameSubMaxActEnd)==1 || ...
             ax=gca;
             ax.YAxis(1).Color = [0,0,0];
             ax.YAxis(2).Color = lineColorRampA;        
-            legend('Location','West');
+            legend('Location','NorthWest');
         
         yyaxis right;
         %ylabel('Norm. Length ($$(\ell^P-\ell^T_s)/\ell^{M}_o$$)');

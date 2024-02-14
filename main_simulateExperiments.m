@@ -34,25 +34,25 @@ redB = redA.*0.5;% + [1,1,1].*0.5;
 dataColorA=greyA;
 dataColorB=greyB;
 
-models(1) = struct('id',0,'name','');
+models(3) = struct('id',0,'name','');
 
 %indexVIVA              = 1;
 %models(indexVIVA).id   = 1;
 %models(indexVIVA).name ='viva';
 %models(indexVIVA).colors= [greenA;greenB];
 
-% indexMat56                = 1;
-% models(indexMat56).id     = 1;
-% models(indexMat56).name   ='mat156';
-% models(indexMat56).colors = [redA;redB];
-%  
-% indexUmat41              = 2;
-% models(indexUmat41).id   = 2;
-% models(indexUmat41).name ='umat41';
-% models(indexUmat41).colors= [magentaA;magentaB];
+indexMat56                = 1;
+models(indexMat56).id     = 1;
+models(indexMat56).name   ='mat156';
+models(indexMat56).colors = [redA;redB];
+ 
+indexUmat41              = 2;
+models(indexUmat41).id   = 2;
+models(indexUmat41).name ='umat41';
+models(indexUmat41).colors= [magentaA;magentaB];
 %   
-indexUmat43              = 1;
-models(indexUmat43).id   = 1;
+indexUmat43              = 3;
+models(indexUmat43).id   = 3;
 models(indexUmat43).name ='umat43';
 models(indexUmat43).colors= [blueA;blueB];
 
@@ -86,8 +86,8 @@ flag_enableReflexExperiment_kN_mm_ms    = 0;
 
 flag_enableActivePassiveForceLengthExperimentViva   = 0;
 flag_enableForceVelocityExperimentViva              = 0;
-flag_enableActivePassiveForceLengthExperiment       = 0;
-flag_enableForceVelocityExperiment                  = 1;
+flag_enableActivePassiveForceLengthExperiment       = 1;
+flag_enableForceVelocityExperiment                  = 0;
 
 if(flag_enableForceVelocityExperimentViva ...
         || flag_enableActivePassiveForceLengthExperimentViva)

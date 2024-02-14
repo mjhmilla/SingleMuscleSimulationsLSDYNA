@@ -14,7 +14,7 @@ assert(contains(rootDir(1,end-29:end),'SingleMuscleSimulationsLSDYNA'),...
 %Settings
 
 
-modelName       = 'umat43'; 
+modelName       = 'mat156'; 
 %Options:
 %   umat41
 %   umat43
@@ -32,8 +32,11 @@ simulationName  = 'force_velocity';
 %Fixed
 releaseName     ='MPP_R931';
 
-lceNMid = 0.794736842105263;
+lceNMid   = 0.793939;
+lceNDelta = 0.5*(0.9011-0.688979);
 
+lceNLong = lceNMid+lceNDelta;%0.9011;
+lceNShort= lceNMid-lceNDelta;%0.688979;
 
 units_kNmmms = 0;
 units_Nms    = 1; 
@@ -136,10 +139,10 @@ for i=1:1:length(vceNV)
     fid=fopen([simName,'.k'],'w');
 
     if(vceN > 0)
-        lceN0 = lceNMid - dlopt;
+        lceN0 = lceNShort;
         lceN1 = lceNMid;
     else
-        lceN0 = lceNMid + dlopt;
+        lceN0 = lceNLong;
         lceN1 = lceNMid;
     end
 
@@ -218,10 +221,10 @@ for i=1:1:length(vceNV)
     fid=fopen([simName,'.k'],'w');
 
     if(vceN > 0)
-        lceN0 = lceNMid - dlopt;
+        lceN0 = lceNShort;
         lceN1 = lceNMid;
     else
-        lceN0 = lceNMid + dlopt;
+        lceN0 = lceNLong;
         lceN1 = lceNMid;
     end
 
