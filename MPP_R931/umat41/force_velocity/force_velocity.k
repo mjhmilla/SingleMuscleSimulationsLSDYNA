@@ -18,8 +18,8 @@ R    timeE 4.10
 $
 *PARAMETER_EXPRESSION
 $#    name expression
-R pathLen0 &pathLenN0*&lceOptAT+&ltSlk*(1.0+&et)
-R pathLen1 &pathLenN1*&lceOptAT+&ltSlk*(1.0+&et)
+R pathLen0 &pathLenN0*&lceOptAT+&ltSlk
+R pathLen1 &pathLenN1*&lceOptAT+&ltSlk
 RtimeRamp1 &timeRamp0+&rampTime
 $
 *TITLE
