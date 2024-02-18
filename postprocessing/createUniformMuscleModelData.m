@@ -165,7 +165,8 @@ switch modelName
         uniformModelData.alphaDot   = lsdynaMusout.data(:,lsdynaMusout.indexAlphaDot);
 
         uniformModelData.fceN       = lsdynaMusout.data(:,lsdynaMusout.indexFceN);
-        uniformModelData.fpeN       = lsdynaMusout.data(:,lsdynaMusout.indexFecmHN);
+        uniformModelData.fpeN       = lsdynaMusout.data(:,lsdynaMusout.indexFecmHN) ...
+                                    +  lsdynaMusout.data(:,lsdynaMusout.indexF2HN);
         uniformModelData.fseN       = lsdynaMusout.data(:,lsdynaMusout.indexFtN);
         uniformModelData.dseN       = lsdynaMusout.data(:,lsdynaMusout.indexFtBetaN);        
         uniformModelData.fmtN       = lsdynaMusout.data(:,lsdynaMusout.indexFtN);

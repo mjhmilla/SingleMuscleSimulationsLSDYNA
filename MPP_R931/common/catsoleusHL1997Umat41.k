@@ -12,6 +12,6 @@ $#    Fmax    lCEopt     dWdes   nuCEdes     dWasc   nuCEasc     Arel0     Brel0
 $#    Secc      Fecc     LPEE0     nuPEE      FPEE     lSEE0  dUSEEnll    duSEEl
  0.7725022 1.4391543    &LPEE0 1.5907747     &FPEE    &ltSlk 0.0347222 0.0222222
 $#  dFSEE0   Damping    Param1    Param2    Output     dtOut
- 14.337374       3.0       0.3      0.01         2    &dtOut    
+   &dFSEE0       3.0       0.3      0.01         2    &dtOut    
 $#
 *END

@@ -35,7 +35,13 @@ yTextRmse=0.2;
 trialFolder=pwd;
 cd ..;
 simulationFolder=pwd;
+
+cd('passive_force_length');
+passiveFolder=pwd;
+
 cd(trialFolder);
+
+
 
 %%
 %Active and passive data points of the starting of the Herzog & Leonard
@@ -346,10 +352,83 @@ if(flag_addSimulationData==1)
     if(flag_activeData)
         subplot('Position',subplotFl);
 
-        fAN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexA,1);
-        fA  = fAN.*maximumIsometricForce;
-        fBN = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexB,1);
-        fB  = fBN.*maximumIsometricForce;
+        %%Read in the passive force length data
+        cd(passiveFolder)
+        musoutFpe = [];
+        musoutName='musout.0000000002';
+        switch lsdynaMuscleUniform.name
+            case 'umat41'
+                [musoutFpe,success] = ...
+                    readUmat41MusoutData(musoutName);  
+            case 'umat43'
+                [musoutFpe,success] = ...
+                    readUmat43MusoutData(musoutName); 
+            case 'mat156'
+                musoutFpe=[];
+            case 'viva'
+                musoutFpe=[];
+            otherwise assert(0)
+        end
+        [binoutFpe,status] = binoutreader('dynaOutputFile','binout0000',...
+                                        'ignoreUnknownDataError',true);
+
+
+        uniformPassiveData = createUniformMuscleModelData(...
+                            lsdynaMuscleUniform.name,...
+                            musoutFpe, binoutFpe, 'd3hsp',...
+                            optimalFiberLength,...
+                            maximumIsometricForce,...
+                            tendonSlackLength,...
+                            pennationAngle,...
+                            'passive_force_length');        
+        cd(trialFolder);
+        
+        %Solve for the passive force using the passive-force-length
+        %trial. Using this trial and a tendon model it is possible to 
+        %reconstruct the force-length profile for the CE. I am using this
+        %approach rather than using the detailed output from the models 
+        %because: fpe is only defined in simulation for umat43, and its
+        %important that the output of these plots comes exactly from the
+        %data that an experimentalist would have. An experimentalist would
+        %not have access to, for example, the load on the distal titin
+        %segment of umat43. As such, I can't use this secret information
+        %here.
+        lceN  = lsdynaMuscleUniform.lceN(indexB,1);
+        idxFpeMin = find(uniformPassiveData.fceN>0.01,1);
+        fpeN = interp1(uniformPassiveData.lceN(:,1),... 
+                       uniformPassiveData.fmtN(:,1),...
+                       lceN,...
+                       'linear','extrap');
+
+        faeN = 0;
+        alpha = 0;
+        switch lsdynaMuscleUniform.name
+            case 'umat41'
+                fmtN = lsdynaMuscleUniform.fmtN(indexB,1);
+                %fpeN = lsdynaMuscleUniform.fpeN(indexB,1);
+                alpha=0;
+            case 'umat43'
+                fmtN = lsdynaMuscleUniform.fmtN(indexB,1);
+                %fpeN = lsdynaMuscleUniform.fpeN(indexB,1);
+                alpha = lsdynaMuscleUniform.alpha(indexB,1);
+            case 'viva'
+                fmtN = lsdynaMuscleUniform.fmtN(indexB,1);
+                %fpeN = lsdynaMuscleUniform.fpeN(indexB,1);
+                alpha = lsdynaMuscleUniform.alpha(indexB,1);
+            case 'mat156'
+                fAN   = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexA,1);
+                fA    = fAN.*maximumIsometricForce;
+                fBN   = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexB,1);
+                fB    = fBN.*maximumIsometricForce;
+                alpha=0;
+                fmtN = fBN;
+                %fpeN = fAN;
+                                
+            otherwise assert(0)
+        end
+        
+        faeN = fmtN-fpeN;
+        faeAT = faeN*cos(alpha)*maximumIsometricForce;
 
         if(strcmp(lsdynaMuscleUniform.name,'mat156')==1)
             act = lsdynaMuscleUniform.act(indexB,1);            
@@ -357,19 +436,19 @@ if(flag_addSimulationData==1)
             act = lsdynaMuscleUniform.act(indexB,1);
         end
        
-        fpeAT =(fA);
-        faeAT =(fB-fA);
+        %fpeAT =(fA);
+        %faeAT =(fB-fA);
 
-        lp1 = lsdynaMuscleUniform.lp(indexB,1);
-        ltN = lsdynaMuscleUniform.ltN(indexB,1);
+        lp = lsdynaMuscleUniform.lp(indexB,1);
+        %ltN = lsdynaMuscleUniform.ltN(indexB,1);
         
-        lp     = lp1;
+        %lp     = lp1;
         displayNameStr ='';
         handleVisibility='off';
 
-        fpeN  = fAN;
-        faeN  = (fBN-fAN);
-        lceN  = lsdynaMuscleUniform.lceN(indexB,1);
+        %fpeN  = fAN;
+        %faeN  = (fBN-fAN);
+        
 
         entryHeadings = {'act','lp','fae','lceN','fceN'};
         entryData = [act,lp,faeAT];

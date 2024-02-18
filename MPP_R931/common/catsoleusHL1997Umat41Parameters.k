@@ -9,7 +9,8 @@ R lmtOptAT 0.0681679
 R   penOpt 0.1221730
 R  penOptD 7.0 
 R    ltSlk 0.0304511
-R       et 0.0458333
+R       et 0.045826
+R   dFSEE0 27.5735
 R   vceMax 4.50
 R    dtInt 0.0001
 R    dtOut 0.010
