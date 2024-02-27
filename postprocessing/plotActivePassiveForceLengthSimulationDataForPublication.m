@@ -405,15 +405,12 @@ if(flag_addSimulationData==1)
         switch lsdynaMuscleUniform.name
             case 'umat41'
                 fmtN = lsdynaMuscleUniform.fmtN(indexB,1);
-                %fpeN = lsdynaMuscleUniform.fpeN(indexB,1);
                 alpha=0;
             case 'umat43'
                 fmtN = lsdynaMuscleUniform.fmtN(indexB,1);
-                %fpeN = lsdynaMuscleUniform.fpeN(indexB,1);
                 alpha = lsdynaMuscleUniform.alpha(indexB,1);
             case 'viva'
                 fmtN = lsdynaMuscleUniform.fmtN(indexB,1);
-                %fpeN = lsdynaMuscleUniform.fpeN(indexB,1);
                 alpha = lsdynaMuscleUniform.alpha(indexB,1);
             case 'mat156'
                 fAN   = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexA,1);
@@ -421,8 +418,7 @@ if(flag_addSimulationData==1)
                 fBN   = lsdynaMuscleUniform.eloutAxialBeamForceNorm(indexB,1);
                 fB    = fBN.*maximumIsometricForce;
                 alpha=0;
-                fmtN = fBN;
-                %fpeN = fAN;
+                fmtN = fBN;                
                                 
             otherwise assert(0)
         end
