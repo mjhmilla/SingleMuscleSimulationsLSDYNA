@@ -83,7 +83,7 @@ tendonSlackLength       =muscleArchitecture.ltslk;
 pennationAngle          =muscleArchitecture.alpha;
 
 lineWidthData=1;
-lineWidthModel=1;
+lineWidthModel=0.5;
 
 fileNameMaxActStart     = 'active_force_length_00';
 fileNameMaxActLast      = 'active_force_length_14';
@@ -333,10 +333,10 @@ if(flag_addSimulationData==1)
     lineColor = lineColorA;    
     markerFaceColor = lineColorA;
     markerLineWidth = lineWidthModel;
-    markerSize = 4;
+    markerSize = 2;
     if(abs(lsdynaMuscleUniform.exc(end,1)-1) > 1e-3)
         markerFaceColor = [1,1,1];
-        markerSize=4;
+        markerSize=2;
         markerLineWidth = lineWidthModel;        
     end
 
