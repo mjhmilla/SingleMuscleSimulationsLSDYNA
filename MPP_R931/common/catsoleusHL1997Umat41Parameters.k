@@ -14,9 +14,9 @@ R   dFSEE0 27.5735
 R   vceMax 4.50
 R    dtInt 0.0001
 R    dtOut 0.010
-R    LPEE0 0.8179434
-R     FPEE 1.612981
-R    dWasc 0.5896795
-R  nuCEasc 2.032950
+R    LPEE0 0.8202919
+R     FPEE 1.677090
+R    dWasc 0.6433505
+R  nuCEasc 1.692322
 *END
 
