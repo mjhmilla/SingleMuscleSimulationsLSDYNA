@@ -11,7 +11,7 @@ R  penOptD 7.0
 R    ltSlk 0.0304511
 R       et 0.045826
 R   dFSEE0 27.5735
-R   vceMax 4.50
+R   vceMax 3.2927
 R    dtInt 0.0001
 R    dtOut 0.010
 R    LPEE0 0.8375788
