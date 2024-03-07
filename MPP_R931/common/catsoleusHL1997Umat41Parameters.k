@@ -16,7 +16,7 @@ R    dtInt 0.0001
 R    dtOut 0.010
 R    LPEE0 0.8394027
 R     FPEE 1.587754
-R    dWasc 0.6433505
-R  nuCEasc 1.692322
+R    dWasc 0.4335338
+R  nuCEasc 3.703563
 *END
 
