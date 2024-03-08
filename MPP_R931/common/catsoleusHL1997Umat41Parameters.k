@@ -12,7 +12,7 @@ R    ltSlk 0.0304511
 R       et 0.045826
 R   dFSEE0 27.5735
 R   vceMax 4.65
-R    dtInt 0.0001
+R    dtInt 0.00001
 R    dtOut 0.010
 R    LPEE0 0.8375788
 R     FPEE 1.523141
