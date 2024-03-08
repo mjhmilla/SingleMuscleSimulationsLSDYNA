@@ -35,8 +35,8 @@ releaseName     ='MPP_R931';
 lceNMid   = 0.793939;
 lceNDelta = 0.5*(0.9011-0.688979);
 
-lceNLong = lceNMid+lceNDelta;%0.9011;
-lceNShort= lceNMid-lceNDelta;%0.688979;
+lceNLong = lceNMid + lceNDelta;%0.9011;
+lceNShort= lceNMid - lceNDelta;%0.688979;
 
 units_kNmmms = 0;
 units_Nms    = 1; 
