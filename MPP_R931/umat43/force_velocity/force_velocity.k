@@ -14,10 +14,10 @@ $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
 R   timeS0     0.341
 R   timeS1     0.342
 R    timeE     4.100
-RtimeRamp0     1.500
 $
 *PARAMETER_EXPRESSION
 $#    name expression
+RtimeRamp0 &rampStart
 R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk*(1.+&et)
 R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk*(1.+&et)
 RtimeRamp1 &timeRamp0+&rampTime
