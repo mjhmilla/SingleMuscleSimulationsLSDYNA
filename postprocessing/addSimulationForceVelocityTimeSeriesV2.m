@@ -14,6 +14,20 @@ function [figH, simDataVector] = ...
 
 figure(figH);
 
+switch contractionDirection
+    case -1
+        idxStart=1;
+        idxEnd = 5;
+        vSign = -1;
+        idxPlotSettings=2;
+    case 1
+        idxStart=6;
+        idxEnd = 10;
+        vSign=1;        
+        idxPlotSettings=3;
+        
+    otherwise assert(0,'Error: contractionDirection must be -1 or 1');
+end
 
 
 %%
@@ -139,6 +153,8 @@ else
 end
 indexSample=idx;
 timeSample = lsdynaMuscleUniform.time(indexSample,1);
+
+
 
 act = lsdynaMuscleUniform.act(indexSample,1);    
 % if(contains(lsdynaMuscleUniform.nameLabel,'VIVA+') ...
@@ -373,37 +389,81 @@ if(      (   trialNumber >= simMetaData.numberHL1997ShorteningStart ...
             lceNRampStart  = lsdynaMuscleUniform.lceN(indexRamp0-5,1);
             lceNRampEnd    = lsdynaMuscleUniform.lceN(end,1);
 
+            indexFeFd = find(lsdynaMuscleUniform.time(:,1)>(timeRamp1+1),1);
+            if(isempty(indexFeFd))
+                indexFeFd = length(lsdynaMuscleUniform.time(:,1));
+            end
+            fmtNFeFd = lsdynaMuscleUniform.fmtN(indexFeFd,1);
+            fefdN = [];
+
+            xWidth  = diff(plotSettings(idxPlotSettings).xLim);
+            yHeight = diff(plotSettings(idxPlotSettings).yLim);            
+
             switch lsdynaMuscleUniform.name
                 case 'mat156'
                      text(lsdynaMuscleUniform.time(end,1),...
-                          0.7,...
+                          0.45,...
                           sprintf('%1.3f,%1.3f,%1.3f',lceNRampEnd,fpNSample,faNSample),...
                           'HorizontalAlignment','right',...
                           'Color',markerFaceColor);
                      hold on;
+
+                     fefdN = fmtNFeFd-(fB/maximumIsometricForce);
+
+                     text(lsdynaMuscleUniform.time(indexFeFd,1),...
+                          0.75,...
+                          sprintf('%1.3f',fefdN),...
+                          'HorizontalAlignment','right',...
+                          'Color',markerFaceColor,...
+                          'FontSize',6);
+                     hold on;
+
                 case 'umat41'
                     lceNIso = uniformModelDataIsometric.lceN(end,1);
                     fpeNIso = uniformModelDataIsometric.fpeN(end,1);
                     fmtNIso = uniformModelDataIsometric.fmtN(end,1);
 
                     text(lsdynaMuscleUniform.time(end,1),...
-                          0.6,...
+                          0.35,...
                           sprintf('%1.3f,%1.3f,%1.3f',lceNIso,fpeNIso,fmtNIso),...
                           'HorizontalAlignment','right',...
                           'Color',markerFaceColor);
                      hold on;
+                     
+                     fefdN = fmtNFeFd-fmtNIso;
+
+                     text(lsdynaMuscleUniform.time(indexFeFd,1),...
+                          0.70,...
+                          sprintf('%1.3f',fefdN),...
+                          'HorizontalAlignment','right',...
+                          'Color',markerFaceColor,...
+                          'FontSize',6);
+                     hold on;                     
+
                 case 'umat43'
                      lceNIso = uniformModelDataIsometric.lceN(end,1);
                      fpeNIso = uniformModelDataIsometric.fpeN(end,1);
                      fmtNIso = uniformModelDataIsometric.fmtN(end,1);
 
                      text(lsdynaMuscleUniform.time(end,1),...
-                          0.5,...
+                          0.25,...
                           sprintf('%1.3f,%1.3f,%1.3f',lceNIso,fpeNIso,fmtNIso),...
                           'HorizontalAlignment','right',...
                           'Color',markerFaceColor);
-                     hold on;         
-            end              
+                     hold on;   
+
+                     fefdN = fmtNFeFd-fmtNIso;
+
+                     text(lsdynaMuscleUniform.time(indexFeFd,1),...
+                          0.65,...
+                          sprintf('%1.3f',fefdN),...
+                          'HorizontalAlignment','right',...
+                          'Color',markerFaceColor,...
+                          'FontSize',6);
+                     hold on;
+            end
+
+            
 
         end
 
@@ -499,7 +559,7 @@ if(      (   trialNumber >= simMetaData.numberHL1997ShorteningStart ...
         
         flag_addRMSE=1;
         if(flag_addRMSE==1)
-            yLeft = 0.7;
+            yLeft = 0.65;
             yRight= 1.5;
             dy = 0.075;
 

@@ -179,18 +179,22 @@ for idx=idxStart:1:idxEnd
             xWidth  = diff(plotSettings(idxPlotSettings).xLim);
             yHeight = diff(plotSettings(idxPlotSettings).yLim);
 
-            timeRampEnd = dataHL1997Length(idx).x(3,1);
-            timeSample = timeRampEnd+1;
-            idxSample = find(dataHL1997Force(idx).x>=timeSample,1);
+
+            timeFeFdSample = dataHL1997Force(idx).x(idxSampleTime,1)+1;
+
+
 
            
             %x0 = plotSettings(idxPlotSettings).xLim(1,2)-xWidth*0.01;
-            x0   = dataHL1997Force(idx).x(idxSample,1);
+            x0   = timeFeFdSample;
             x0Max = plotSettings(idxPlotSettings).xLim(1,2)-xWidth*0.01;
             if(x0 > x0Max)
                 x0=x0Max;
             end
-            y0   = dataHL1997Force(idx).y(idxSample,1)/fisoExp;
+            y0   = interp1( dataHL1997Force(idx).x, ...
+                            dataHL1997Force(idx).y/fisoExp,...
+                            timeFeFdSample);
+
             yIso = dataHL1997Force(idxIsometric).y(end,1)/fisoExp;
             annotationLine = [];
 
@@ -201,8 +205,7 @@ for idx=idxStart:1:idxEnd
                  'HandleVisibility','off');
             hold on;
 
-            dfEnd = (dataHL1997Force(idx).y(idxSample,1)./fisoExp) ...
-                   -(dataHL1997Force(idxIsometric).y(end,1)./fisoExp);
+            dfEnd = y0 -(dataHL1997Force(idxIsometric).y(end,1)./fisoExp);
             
             yTxt=0;
             if(vSign > 0)
