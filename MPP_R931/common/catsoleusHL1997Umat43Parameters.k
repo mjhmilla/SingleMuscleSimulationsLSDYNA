@@ -12,7 +12,7 @@ R    ltSlk 0.0304511
 R       et 0.0458333
 R   vceMax 4.65
 R shiftPEE -0.1358
-R    dtInt 0.00001
+R    dtInt 0.00005
 R    dtOut 0.010
 *END
 
