@@ -8,10 +8,8 @@ opengl('save','software');
 % User-defined script variables
 %%
 
-
 % Define which Releases shall be tested
 Releases    =  {'MPP_R931'};
-
 
 greyA = [0,0,0];
 greyB = [1,1,1].*0.5;
@@ -45,12 +43,12 @@ indexMat56                = 1;
 models(indexMat56).id     = 1;
 models(indexMat56).name   ='mat156';
 models(indexMat56).colors = [redA;redB];
-  
+
 indexUmat41              = 2;
 models(indexUmat41).id   = 2;
 models(indexUmat41).name ='umat41';
 models(indexUmat41).colors= [magentaA;magentaB];
-  
+
 indexUmat43              = 3;
 models(indexUmat43).id   = 3;
 models(indexUmat43).name ='umat43';
@@ -86,8 +84,8 @@ flag_enableReflexExperiment_kN_mm_ms    = 0;
 
 flag_enableActivePassiveForceLengthExperimentViva   = 0;
 flag_enableForceVelocityExperimentViva              = 0;
-flag_enableActivePassiveForceLengthExperiment       = 1;
-flag_enableForceVelocityExperiment                  = 0;
+flag_enableActivePassiveForceLengthExperiment       = 0;
+flag_enableForceVelocityExperiment                  = 1;
 
 if(flag_enableForceVelocityExperimentViva ...
         || flag_enableActivePassiveForceLengthExperimentViva)
@@ -199,6 +197,8 @@ addpath(genpath('numeric'));
 addpath(genpath('curves'));
 addpath(genpath('preprocessing'));
 addpath(genpath('postprocessing'));
+addpath(genpath('ReferenceExperiments'));
+
 
 %% Plot configuration
 plotWidth         = 6;
@@ -582,8 +582,11 @@ if(flag_postProcessSimulationData==1)
                     case 'force_velocity'
                       numberOfHorizontalPlotColumnsSpecific     = 1;
                       numberOfVerticalPlotRowsSpecific          = 2;
-                      numberOfHorizontalPlotColumnsPublication  = 3; 
-                      numberOfVerticalPlotRowsPublication       = 1+length(models);
+                      %numberOfHorizontalPlotColumnsPublication  = 3; 
+                      %numberOfVerticalPlotRowsPublication       = 1+length(models);
+                      numberOfHorizontalPlotColumnsPublication  = max(3,length(models)); 
+                      numberOfVerticalPlotRowsPublication       = 3;
+                      
                 end
 
 

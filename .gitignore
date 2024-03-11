@@ -1,5 +1,7 @@
 ~lock.*
 *.csv#
+*.orig
+*.svg
 SMP_R931/umat41/impedance/*
 SMP_R931/umat43/force_length/*
 !*.k
