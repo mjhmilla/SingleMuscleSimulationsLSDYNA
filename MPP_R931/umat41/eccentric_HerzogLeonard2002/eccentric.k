@@ -10,8 +10,8 @@ R rampLenE     0.009
 RstimTimeS      0.95
 R     lopt 0.0428571
 R   fceOpt 21.612138
-R   penOpt 0.1221730
-R  penOptD 7.0000000 
+R alphaRad 0.1221730
+RalphaRadD 7.0000000 
 R    ltSlk 0.0304511
 R       et 0.045833
 R   vceMax 4.5
