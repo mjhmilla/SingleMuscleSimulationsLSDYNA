@@ -5,9 +5,9 @@ $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout      0.01                                     
-R rampLenE     0.009
-RstimTimeS      0.95
+R    dtout 0.01                                     
+R rampLenE 0.009
+RstimTimeS 0.95
 R     lopt 0.0428571
 R   fceOpt 21.612138
 R alphaRad 0.1221730
