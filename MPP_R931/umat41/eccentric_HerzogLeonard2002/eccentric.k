@@ -22,15 +22,15 @@ $
 $#    name expression
 R rampLenS &rampLenE-&rampLen
 R   lCEopt &lopt*cos(&alphaRad)
-R     Fmax &fiso*cos(&alphaRad)
+R     Fmax &fceOpt*cos(&alphaRad)
 RrampTimeS 2.38+(&rampLenE-&rampLen)/&rampVel 
 RrampTimeD (&rampLen)/&rampVel
 RrampTimeE &rampTimeS+&rampTimeD
 RstimTimeE &rampTimeE+5.0
 R  stimLow 0.0
 R stimHigh 1.0
-R       kt 30.0*&fiso/&ltslk
-R pathLenO &lceNScale*&lopt*cos(&alphaRad)+(&Fmax)/&kt+&ltslk
+R       kt 30.0*&fceOpt/&ltSlk
+R pathLenO &lceNScale*&lopt*cos(&alphaRad)+(&Fmax)/&kt+&ltSlk
 R pathLenS &pathLenO+&rampLenS
 R pathLenE &pathLenO+&rampLenE  
 R    timeE &stimTimeE+5.0
