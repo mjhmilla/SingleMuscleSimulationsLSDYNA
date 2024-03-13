@@ -11,7 +11,7 @@ RstimTimeS 0.95
 R     lopt 0.0428571
 R   fceOpt 21.612138
 R alphaRad 0.1221730
-RalphaRadD 7.0000000 
+R alphaDeg 7.0000000 
 R    ltSlk 0.0304511
 R       et 0.045833
 R   vceMax 4.5

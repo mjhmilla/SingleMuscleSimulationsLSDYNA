@@ -150,12 +150,12 @@ if(strcmp(modelName,'umat41')==1)
       simulationType(idx).type = 'eccentric_HerzogLeonard2002';
       simulationInformation(idx).type               = simulationType(idx).type;
 
-      simulationInformation(idx).type                   = 'eccentric';
+      simulationInformation(idx).type                   = simulationType(idx).type;
       simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';
       simulationInformation(idx).simulationConstantFile = 'eccentric.k';
       simulationInformation(idx).optimalFiberLength     = 'lopt';
-      simulationInformation(idx).maximumIsometricForce  = 'fiso';
-      simulationInformation(idx).tendonSlackLength      = 'ltslk';
+      simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength      = 'ltSlk';
       simulationInformation(idx).pennationAngleDegrees  = 'alphaDeg';
       simulationInformation(idx).parametersInMuscleCard = 0;
       simulationInformation(idx).model = modelName;  
@@ -537,7 +537,7 @@ if(strcmp(modelName,'mat156')==1)
       simulationType(idx).type = 'eccentric_HerzogLeonard2002';
       simulationInformation(idx).type                   = simulationType(idx).type;
 
-      simulationInformation(idx).simulationConstantFile = 'catsoleusHL2002Mat156Parameters.k';      
+      simulationInformation(idx).simulationConstantFile = 'eccentric.k';      
       simulationInformation(idx).musclePropertyCard     = 'catsoleusMat156.k';      
       simulationInformation(idx).optimalFiberLength     = 'lceOptAT';
       simulationInformation(idx).maximumIsometricForce  = 'fceOptAT';
