@@ -20,6 +20,8 @@ RrampTimeS &rampTime0+&dT+(&rampLenE-&rampLen)/&rampVel
 RrampTimeD (&rampLen)/&rampVel
 RrampTimeE &rampTimeS+&rampTimeD
 RstimTimeE &rampTimeE+5.0
+RstimTimeB &stimTimeE+0.001
+RstimTimeB &stimTimeE+0.001
 R  stimLow 0.0
 R stimHigh 1.0
 R pathLenO &lceOptAT*&lceNScale

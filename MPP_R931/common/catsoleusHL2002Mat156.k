@@ -340,10 +340,10 @@ $-------------------------------------------------------------------------------
 stimFcn
 $#                a1                  o1  
                  0.0            &stimLow
-    &stimTimeS-0.001            &stimLow
+          &stimTimeA            &stimLow                 
           &stimTimeS           &stimHigh
           &stimTimeE           &stimHigh
-    &stimTimeE+0.001            &stimLow
+          &stimTimeB            &stimLow          
               &timeE            &stimLow
 $--------------------------------------------------------------------------------
 $ 6.2.1.1 activation dynamics filter
