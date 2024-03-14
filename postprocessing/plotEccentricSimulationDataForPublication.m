@@ -580,39 +580,39 @@ if(flag_addReferenceData==1)
             xlim(xLimRampNorm(indexLengths,:));                     
             hold on;
             
-            indexFullColumn = indexSubplotColumn+subPlotColOffset;
-            switch indexFullColumn
-                case 4
-                    subplot('Position',reshape(subPlotLayout(indexRowA,indexSubplotColumn+subPlotColOffset,:),1,4));
-                    xticks([0:5:20]);
-                    xlim([0,20.01]);
-                    hold on;
-
-                    subplot('Position',reshape(subPlotLayout(indexRowB,indexSubplotColumn+subPlotColOffset,:),1,4));
-                    xticks([0:5:20]);
-                    xlim([0,20.01]);
-                    hold on;
-                case 5
-                    subplot('Position',reshape(subPlotLayout(indexRowA,indexSubplotColumn+subPlotColOffset,:),1,4));
-                    xticks([0:2:8]);
-                    xlim([0,8.5]);
-                    hold on;
-
-                    subplot('Position',reshape(subPlotLayout(indexRowB,indexSubplotColumn+subPlotColOffset,:),1,4));
-                    xticks([0:2:8]);
-                    xlim([0,8.5]);
-                    hold on;
-                case 6
-                    subplot('Position',reshape(subPlotLayout(indexRowA,indexSubplotColumn+subPlotColOffset,:),1,4));
-                    xticks([0:1:4]);
-                    xlim([0,4.51]);
-                    hold on;
-
-                    subplot('Position',reshape(subPlotLayout(indexRowB,indexSubplotColumn+subPlotColOffset,:),1,4));
-                    xticks([0:1:4]);
-                    xlim([0,4.51]);
-                    hold on;
-            end
+             indexFullColumn = indexSubplotColumn+subPlotColOffset;
+%             switch indexFullColumn
+%                 case 4
+%                     subplot('Position',reshape(subPlotLayout(indexRowA,indexSubplotColumn+subPlotColOffset,:),1,4));
+%                     xticks([0:5:20]);
+%                     xlim([0,20.01]);
+%                     hold on;
+% 
+%                     subplot('Position',reshape(subPlotLayout(indexRowB,indexSubplotColumn+subPlotColOffset,:),1,4));
+%                     xticks([0:5:20]);
+%                     xlim([0,20.01]);
+%                     hold on;
+%                 case 5
+%                     subplot('Position',reshape(subPlotLayout(indexRowA,indexSubplotColumn+subPlotColOffset,:),1,4));
+%                     xticks([0:2:8]);
+%                     xlim([0,8.5]);
+%                     hold on;
+% 
+%                     subplot('Position',reshape(subPlotLayout(indexRowB,indexSubplotColumn+subPlotColOffset,:),1,4));
+%                     xticks([0:2:8]);
+%                     xlim([0,8.5]);
+%                     hold on;
+%                 case 6
+%                     subplot('Position',reshape(subPlotLayout(indexRowA,indexSubplotColumn+subPlotColOffset,:),1,4));
+%                     xticks([0:1:4]);
+%                     xlim([0,4.51]);
+%                     hold on;
+% 
+%                     subplot('Position',reshape(subPlotLayout(indexRowB,indexSubplotColumn+subPlotColOffset,:),1,4));
+%                     xticks([0:1:4]);
+%                     xlim([0,4.51]);
+%                     hold on;
+%             end
         end
     end
     flag_addReferenceData=0;
@@ -758,12 +758,14 @@ if(flag_addSimulationData)
                         [1:1:length(lsdynaMuscleUniform.time)]',...
                         rampTimeS);
                 idxS = round(idxS);
+                idxS = idxS-1;
 
                 idxE = interp1(lsdynaMuscleUniform.time,...
                         [1:1:length(lsdynaMuscleUniform.time)]',...
                         rampTimeE);
                 idxE = round(idxE);
-                
+                                
+
                 plot(lsdynaMuscleUniform.lceN(idxS:idxE,1),...
                      lsdynaMuscleUniform.fmtN(idxS:idxE,1),...
                      '-','Color',simulationColor,...

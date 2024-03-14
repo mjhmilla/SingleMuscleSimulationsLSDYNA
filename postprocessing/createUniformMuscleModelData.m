@@ -217,7 +217,7 @@ switch modelName
         uniformModelData.lp     = -lsdynaBinout.nodout.z_coordinate;
         uniformModelData.vp     = -lsdynaBinout.nodout.z_velocity;
         
-        uniformModelData.lceN   = (uniformModelData.lp-tendonSlackLength)./optimalFiberLength;
+        uniformModelData.lceN   = (uniformModelData.lp)./optimalFiberLength;
         uniformModelData.lceATN = uniformModelData.lceN; 
         uniformModelData.ltN    = zeros(size(uniformModelData.time));
         uniformModelData.alpha  = zeros(size(uniformModelData.time));
