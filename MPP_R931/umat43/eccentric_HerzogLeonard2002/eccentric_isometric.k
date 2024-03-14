@@ -12,6 +12,7 @@ $
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4                                    
 RstimTimeS 0.95
 RrampTime0 2.38
+RlceNScale 0.95
 $
 *PARAMETER_EXPRESSION
 $#    name expression
