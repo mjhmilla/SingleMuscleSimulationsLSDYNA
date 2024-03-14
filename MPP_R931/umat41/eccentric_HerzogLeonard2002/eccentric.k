@@ -42,8 +42,8 @@ $#  dt2msf   dt2mslc     imscl    unused    unused     rmscl
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          5         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
-                 0.0           &dtInt
-              &timeE           &dtInt        
+                 0.0              &dtInt
+              &timeE              &dtInt        
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 $                                                                              $
 $                             DATABASE (OUTPUT)                                $
@@ -85,8 +85,6 @@ $#     id1       id2       id3       id4       id5       id6       id7       id8
 *DATABASE_ELOUT
     &dtOut         2
 $#
-*INCLUDE
-catsoleus.k
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0
