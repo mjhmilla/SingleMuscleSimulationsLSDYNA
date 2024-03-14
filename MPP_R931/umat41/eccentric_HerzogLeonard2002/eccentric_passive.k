@@ -1,34 +1,28 @@
 $
 $ Matthew Millard
 $
+*INCLUDE_PATH_RELATIVE
+../../../common/
+$
+*INCLUDE
+catsoleusHL2002Umat41Parameters.k
+$
 *KEYWORD
 *PARAMETER
-$#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout 0.01                                     
+$#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4                                    
 RstimTimeS 0.95
-R     lopt 0.0428571
-R   fceOpt 21.612138
-R alphaRad 0.1221730
-R alphaDeg 7.0000000 
-R    ltSlk 0.0304511
-R       et 0.045833
-R   vceMax 4.5
-RlceNScale 0.95
-R timeStep 1.0E-4
+RrampTime0 2.38
 $
 *PARAMETER_EXPRESSION
 $#    name expression
 R rampLenS &rampLenE-&rampLen
-R   lCEopt &lopt*cos(&alphaRad)
-R     Fmax &fceOpt*cos(&alphaRad)
-RrampTimeS 2.38+(&rampLenE-&rampLen)/&rampVel 
+RrampTimeS &rampTime0+(&rampLenE-&rampLen)/&rampVel 
 RrampTimeD (&rampLen)/&rampVel
 RrampTimeE &rampTimeS+&rampTimeD
 RstimTimeE &rampTimeE+5.0
 R  stimLow 0.0
 R stimHigh 0.0
-R       kt 30.0*&fceOpt/&ltSlk
-R pathLenO &lceNScale*&lopt*cos(&alphaRad)+(&Fmax)/&kt+&ltSlk
+R pathLenO &lceNScale*&lceOptAT+(1.+&et)*&ltSlk
 R pathLenS &pathLenO+&rampLenS
 R pathLenE &pathLenO+&rampLenE  
 R    timeE &stimTimeE+5.0
@@ -48,8 +42,8 @@ $#  dt2msf   dt2mslc     imscl    unused    unused     rmscl
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          5         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
-                 0.0           &timeStep
-              &timeE           &timeStep      
+                 0.0              &dtInt
+              &timeE              &dtInt        
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 $                                                                              $
 $                             DATABASE (OUTPUT)                                $
@@ -57,19 +51,19 @@ $                                                                              $
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 *DATABASE_GLSTAT
 $#      dt    binary      lcur     ioopt     
-&dtout             0         0         1
+&dtOut             0         0         1
 *DATABASE_MATSUM
 $#      dt    binary      lcur     ioopt     
-&dtout             0         0         1
+&dtOut             0         0         1
 *DATABASE_NODOUT
 $#      dt    binary      lcur     ioopt   option1   option2       
-&dtout             3         0         1       0.0         0
+&dtOut             3         0         1       0.0         0
 *DATABASE_SPCFORC
 $#      dt    binary      lcur     ioopt     
-&dtout             0         0         1
+&dtOut             0         0         1
 *DATABASE_BINARY_D3PLOT
 $#      dt      lcdt      beam     npltc    psetid      
-    &dtout         0         0         0         0
+    &dtOut         0         0         0         0
 $#   ioopt     
          0
 *DATABASE_HISTORY_NODE
@@ -89,10 +83,8 @@ $#       a     rampt    stress
 $#     id1       id2       id3       id4       id5       id6       id7       id8
          1         0         0         0         0         0         0         0       
 *DATABASE_ELOUT
-    &dtout         2
+    &dtOut         2
 $#
-*INCLUDE
-catsoleus.k
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0
@@ -116,10 +108,12 @@ $#                a1                  o1
                  0.0          -&pathLenS
           &rampTimeS          -&pathLenS
           &rampTimeE          -&pathLenE
-              &timeE          -&pathLenE             
+              &timeE          -&pathLenE
 $
 *NODE
 $#   nid               x               y               z      tc      rc
        1             0.0             0.0             0.0       7       7
        2             0.0             0.0      -&pathLenS       7       7
+*INCLUDE
+catsoleusHL2002Umat41.k    
 *END
