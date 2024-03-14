@@ -70,6 +70,8 @@ $#   ioopt
 *DATABASE_HISTORY_NODE
 $#     id1       id2       id3       id4       id5       id6       id7       id8
          2         0         0         0         0         0         0         0
+*INCLUDE
+catsoleusHL2002Mat156.k   
 *PART
 $#                                                                         title
 Beam2
@@ -104,7 +106,5 @@ $
 *NODE
 $#   nid               x               y               z      tc      rc
        1             0.0             0.0             0.0       7       7
-       2             0.0             0.0      -&pathLenS       7       7
-*INCLUDE
-catsoleusHL2002Mat156.k    
+       2             0.0             0.0      -&pathLenS       7       7 
 *END
