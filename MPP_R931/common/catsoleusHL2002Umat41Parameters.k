@@ -1,6 +1,7 @@
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
+RlceNScale 0.95
 R   lceOpt 0.0428571
 R   fceOpt 21.612138
 R lceOptAT 0.0425376

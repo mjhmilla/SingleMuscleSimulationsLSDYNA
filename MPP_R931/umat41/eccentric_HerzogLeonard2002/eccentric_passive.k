@@ -1,6 +1,5 @@
 $
 $ Matthew Millard
-$ 11/01/2022
 $
 *KEYWORD
 *PARAMETER
