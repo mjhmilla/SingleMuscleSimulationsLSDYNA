@@ -338,11 +338,13 @@ $-------------------------------------------------------------------------------
 *DEFINE_FUNCTION_TABULATED
 28000015
 stimFcn
-$#                a1                  o1
-                 0.0                 0.0
-             &timeS0                 0.0
-             &timeS1             &actVal
-              &timeE             &actVal
+$#                a1                  o1  
+                 0.0            &stimLow
+    &stimTimeS-0.001            &stimLow
+          &stimTimeS           &stimHigh
+          &stimTimeE           &stimHigh
+    &stimTimeE+0.001            &stimLow
+              &timeE            &stimLow
 $--------------------------------------------------------------------------------
 $ 6.2.1.1 activation dynamics filter
 $--------------------------------------------------------------------------------

@@ -86,16 +86,6 @@ $#     id1       id2       id3       id4       id5       id6       id7       id8
 *DATABASE_ELOUT
     &dtOut         2
 $#
-*DEFINE_CURVE
-$#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
-         3         0       1.0       1.0       0.0       0.0         0         0
-$#                a1                  o1  
-                 0.0            &stimLow
-    &stimTimeS-0.001            &stimLow
-          &stimTimeS           &stimHigh
-          &stimTimeE           &stimHigh
-    &stimTimeE+0.001            &stimLow
-              &timeE            &stimLow
 *ELEMENT_BEAM
 $#   eid     pid      n1      n2      n3     rt1     rr1     rt2     rr2   local
        1       2       1       2       0       0       0       0       0       2
