@@ -151,14 +151,26 @@ if(strcmp(modelName,'umat41')==1)
       simulationInformation(idx).type               = simulationType(idx).type;
 
       simulationInformation(idx).type                   = simulationType(idx).type;
-      simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';
-      simulationInformation(idx).simulationConstantFile = 'eccentric.k';
-      simulationInformation(idx).optimalFiberLength     = 'lopt';
-      simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
-      simulationInformation(idx).tendonSlackLength      = 'ltSlk';
-      simulationInformation(idx).pennationAngleDegrees  = 'alphaDeg';
-      simulationInformation(idx).parametersInMuscleCard = 0;
-      simulationInformation(idx).model = modelName;  
+%       simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';
+%       simulationInformation(idx).simulationConstantFile = 'eccentric.k';
+%       simulationInformation(idx).optimalFiberLength     = 'lopt';
+%       simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
+%       simulationInformation(idx).tendonSlackLength      = 'ltSlk';
+%       simulationInformation(idx).pennationAngleDegrees  = 'alphaDeg';
+%       simulationInformation(idx).parametersInMuscleCard = 0;
+%       simulationInformation(idx).model = modelName;  
+
+      simulationInformation(idx).simulationConstantFile = ...
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat41Parameters.k'];      
+      simulationInformation(idx).musclePropertyCard     = ...
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat41.k'];       
+      simulationInformation(idx).optimalFiberLength         = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength          = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees      = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard     = 0;
+      simulationInformation(idx).model                      = modelName;        
 
     end 
 
