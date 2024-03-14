@@ -27,6 +27,7 @@ R pathLenS &pathLenO+&rampLenS
 R pathLenE &pathLenO+&rampLenE  
 R    timeE &stimTimeE+5.0
 R      sno &pathLenS/&lceOptAT
+R      srm &vceMax*&lceOptAT/(&lceOptAT+&ltSlk)
 $
 *TITLE
 $#                                                                         title
@@ -69,9 +70,7 @@ $#   ioopt
          0
 *DATABASE_HISTORY_NODE
 $#     id1       id2       id3       id4       id5       id6       id7       id8
-         2         0         0         0         0         0         0         0
-*INCLUDE
-catsoleusHL2002Mat156.k   
+         2         0         0         0         0         0         0         0  
 *PART
 $#                                                                         title
 Beam2
@@ -107,4 +106,6 @@ $
 $#   nid               x               y               z      tc      rc
        1             0.0             0.0             0.0       7       7
        2             0.0             0.0      -&pathLenS       7       7   
+*INCLUDE
+catsoleusHL2002Mat156.k        
 *END
