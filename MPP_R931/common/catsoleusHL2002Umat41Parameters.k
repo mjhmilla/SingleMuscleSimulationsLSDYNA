@@ -21,6 +21,6 @@ R    dWdes 0.3660209
 R  nuCEdes 1.7138868
 R    dtInt 0.0001
 R    dtOut 0.010
-RlceNScale 1.0
+RlceNScale 0.975
 *END
 

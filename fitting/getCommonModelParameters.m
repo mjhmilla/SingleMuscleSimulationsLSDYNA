@@ -47,11 +47,11 @@ umat41.FPEE       = getParameterFieldValue(umat41ParameterFile, 'FPEE');
 umat41.nuPEE      = getParameterFieldValue(umat41ParameterFile, 'nuPEE');
 umat41.dWasc      = getParameterFieldValue(umat41ParameterFile, 'dWasc');
 umat41.nuCEasc    = getParameterFieldValue(umat41ParameterFile, 'nuCEasc');
+umat41.dWdes      = getParameterFieldValue(umat41ParameterFile, 'dWdes');
+umat41.nuCEdes    = getParameterFieldValue(umat41ParameterFile, 'nuCEdes');
 
 umat41.dUSEEnll   = getLsdynaCardFieldValue(umat41CardFile, 'dUSEEnll');
 umat41.duSEEl     = getLsdynaCardFieldValue(umat41CardFile, 'duSEEl');
-umat41.dWdes      = getLsdynaCardFieldValue(umat41CardFile, 'dWdes');
-umat41.nuCEdes    = getLsdynaCardFieldValue(umat41CardFile, 'nuCEdes');
 
 
 

@@ -99,7 +99,8 @@ flag_assertCommonParamsIdentical=1;
 [mat156,umat41,umat43] = getCommonModelParameters(modelFolder,expAbbrv,...
                           flag_assertCommonParamsIdentical);
 
-
+% umat43.lceNScale=0.95;
+% umat41.lceNScale=0.95;
 
 catSoleusHL2002.lceOpt  =umat43.lceOpt;
 catSoleusHL2002.fceOpt  =umat43.fceOpt;
