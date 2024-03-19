@@ -10,45 +10,45 @@ npts=100;
 lpeATZero = 0.9;
 lpeATOne  = 1.40;
 
-umat41Curves.lceNAT = [lpeATZero:(lpeATOne-lpeATZero)/(npts-1):(lpeATOne)]';
-umat41Curves.lceNAT_dltN= zeros(size(umat41Curves.lceNAT));
-umat41Curves.fpeAT = zeros(size(umat41Curves.lceNAT));
-umat41Curves.fpeNAT = zeros(size(umat41Curves.lceNAT));
-umat41Curves.kpeNAT = zeros(size(umat41Curves.lceNAT));
+umat41Curves.fpe.lceNAT = [lpeATZero:(lpeATOne-lpeATZero)/(npts-1):(lpeATOne)]';
+umat41Curves.fpe.lceNAT_dltN= zeros(size(umat41Curves.fpe.lceNAT));
+umat41Curves.fpe.fpeAT = zeros(size(umat41Curves.fpe.lceNAT));
+umat41Curves.fpe.fpeNAT = zeros(size(umat41Curves.fpe.lceNAT));
+umat41Curves.fpe.kpeNAT = zeros(size(umat41Curves.fpe.lceNAT));
 
-umat43Curves.lceNAT = [lpeATZero:(lpeATOne-lpeATZero)/(npts-1):(lpeATOne)]';
-umat43Curves.lceNAT_dltN = zeros(size(umat43Curves.lceNAT)); 
-umat43Curves.lceN   = zeros(size(umat43Curves.lceNAT));
-umat43Curves.fpeAT = zeros(size(umat43Curves.lceNAT));
-umat43Curves.fpeNAT = zeros(size(umat43Curves.lceNAT));
-umat43Curves.fpeN   = zeros(size(umat43Curves.lceNAT));
+umat43Curves.fpe.lceNAT = [lpeATZero:(lpeATOne-lpeATZero)/(npts-1):(lpeATOne)]';
+umat43Curves.fpe.lceNAT_dltN = zeros(size(umat43Curves.fpe.lceNAT)); 
+umat43Curves.fpe.lceN   = zeros(size(umat43Curves.fpe.lceNAT));
+umat43Curves.fpe.fpeAT = zeros(size(umat43Curves.fpe.lceNAT));
+umat43Curves.fpe.fpeNAT = zeros(size(umat43Curves.fpe.lceNAT));
+umat43Curves.fpe.fpeN   = zeros(size(umat43Curves.fpe.lceNAT));
 
-umat43Curves.kpeNAT = zeros(size(umat43Curves.lceNAT));
+umat43Curves.fpe.kpeNAT = zeros(size(umat43Curves.fpe.lceNAT));
 
 for i=1:1:npts
     %
     % umat41
     %
-    umat41Curves.fpeNAT(i,1)= ...
-        calcFpeeUmat41( umat41Curves.lceNAT(i,1)*umat41.lceOptAT,...
+    umat41Curves.fpe.fpeNAT(i,1)= ...
+        calcFpeeUmat41( umat41Curves.fpe.lceNAT(i,1)*umat41.lceOptAT,...
                         umat41.lceOptAT,...
                         umat41.dWdes,...
                         umat41.fceOptAT,...
                         umat41.FPEE,...
                         umat41.LPEE0,...
                         umat41.nuPEE);
-    umat41Curves.fpeNAT(i,1) = umat41Curves.fpeNAT(i,1)/(umat41.fceOptAT);
+    umat41Curves.fpe.fpeNAT(i,1) = umat41Curves.fpe.fpeNAT(i,1)/(umat41.fceOptAT);
 
-    lsee = calcFseeInverseUmat41(umat41Curves.fpeNAT(i,1)*umat41.fceOptAT,...
+    lsee = calcFseeInverseUmat41(umat41Curves.fpe.fpeNAT(i,1)*umat41.fceOptAT,...
                umat41.ltSlk,umat41.dUSEEnll,umat41.duSEEl,umat41.dFSEE0);
 
-    umat41Curves.lceNAT_dltN(i,1) = umat41Curves.lceNAT(i,1) ...
+    umat41Curves.fpe.lceNAT_dltN(i,1) = umat41Curves.fpe.lceNAT(i,1) ...
         + (lsee - umat41.ltSlk)/umat41.lceOptAT;
 
     %
     % umat43
     %    
-    lceNAT = umat43Curves.lceNAT(i,1);
+    lceNAT = umat43Curves.fpe.lceNAT(i,1);
     fibKin = calcFixedWidthPennatedFiberKinematics(lceNAT*umat43.lceOpt, 0, ...
                                     umat43.lceOpt,umat43.penOpt);
     lceN = fibKin.fiberLength/umat43.lceOpt;
@@ -58,30 +58,30 @@ for i=1:1:npts
           umat43QuadraticBezierCurves.fiberForceLengthCurve,0);
     fpeN=fpeN*umat43.scalePEE;
 
-    umat43Curves.fpeNAT(i,1) = fpeN*cos(alpha);
+    umat43Curves.fpe.fpeNAT(i,1) = fpeN*cos(alpha);
 
-    ltN = calcQuadraticBezierYFcnXDerivative(umat43Curves.fpeNAT(i,1),...
+    ltN = calcQuadraticBezierYFcnXDerivative(umat43Curves.fpe.fpeNAT(i,1),...
             umat43QuadraticBezierCurves.tendonForceLengthInverseCurve,0);
 
-    umat43Curves.lceNAT_dltN(i,1) = umat43Curves.lceNAT(i,1) ...
+    umat43Curves.fpe.lceNAT_dltN(i,1) = umat43Curves.fpe.lceNAT(i,1) ...
         + (ltN-1)*umat43.ltSlk/umat43.lceOpt;
 
 end
 
-umat41Curves.kpeNAT = ...
-    calcCentralDifferenceDataSeries(umat41Curves.lceNAT_dltN,umat41Curves.fpeNAT);
+umat41Curves.fpe.kpeNAT = ...
+    calcCentralDifferenceDataSeries(umat41Curves.fpe.lceNAT_dltN,umat41Curves.fpe.fpeNAT);
 
-umat43Curves.kpeNAT = ...
-    calcCentralDifferenceDataSeries(umat43Curves.lceNAT_dltN,umat43Curves.fpeNAT);
+umat43Curves.fpe.kpeNAT = ...
+    calcCentralDifferenceDataSeries(umat43Curves.fpe.lceNAT_dltN,umat43Curves.fpe.fpeNAT);
 
 figure(fig);
 subplot(subPlotPanel(1,1),subPlotPanel(1,2),subPlotPanel(1,3));
-    plot(umat41Curves.lceNAT_dltN.*umat41.lceOptAT,...
-         umat41Curves.fpeNAT.*umat41.fceOptAT,lineType,'Color',umat41Color,...
+    plot(umat41Curves.fpe.lceNAT_dltN.*umat41.lceOptAT,...
+         umat41Curves.fpe.fpeNAT.*umat41.fceOptAT,lineType,'Color',umat41Color,...
         'DisplayName','umat41');
     hold on;
-    plot(umat43Curves.lceNAT_dltN.*umat43.lceOpt,...
-         umat43Curves.fpeNAT.*umat43.fceOpt,lineType,'Color',umat43Color,...
+    plot(umat43Curves.fpe.lceNAT_dltN.*umat43.lceOpt,...
+         umat43Curves.fpe.fpeNAT.*umat43.fceOpt,lineType,'Color',umat43Color,...
         'DisplayName','umat43');
     hold on;
     box off;
@@ -94,19 +94,19 @@ subplot(subPlotPanel(1,1),subPlotPanel(1,2),subPlotPanel(1,3));
          'MarkerFaceColor',[1,1,1].*0.5,'DisplayName',expDataFpe.name);
     hold on;
 
-    idxMin41 = find(umat41Curves.fpeNAT>0.05,1);
-    lceNATOne41=interp1(umat41Curves.fpeNAT(idxMin41:end),...
-                        umat41Curves.lceNAT_dltN(idxMin41:end),1,"linear","extrap");
+    idxMin41 = find(umat41Curves.fpe.fpeNAT>0.05,1);
+    lceNATOne41=interp1(umat41Curves.fpe.fpeNAT(idxMin41:end),...
+                        umat41Curves.fpe.lceNAT_dltN(idxMin41:end),1,"linear","extrap");
 
-    idxMin43 = find(umat43Curves.fpeNAT>0.05,1);
-    lceNATOne43=interp1(umat43Curves.fpeNAT(idxMin43:end),...
-                        umat43Curves.lceNAT_dltN(idxMin43:end),1,"linear","extrap");
+    idxMin43 = find(umat43Curves.fpe.fpeNAT>0.05,1);
+    lceNATOne43=interp1(umat43Curves.fpe.fpeNAT(idxMin43:end),...
+                        umat43Curves.fpe.lceNAT_dltN(idxMin43:end),1,"linear","extrap");
 
-    kpeNATOne41=interp1(umat41Curves.lceNAT_dltN(idxMin41:end),...
-                        umat41Curves.kpeNAT(idxMin41:end),lceNATOne41,"linear","extrap");
+    kpeNATOne41=interp1(umat41Curves.fpe.lceNAT_dltN(idxMin41:end),...
+                        umat41Curves.fpe.kpeNAT(idxMin41:end),lceNATOne41,"linear","extrap");
 
-    kpeNATOne43=interp1(umat43Curves.lceNAT_dltN(idxMin43:end),...
-                        umat43Curves.kpeNAT(idxMin43:end),lceNATOne43,"linear","extrap");
+    kpeNATOne43=interp1(umat43Curves.fpe.lceNAT_dltN(idxMin43:end),...
+                        umat43Curves.fpe.kpeNAT(idxMin43:end),lceNATOne43,"linear","extrap");
 
     plot(lceNATOne41*umat41.lceOptAT,...
         umat41.fceOptAT,'o','Color',umat41Color,'HandleVisibility','off');

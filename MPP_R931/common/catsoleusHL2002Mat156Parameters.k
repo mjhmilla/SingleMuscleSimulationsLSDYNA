@@ -13,6 +13,6 @@ R       et 0.0458333
 R   vceMax 4.650
 R    dtInt 0.0001
 R    dtOut 0.010
-RlceNScale 0.95
+RlceNScale 1.0
 *END
 

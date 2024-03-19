@@ -3,7 +3,9 @@ close all;
 clear all;
 
 flag_fitPassiveForceLength   =1;
-scaleExpFpeData= 1;%6.52/8.1573;
+flag_fitActiveForceLength    =1;
+
+scaleExpFpeData= 1;
 
 addpath(genpath('models'));
 addpath(genpath('fitting'));
@@ -202,4 +204,36 @@ end
                             expKeyPtsDataFpe,expDataFpe,...
                             '--');
 
+
+%%
+% Active force length
+%%
+expKeyPtsDataFal.time = [];
+
+expKeyPtsDataFal.lmt =...
+    ( [keyPtsHL2002.data([1,4,7,10,11],keyPtsHL2002.colLengthA)].*mm2m ...
+    + keyPtsHL2002.lceRef );
+
+expKeyPtsDataFal.fmt =...
+     [keyPtsHL2002.data([1,4,7],keyPtsHL2002.colForceFirst+2*4);...
+      keyPtsHL2002.data([10,11],keyPtsHL2002.colForceFirst+2*4)];
+
+expKeyPtsDataFal.name = 'HL2002';
+
+% The current parameters look fine as is. 
+%
+% if(flag_fitActiveForceLength==1)
+%     umat41upd = fitUmat41ActiveForceLengthRelation(...
+%                             umat41upd,expKeyPtsDataFal,...
+%                             umat43upd,umat43QuadraticBezierCurves);    
+% end
+
+umat41upd.dWdes=umat41upd.dWdes*0.95;
+umat41upd.nuCEdes=umat41upd.nuCEdes*0.9;
+[figFitting,umat41Curves,umat43Curves] = ...
+    addFittedActiveForceLengthPlot(figFitting,umat41upd,umat43upd,...
+                            felineSoleusNormMuscleQuadraticCurves,...
+                            umat41Curves,umat43Curves,...                            
+                            [2,2,3],umat41Color,umat43Color,...
+                            expKeyPtsDataFal,'-');
 

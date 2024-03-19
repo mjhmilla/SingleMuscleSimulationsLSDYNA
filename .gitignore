@@ -1,5 +1,6 @@
 ~lock.*
 *.csv#
+*.ods
 *.orig
 *.svg
 SMP_R931/umat41/impedance/*
