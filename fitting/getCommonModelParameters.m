@@ -44,22 +44,16 @@ umat41.lceNScale  = getParameterFieldValue(umat41ParameterFile,'lceNScale');
 
 umat41.LPEE0      = getParameterFieldValue(umat41ParameterFile, 'LPEE0');
 umat41.FPEE       = getParameterFieldValue(umat41ParameterFile, 'FPEE');   
+umat41.nuPEE      = getParameterFieldValue(umat41ParameterFile, 'nuPEE');
+umat41.dWasc      = getParameterFieldValue(umat41ParameterFile, 'dWasc');
+umat41.nuCEasc    = getParameterFieldValue(umat41ParameterFile, 'nuCEasc');
 
-if(contains(expAbbrv,'HL2002')==1)
-    umat41.dUSEEnll   = getLsdynaCardFieldValue(umat41CardFile, 'dUSEEnll');
-    umat41.duSEEl     = getLsdynaCardFieldValue(umat41CardFile, 'duSEEl');
-    umat41.dWasc      = getLsdynaCardFieldValue(umat41CardFile, 'dWasc');    
-    umat41.nuCEasc    = getLsdynaCardFieldValue(umat41CardFile, 'nuCEasc'); 
-else
-    umat41.dUSEEnll   = getParameterFieldValue(umat41ParameterFile, 'dUSEEnll');
-    umat41.duSEEl     = getParameterFieldValue(umat41ParameterFile, 'duSEEl');
-    umat41.dWasc      = getParameterFieldValue(umat41ParameterFile, 'dWasc');
-    umat41.nuCEasc    = getParameterFieldValue(umat41ParameterFile, 'nuCEasc');
-end
-
+umat41.dUSEEnll   = getLsdynaCardFieldValue(umat41CardFile, 'dUSEEnll');
+umat41.duSEEl     = getLsdynaCardFieldValue(umat41CardFile, 'duSEEl');
 umat41.dWdes      = getLsdynaCardFieldValue(umat41CardFile, 'dWdes');
 umat41.nuCEdes    = getLsdynaCardFieldValue(umat41CardFile, 'nuCEdes');
-umat41.nuPEE      = getLsdynaCardFieldValue(umat41CardFile, 'nuPEE');
+
+
 
 
 umat43.lceOpt     =getParameterFieldValue(umat43ParameterFile,'lceOpt');

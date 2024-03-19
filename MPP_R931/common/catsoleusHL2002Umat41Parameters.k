@@ -6,14 +6,17 @@ R   fceOpt 21.612138
 R lceOptAT 0.0425376
 R fceOptAT 21.451044
 R lmtOptAT 0.0729888
-R    LPEE0 0.9733788
-R     FPEE 1.1602174
 R   penOpt 0.1221730
 R  penOptD 7.0 
 R    ltSlk 0.0304511
 R       et 0.0458333
 R   dFSEE0 14.300676
 R   vceMax 4.65
+R    LPEE0 0.9672667
+R     FPEE 1.0097614
+R    nuPEE 1.4611866
+R    dWasc 0.5656740
+R  nuCEasc 2.082109
 R    dtInt 0.0001
 R    dtOut 0.010
 RlceNScale 0.95

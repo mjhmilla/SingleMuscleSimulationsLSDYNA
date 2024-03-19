@@ -10,7 +10,7 @@ $#  ActOpt   STIM_ID        q0    tauq/c betaq/eta         k         m
 $#    Fmax    lCEopt     dWdes   nuCEdes     dWasc   nuCEasc     Arel0     Brel0      
  &fceOptAT &lceOptAT 0.3852852 1.9043187    &dWasc  &nuCEasc 0.1240458 0.5550417
 $#    Secc      Fecc     LPEE0     nuPEE      FPEE     lSEE0  dUSEEnll    duSEEl
- 0.7725022 1.4391543    &LPEE0 1.5907747     &FPEE    &ltSlk 0.0347222 0.0222222
+ 0.7725022 1.4391543    &LPEE0    &nuPEE     &FPEE    &ltSlk 0.0347222 0.0222222
 $#  dFSEE0   Damping    Param1    Param2    Output     dtOut
    &dFSEE0       3.0       0.3      0.01         2    &dtOut    
 $#

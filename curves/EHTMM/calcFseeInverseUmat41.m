@@ -1,9 +1,9 @@
-function lsee = calcFseeInverseUmat41(fsee,lSEE0,dUSEEnll,dUSEEl,dFSEE0)
+function lsee = calcFseeInverseUmat41(fsee,lSEE0,dUSEEnll,duSEEl,dFSEE0)
 
 l_SEE_nll = (1.0+dUSEEnll)*lSEE0;
-v_SEE     = dUSEEnll/dUSEEl;
+v_SEE     = dUSEEnll/duSEEl;
 K_SEE_nl  = dFSEE0/((dUSEEnll*lSEE0)^v_SEE);
-K_SEE_l   = dFSEE0/(dUSEEl*lSEE0);
+K_SEE_l   = dFSEE0/(duSEEl*lSEE0);
 
 %l_SEE = lp-lce;
 lsee = lSEE0;
