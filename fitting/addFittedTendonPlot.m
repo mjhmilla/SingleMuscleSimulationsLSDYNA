@@ -1,5 +1,5 @@
-function [fig,umat41Curves,umat43Curves]= addTendonFittingInfo(fig,umat41,umat43,...
-    umat43QuadraticBezierCurves,umat41Color,umat43Color)
+function [fig,umat41Curves,umat43Curves]= addFittedTendonPlot(fig,umat41,umat43,...
+    umat43QuadraticBezierCurves,subPlotPanel,umat41Color,umat43Color)
 
 npts=100;
 umat41Curves.ltN = [1:(umat41.et)/(npts-1):(1+umat41.et)]';
@@ -28,7 +28,7 @@ umat43Curves.ktN = ...
     calcCentralDifferenceDataSeries(umat43Curves.ltN,umat43Curves.ftN);
 
 figure(fig);
-subplot(2,2,1);
+subplot(subPlotPanel(1,1),subPlotPanel(1,2),subPlotPanel(1,3));
     plot(umat41Curves.ltN,umat41Curves.ftN,'-','Color',umat41Color,...
         'DisplayName','umat41');
     hold on;

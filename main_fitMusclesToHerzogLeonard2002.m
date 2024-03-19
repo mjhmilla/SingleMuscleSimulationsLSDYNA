@@ -3,7 +3,7 @@ close all;
 clear all;
 
 flag_fitPassiveForceLength   =1;
-scaleExpFpeData= 6.52/8.1573;
+scaleExpFpeData= 1;%6.52/8.1573;
 
 addpath(genpath('models'));
 addpath(genpath('fitting'));
@@ -99,28 +99,29 @@ flag_assertCommonParamsIdentical=1;
 
 
 
-catSoleusHL2002.lceOpt  =mat156.lceOpt;
-catSoleusHL2002.fceOpt  =mat156.fceOpt;
-catSoleusHL2002.lceOptAT=mat156.lceOptAT;
-catSoleusHL2002.fceOptAT=mat156.fceOptAT;
-catSoleusHL2002.lmtOptAT=mat156.lmtOptAT;
-catSoleusHL2002.penOpt  =mat156.penOpt;
-catSoleusHL2002.penOptD =mat156.penOptD;
-catSoleusHL2002.ltSlk   =mat156.ltSlk;
-catSoleusHL2002.et      =mat156.et;
-catSoleusHL2002.vceMax  =mat156.vceMax;
+catSoleusHL2002.lceOpt  =umat43.lceOpt;
+catSoleusHL2002.fceOpt  =umat43.fceOpt;
+catSoleusHL2002.lceOptAT=umat43.lceOptAT;
+catSoleusHL2002.fceOptAT=umat43.fceOptAT;
+catSoleusHL2002.lmtOptAT=umat43.lmtOptAT;
+catSoleusHL2002.penOpt  =umat43.penOpt;
+catSoleusHL2002.penOptD =umat43.penOptD;
+catSoleusHL2002.ltSlk   =umat43.ltSlk;
+catSoleusHL2002.et      =umat43.et;
+catSoleusHL2002.vceMax  =umat43.vceMax;
 
-keyPtsHL2002.lceRef  = catSoleusHL2002.lceOptAT*umat43.lceNScale;
-keyPtsHL2002.lceNRef = umat43.lceNScale;
+keyPtsHL2002.lceRef  = catSoleusHL2002.lceOptAT*umat43.lceNScale ...
+                      + (catSoleusHL2002.et)*catSoleusHL2002.ltSlk;
+keyPtsHL2002.lceNRef = keyPtsHL2002.lceRef/catSoleusHL2002.lceOpt;
 
 
 %%
 %Tendon curve (manually fitted)
 %%
 [figFitting,umat41Curves,umat43Curves] = ...
-    addTendonFittingInfo(figFitting,umat41,umat43,...
+    addFittedTendonPlot(figFitting,umat41,umat43,...
                             felineSoleusNormMuscleQuadraticCurves,...
-                            umat41Color,umat43Color);
+                            [2,2,1],umat41Color,umat43Color);
 
 %%
 % Passive force-length curve
@@ -165,79 +166,22 @@ expKeyPtsDataFpe.fmt = ...
 % fit umat43
 %
 if(flag_fitPassiveForceLength==1)
-    x0 = [umat43.shiftPEE;umat43.scalePEE];
-    error0 = calcVEXATPassiveCurveError(x0,umat43,...
-                               felineSoleusNormMuscleQuadraticCurves,...
-                               expKeyPtsDataFpe,1,...
-                               scaleExpFpeData);
-    error0Mag = sum(error0.^2);
-    
-    calcUmat43FpeErr = @(arg)calcVEXATPassiveCurveError(arg,umat43,...
-                               felineSoleusNormMuscleQuadraticCurves,...
-                               expKeyPtsDataFpe,error0Mag,...
-                               scaleExpFpeData);
-    [x1,resnorm]=lsqnonlin(calcUmat43FpeErr,x0);
-    
-    error1 = calcVEXATPassiveCurveError(x1,umat43,...
-                               felineSoleusNormMuscleQuadraticCurves,...
-                               expKeyPtsDataFpe,1,...
-                               scaleExpFpeData);
-    error1Mag = sum(error1.^2);
-    
-    umat43upd = umat43;
-    umat43upd.shiftPEE = x1(1,1);
-    umat43upd.scalePEE = x1(2,1);
+
+    [umat43upd,expKeyPtsDataFpeUpd]= ...
+        fitUmat43PassiveForceLengthRelation(...
+                      umat43, felineSoleusNormMuscleQuadraticCurves,...
+                      expKeyPtsDataFpe,scaleExpFpeData);
 
     fprintf('umat43 passive curve fitted\n');
     fprintf('\t%1.6f\tshiftPEE\n',umat43upd.shiftPEE);
     fprintf('\t%1.6f\tscalePEE\n' ,umat43upd.scalePEE);
-
-    %Use the model to generate a point near fpe=1. THis gets appended
-    %to the points that umat41's fpe curve is fit to. Why? Otherwise 
-    %the optimization routine changes nuPEE by a lot. The result is a good
-    %fit for low forces but a terrible fit for higher forces.
-    lceNX = 1.4039;
-    fpeNX = calcQuadraticBezierYFcnXDerivative(lceNX-umat43upd.shiftPEE,...
-              felineSoleusNormMuscleQuadraticCurves.fiberForceLengthCurve,0); 
-    fpeNX = fpeNX*umat43upd.scalePEE;
-    
-    fibKin = calcFixedWidthPennatedFiberKinematicsAlongTendon(...
-        lceNX*umat43.lceOpt,0,umat43.lceOpt,umat43.penOpt);
-    
-    lceATX = fibKin.fiberLengthAlongTendon; 
-    alphaX = fibKin.pennationAngle;
-    
-    ltNX = calcQuadraticBezierYFcnXDerivative(fpeNX*cos(alphaX),...
-              felineSoleusNormMuscleQuadraticCurves.tendonForceLengthInverseCurve,0);
-    
-    lmtX = lceATX + (ltNX-1)*umat43.ltSlk;
-    fmtX = fpeNX*umat43.fceOpt*cos(alphaX);
     
     %
     % fit umat41
     %
-    expKeyPtsDataFpeUpd = expKeyPtsDataFpe;
+    umat41upd = fitUmat41PassiveForceLengthRelation(...
+                        umat41,expKeyPtsDataFpeUpd, scaleExpFpeData);
     
-    expKeyPtsDataFpeUpd.lmt=[expKeyPtsDataFpe.lmt;lmtX];
-    expKeyPtsDataFpeUpd.fmt=[expKeyPtsDataFpe.fmt;fmtX*(1/scaleExpFpeData)];
-    
-    x0      = [umat41.LPEE0;umat41.FPEE;umat41.nuPEE];
-    error0  = calcEHTMMPassiveCurveError(x0,umat41,expKeyPtsDataFpeUpd,1,...
-                    scaleExpFpeData);
-    error0Mag= sum(error0.^2);
-    calcUmat41FpeErr = @(arg)calcEHTMMPassiveCurveError(arg,umat41,...
-                             expKeyPtsDataFpeUpd,error0Mag,...
-                             scaleExpFpeData);
-    
-    [x1,resnorm]=lsqnonlin(calcUmat41FpeErr,x0);
-    error1  = calcEHTMMPassiveCurveError(x1,umat41,expKeyPtsDataFpeUpd,1,...
-                                            scaleExpFpeData);
-    error1Mag= sum(error1.^2);
-    
-    umat41upd       = umat41;
-    umat41upd.LPEE0 = x1(1,1);
-    umat41upd.FPEE  = x1(2,1);
-    umat41upd.nuPEE = x1(3,1);
 
     fprintf('umat41 passive curve fitted\n');
     fprintf('\t%1.6f\tLPEE0\n',umat41upd.LPEE0);
@@ -251,17 +195,10 @@ end
 
 
 [figFitting,umat41Curves,umat43Curves] = ...
-    addPassiveForceLengthFittingInfo(figFitting,umat41,umat43,...
+    addFittedPassiveForceLengthPlot(figFitting,umat41upd,umat43upd,...
                             felineSoleusNormMuscleQuadraticCurves,...
                             umat41Curves,umat43Curves,...                            
-                            umat41Color,umat43Color,...
-                            expKeyPtsDataFpe,expDataFpe,...
-                            '-');
-[figFitting,umat41Curves,umat43Curves] = ...
-    addPassiveForceLengthFittingInfo(figFitting,umat41upd,umat43upd,...
-                            felineSoleusNormMuscleQuadraticCurves,...
-                            umat41Curves,umat43Curves,...                            
-                            umat41Color,umat43Color,...
+                            [2,2,2],umat41Color,umat43Color,...
                             expKeyPtsDataFpe,expDataFpe,...
                             '--');
 
