@@ -1,5 +1,5 @@
 function errVec = calcVEXATPassiveCurveError(arg,umat43,umat43QuadraticBezierCurves,...
-                        expDataFpe,errorScaling)
+                        expDataFpe,errorScaling,scaleExpFpeData)
 
 shiftPEE = arg(1,1);
 scalePEE = arg(2,1);
@@ -27,6 +27,6 @@ for i=1:1:length(expDataFpe.lmt)
           umat43QuadraticBezierCurves.fiberForceLengthCurve,0); 
     fpeN = fpeN*scalePEE;
 
-    errVec(i,1)=(fpeN*cos(alpha))*umat43.fceOpt - expDataFpe.fmt(i,1);
+    errVec(i,1)=(fpeN*cos(alpha))*umat43.fceOpt - expDataFpe.fmt(i,1).*scaleExpFpeData;
 end
 errVec = errVec./errorScaling;

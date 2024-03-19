@@ -1,4 +1,5 @@
-function errVec = calcEHTMMPassiveCurveError(arg,umat41,expDataFpe,errorScaling)
+function errVec = calcEHTMMPassiveCurveError(arg,umat41,expDataFpe,...
+                    errorScaling,scaleExpFpeData)
 
 LPEE0 = arg(1,1);
 FPEE = arg(2,1);
@@ -24,7 +25,7 @@ for i=1:1:length(expDataFpe.lmt)
                         LPEE0,...
                         nuPEE);
 
-    errVec(i,1) = fpeAT - expDataFpe.fmt(i,1);
+    errVec(i,1) = fpeAT - expDataFpe.fmt(i,1).*scaleExpFpeData;
 
 end
 
