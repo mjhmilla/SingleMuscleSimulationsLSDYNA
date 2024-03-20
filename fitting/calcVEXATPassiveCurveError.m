@@ -28,5 +28,6 @@ for i=1:1:length(expDataFpe.lmt)
     fpeN = fpeN*scalePEE;
 
     errVec(i,1)=(fpeN*cos(alpha))*umat43.fceOpt - expDataFpe.fmt(i,1).*scaleExpFpeData;
+    errVec(i,1)= errVec(i,1)*expDataFpe.weights(i,1);
 end
 errVec = errVec./errorScaling;

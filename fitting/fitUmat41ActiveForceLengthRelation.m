@@ -3,7 +3,7 @@ function umat41upd = fitUmat41ActiveForceLengthRelation(...
                         umat43,umat43QuadraticBezierCurves)
 
     
-    x0      = [umat41.dWdes,umat41.nuCEdes];
+    x0      = [umat41.dWdes;umat41.nuCEdes];
     error0  = calcEHTMMActiveCurveError(x0,umat41,expKeyPtsDataFal,...
                                 umat43,umat43QuadraticBezierCurves,1);
     error0Mag= sum(error0.^2);

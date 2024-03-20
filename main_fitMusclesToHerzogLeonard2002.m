@@ -99,9 +99,6 @@ flag_assertCommonParamsIdentical=1;
 [mat156,umat41,umat43] = getCommonModelParameters(modelFolder,expAbbrv,...
                           flag_assertCommonParamsIdentical);
 
-% umat43.lceNScale=0.95;
-% umat41.lceNScale=0.95;
-
 catSoleusHL2002.lceOpt  =umat43.lceOpt;
 catSoleusHL2002.fceOpt  =umat43.fceOpt;
 catSoleusHL2002.lceOptAT=umat43.lceOptAT;
@@ -164,11 +161,15 @@ expKeyPtsDataFpe.lmt =...
 expKeyPtsDataFpe.fmt = ...
     [expKeyPtsDataFpe.fmt;expDataFpe.fmt(end)];
 
+expKeyPtsDataFpe.weights = ones(size(expKeyPtsDataFpe.lmt));
+expKeyPtsDataFpe.weights(1,1)=0.1;
+
 
 %
 % fit umat43
 %
 if(flag_fitPassiveForceLength==1)
+
 
     [umat43upd,expKeyPtsDataFpeUpd]= ...
         fitUmat43PassiveForceLengthRelation(...
@@ -185,7 +186,6 @@ if(flag_fitPassiveForceLength==1)
     umat41upd = fitUmat41PassiveForceLengthRelation(...
                         umat41,expKeyPtsDataFpeUpd, scaleExpFpeData);
     
-
     fprintf('umat41 passive curve fitted\n');
     fprintf('\t%1.6f\tLPEE0\n',umat41upd.LPEE0);
     fprintf('\t%1.6f\tFPEE\n' ,umat41upd.FPEE);
@@ -221,20 +221,193 @@ expKeyPtsDataFal.fmt =...
 
 expKeyPtsDataFal.name = 'HL2002';
 
-% The current parameters look fine as is. 
-%
-% if(flag_fitActiveForceLength==1)
-%     umat41upd = fitUmat41ActiveForceLengthRelation(...
-%                             umat41upd,expKeyPtsDataFal,...
-%                             umat43upd,umat43QuadraticBezierCurves);    
-% end
 
-umat41upd.dWdes=umat41upd.dWdes*0.95;
-umat41upd.nuCEdes=umat41upd.nuCEdes*0.9;
+if(flag_fitActiveForceLength==1)
+     umat41upd = fitUmat41ActiveForceLengthRelation(...
+                            umat41upd,expKeyPtsDataFal,...
+                            umat43upd,felineSoleusNormMuscleQuadraticCurves);    
+    fprintf('umat41 active curve (descending limb) fitted\n');
+    fprintf(   '\t%1.6f\tdWdes\n',umat41upd.dWdes);
+    fprintf('\t%1.6f\tnuCEdes\n' ,umat41upd.nuCEdes);
+end
+
+umat41upd.dWdes=umat41upd.dWdes;
+umat41upd.nuCEdes=umat41upd.nuCEdes;
 [figFitting,umat41Curves,umat43Curves] = ...
     addFittedActiveForceLengthPlot(figFitting,umat41upd,umat43upd,...
                             felineSoleusNormMuscleQuadraticCurves,...
                             umat41Curves,umat43Curves,...                            
                             [2,2,3],umat41Color,umat43Color,...
                             expKeyPtsDataFal,'-');
+%%
+% Generate MAT156 curves that fit umat43
+%%
+npts=100;
+domain=[];
 
+falValues = calcQuadraticBezierYFcnXCurveSampleVector(...
+  felineSoleusNormMuscleQuadraticCurves.activeForceLengthCurve,...
+  npts, domain);
+
+
+fpeValues = calcQuadraticBezierYFcnXCurveSampleVector(...
+  felineSoleusNormMuscleQuadraticCurves.fiberForceLengthCurve,...
+  npts, domain);
+
+fvValues = calcQuadraticBezierYFcnXCurveSampleVector(...
+  felineSoleusNormMuscleQuadraticCurves.fiberForceVelocityCurve,...
+  npts, domain);
+
+%
+% Evaluate the active force length curve direction of the tendon
+%
+falValues.xAT = zeros(size(falValues.x));
+falValues.yAT = zeros(size(falValues.x));
+
+for i=1:1:length(falValues.x)
+    fibKin = calcFixedWidthPennatedFiberKinematicsAlongTendon(...
+                                                falValues.x(i,1).*umat43.lceOpt,...
+                                                0,...
+                                                umat43.lceOpt,...
+                                                umat43.penOpt);
+    alpha=fibKin.pennationAngle;
+    lceAT=fibKin.fiberLengthAlongTendon;
+    falValues.xAT(i,1)=lceAT/umat41.lceOptAT;
+    falValues.yAT(i,1)=falValues.y(i,1)*cos(alpha)/cos(umat43.penOpt);
+end
+
+
+%
+% Evaluate the passive force length curve direction of the tendon
+% and adjust the length for the compliance introduced by the tendon
+%
+fpeValues.xAT = zeros(size(fpeValues.x));
+fpeValues.yAT = zeros(size(fpeValues.x));
+
+dfpeA = calcQuadraticBezierYFcnXDerivative(...
+            felineSoleusNormMuscleQuadraticCurves.fiberForceLengthCurve.xEnd(1,2)-1e-6, ...
+            felineSoleusNormMuscleQuadraticCurves.fiberForceLengthCurve,1);
+dfpeB = calcQuadraticBezierYFcnXDerivative(...
+            felineSoleusNormMuscleQuadraticCurves.fiberForceLengthCurve.xEnd(1,2)+1e-6, ...
+            felineSoleusNormMuscleQuadraticCurves.fiberForceLengthCurve,1);
+
+dftA = calcQuadraticBezierYFcnXDerivative(...
+            felineSoleusNormMuscleQuadraticCurves.tendonForceLengthCurve.xEnd(1,2)-1e-6, ...
+            felineSoleusNormMuscleQuadraticCurves.tendonForceLengthCurve,1);
+dftB = calcQuadraticBezierYFcnXDerivative(...
+            felineSoleusNormMuscleQuadraticCurves.tendonForceLengthCurve.xEnd(1,2)+1e-6, ...
+            felineSoleusNormMuscleQuadraticCurves.tendonForceLengthCurve,1);
+
+
+for i=1:1:length(fpeValues.x)
+    fibKin = calcFixedWidthPennatedFiberKinematicsAlongTendon(...
+                                                fpeValues.x(i,1).*umat43.lceOpt,...
+                                                0,...
+                                                umat43.lceOpt,...
+                                                umat43.penOpt);
+    alpha   = fibKin.pennationAngle;
+    lceAT   = fibKin.fiberLengthAlongTendon;
+    lceNAT  = lceAT/umat43.lceOpt;
+    fpeN    = calcQuadraticBezierYFcnXDerivative(fpeValues.x(i,1)-umat43upd.shiftPEE, ...
+                felineSoleusNormMuscleQuadraticCurves.fiberForceLengthCurve,0);
+    fpeN    = fpeN*umat43upd.scalePEE;
+    fpeNAT  = fpeN*cos(alpha);
+    ltN     = calcQuadraticBezierYFcnXDerivative(fpeNAT,...
+                felineSoleusNormMuscleQuadraticCurves.tendonForceLengthInverseCurve,0);
+    %The tendon curve goes to numerical zero very slowly, and so very small
+    %postive force values correspond to large negative lengths.
+    if(ltN < 1)
+        ltN=1;
+    end
+    lceNAT_dltN = lceNAT + ((ltN-1)*umat43.ltSlk)/umat43.lceOpt;
+    fpeValues.xAT(i,1)=lceNAT_dltN;
+    fpeValues.yAT(i,1)=fpeNAT;
+end
+
+%
+% Evaluate the force-velocity curve in the direction of the tendon
+%
+%Evaluate the force-velocity curve along the tendon
+
+fibKin=calcFixedWidthPennatedFiberKinematicsAlongTendon(...
+                                                umat43.lceOpt,...
+                                                umat43.vceMax,...
+                                                umat43.lceOpt,...
+                                                umat43.penOpt);
+vceMax156 = fibKin.fiberVelocityAlongTendon;
+fprintf('mat156 vceMax that matches umat43 in the direction of the tendon\n');
+fprintf(   '\t%1.6f\tvceMax\n',vceMax156);
+
+for i=1:1:length(fvValues.x)
+    fiberKinematics = calcFixedWidthPennatedFiberKinematicsAlongTendon(...
+                                                umat43.lceOpt,...
+                                                fvValues.x(i,1)*(umat43.vceMax),...
+                                                umat43.lceOpt,...
+                                                umat43.penOpt);
+
+    alpha = fiberKinematics.pennationAngle;
+    lceAT = fiberKinematics.fiberLengthAlongTendon;
+    vceAT = fiberKinematics.fiberVelocityAlongTendon;
+
+
+    fvValues.xAT(i,1) = vceAT/vceMax156;
+    fvValues.yAT(i,1) = fvValues.y(i,1)*cos(alpha)/cos(umat43.penOpt);
+end
+
+figMAT156=figure;
+figure(figMAT156);
+    subplot(1,3,1);
+        plot(falValues.x,...
+             falValues.y,...
+             '-','Color',[1,1,1].*0.5,...
+             'LineWidth',2,...
+             'DisplayName','umat43 (along fiber)');
+        hold on;
+        plot(falValues.xAT,...
+             falValues.yAT,...
+             '-','Color',[1,0,0],'DisplayName','mat156');
+        hold on;
+        box off;    
+        xlabel('Norm. Length ($$\ell^M/\ell^M_o$$)');
+        ylabel('Norm. Force ($$f^M/f^M_o$$)');
+        title('Active Force-Length Relation');
+
+    subplot(1,3,2);  
+        plot(fpeValues.x-umat43.shiftPEE,...
+             fpeValues.y.*umat43.scalePEE,...
+             '-','Color',[1,1,1].*0.5,...
+             'LineWidth',2,...
+             'DisplayName','umat43 (along fiber)');
+        hold on;    
+        plot(fpeValues.xAT,...
+             fpeValues.yAT,...
+             '-','Color',[1,0,0],'DisplayName','mat156');
+        hold on;
+        box off;
+        xlabel('Norm. Length ($$\ell^M/\ell^M_o$$)');
+        ylabel('Norm. Force ($$f^M/f^M_o$$)');
+        title('Passive Force-Length Relation');
+
+    subplot(1,3,3);    
+        plot(fvValues.x,...
+             fvValues.y,...
+             '-','Color',[1,1,1].*0.5,...
+             'LineWidth',2,...
+             'DisplayName','umat43 (along fiber)');
+        hold on;
+        plot(fvValues.xAT,...
+             fvValues.yAT,...
+             '-','Color',[1,0,0],'DisplayName','mat156');
+        hold on;
+        box off;
+        xlabel('Norm. Velocity ($$v^M/v^M_{max}$$)');
+        ylabel('Norm. Force ($$f^M/f^M_o$$)');
+        title('Force-Velocity Relation');
+    
+
+success = writeFortranVector(falValues.xAT, falValues.yAT, 10, ...
+    'output/fortran/MAT156Tables/defaultFelineSoleusQ_activeForceLengthCurve.f');
+success = writeFortranVector(fpeValues.xAT, fpeValues.yAT, 11, ...
+    'output/fortran/MAT156Tables/defaultFelineSoleusQ_forceLengthCurve.f');
+success = writeFortranVector(fvValues.xAT, fvValues.yAT, 12, ...
+    'output/fortran/MAT156Tables/defaultFelineSoleusQ_forceVelocityCurve.f');

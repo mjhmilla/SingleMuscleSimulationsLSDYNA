@@ -10,9 +10,9 @@ R   penOpt 0.1221730
 R  penOptD 7.0 
 R    ltSlk 0.0
 R       et 0.0458333
-R   vceMax 4.650
+R   vceMax 4.684921
 R    dtInt 0.0001
 R    dtOut 0.010
-RlceNScale 0.975
+RlceNScale 0.95
 *END
 

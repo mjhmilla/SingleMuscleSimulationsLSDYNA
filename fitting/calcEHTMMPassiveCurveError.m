@@ -26,6 +26,7 @@ for i=1:1:length(expDataFpe.lmt)
                         nuPEE);
 
     errVec(i,1) = fpeAT - expDataFpe.fmt(i,1).*scaleExpFpeData;
+    errVec(i,1)= errVec(i,1)*expDataFpe.weights(i,1);
 
 end
 

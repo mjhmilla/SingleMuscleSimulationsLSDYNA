@@ -52,3 +52,4 @@ function [umat43Upd, expKeyPtsDataFpeUpd]= ...
 
     expKeyPtsDataFpeUpd.lmt=[expKeyPtsDataFpe.lmt;lmtX];
     expKeyPtsDataFpeUpd.fmt=[expKeyPtsDataFpe.fmt;fmtX*(1/scaleExpFpeData)];
+    expKeyPtsDataFpeUpd.weights=[expKeyPtsDataFpeUpd.weights;1];
