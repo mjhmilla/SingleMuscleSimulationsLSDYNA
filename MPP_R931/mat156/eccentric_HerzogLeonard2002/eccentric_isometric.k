@@ -16,7 +16,7 @@ $
 *PARAMETER_EXPRESSION
 $#    name expression
 R rampLenS &rampLenE-&rampLen
-RrampTimeS &rampTime0+&dT+(&rampLenE-&rampLen)/&rampVel 
+RrampTimeS &rampTime0+(&rampLenE-&rampLen)/&rampVel 
 RrampTimeD (&rampLen)/&rampVel
 RrampTimeE &rampTimeS+&rampTimeD
 RstimTimeE &rampTimeE+5.0

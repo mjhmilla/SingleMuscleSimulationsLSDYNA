@@ -411,3 +411,57 @@ success = writeFortranVector(fpeValues.xAT, fpeValues.yAT, 11, ...
     'output/fortran/MAT156Tables/defaultFelineSoleusQ_forceLengthCurve.f');
 success = writeFortranVector(fvValues.xAT, fvValues.yAT, 12, ...
     'output/fortran/MAT156Tables/defaultFelineSoleusQ_forceVelocityCurve.f');
+
+%%
+% Sample active & passive force length curves and write to file
+%%
+
+npts=200;
+lceATmin=0.5;
+lceATmax=2.1;
+lceNAT =[0.5:(lceATmax-lceATmin)/(npts-1):lceATmax]';
+
+umat41ForceLengthData = zeros(npts,3);
+umat43ForceLengthData = zeros(npts,3);
+
+for i=1:1:npts
+    falNAT41 = calcFisomUmat41(lceNAT(i,1),umat41upd.lceOptAT,...
+                umat41upd.dWdes,umat41upd.nuCEdes,...
+                umat41upd.dWasc,umat41upd.nuCEasc);
+
+    fpeNAT41 = calcFpeeUmat41(lceNAT(i,1),umat41upd.lceOptAT,...
+                umat41upd.dWdes,umat41upd.fceOptAT,umat41upd.FPEE,...
+                umat41upd.LPEE0,umat41upd.nuPEE);
+
+    umat41ForceLengthData(i,:)=...
+        [lceNAT(i,1),falNAT41,fpeNAT41/umat41upd.fceOptAT];
+
+    fibKin = calcFixedWidthPennatedFiberKinematics(...
+                lceNAT(i,1)*umat43.lceOpt,0,...
+                umat43.lceOpt,umat43.penOpt);
+    lce=fibKin.fiberLength;
+    alpha=fibKin.pennationAngle;
+
+    lceN43 = lce/umat43.lceOpt;
+    lceNAT43=lceN43*cos(alpha);
+    falN43 = calcQuadraticBezierYFcnXDerivative(lceN43,...
+        felineSoleusNormMuscleQuadraticCurves.activeForceLengthCurve,0);
+    falNAT43=falN43*cos(alpha);
+    fpeN43 = calcQuadraticBezierYFcnXDerivative(lceN43,...
+        felineSoleusNormMuscleQuadraticCurves.fiberForceLengthCurve,0);
+    fpeNAT43=fpeN43*cos(alpha);
+    umat43ForceLengthData(i,:)=[lceNAT43,falNAT43,fpeNAT43];
+
+    assert(abs(lceNAT43-lceNAT(i,1))<10*eps);
+
+end
+
+dlmwrite(fullfile('ReferenceCurves','eccentric',...
+    'umat43ForceLengthData.csv'),...
+     umat43ForceLengthData,',');
+
+dlmwrite(fullfile('ReferenceCurves','eccentric',...
+    'umat41ForceLengthData.csv'),...
+     umat41ForceLengthData,',');
+
+

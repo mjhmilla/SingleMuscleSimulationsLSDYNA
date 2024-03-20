@@ -67,10 +67,94 @@ tfActiveRuptureN  = tfN;
 tfPassiveMinorN   = tfN*0.3;
 tfPassiveMajorN   = tfN*0.8;
 tfPassiveRuptureN = tfN;
-% Plot: 9mm ramps at the 3 different speeds on one plot
-%
-% Row 1: Forces
-% Row 2: Ramp length change (much skinnier)
+
+simRefDataMap(12) =struct('refFile',[],'refTimeColumn',0,...
+    'refForceColumn',0,'refLengthColumn',0,...
+    'activation',0,'plotColumn',0);
+simRefDataMap(1).refFile = 'dataHerzogLeonard2002Figure7A.dat';
+simRefDataMap(2).refFile = 'dataHerzogLeonard2002Figure7B.dat';
+simRefDataMap(3).refFile = 'dataHerzogLeonard2002Figure7C.dat';
+simRefDataMap(4).refFile = 'dataHerzogLeonard2002Figure7A.dat';
+simRefDataMap(5).refFile = 'dataHerzogLeonard2002Figure7B.dat';
+simRefDataMap(6).refFile = 'dataHerzogLeonard2002Figure7C.dat';
+simRefDataMap(7).refFile = 'dataHerzogLeonard2002Figure7A.dat';
+simRefDataMap(8).refFile = 'dataHerzogLeonard2002Figure7B.dat';
+simRefDataMap(9).refFile = 'dataHerzogLeonard2002Figure7C.dat';
+simRefDataMap(10).refFile ='dataHerzogLeonard2002Figure7A.dat';
+simRefDataMap(11).refFile ='dataHerzogLeonard2002Figure7B.dat';
+simRefDataMap(12).refFile ='dataHerzogLeonard2002Figure7C.dat';
+
+simRefDataMap(1).refTimeColumn      = 1;
+simRefDataMap(1).refForceColumn     = 12;
+simRefDataMap(1).refLengthColumn    = 13;
+simRefDataMap(1).plotColumn =1;
+simRefDataMap(1).activation =1;
+
+simRefDataMap(2).refTimeColumn      = 1;
+simRefDataMap(2).refForceColumn     = 10;
+simRefDataMap(2).refLengthColumn    = 11;
+simRefDataMap(2).plotColumn =2;
+simRefDataMap(2).activation =1;
+
+simRefDataMap(3).refTimeColumn      = 1;
+simRefDataMap(3).refForceColumn     = 10;
+simRefDataMap(3).refLengthColumn    = 11;
+simRefDataMap(3).plotColumn =3;
+simRefDataMap(3).activation =1;
+
+simRefDataMap(4).refTimeColumn      = 1;
+simRefDataMap(4).refForceColumn     = 8;
+simRefDataMap(4).refLengthColumn    = 9;
+simRefDataMap(4).plotColumn =4;
+simRefDataMap(4).activation =1;
+
+simRefDataMap(5).refTimeColumn      = 1;
+simRefDataMap(5).refForceColumn     = 8;
+simRefDataMap(5).refLengthColumn    = 9;
+simRefDataMap(5).plotColumn =5;
+simRefDataMap(5).activation =1;
+
+simRefDataMap(6).refTimeColumn      = 1;
+simRefDataMap(6).refForceColumn     = 8;
+simRefDataMap(6).refLengthColumn    = 9;
+simRefDataMap(6).plotColumn =6;
+simRefDataMap(6).activation =1;
+
+simRefDataMap(7).refTimeColumn      = 1;
+simRefDataMap(7).refForceColumn     = 6;
+simRefDataMap(7).refLengthColumn    = 7;
+simRefDataMap(7).plotColumn =7;
+simRefDataMap(7).activation =1;
+
+simRefDataMap(8).refTimeColumn      = 1;
+simRefDataMap(8).refForceColumn     = 6;
+simRefDataMap(8).refLengthColumn    = 7;
+simRefDataMap(8).plotColumn =8;
+simRefDataMap(8).activation =1;
+
+simRefDataMap(9).refTimeColumn      = 1;
+simRefDataMap(9).refForceColumn     = 6;
+simRefDataMap(9).refLengthColumn    = 7;
+simRefDataMap(9).plotColumn =9;
+simRefDataMap(9).activation =1;
+
+simRefDataMap(10).refTimeColumn      = 1;
+simRefDataMap(10).refForceColumn     = 10;
+simRefDataMap(10).refLengthColumn    = 11;
+simRefDataMap(10).plotColumn         = 1;
+simRefDataMap(10).activation         = 0;
+
+simRefDataMap(11).refTimeColumn      = 1;
+simRefDataMap(11).refForceColumn     = 12;
+simRefDataMap(11).refLengthColumn    = 13;
+simRefDataMap(11).plotColumn         = 2;
+simRefDataMap(11).activation         = 0;
+
+simRefDataMap(12).refTimeColumn      = 1;
+simRefDataMap(12).refForceColumn     = 12;
+simRefDataMap(12).refLengthColumn    = 13;
+simRefDataMap(12).plotColumn         = 3;
+simRefDataMap(12).activation         = 0;
 
 % Add the reference data
 if(flag_addReferenceData==1)
@@ -115,48 +199,73 @@ if(flag_addReferenceData==1)
                 subplot('Position',...
                     reshape(subPlotLayout(indexRowC,indexColumn+subPlotColOffset,:),1,4));
     
-                falFile = fullfile(referenceCurveFolder,'felineSoleus_activeForceLengthCurve.dat');
-                fpeFile = fullfile(referenceCurveFolder,'felineSoleus_fiberForceLengthCurve.dat');
-    
-                falFcn = readBezierCurveFromCSV(falFile);
-                fpeFcn = readBezierCurveFromCSV(fpeFile);
-                
-                npts=200;
-                xDomain = xLimRampNorm(indexLengths,:);%[falFcn.xEnd(1,1),fpeFcn.xEnd(1,2)];
-                xDelta = xDomain(1,2)-xDomain(1,1);
-                xSample = [xDomain(1,1):(xDelta/(npts-1)):xDomain(1,2)]';
-                ySample = zeros(length(xSample),3);
-
-                for i=1:1:length(xSample)
-                    ySample(i,1)=calcQuadraticBezierYFcnXDerivative(xSample(i,1), falFcn, 0);
-                    ySample(i,2)=calcQuadraticBezierYFcnXDerivative(xSample(i,1), fpeFcn, 0);
-                    ySample(i,3)=ySample(i,1)+ySample(i,2);
-                end
+%                 falFile = fullfile(referenceCurveFolder,'felineSoleus_activeForceLengthCurve.dat');
+%                 fpeFile = fullfile(referenceCurveFolder,'felineSoleus_fiberForceLengthCurve.dat');
+%     
+%                 falFcn = readBezierCurveFromCSV(falFile);
+%                 fpeFcn = readBezierCurveFromCSV(fpeFile);
+%                 
+%                 npts=200;
+%                 xDomain = xLimRampNorm(indexLengths,:);%[falFcn.xEnd(1,1),fpeFcn.xEnd(1,2)];
+%                 xDelta = xDomain(1,2)-xDomain(1,1);
+%                 xSample = [xDomain(1,1):(xDelta/(npts-1)):xDomain(1,2)]';
+%                 ySample = zeros(length(xSample),3);
+% 
+%                 for i=1:1:length(xSample)
+%                     ySample(i,1)=calcQuadraticBezierYFcnXDerivative(xSample(i,1), falFcn, 0);
+%                     ySample(i,2)=calcQuadraticBezierYFcnXDerivative(xSample(i,1), fpeFcn, 0);
+%                     ySample(i,3)=ySample(i,1)+ySample(i,2);
+%                 end
                     
-                fill([xSample;xSample(end,1);xSample(1,1)],...
-                     [ySample(:,1);ySample(1,1);ySample(1,1)],...
+                umat43FlData=...
+                    dlmread(fullfile(referenceCurveFolder,'umat43ForceLengthData.csv'));
+                umat41FlData=...
+                    dlmread(fullfile(referenceCurveFolder,'umat41ForceLengthData.csv'));
+
+                fill([0;umat43FlData(:,1);umat43FlData(end,1);umat43FlData(1,1)],...
+                     [0;umat43FlData(:,2);0;0],...
                      [1,1,1].*0.65,...
                      'EdgeColor','none',...
                      'HandleVisibility','off');
                 hold on;
     
-                fill([xSample;xSample(end,1);xSample(1,1)],...
-                     [ySample(:,2);ySample(1,2);ySample(1,2)],...
+                falFpeUmat43 = umat43FlData(:,2)+umat43FlData(:,3);
+
+                fill([umat43FlData(:,1);umat43FlData(end,1);umat43FlData(1,1)],...
+                     [umat43FlData(:,3);umat43FlData(1,3);umat43FlData(1,3)],...
                      [1,1,1].*0.55,...
                      'EdgeColor','none',...
                      'HandleVisibility','off');
                 hold on;
     
-                plot(xSample,ySample(:,3),'Color',[1,1,1].*0.75,...
+                plot(umat43FlData(:,1),falFpeUmat43(:,1),'Color',[1,1,1].*0.75,...
                      'LineWidth',lineWidthData*2,'HandleVisibility','off');
-                hold on;                    
+                hold on;                   
+
+%                 fill([xSample;xSample(end,1);xSample(1,1)],...
+%                      [ySample(:,1);ySample(1,1);ySample(1,1)],...
+%                      [1,1,1].*0.65,...
+%                      'EdgeColor','none',...
+%                      'HandleVisibility','off');
+%                 hold on;
+%     
+%                 fill([xSample;xSample(end,1);xSample(1,1)],...
+%                      [ySample(:,2);ySample(1,2);ySample(1,2)],...
+%                      [1,1,1].*0.55,...
+%                      'EdgeColor','none',...
+%                      'HandleVisibility','off');
+%                 hold on;
+%     
+%                 plot(xSample,ySample(:,3),'Color',[1,1,1].*0.75,...
+%                      'LineWidth',lineWidthData*2,'HandleVisibility','off');
+%                 hold on;                    
     
                 addedReferenceForceLengthCurve(1,indexColumn) = 1;
             end
         end        
 
         for indexFile = 1:1:length(dataFiles)
-            data = importdata([referenceDataFolder,'/',dataFiles{indexFile}]);
+            data = importdata([referenceDataFolder,filesep,dataFiles{indexFile}]);
             indexTime=1;
     
             isForceColumn     = zeros(1,length(data.colheaders));
@@ -288,7 +397,7 @@ if(flag_addReferenceData==1)
     
                     dt = 1;
                     t0 = data.data(idxMax,indexTime);
-                    t1 = 1;
+                    t1 = t0-0.5;
     
                     f0 = valMax;
                     f1 = f0;
@@ -299,10 +408,10 @@ if(flag_addReferenceData==1)
                        flag_plotThisColumn==1)
 
                         if(addHLData==1)
-                            plot([t0,t1],...
-                                 [f0,f1],...
-                                 '-','Color',referenceColor);
-                            hold on;  
+%                             plot([t0,t1],...
+%                                  [f0,f1],...
+%                                  '-','Color',referenceColor);
+%                             hold on;  
                             plot(t0,f0,...
                                  'o','Color',referenceColor,...
                                  'MarkerSize',2,...
@@ -310,9 +419,9 @@ if(flag_addReferenceData==1)
                             hold on;  
                             
                             trialLabel = sprintf('%1.1fN',f0);
-                            text(t1,f1,trialLabel,...
+                            text(t0,f0+0.3,trialLabel,...
                                 'VerticalAlignment','bottom',...
-                                'HorizontalAlignment','right');
+                                'HorizontalAlignment','left');
                             hold on;
                         end
                         subplot('Position',...
@@ -331,6 +440,9 @@ if(flag_addReferenceData==1)
                                             rampFiltDiff);
                         rampFiltDDiff=filtfilt(b,a,rampFiltDDiff);
                         [maxDlDt,idxMaxDlDt]= max(rampFiltDDiff);
+                        rampFiltDDiff(1:(idxMaxDlDt-10),1)=0;
+                        [minDlDt,idxMinDlDt]= min(rampFiltDDiff);
+                        
                         [maxVal,idxMaxF]    = max(data.data(:,indexForceColumn));
                         
                         df = data.data(idxMaxDlDt,indexForceColumn) ...
@@ -346,10 +458,30 @@ if(flag_addReferenceData==1)
                             'simulationParametersHerzogLeonard2002.dat']);
 
                         if(addHLData==1)
-                            plot( lceN0(1,1)+( data.data(rampIdx,indexLengthColumn)./(1000*optimalFiberLength)),...
-                                  data.data(rampIdx,indexForceColumn)./maximumIsometricForce,...
+                            dataX = lceN0(1,1)+( data.data(rampIdx,indexLengthColumn)./(1000*optimalFiberLength));
+                            dataY = data.data(rampIdx,indexForceColumn)./maximumIsometricForce; 
+
+                            plot( dataX,...
+                                  dataY,...
                                   '-','Color',referenceColor,...
                                   'LineWidth',lineWidthData);
+                            hold on;
+                            plot( dataX(end,1),...
+                                  dataY(end,1),...
+                                  'o','Color',referenceColor,...
+                                  'MarkerFaceColor',[1,1,1],...
+                                  'MarkerSize',2,...
+                                  'LineWidth',lineWidthData);
+                            hold on;
+                            plot( [dataX(end,1),dataX(end,1)+0.05],...
+                                  [dataY(end,1),dataY(end,1)],...
+                                  '-','Color',referenceColor,...
+                                  'LineWidth',lineWidthData);
+                            hold on;
+                            text(dataX(end,1)+0.05,dataY(end,1),...
+                                 sprintf('%1.2f %s',dataY(end,1),'$$f^M_o$$'),...
+                                 'Color',[0,0,0],...
+                                 'HorizontalAlignment','left');
                             hold on;
                         end
 
@@ -390,7 +522,7 @@ if(flag_addReferenceData==1)
                             trialLabel = sprintf('%1.1fN',f0); 
                             text(t1,f1,trialLabel,...
                                 'VerticalAlignment','bottom',...
-                                'HorizontalAlignment','right');
+                                'HorizontalAlignment','left');
                             hold on;
                         end
     
@@ -425,6 +557,20 @@ if(flag_addReferenceData==1)
                             plot(data.data(:,indexTime), data.data(:,indexLengthColumn),...
                                  'Color',referenceColor,'LineWidth',lineWidthData);
                             hold on;  
+                            text(data.data(idxMaxDlDt,indexTime),...
+                                 data.data(idxMaxDlDt,indexLengthColumn),...
+                                 sprintf('%1.2f',data.data(idxMaxDlDt,indexTime)),...
+                                 'FontSize',6,...
+                                 'HorizontalAlignment','right',...
+                                 'VerticalAlignment','bottom');
+                            hold on;
+                            text(data.data(idxMinDlDt,indexTime),...
+                                 data.data(idxMinDlDt,indexLengthColumn),...
+                                 sprintf('%1.2f',data.data(idxMinDlDt,indexTime)),...
+                                 'FontSize',6,...
+                                 'HorizontalAlignment','left',...
+                                 'VerticalAlignment','top');
+                            hold on;
                         end
     
                     end
@@ -675,15 +821,183 @@ if(flag_addSimulationData)
                      'Color', simulationColor,...
                      'LineWidth',lineWidthModel);
                 hold on;
-                box off;    
-                                        
+                box off;  
+
+                if(isempty(simRefDataMap(indexColumn+subPlotColOffset).refFile)==0)
+                    rampTimeS = getParameterValueFromD3HSPFile(d3hspFileName,'RAMPTIMES');
+                    rampTimeE = getParameterValueFromD3HSPFile(d3hspFileName,'RAMPTIMEE');
+                    stimTimeE = getParameterValueFromD3HSPFile(d3hspFileName,'STIMTIMEE');
+                    timeE     = getParameterValueFromD3HSPFile(d3hspFileName,' TIMEE ');
+
+                    
+                    
+                    %Load the reference data
+                    idxPlotColumn = indexColumn+subPlotColOffset;
+                    idxData=0;
+
+                    for i=1:1:length(simRefDataMap)
+                        if( (abs(simRefDataMap(i).plotColumn-idxPlotColumn) < 0.5) ...
+                                && (abs(maxStim - simRefDataMap(i).activation) < 0.5 ) )
+                            idxData=i;
+                        end
+                    end
+
+                    if(idxData > 0)
+                        refData = importdata([referenceDataFolder,filesep,...
+                                    simRefDataMap(idxData).refFile]);
+                        refDataTime = refData.data(:,simRefDataMap(idxData).refTimeColumn);
+                        refDataForce= refData.data(:,simRefDataMap(idxData).refForceColumn);
+                        refDataLength=refData.data(:,simRefDataMap(idxData).refLengthColumn);
+
+                        
+        
+                        refChangeInLength=max(refDataLength)-min(refDataLength);
+                        if(abs(max(changeInLength)-refChangeInLength) >= 0.5)
+                            here=1;
+                        end
+                        assert(abs(max(changeInLength)-refChangeInLength) < 0.5);
+        
+                        %Calculate the ramp RMSE error
+                        npts=100;
+                        timeRamp = [rampTimeS:((rampTimeE-rampTimeS)/(npts-1)):rampTimeE]';
+                        errorRamp = zeros(size(timeRamp));
+                        for i=1:1:length(timeRamp)
+                            refForce = interp1(refDataTime,... 
+                                        refDataForce,...
+                                        timeRamp(i,1));
+                            simForce = interp1(lsdynaBinout.elout.beam.time,... 
+                                        lsdynaBinout.elout.beam.axial,...
+                                        timeRamp(i,1));
+                            errorRamp(i,1) = simForce-refForce;        
+                        end    
+                        rmseRamp = sqrt(mean(errorRamp.^2)); 
+    
+                        %Calculate the ramp recovery RMSE error
+                        timePostRamp = [rampTimeE:((stimTimeE-rampTimeE)/(npts-1)):stimTimeE]';
+                        errorPostRamp = zeros(size(timePostRamp));
+                        for i=1:1:length(timeRamp)
+                            refForce = interp1(refDataTime,... 
+                                        refDataForce,...
+                                        timePostRamp(i,1));
+                            simForce = interp1(lsdynaBinout.elout.beam.time,... 
+                                        lsdynaBinout.elout.beam.axial,...
+                                        timePostRamp(i,1));
+                            errorPostRamp(i,1) = simForce-refForce;        
+                        end    
+                        rmsePostRamp = sqrt(mean(errorPostRamp.^2)); 
+    
+                        %Calculate the deactivation RMSE error
+                        if(contains(lsdynaMuscleUniform.name,'umat43')==1)
+                            here=1;
+                        end
+
+                        timeFinal = min(timeE,max(refDataTime));
+                        timeFinal = timeFinal*0.99;
+                        timeDeact = [stimTimeE:((timeFinal-stimTimeE)/(npts-1)):timeFinal]';
+                        errorDeact = zeros(size(timeDeact));
+                        for i=1:1:length(timeRamp)
+                            refForce = interp1(refDataTime,... 
+                                        refDataForce,...
+                                        timeDeact(i,1));
+                            simForce = interp1(lsdynaBinout.elout.beam.time,... 
+                                        lsdynaBinout.elout.beam.axial,...
+                                        timeDeact(i,1));
+                            errorDeact(i,1) = simForce-refForce;        
+                        end    
+                        rmseDeact = sqrt(mean(errorDeact.^2));                    
+    
+                        df = 1.5;
+                        
+                        %Write the ramp RMSE to the figure
+                        xTxt = rampTimeS-0.25;
+                        yTxt=39;
+                        if(maxStim < 0.5)
+                            xTxt = 3.0;
+                            yTxt = 12;     
+                        end
+                        switch lsdynaMuscleUniform.name
+                            case 'mat156'
+                                text(xTxt,yTxt,'RMSE','HorizontalAlignment','right');
+                                hold on;
+                                text(xTxt,yTxt-df,sprintf('%1.1f',rmseRamp),...
+                                     'HorizontalAlignment','right',...
+                                     'Color',simulationColor);
+                                hold on;
+                            case 'umat41'
+                                text(xTxt,yTxt-2*df,sprintf('%1.1f',rmseRamp),...
+                                     'HorizontalAlignment','right',...
+                                     'Color',simulationColor);
+                                hold on;
+                                
+                            case 'umat43'
+                                text(xTxt,yTxt-3*df,sprintf('%1.1f',rmseRamp),...
+                                     'HorizontalAlignment','right',...
+                                     'Color',simulationColor);
+                                hold on;
+                        end
+    
+                        %Write the ramp-recovery RMSE to the figure
+                        if(maxStim > 0.5)
+                            xTxt = stimTimeE;
+                            yTxt=39;
+                            switch lsdynaMuscleUniform.name
+                                case 'mat156'
+                                    text(xTxt,yTxt,'RMSE','HorizontalAlignment','right');
+                                    hold on;
+                                    text(xTxt,yTxt-df,sprintf('%1.1f',rmsePostRamp),...
+                                         'HorizontalAlignment','right',...
+                                         'Color',simulationColor);
+                                    hold on;
+                                case 'umat41'
+                                    text(xTxt,yTxt-2*df,sprintf('%1.1f',rmsePostRamp),...
+                                         'HorizontalAlignment','right',...
+                                         'Color',simulationColor);
+                                    hold on;
+                                    
+                                case 'umat43'
+                                    text(xTxt,yTxt-3*df,sprintf('%1.1f',rmsePostRamp),...
+                                         'HorizontalAlignment','right',...
+                                         'Color',simulationColor);
+                                    hold on;
+                            end
+                        end
+    
+                        %Write the deactivation RMSE to the figure
+                        if(maxStim > 0.5)
+                            xTxt = 12;
+                            yTxt = 39;
+                            switch lsdynaMuscleUniform.name
+                                case 'mat156'
+                                    text(xTxt,yTxt,'RMSE','HorizontalAlignment','right');
+                                    hold on;
+                                    text(xTxt,yTxt-df,sprintf('%1.1f',rmseDeact),...
+                                         'HorizontalAlignment','right',...
+                                         'Color',simulationColor);
+                                    hold on;
+                                case 'umat41'
+                                    text(xTxt,yTxt-2*df,sprintf('%1.1f',rmseDeact),...
+                                         'HorizontalAlignment','right',...
+                                         'Color',simulationColor);
+                                    hold on;
+                                    
+                                case 'umat43'
+                                    text(xTxt,yTxt-3*df,sprintf('%1.1f',rmseDeact),...
+                                         'HorizontalAlignment','right',...
+                                         'Color',simulationColor);
+                                    hold on;
+                            end
+                        end
+                    end
+                end
             end
     
            
             if(dl > 2 && maxStim > 0.5)
+
                 rampTimeS = getParameterValueFromD3HSPFile(d3hspFileName,'RAMPTIMES');
                 rampTimeE = getParameterValueFromD3HSPFile(d3hspFileName,'RAMPTIMEE');
 
+                % Annotate the isometric and peak lengthening forces
                 tS   = rampTimeS;
                 tE   = rampTimeE;
                 idxS = interp1( lsdynaBinout.elout.beam.time, ...
@@ -771,6 +1085,33 @@ if(flag_addSimulationData)
                      '-','Color',simulationColor,...
                      'LineWidth',lineWidthModel);
                 hold on;
+
+                if(indexLengths~=indexInjury)
+                    hAlign = 'left';
+                    dx = 0.05;
+                    if(contains(lsdynaMuscleUniform.name,'umat43'))
+                        hAlign='right';
+                        dx = -0.05;
+                    end
+
+                    plot(   lsdynaMuscleUniform.lceN(idxE,1),...
+                            lsdynaMuscleUniform.fmtN(idxE,1),...
+                     'o','Color',simulationColor,...
+                     'MarkerSize',2,...
+                     'MarkerFaceColor',[1,1,1],...
+                     'LineWidth',lineWidthModel);
+                    hold on;
+                    plot([lsdynaMuscleUniform.lceN(idxE,1)+dx,lsdynaMuscleUniform.lceN(idxE,1)],...
+                        [lsdynaMuscleUniform.fmtN(idxE,1),lsdynaMuscleUniform.fmtN(idxE,1)],...
+                        '-','Color',simulationColor);
+                    hold on;
+                    text(lsdynaMuscleUniform.lceN(idxE,1)+dx,...
+                         lsdynaMuscleUniform.fmtN(idxE,1),...
+                         sprintf('%1.2f %s',lsdynaMuscleUniform.fmtN(idxE,1),'$$f^M_o$$'),...
+                         'HorizontalAlignment',hAlign,...
+                         'Color',simulationColor);
+                    hold on;
+                end
                                 
                 if(indexLengths==indexInjury)
 
