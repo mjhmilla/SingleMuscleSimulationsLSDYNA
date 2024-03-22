@@ -279,6 +279,25 @@ for idx=idxStart:1:idxEnd
               'HandleVisibility','off');   
         hold on;
 
+        yyaxis left;
+        y1 = plotSettings(idxPlotSettings).yLim(1,2) - yHeight*0.01;
+        y0 = plotSettings(idxPlotSettings).yLim(1,2) - yHeight*0.04;
+        x0 = dataHL1997Length(idx).x(2,1);
+        x1 = dataHL1997Length(idx).x(3,1);
+        x2 = plotSettings(idxPlotSettings).xLim(1,2);
+        
+        plot([1;1].*x0,[y0;y1],'-k','HandleVisibility','off');
+        hold on;
+        plot([1;1].*x1,[y0;y1],'-k','HandleVisibility','off');
+        hold on;
+        plot([1;1].*x2,[y0;y1],'-k','HandleVisibility','off');
+        hold on;
+
+        plot([x0;x1],[y1;y1],'-k','HandleVisibility','off');
+        hold on;
+        plot([x1;x2],[y1;y1],'-k','HandleVisibility','off');
+        hold on;
+
         
 
     end

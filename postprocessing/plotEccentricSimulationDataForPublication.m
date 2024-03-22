@@ -401,17 +401,18 @@ if(flag_addReferenceData==1)
     
                     f0 = valMax;
                     f1 = f0;
-                    
+                                        
+
                     trialLabel = '';
                     if(isPassiveColumn(1,indexForceColumn) == 0 && ...
                        isIsometricColumn(1,indexForceColumn) == 0 && ...
                        flag_plotThisColumn==1)
 
                         if(addHLData==1)
-%                             plot([t0,t1],...
-%                                  [f0,f1],...
-%                                  '-','Color',referenceColor);
-%                             hold on;  
+                            plot([t0,t0+1],...
+                                 [f0,f0],...
+                                 '-','Color',referenceColor);
+                            hold on;  
                             plot(t0,f0,...
                                  'o','Color',referenceColor,...
                                  'MarkerSize',2,...
@@ -419,7 +420,7 @@ if(flag_addReferenceData==1)
                             hold on;  
                             
                             trialLabel = sprintf('%1.1fN',f0);
-                            text(t0,f0+0.3,trialLabel,...
+                            text(t0+1,f0,trialLabel,...
                                 'VerticalAlignment','bottom',...
                                 'HorizontalAlignment','left');
                             hold on;
@@ -458,6 +459,7 @@ if(flag_addReferenceData==1)
                             'simulationParametersHerzogLeonard2002.dat']);
 
                         if(addHLData==1)
+                            columnNumber=indexColumn+subPlotColOffset;
                             dataX = lceN0(1,1)+( data.data(rampIdx,indexLengthColumn)./(1000*optimalFiberLength));
                             dataY = data.data(rampIdx,indexForceColumn)./maximumIsometricForce; 
 
@@ -473,16 +475,18 @@ if(flag_addReferenceData==1)
                                   'MarkerSize',2,...
                                   'LineWidth',lineWidthData);
                             hold on;
-                            plot( [dataX(end,1),dataX(end,1)+0.05],...
-                                  [dataY(end,1),dataY(end,1)],...
-                                  '-','Color',referenceColor,...
-                                  'LineWidth',lineWidthData);
-                            hold on;
-                            text(dataX(end,1)+0.05,dataY(end,1),...
+                            ln2 = dataX(end,1)+0.05;
+                            fn2 = dataY(end,1);
+                            plot( [dataX(end,1),ln2],...
+                                  [dataY(end,1),fn2],...
+                                  '-','Color',referenceColor);
+                            hold on;                                    
+                            text(ln2,fn2,...
                                  sprintf('%1.2f %s',dataY(end,1),'$$f^M_o$$'),...
                                  'Color',[0,0,0],...
                                  'HorizontalAlignment','left');
                             hold on;
+                            
                         end
 
                         subplot('Position',...
@@ -490,8 +494,8 @@ if(flag_addReferenceData==1)
     
                         t2 = data.data(idxMaxDlDt,indexTime);
                         f2 = data.data(idxMaxDlDt,indexForceColumn); 
-                        t3 = 1;
-                        f3 = f2;
+                        t3 = 1.75;
+                        f3 = f2+2;
                         if(addHLData==1)
                             plot([t2,t3],...
                                  [f2,f3],...
@@ -517,10 +521,13 @@ if(flag_addReferenceData==1)
                                  'o','Color',referenceColor,...
                                  'MarkerSize',2,...
                                  'MarkerFaceColor',[1,1,1]);
-                            hold on;    
+                            hold on;
+                            plot([t0,t0+1],[f0,f0+0.5],...
+                                 '-','Color',referenceColor);
+                            hold on;
         
                             trialLabel = sprintf('%1.1fN',f0); 
-                            text(t1,f1,trialLabel,...
+                            text(t0+1,f0+0.5,trialLabel,...
                                 'VerticalAlignment','bottom',...
                                 'HorizontalAlignment','left');
                             hold on;
@@ -554,19 +561,22 @@ if(flag_addReferenceData==1)
                         subplot('Position',reshape(subPlotLayout(indexRowB,indexColumn+subPlotColOffset,:),1,4));
                         
                         if(addHLData==1 && flag_plotThisColumn==1)
+                            rampTimeS = getParameterValueFromD3HSPFile(d3hspFileName,'RAMPTIMES');
+                            rampTimeE = getParameterValueFromD3HSPFile(d3hspFileName,'RAMPTIMEE');
+
                             plot(data.data(:,indexTime), data.data(:,indexLengthColumn),...
                                  'Color',referenceColor,'LineWidth',lineWidthData);
                             hold on;  
                             text(data.data(idxMaxDlDt,indexTime),...
                                  data.data(idxMaxDlDt,indexLengthColumn),...
-                                 sprintf('%1.2f',data.data(idxMaxDlDt,indexTime)),...
+                                 sprintf('%1.2f',rampTimeS),...
                                  'FontSize',6,...
                                  'HorizontalAlignment','right',...
                                  'VerticalAlignment','bottom');
                             hold on;
-                            text(data.data(idxMinDlDt,indexTime),...
+                            text(data.data(idxMinDlDt,indexTime)+0.25,...
                                  data.data(idxMinDlDt,indexLengthColumn),...
-                                 sprintf('%1.2f',data.data(idxMinDlDt,indexTime)),...
+                                 sprintf('%1.2f',rampTimeE),...
                                  'FontSize',6,...
                                  'HorizontalAlignment','left',...
                                  'VerticalAlignment','top');
@@ -906,40 +916,80 @@ if(flag_addSimulationData)
                         end    
                         rmseDeact = sqrt(mean(errorDeact.^2));                    
     
-                        df = 1.5;
-                        
+
+
+                        df = 1.5;          
+                        dt = 0.125;
+
                         %Write the ramp RMSE to the figure
-                        xTxt = rampTimeS-0.25;
-                        yTxt=39;
+                        xTxt = rampTimeS-dt;
+                        yTxt=38;
+                        hAlign='right';
                         if(maxStim < 0.5)
-                            xTxt = 3.0;
-                            yTxt = 12;     
+                            xTxt = rampTimeS;
+                            yTxt = 15;     
+                            hAlign='left';
                         end
+                        if(maxStim > 0.5)
+                            plot([1,1].*rampTimeS,...
+                                 [39,40],'-','Color',[0,0,0]);
+                            hold on;
+                            plot([1,1].*rampTimeE,...
+                                 [39,40],'-','Color',[0,0,0]);
+                            hold on;
+                            plot([rampTimeS,rampTimeE],...
+                                 [40,40],'-','Color',[0,0,0]);
+                            hold on;
+                            plot([1,1].*stimTimeE,...
+                                 [39,40],'-','Color',[0,0,0]);
+                            hold on;
+                            plot([rampTimeE,stimTimeE],...
+                                 [40,40],'-','Color',[0,0,0]);
+                            hold on;
+                            plot([1,1].*12,...
+                                 [39,40],'-','Color',[0,0,0]);
+                            hold on;
+                            plot([stimTimeE,12],...
+                                 [40,40],'-','Color',[0,0,0]);
+                            hold on;
+                            
+                        else
+                            plot([1,1].*rampTimeS,...
+                                 [8,9],'-','Color',[0,0,0]);
+                            hold on;                            
+                            plot([1,1].*rampTimeE,...
+                                 [8,9],'-','Color',[0,0,0]);
+                            hold on;                            
+                            plot([rampTimeS,rampTimeE],...
+                                 [9,9],'-','Color',[0,0,0]);
+                            hold on;
+                        end
+
                         switch lsdynaMuscleUniform.name
                             case 'mat156'
-                                text(xTxt,yTxt,'RMSE','HorizontalAlignment','right');
+                                text(xTxt,yTxt,'RMSE','HorizontalAlignment',hAlign);
                                 hold on;
                                 text(xTxt,yTxt-df,sprintf('%1.1f',rmseRamp),...
-                                     'HorizontalAlignment','right',...
+                                     'HorizontalAlignment',hAlign,...
                                      'Color',simulationColor);
                                 hold on;
                             case 'umat41'
                                 text(xTxt,yTxt-2*df,sprintf('%1.1f',rmseRamp),...
-                                     'HorizontalAlignment','right',...
+                                     'HorizontalAlignment',hAlign,...
                                      'Color',simulationColor);
                                 hold on;
                                 
                             case 'umat43'
                                 text(xTxt,yTxt-3*df,sprintf('%1.1f',rmseRamp),...
-                                     'HorizontalAlignment','right',...
+                                     'HorizontalAlignment',hAlign,...
                                      'Color',simulationColor);
                                 hold on;
                         end
     
                         %Write the ramp-recovery RMSE to the figure
                         if(maxStim > 0.5)
-                            xTxt = stimTimeE;
-                            yTxt=39;
+                            xTxt = stimTimeE-dt;
+                            yTxt=38;
                             switch lsdynaMuscleUniform.name
                                 case 'mat156'
                                     text(xTxt,yTxt,'RMSE','HorizontalAlignment','right');
@@ -964,8 +1014,8 @@ if(flag_addSimulationData)
     
                         %Write the deactivation RMSE to the figure
                         if(maxStim > 0.5)
-                            xTxt = 12;
-                            yTxt = 39;
+                            xTxt = 12-dt;
+                            yTxt = 38;
                             switch lsdynaMuscleUniform.name
                                 case 'mat156'
                                     text(xTxt,yTxt,'RMSE','HorizontalAlignment','right');
@@ -1025,17 +1075,42 @@ if(flag_addSimulationData)
                 t1 = tMax+dt;
                 f1=fE;
 
+                yTxtPeak = 0;
+                yTxtStart=0;
+                df=1.5;
+                switch lsdynaMuscleUniform.name
+                    case 'mat156'
+                        yTxtPeak=25;   
+                        yTxtStart = 21;
+                        if(contains(simulationFile,'27mmps') ~= 0)
+                            yTxtPeak=23.5;   
+                            yTxtStart = 21-df;
+                        end
+                    case 'umat41'
+                        yTxtPeak=23.5;                                                        
+                        yTxtStart = 21-df;
+                        if(contains(simulationFile,'27mmps') ~= 0)
+                            yTxtPeak=25;   
+                            yTxtStart = 21;
+                        end                        
+                        
+                    case 'umat43'
+                        yTxtPeak=fE-1;
+                        yTxtStart = 21-2*df;
+                        
+                end
+
                 plot(tE,fE,...
                      'o','Color',simulationColor,...
                      'MarkerSize',2,...
                      'MarkerFaceColor',[1,1,1]);
                 hold on;
 
-                plot([tE;t1],[fMax;fMax],...
+                plot([tE;t1],[fMax;yTxtPeak],...
                      '-','Color',simulationColor);
                 hold on;
     
-                text(t1,f1,sprintf('%1.1fN',fE),...
+                text(t1,yTxtPeak,sprintf('%1.1fN',fE),...
                      'Color',simulationColor,...
                      'HorizontalAlignment','left',...
                      'VerticalAlignment','middle');
@@ -1054,11 +1129,11 @@ if(flag_addSimulationData)
                      'MarkerFaceColor',[1,1,1]);
                 hold on;
 
-                plot([t2;tS],[f2;fS],...
+                plot([tS;t2],[fS;yTxtStart],...
                      '-','Color',simulationColor);
                 hold on;
     
-                text(t2,f2,sprintf('%1.1fN',fS),...
+                text(t2,yTxtStart,sprintf('%1.1fN',fS),...
                      'Color',simulationColor,...
                      'HorizontalAlignment','left',...
                      'VerticalAlignment','middle');
@@ -1101,16 +1176,41 @@ if(flag_addSimulationData)
                      'MarkerFaceColor',[1,1,1],...
                      'LineWidth',lineWidthModel);
                     hold on;
-                    plot([lsdynaMuscleUniform.lceN(idxE,1)+dx,lsdynaMuscleUniform.lceN(idxE,1)],...
-                        [lsdynaMuscleUniform.fmtN(idxE,1),lsdynaMuscleUniform.fmtN(idxE,1)],...
-                        '-','Color',simulationColor);
-                    hold on;
-                    text(lsdynaMuscleUniform.lceN(idxE,1)+dx,...
-                         lsdynaMuscleUniform.fmtN(idxE,1),...
-                         sprintf('%1.2f %s',lsdynaMuscleUniform.fmtN(idxE,1),'$$f^M_o$$'),...
+
+                    ln1 = lsdynaMuscleUniform.lceN(idxE,1);
+                    fn1 = lsdynaMuscleUniform.fmtN(idxE,1);
+                    ln2 = lsdynaMuscleUniform.lceN(idxE,1)+dx;
+                    fn2 = lsdynaMuscleUniform.fmtN(idxE,1);
+                    vAlign='middle';
+                    hAlign='right';
+                    switch lsdynaMuscleUniform.name
+                        case 'mat156'
+                            vAlign='bottom';
+                            if(contains(simulationFile,'27mmps') ~= 0)
+                                vAlign='top';
+                            end
+                            hAlign='left';
+                        case 'umat41'
+                            vAlign='top';
+                            if(contains(simulationFile,'27mmps') ~= 0)
+                                vAlign='bottom';
+                            end
+                            hAlign='left';
+                        otherwise
+                            
+                    end
+                    plot( [ln1,ln2],...
+                          [fn1,fn2],...
+                          '-','Color',simulationColor);
+                    hold on;                                    
+                    text(ln2,fn2,...
+                         sprintf('%1.2f%s',fn1,'$$f^M_o$$'),...
+                         'Color',[0,0,0],...
                          'HorizontalAlignment',hAlign,...
+                         'VerticalAlignment',vAlign,...
                          'Color',simulationColor);
-                    hold on;
+                    hold on;  
+
                 end
                                 
                 if(indexLengths==indexInjury)
@@ -1229,7 +1329,112 @@ if(flag_addSimulationData)
                 hold on;
             end
     
-            box off;           
+            box off;   
+
+        %Manually add the legend
+        maxStim=getParameterValueFromD3HSPFile(d3hspFileName,'STIMHIGH');
+        rampLenS=getParameterValueFromD3HSPFile(d3hspFileName,'RAMPLENS');
+        rampLenE=getParameterValueFromD3HSPFile(d3hspFileName,'RAMPLENE');
+
+        if(contains(simulationFile,'isometric')==0 && ...
+           contains(simulationFile,  'passive')==0)
+
+            for indexLegend=1:1:3
+
+                rampTimeS = getParameterValueFromD3HSPFile(d3hspFileName,'RAMPTIMES');
+                rampTimeE = getParameterValueFromD3HSPFile(d3hspFileName,'RAMPTIMEE');
+                stimTimeE = getParameterValueFromD3HSPFile(d3hspFileName,'STIMTIMEE');
+
+                columnNumber=indexColumn+subPlotColOffset;
+                switch indexLegend
+                    case 1
+                        subplot('Position',reshape(...
+                            subPlotLayout(indexRowA,indexColumn+subPlotColOffset,:),1,4)); 
+                        if(columnNumber <= 9)
+                            xTxt = stimTimeE-2.5;
+                            yTxt = 17;
+                            dy = 40*(1.75/40);
+                            dx1 = 12*(0.25/12);
+                            dx2 = 12*(1/12);
+                        else
+                            xTxt = stimTimeE - 2;
+                            yTxt = 18;
+                            dy = 80*(1.75/40);
+                            dx1 = 18*(0.25/12);
+                            dx2 = 18*(1/12);
+                        end
+                    case 2
+                        subplot('Position',reshape(...
+                            subPlotLayout(indexRowB,indexColumn+subPlotColOffset,:),1,4)); 
+                        if(columnNumber <= 9)
+                            xTxt = 8;
+                            yTxt = 7;
+                            dy = 9*4*(1.75/40);
+                            dx1 = (12)*(0.25/12);
+                            dx2 = (12)*(1/12);
+                        else
+                            xTxt =  15;
+                            yTxt =  30;
+                            dy  = 52*(4*1.75/40);
+                            dx1 = (20)*(0.25/12);
+                            dx2 = (20)*(1/12);
+                        end
+                    case 3
+                        subplot('Position',reshape(...
+                            subPlotLayout(indexRowC,indexColumn+subPlotColOffset,:),1,4)); 
+                        if(columnNumber <= 9)
+                            xTxt = 0.6;
+                            yTxt = 1.7;
+                            dy = 1.75*(1.75/40);
+                            dx1 = (1.3-0.5)*(0.25/12);
+                            dx2 = (1.3-0.5)*(1/12);
+                        else
+                            xTxt =  0.7;
+                            yTxt =  2;
+                            dy  = 4*(1.75/40);
+                            dx1 = (2-0.5)*(0.25/12);
+                            dx2 = (2-0.5)*(1/12);
+                        end                        
+                        
+                end
+
+                            
+                switch lsdynaMuscleUniform.name
+                    case 'mat156'
+                        if(columnNumber <= 9)
+                            text(xTxt,yTxt,'HL2002',...
+                                'HorizontalAlignment','left','FontSize',6);
+                            hold on;
+                            plot([xTxt-dx2,xTxt-dx1],[1,1].*yTxt,'-',...
+                                'Color',[0,0,0],'LineWidth',1.5);
+                            hold on;
+                        end
+        
+                        text(xTxt,yTxt-dy,lsdynaMuscleUniform.nameLabel,...
+                            'HorizontalAlignment','left','FontSize',6);
+                        hold on;
+                        plot([xTxt-dx2,xTxt-dx1],[1,1].*(yTxt-dy),'-',...
+                            'Color',simulationColor,'LineWidth',1.);
+                        hold on;
+                    case 'umat41'
+                        text(xTxt,yTxt-2*dy,lsdynaMuscleUniform.nameLabel,...
+                            'HorizontalAlignment','left','FontSize',6);
+                        hold on;
+                        plot([xTxt-dx2,xTxt-dx1],[1,1].*(yTxt-2*dy),'-',...
+                            'Color',simulationColor,'LineWidth',1.);
+                        hold on;                
+                    case 'umat43'
+                        text(xTxt,yTxt-3*dy,lsdynaMuscleUniform.nameLabel,...
+                            'HorizontalAlignment','left','FontSize',6);
+                        hold on;
+                        plot([xTxt-dx2,xTxt-dx1],[1,1].*(yTxt-3*dy),'-',...
+                            'Color',simulationColor,'LineWidth',1.);
+                        hold on;                
+                end
+            end
+
+
+        end
 %             ylim(yLimRamp(indexLengths,:));
 %             xlim(xLimRamp(indexLengths,:));            
 

@@ -182,7 +182,6 @@ else
     ylabel('Tendon Force (N)');             
 end
 
-title('A. Passive force-length relations',...
-      'HorizontalAlignment','right');
+title('A. Passive force-length relations');
 
 

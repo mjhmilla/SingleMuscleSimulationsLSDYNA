@@ -542,10 +542,18 @@ if(flag_addSimulationData==1)
                 flag_plotInNormalizedCoordinates);
             
 
-            lgdH = legend('Location','NorthWest');
-            lgdH.FontSize=fontSizeLegend;
-            legend box off;
-         
+
+            [lgdH,lgdIcons, lgdPlots, lgdTxt]=...
+                legend('Location','NorthWest','FontSize',fontSizeLegend,...
+                       'AutoUpdate','on'); 
+            [lgdH,lgdIcons, lgdPlots, lgdTxt,XDataOrig,XDataUpd] = ...
+                scaleLegendLines(0.75,lgdH,lgdIcons, lgdPlots, lgdTxt);
+            pos=get(lgdH,'Position');
+            pos(1)=pos(1)-(XDataUpd(1)-XDataOrig(1))*pos(3) + 0.03;
+            pos(2)=pos(2)+0.05;
+            set(lgdH,'Position',pos);            
+            legend boxoff;
+
             %%
             % Add experimental data illustrating the shift of the peak
             % of the force-length relation
@@ -587,8 +595,7 @@ if(flag_addSimulationData==1)
             xlabel('Path Length (mm)');
             ylabel('Tendon Force (N)');   
         end
-        title('B. Active force-length relations',...
-              'HorizontalAlignment','right');        
+        title('B. Active force-length relations');        
     end
 
     if(flag_passiveData)
@@ -600,9 +607,16 @@ if(flag_addSimulationData==1)
             plotSettings,...
             flag_plotInNormalizedCoordinates);
     
-        lgdH=legend('Location','NorthWest');
-        lgdH.FontSize=fontSizeLegend;
-        legend box off;
+        [lgdH,lgdIcons, lgdPlots, lgdTxt]=...
+            legend('Location','NorthWest','FontSize',fontSizeLegend,...
+                   'AutoUpdate','on'); 
+        [lgdH,lgdIcons, lgdPlots, lgdTxt,XDataOrig,XDataUpd] = ...
+            scaleLegendLines(0.75,lgdH,lgdIcons, lgdPlots, lgdTxt);
+        pos=get(lgdH,'Position');
+        pos(1)=pos(1)-(XDataUpd(1)-XDataOrig(1))*pos(3) + 0.03;
+        pos(2)=pos(2)+0.01;
+        set(lgdH,'Position',pos);            
+        legend boxoff;
 
         assert(flag_plotInNormalizedCoordinates==1,...
             'Error: RMSE calculations only implemeneted for normalized data');

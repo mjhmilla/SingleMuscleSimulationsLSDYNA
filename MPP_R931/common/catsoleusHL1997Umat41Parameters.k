@@ -17,6 +17,8 @@ R     FPEE 1.523141
 R    nuPEE 1.5907747
 R    dWasc 0.5656740
 R  nuCEasc 2.082109
+R    dWdes 0.470961
+R  nuCEdes 1.328409
 R    dtInt 0.00005
 R    dtOut 0.010
 *END

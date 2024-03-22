@@ -87,8 +87,7 @@ else
     ylabel('Tendon Force (N)');
 end
   
-title('C. Example time series data',...
-      'HorizontalAlignment','right');        
+title('C. Example time series data');        
 
 box off;
 
