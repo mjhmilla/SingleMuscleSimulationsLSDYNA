@@ -25,6 +25,7 @@ R    dtInt 0.00005
 R    dtOut 0.010
 RlceNScale 0.95
 *PARAMETER_EXPRESSION
-$#      kt &dFSEE0/(&duSEEl*ltSlk)
+$#    name expression
+R       kt &dFSEE0/(&duSEEl*&ltSlk)
 *END
 

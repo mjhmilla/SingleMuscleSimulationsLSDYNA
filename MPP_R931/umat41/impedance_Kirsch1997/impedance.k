@@ -15,7 +15,6 @@ R dtSignal 0.003
 R   points 2048.0
 *PARAMETER_EXPRESSION
 $#    name expression
-R    dtOut &dtOut2 
 R     freq 1/&dtSignal
 R   fceNom (&fceOptAT)*&stim
 R   lceNom &lceOptAT
@@ -100,5 +99,5 @@ $#   nid               x               y               z      tc      rc
        2             0.0             0.0             0.0       7       7
 $
 *INCLUDE
-catsoleusHL2002Umat41.k   
+catsoleusKBR1994Umat41.k   
 *END
