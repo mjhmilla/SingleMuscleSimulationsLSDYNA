@@ -1,29 +1,26 @@
 $
 $ Matthew Millard
-$ 26/01/2022
+$
+*INCLUDE_PATH_RELATIVE
+../../../common/
+$
+*INCLUDE
+catsoleusHL2002Umat41Parameters.k
 $
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R    dtout 0.003
-R dtsignal 0.003                                   
-R     lopt 0.0428571
-R     fiso 21.506061
-R alphaRad 0.1221730
-R alphaDeg 7.0  
-R    ltslk 0.0304511
-R       et  0.045833
-R   points    2048.0
+R   dtOut2 0.003
+R dtSignal 0.003                                   
+R   points 2048.0
 *PARAMETER_EXPRESSION
 $#    name expression
-R     freq 1/&dtsignal
-R   lCEopt &lopt*cos(&alphaRad)
-R     Fmax &fiso*cos(&alphaRad)
-R       kt 30.0*&fiso/&ltslk
-R   fceNom (&Fmax)*&stim
-R   lceNom &lCEopt
-R  fceNomN &fceNom/&Fmax
-R  lceNomN &lceNom/&lCEopt
+R    dtOut &dtOut2 
+R     freq 1/&dtSignal
+R   fceNom (&fceOptAT)*&stim
+R   lceNom &lceOptAT
+R  fceNomN &fceNom/&fceOptAT
+R  lceNomN &lceNom/&lceOptAT
 R pathLenO &lceNom+&fceNom/&kt+&ltslk
 R pathLenN &pathLenO
 R    timeE &points/&freq
@@ -42,8 +39,8 @@ $#  dt2msf   dt2mslc     imscl    unused    unused     rmscl
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          5         0       1.0       1.0       0.0       0.0         0         0
 $#                a1                  o1  
-                 0.0              0.0001
-              &timeE              0.0001       
+                 0.0              &dtInt
+              &timeE              &dtInt       
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 $                                                                              $
 $                             DATABASE (OUTPUT)                                $
@@ -51,19 +48,19 @@ $                                                                              $
 $---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8
 *DATABASE_GLSTAT
 $#      dt    binary      lcur     ioopt     
-&dtout             0         0         1
+&dtOut2            0         0         1
 *DATABASE_MATSUM
 $#      dt    binary      lcur     ioopt     
-&dtout             0         0         1
+&dtOut2            0         0         1
 *DATABASE_NODOUT
 $#      dt    binary      lcur     ioopt   option1   option2       
-&dtout             3         0         1       0.0         0
+&dtOut2            3         0         1       0.0         0
 *DATABASE_SPCFORC
 $#      dt    binary      lcur     ioopt     
-&dtout             0         0         1
+&dtOut2            0         0         1
 *DATABASE_BINARY_D3PLOT
 $#      dt      lcdt      beam     npltc    psetid      
-    &dtout         0         0         0         0
+&dtOut2            0         0         0         0
 $#   ioopt     
          0
 *DATABASE_HISTORY_NODE
@@ -83,10 +80,8 @@ $#       a     rampt    stress
 $#     id1       id2       id3       id4       id5       id6       id7       id8
          1         0         0         0         0         0         0         0       
 *DATABASE_ELOUT
-    &dtout         2
+    &dtOut         2
 $#
-*INCLUDE
-catsoleus.k
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
          3         0       1.0       1.0       0.0       0.0         0         0
@@ -103,4 +98,7 @@ $#  typeid       dof       vad      lcid        sf       vid     death     birth
 $#   nid               x               y               z      tc      rc
        1             0.0             0.0      -&pathLenN       7       7
        2             0.0             0.0             0.0       7       7
+$
+*INCLUDE
+catsoleusHL2002Umat41.k   
 *END

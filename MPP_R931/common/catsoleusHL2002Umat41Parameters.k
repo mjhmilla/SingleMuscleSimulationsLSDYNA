@@ -11,6 +11,8 @@ R  penOptD 7.0
 R    ltSlk 0.0304511
 R       et 0.0458333
 R   dFSEE0 14.300676
+R dUSEEnll 0.0347222
+R   duSEEl 0.0222222
 R   vceMax 4.684921
 R    LPEE0 1.034709
 R     FPEE 1.194156
@@ -22,5 +24,7 @@ R  nuCEdes 1.328409
 R    dtInt 0.00005
 R    dtOut 0.010
 RlceNScale 0.95
+*PARAMETER_EXPRESSION
+$#      kt &dFSEE0/(&duSEEl*ltSlk)
 *END
 
