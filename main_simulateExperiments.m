@@ -32,27 +32,27 @@ redB = redA.*0.5;% + [1,1,1].*0.5;
 dataColorA=greyA;
 dataColorB=greyB;
 
-models(3) = struct('id',0,'name','');
+models(1) = struct('id',0,'name','');
+% 
+% indexVIVA              = 1;
+% models(indexVIVA).id   = 1;
+% models(indexVIVA).name ='viva';
+% models(indexVIVA).colors= [greenA;greenB];
+% 
+% indexMat56                = 1;
+% models(indexMat56).id     = 1;
+% models(indexMat56).name   ='mat156';
+% models(indexMat56).colors = [redA;redB];
 
-%indexVIVA              = 1;
-%models(indexVIVA).id   = 1;
-%models(indexVIVA).name ='viva';
-%models(indexVIVA).colors= [greenA;greenB];
-
-indexMat56                = 1;
-models(indexMat56).id     = 1;
-models(indexMat56).name   ='mat156';
-models(indexMat56).colors = [redA;redB];
-
-indexUmat41              = 2;
+indexUmat41              = 1;
 models(indexUmat41).id   = 2;
 models(indexUmat41).name ='umat41';
 models(indexUmat41).colors= [magentaA;magentaB];
 
-indexUmat43              = 3;
-models(indexUmat43).id   = 3;
-models(indexUmat43).name ='umat43';
-models(indexUmat43).colors= [blueA;blueB];
+% indexUmat43              = 3;
+% models(indexUmat43).id   = 3;
+% models(indexUmat43).name ='umat43';
+% models(indexUmat43).colors= [blueA;blueB];
 
 
 flag_preProcessSimulationData       = 0; 
@@ -77,7 +77,7 @@ flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
 flag_enableEccentricExperiment          = 0;
-flag_enableImpedanceExperiment          = 0;
+flag_enableImpedanceExperiment          = 1;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 0;
 flag_enableReflexExperiment_kN_mm_ms    = 0;
@@ -85,7 +85,7 @@ flag_enableReflexExperiment_kN_mm_ms    = 0;
 flag_enableActivePassiveForceLengthExperimentViva   = 0;
 flag_enableForceVelocityExperimentViva              = 0;
 flag_enableActivePassiveForceLengthExperiment       = 0;
-flag_enableForceVelocityExperiment                  = 1;
+flag_enableForceVelocityExperiment                  = 0;
 
 if(flag_enableForceVelocityExperimentViva ...
         || flag_enableActivePassiveForceLengthExperimentViva)
@@ -162,17 +162,13 @@ end
 numberOfSimulations = numberOfSimulationTypes*length(models);
 
 
-
-
-
-
-
 % Define if all all datapoints are used or only some of them?
 deltaPoints  = 1; % every 2nd/3rd/...
 
 
 %% Impedance experiment evaluation
-mm2m = 0.001;
+
+mm2m            = 0.001;
 sampleTime      = 0.003;
 sampleFrequency = 1/sampleTime; % Sampling frequency
 paddingPoints   = round(0.5*sampleFrequency);
@@ -192,6 +188,7 @@ baseSignalFileName  = [ 'baseFunction',signalFileEnding,'.mat'];
 %% paths
 outputFolder            = 'output';
 structFolder            = fullfile('output','structs',filesep);
+
 
 addpath(genpath('numeric'));
 addpath(genpath('curves'));
@@ -256,7 +253,7 @@ if(flag_preProcessSimulationData==1)
                     case 'impedance'
                         %Generate the perturbation signals
                         flag_usingOctave= 0;
-                        inputFunctions = getPerturbationWaveforms(...
+                        impedanceInputFunctions = getPerturbationWaveforms(...
                                             amplitudeMM,...
                                             bandwidthHz,...
                                             samplePoints,...
@@ -276,11 +273,11 @@ if(flag_preProcessSimulationData==1)
 
                         [success] = writeImpedanceSimulationFiles(...
                                     excitationSeries,...
-                                    inputFunctions,...
+                                    impedanceInputFunctions,...
                                     simulationTypePath);
 
                         [success] = plotPerturbationWaveforms( ...
-                                        inputFunctions,...
+                                        impedanceInputFunctions,...
                                         plotWidth,...
                                         plotHeight,...
                                         plotHorizMarginCm,...
@@ -390,8 +387,9 @@ if(flag_postProcessSimulationData==1)
     figPublication  = figure;
     figDebug        = figure;
     
-    %load inputFunctions
-    load([structFolder,signalFileName]);
+    %load impedanceInputFunctions
+    tmp=load([structFolder,signalFileName]);
+    impedanceInputFunctions=tmp.inputFunctions;
 
     for indexRelease = 1:length(Releases)
         cd(matlabScriptPath);
@@ -451,6 +449,9 @@ if(flag_postProcessSimulationData==1)
                         indexSimulationInfo=indexSimulationInfo+1;
                     end
                 end
+                if(found==0)
+                    here=1;
+                end
                 assert(found==1);
 
                 simulationTypePath  = fullfile( matlabScriptPath,...
@@ -479,7 +480,7 @@ if(flag_postProcessSimulationData==1)
                         referenceCurveFolder = [];
                     case 'eccentric_HerzogLeonard2002'
                         referenceCurveFolder = fullfile(matlabScriptPath,'ReferenceCurves','eccentric');
-                    case 'impedance_Kirsch1997'
+                    case 'impedance_Kirsch1994'
                         referenceCurveFolder = [];
                     case 'reflex'
                         referenceCurveFolder = [];
@@ -528,6 +529,12 @@ if(flag_postProcessSimulationData==1)
                 numberOfHorizontalPlotColumnsPublication  = 1; 
                 numberOfVerticalPlotRowsPublication       = 1;
 
+                plotWidthPub         = 4.6;
+                plotHeightPub        = 4.6;        
+                plotHorizMarginCmPub = 1.3;
+                plotVertMarginCmPub  = 1.75;  
+                baseFontSizePub      = 6;     
+
                 switch (simulationTypeStr)
                     case 'eccentric_HerzogLeonard2002'
 
@@ -537,7 +544,7 @@ if(flag_postProcessSimulationData==1)
                       numberOfHorizontalPlotColumnsPublication  = 15; 
                       numberOfVerticalPlotRowsPublication       = 3;
 
-
+                
                     case 'isometric_Guenther2007'
                       numberOfHorizontalPlotColumnsSpecific = 1;
                       numberOfVerticalPlotRowsSpecific      = 1;
@@ -547,11 +554,15 @@ if(flag_postProcessSimulationData==1)
                     case 'quickrelease_Guenther2007'
                       numberOfHorizontalPlotColumnsSpecific = 1;
                       numberOfVerticalPlotRowsSpecific      = 1;                 
-                    case 'impedance_Kirsch1997'
+                    case 'impedance_Kirsch1994'
                       numberOfHorizontalPlotColumnsSpecific = 1;
                       numberOfVerticalPlotRowsSpecific      = 6; 
-                      sampleTimeK = getParameterFieldValue('impedance.k','dtsignal');
+                      sampleTimeK = getParameterFieldValue('impedance.k','dtSignal');                      
                       assert(abs(sampleTimeK-sampleTime)<sqrt(eps));    
+
+                      numberOfHorizontalPlotColumnsPublication  = 6; 
+                      numberOfVerticalPlotRowsPublication       = 6;
+
                     case 'force_length'
                       numberOfHorizontalPlotColumnsSpecific = 3;
                       numberOfVerticalPlotRowsSpecific      = 4;
@@ -579,6 +590,7 @@ if(flag_postProcessSimulationData==1)
                       numberOfVerticalPlotRowsSpecific          = 2;
                       numberOfHorizontalPlotColumnsPublication  = 3; 
                       numberOfVerticalPlotRowsPublication       = length(models); 
+                      
                     case 'force_velocity'
                       numberOfHorizontalPlotColumnsSpecific     = 1;
                       numberOfVerticalPlotRowsSpecific          = 2;
@@ -586,7 +598,7 @@ if(flag_postProcessSimulationData==1)
                       %numberOfVerticalPlotRowsPublication       = 1+length(models);
                       numberOfHorizontalPlotColumnsPublication  = max(3,length(models)); 
                       numberOfVerticalPlotRowsPublication       = 3;
-                      
+                                         
                 end
 
 
@@ -613,12 +625,12 @@ if(flag_postProcessSimulationData==1)
                     [subPlotPanelPublication,pageWidthPublication,pageHeightPublication]= ...
                           plotConfigPublication(numberOfHorizontalPlotColumnsPublication,...
                                               numberOfVerticalPlotRowsPublication,...
-                                              plotWidth,...
-                                              plotHeight,...
-                                              plotHorizMarginCm,...
-                                              plotVertMarginCm,...
+                                              plotWidthPub,...
+                                              plotHeightPub,...
+                                              plotHorizMarginCmPub,...
+                                              plotVertMarginCmPub,...
                                               simulationTypeStr,...
-                                              baseFontSize);
+                                              baseFontSizePub);
                 end
 
 
@@ -766,7 +778,7 @@ if(flag_postProcessSimulationData==1)
                             
                           end
                         end
-                        assert(binoutCount == 1);
+                        assert(binoutCount >= 1);
     
                         %% Load the binout file
                         [binout,status] = binoutreader('dynaOutputFile',binoutFileList{1},'ignoreUnknownDataError',true);
@@ -814,6 +826,7 @@ if(flag_postProcessSimulationData==1)
                                         models(indexModel).name,...
                                         simulationTypeStr,...
                                         simulationInformation(indexSimulationInfo),...
+                                        impedanceInputFunctions,...
                                         binout,musout,uniformModelData,d3hspFileName,...
                                         indexColumn,...
                                         subPlotPanelSpecific,...
@@ -835,6 +848,7 @@ if(flag_postProcessSimulationData==1)
                             [figPublication,flag_figPublicationDirty] ...
                                 = generatePublicationPlots(figPublication,...
                                         simulationTypeStr,...
+                                        impedanceInputFunctions,...
                                         binout,uniformModelData,d3hspFileName,...
                                         indexModel,...
                                         subPlotPanelPublication,...

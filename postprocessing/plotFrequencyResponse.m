@@ -172,7 +172,7 @@ if(flag_addSimulationData==1)
     idxMax = find(frequencyAnalysisSimulationData.freqHz <= simConfig.bandwidthHz ,1, 'last' );
     plot( frequencyAnalysisSimulationData.freqHz(idxMin:1:idxMax,1),...
           frequencyAnalysisSimulationData.gain(idxMin:1:idxMax,1)./m2mm,...
-          '.', 'Color', simulationModelColor);
+          '-', 'Color', simulationModelColor);
     hold on;  
   
     plot(   frequencyAnalysisSimulationData.freqHz(idxMin:1:idxMax,1),...
@@ -200,8 +200,8 @@ if(flag_addSimulationData==1)
         xlabel('Frequency (Hz)');
         ylabel('Gain (N/mm)');
         
-        h = get(gca,'Children');
-        set(gca,'Children',[h(4:end),h(1:3)]);
+        %h = get(gca,'Children');
+        %set(gca,'Children',[h(4:end);h(1:3)]);
     end
     box off;   
     
@@ -212,7 +212,7 @@ if(flag_addSimulationData==1)
     idxMax = find(frequencyAnalysisSimulationData.freqHz <= simConfig.bandwidthHz ,1, 'last' );
     plot( frequencyAnalysisSimulationData.freqHz(idxMin:1:idxMax,1),...
           frequencyAnalysisSimulationData.phase(idxMin:1:idxMax,1).*rad2Deg,...
-          '.', 'Color', simulationModelColor);
+          '-', 'Color', simulationModelColor);
     hold on;  
   
     plot(   frequencyAnalysisSimulationData.freqHz(idxMin:1:idxMax,1),...
@@ -240,8 +240,8 @@ if(flag_addSimulationData==1)
         xlabel('Frequency (Hz)');
         ylabel('Phase ($$^\circ$$)');
         
-        h = get(gca,'Children');
-        set(gca,'Children',[h(4:6),h(1:3)]);
+        %h = get(gca,'Children');
+        %set(gca,'Children',[h(4:6),h(1:3)]);
 
     end
     box off;        
@@ -251,11 +251,11 @@ if(flag_addSimulationData==1)
   subplot('Position', reshape(subPlotLayout(idxCoherence,indexColumn,:),1,4));       
   
  
-    idxMinCoherence = find(frequencyAnalysisSimulationData.coherenceSq2Frequency >= 4 ,1, 'first' );
-    idxMaxCoherence = find(frequencyAnalysisSimulationData.coherenceSq2Frequency <= simConfig.bandwidthHz ,1, 'last' );
+    idxMinCoherence = find(frequencyAnalysisSimulationData.coherenceSqFrequency >= 4 ,1, 'first' );
+    idxMaxCoherence = find(frequencyAnalysisSimulationData.coherenceSqFrequency <= simConfig.bandwidthHz ,1, 'last' );
     
-    plot( frequencyAnalysisSimulationData.coherenceSq2Frequency(1:idxMaxCoherence,1),...
-          frequencyAnalysisSimulationData.coherenceSq2(1:idxMaxCoherence,1),...
+    plot( frequencyAnalysisSimulationData.coherenceSqFrequency(1:idxMaxCoherence,1),...
+          frequencyAnalysisSimulationData.coherenceSq(1:idxMaxCoherence,1),...
           '-', 'Color', simulationModelColor);
     hold on;
 
@@ -307,8 +307,8 @@ if(flag_addSimulationData==1)
         hold on;  
 
     if(simConfig.bandwidthHz==90)
-        h = get(gca,'Children');
-        set(gca,'Children',h(end:-1:1));    
+        %h = get(gca,'Children');
+        %set(gca,'Children',h(end:-1:1));    
     end
     box off;        
     here=1;    

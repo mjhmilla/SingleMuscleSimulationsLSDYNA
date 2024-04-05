@@ -189,6 +189,19 @@ switch (simulationTypeStr)
                   idx=idx+1;
             end
         end
+    case 'impedance_Kirsch1994'
+        for(ai=1:1:numberOfVerticalPlotRows)        
+          for(aj=1:1:numberOfHorizontalPlotColumns)
+              subPlotPanel(ai,aj,1) = topLeft(1) + plotHorizMargin...
+                                    + (aj-1)*(plotWidth + plotHorizMargin);
+              %-plotVertMargin*scaleVerticalMargin ...                             
+              subPlotPanel(ai,aj,2) = topLeft(2) -plotHeight -plotVertMargin...                            
+                                    + (ai-1)*(-plotHeight -plotVertMargin);
+              subPlotPanel(ai,aj,3) = (plotWidth);
+              subPlotPanel(ai,aj,4) = (plotHeight);
+          end
+        end
+       
     otherwise
         assert(0,['Error: publication plot configuration not',...
                   ' yet added for: ',simulationTypeStr]);

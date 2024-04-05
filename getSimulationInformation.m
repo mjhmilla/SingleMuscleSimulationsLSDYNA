@@ -121,16 +121,19 @@ if(strcmp(modelName,'umat41')==1)
 
     if(flag_enableImpedanceExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'impedance_Kirsch1997';
+      simulationType(idx).type = 'impedance_Kirsch1994';
       simulationInformation(idx).type               = simulationType(idx).type;
 
-      simulationInformation(idx).type                   = 'impedance';
-      simulationInformation(idx).simulationConstantFile = 'impedance.k';
-      simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';
-      simulationInformation(idx).optimalFiberLength     = 'lopt';
-      simulationInformation(idx).maximumIsometricForce  = 'fiso';
-      simulationInformation(idx).tendonSlackLength      = 'ltslk';
-      simulationInformation(idx).pennationAngleDegrees  = 'alphaDeg';
+      simulationInformation(idx).type                   = simulationType(idx).type;
+      simulationInformation(idx).simulationConstantFile = ...
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat41Parameters.k'];      
+      simulationInformation(idx).musclePropertyCard     = ...
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusKBR1994Umat41.k']; 
+
+      simulationInformation(idx).optimalFiberLength     = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength      = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees  = 'penOptD';
       simulationInformation(idx).parametersInMuscleCard = 0;
       simulationInformation(idx).model = modelName;  
 
@@ -319,7 +322,7 @@ if(strcmp(modelName,'umat43')==1)
 
     if(flag_enableImpedanceExperiment==1)
       idx=idx+1;
-      simulationType(idx).type = 'impedance_Kirsch1997';
+      simulationType(idx).type = 'impedance_Kirsch1994';
       simulationInformation(idx).type               = simulationType(idx).type;
       simulationInformation(idx).simulationConstantFile = 'impedance.k';  
       simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';      

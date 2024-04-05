@@ -1,3 +1,57 @@
+%2024/3/19
+
+%evaluate tendon change of length
+%-----------------------------------------------------------
+
+%Calculate tendon change of length
+expDataFpe.dltUmat41 = zeros(size(expDataFpe.fmt));
+expDataFpe.dltUmat43 = zeros(size(expDataFpe.fmt));
+
+for i=1:1:length(expDataFpe.lmt)
+    expDataFpe.dltUmat41(i,1) =...
+        calcFseeInverseUmat41(expDataFpe.fmt(i,1),...
+             umat41.ltSlk,umat41.dUSEEnll,umat41.duSEEl,umat41.dFSEE0);
+    expDataFpe.dltUmat41(i,1) = expDataFpe.dltUmat41(i,1)-umat41.ltSlk;
+
+    expDataFpe.dltUmat43(i,1)= ...
+        calcQuadraticBezierYFcnXDerivative(expDataFpe.fmt(i,1)/umat43.fceOpt,...
+          felineSoleusNormMuscleQuadraticCurves.tendonForceLengthInverseCurve,0);
+
+    expDataFpe.dltUmat43(i,1)= (expDataFpe.dltUmat43(i,1)-1)*umat43.ltSlk;
+end
+
+expDataFpe.lceAT_umat41  = expDataFpe.lmt - expDataFpe.dltUmat41;
+expDataFpe.lceNAT_umat41 = expDataFpe.lceAT_umat41./umat41.lceOptAT;
+
+expDataFpe.lceAT_umat43 = expDataFpe.lmt - expDataFpe.dltUmat43;
+expDataFpe.lceNAT_umat43 = expDataFpe.lceAT_umat43./umat43.lceOpt;
+
+%-----------------------------------------------------------
+
+expKeyPtsDataFpe.dltUmat41 = zeros(size(expKeyPtsDataFpe.fmt));
+expKeyPtsDataFpe.dltUmat43 = zeros(size(expKeyPtsDataFpe.fmt));
+
+for i=1:1:length(expKeyPtsDataFpe.lmt)
+    expKeyPtsDataFpe.dltUmat41(i,1) =...
+        calcFseeInverseUmat41(expKeyPtsDataFpe.fmt(i,1),...
+             umat41.ltSlk,umat41.dUSEEnll,umat41.duSEEl,umat41.dFSEE0);
+    expKeyPtsDataFpe.dltUmat41(i,1) = expKeyPtsDataFpe.dltUmat41(i,1)-umat41.ltSlk;
+
+    expKeyPtsDataFpe.dltUmat43(i,1)= ...
+        calcQuadraticBezierYFcnXDerivative(expKeyPtsDataFpe.fmt(i,1)/umat43.fceOpt,...
+          felineSoleusNormMuscleQuadraticCurves.tendonForceLengthInverseCurve,0);
+
+    expKeyPtsDataFpe.dltUmat43(i,1)= (expKeyPtsDataFpe.dltUmat43(i,1)-1)*umat43.ltSlk;
+end
+
+expKeyPtsDataFpe.lceAT_umat41  = expKeyPtsDataFpe.lmt - expKeyPtsDataFpe.dltUmat41;
+expKeyPtsDataFpe.lceNAT_umat41 = expKeyPtsDataFpe.lceAT_umat41./umat41.lceOptAT;
+
+expKeyPtsDataFpe.lceAT_umat43 = expKeyPtsDataFpe.lmt - expKeyPtsDataFpe.dltUmat43;
+expKeyPtsDataFpe.lceNAT_umat43 = expKeyPtsDataFpe.lceAT_umat43./umat43.lceOpt;
+
+%-----------------------------------------------------------
+%
     if(flag_subMax == 0)
         cd(fullfile('..','isometric_max'));
         
