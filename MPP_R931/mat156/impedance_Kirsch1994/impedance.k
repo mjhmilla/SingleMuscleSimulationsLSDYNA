@@ -23,6 +23,15 @@ R  lceNomN &lceNom/&lceOptAT
 R pathLenO &lceNom+&ltSlk*(&stim*&et+1.0)
 R pathLenN &pathLenO
 R    timeE &points/&freq
+R      sno &pathLenS/&lceOptAT
+R      srm &vceMax*&lceOptAT/(&lceOptAT+&ltSlk)
+R  stimLow &stim
+R stimHigh &stim 
+RstimTimeA 0.01
+RstimTimeS 0.02
+RstimTimeE &timeE-0.02
+RstimTimeB &timeE-0.01
+
 *TITLE
 $#                                                                         title
 Muskel
