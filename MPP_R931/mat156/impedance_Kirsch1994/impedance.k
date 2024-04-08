@@ -23,7 +23,7 @@ R  lceNomN &lceNom/&lceOptAT
 R pathLenO &lceNom+&ltSlk*(&stim*&et+1.0)
 R pathLenN &pathLenO
 R    timeE &points/&freq
-R      sno &pathLenS/&lceOptAT
+R      sno &pathLenO/&lceOptAT
 R      srm &vceMax*&lceOptAT/(&lceOptAT+&ltSlk)
 R  stimLow &stim
 R stimHigh &stim 
