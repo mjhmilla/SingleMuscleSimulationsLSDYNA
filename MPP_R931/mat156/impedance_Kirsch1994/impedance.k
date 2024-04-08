@@ -20,7 +20,7 @@ R   fceNom (&fceOptAT)*&stim
 R   lceNom &lceOptAT
 R  fceNomN &fceNom/&fceOptAT
 R  lceNomN &lceNom/&lceOptAT
-R pathLenO &lceNom+&fceNom/&kt+&ltslk
+R pathLenO &lceNom+&ltSlk*(&stim*&et+1.0)
 R pathLenN &pathLenO
 R    timeE &points/&freq
 *TITLE
