@@ -99,5 +99,5 @@ $#   nid               x               y               z      tc      rc
        2             0.0             0.0             0.0       7       7
 $
 *INCLUDE
-catsoleusHL2002Umat43.k   
+catsoleusKBR1994Umat43.k   
 *END

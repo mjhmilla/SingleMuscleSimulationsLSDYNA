@@ -38,6 +38,8 @@ switch lsdynaMuscleUniform.nameLabel
         if(contains(simulationDirectoryName,'impedance_0p319stim_0p8mm_35Hz'))
             lastStiffnessDampingFile=1;
         end
+        assert(length(lsdynaBinout.nodout.time) ...
+            ==length(lsdynaBinout.elout.beam.time));
     case 'VEXAT'
         if(contains(simulationDirectoryName,'impedance_0p532stim_0p8mm_35Hz'))
             stiffnessDampingHandleVisibility='on';
@@ -48,6 +50,8 @@ switch lsdynaMuscleUniform.nameLabel
         if(contains(simulationDirectoryName,'impedance_0p532stim_0p8mm_35Hz'))
             lastStiffnessDampingFile=1;
         end        
+        assert(length(lsdynaBinout.nodout.time) ...
+            ==length(lsdynaBinout.elout.beam.time));
 end
 
 minimumFrequency        = 4;
@@ -56,8 +60,7 @@ coherenceSqThreshold    = 0.5;
 %% Get the columns of musout
 config=getConfiguration();
 
-assert(length(lsdynaBinout.nodout.time) ...
-    ==length(lsdynaBinout.elout.beam.time));
+
 
 nominalLength = getParameterValueFromD3HSPFile(d3hspFileName,'PATHLENN'); % by construction
 nominalForce  = lsdynaBinout.elout.beam.axial(end,1);    
