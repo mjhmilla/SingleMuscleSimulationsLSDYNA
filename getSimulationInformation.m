@@ -128,7 +128,7 @@ if(strcmp(modelName,'umat41')==1)
       simulationInformation(idx).simulationConstantFile = ...
           ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat41Parameters.k'];      
       simulationInformation(idx).musclePropertyCard     = ...
-          ['..',filesep,'..',filesep,'common',filesep,'catsoleusKBR1994Umat41.k']; 
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat41.k']; 
 
       simulationInformation(idx).optimalFiberLength     = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce  = 'fceOpt';
@@ -324,14 +324,18 @@ if(strcmp(modelName,'umat43')==1)
       idx=idx+1;
       simulationType(idx).type = 'impedance_Kirsch1994';
       simulationInformation(idx).type               = simulationType(idx).type;
-      simulationInformation(idx).simulationConstantFile = 'impedance.k';  
-      simulationInformation(idx).musclePropertyCard     = 'catsoleus.k';      
-      simulationInformation(idx).optimalFiberLength     = 'lceOpt';
-      simulationInformation(idx).maximumIsometricForce  = 'fceOptIso';
-      simulationInformation(idx).tendonSlackLength      = 'ltSlk';
-      simulationInformation(idx).pennationAngleDegrees  = 'alphaOptD';
-      simulationInformation(idx).parametersInMuscleCard = 1;
-      simulationInformation(idx).model = modelName;  
+      simulationInformation(idx).simulationConstantFile = ...
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat43Parameters.k'];      
+      simulationInformation(idx).musclePropertyCard     = ...
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat43.k'];   
+
+      simulationInformation(idx).optimalFiberLength         = 'lceOpt';
+      simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
+      simulationInformation(idx).tendonSlackLength          = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees      = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard     = 0;
+      simulationInformation(idx).model                      = modelName;  
 
     end
     
@@ -508,8 +512,6 @@ if(strcmp(modelName,'mat156')==1)
       simulationInformation(idx).maximumContractionVelocity = 'vceMax';
       simulationInformation(idx).parametersInMuscleCard     = 0;
       simulationInformation(idx).model                      = modelName;  
-
-
     end 
 
     if(flag_enableActivePassiveForceLengthExperiment==1)
@@ -550,7 +552,21 @@ if(strcmp(modelName,'mat156')==1)
     end   
 
     if(flag_enableImpedanceExperiment==1)
-      assert(0, 'Error: Experiment is not yet implemented');
+      idx=idx+1;
+      simulationType(idx).type = 'impedance_Kirsch1994';
+      simulationInformation(idx).type                   = simulationType(idx).type;
+      simulationInformation(idx).simulationConstantFile = ...
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Mat156Parameters.k'];      
+      simulationInformation(idx).musclePropertyCard     = ...
+          ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Mat156.k'];       
+      simulationInformation(idx).optimalFiberLength         = 'lceOptAT';
+      simulationInformation(idx).maximumIsometricForce      = 'fceOptAT';
+      simulationInformation(idx).tendonSlackLength          = 'ltSlk';
+      simulationInformation(idx).pennationAngleDegrees      = 'penOptD';
+      simulationInformation(idx).maximumContractionVelocity = 'vceMax';
+      simulationInformation(idx).parametersInMuscleCard     = 0;
+      simulationInformation(idx).model                      = modelName;  
+
     end
     
     
