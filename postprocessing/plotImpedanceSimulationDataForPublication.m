@@ -38,8 +38,7 @@ switch lsdynaMuscleUniform.nameLabel
         if(contains(simulationDirectoryName,'impedance_0p319stim_0p8mm_35Hz'))
             lastStiffnessDampingFile=1;
         end
-        assert(length(lsdynaBinout.nodout.time) ...
-            ==length(lsdynaBinout.elout.beam.time));
+
     case 'VEXAT'
         if(contains(simulationDirectoryName,'impedance_0p532stim_0p8mm_35Hz'))
             stiffnessDampingHandleVisibility='on';
@@ -50,8 +49,7 @@ switch lsdynaMuscleUniform.nameLabel
         if(contains(simulationDirectoryName,'impedance_0p532stim_0p8mm_35Hz'))
             lastStiffnessDampingFile=1;
         end        
-        assert(length(lsdynaBinout.nodout.time) ...
-            ==length(lsdynaBinout.elout.beam.time));
+
 end
 
 minimumFrequency        = 4;
@@ -172,7 +170,7 @@ if(flag_addSimulationData==1)
     end
     if(config.bandwidthHz == 35 && config.amplitudeMM == 0.8)
 
-               
+              
         if( nominalForce <= 12)    
           freqSimData = calcSignalGainAndPhase(...
                                 lsdynaBinout.elout.beam.axial(2:end,1),...

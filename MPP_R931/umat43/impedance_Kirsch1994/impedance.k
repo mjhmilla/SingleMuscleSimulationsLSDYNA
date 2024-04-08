@@ -79,7 +79,7 @@ $#       a     rampt    stress
 $#     id1       id2       id3       id4       id5       id6       id7       id8
          1         0         0         0         0         0         0         0       
 *DATABASE_ELOUT
-    &dtOut         2
+   &dtOut2         2
 $#
 *DEFINE_CURVE
 $#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
