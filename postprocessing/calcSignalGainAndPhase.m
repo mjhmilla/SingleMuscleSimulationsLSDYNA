@@ -135,8 +135,8 @@ for idxNominalLength = 1:1:size(nominalLength,2)
         freqSimData.coherenceSqFrequency(1:maxIdx,idx) = cpsd_FxyHz;
 
 
-        idxKirschMin = find(freqSimData.freqHz(1:maxIdx,idx) >= max(0,minimumFrequency-1), 1);        
-        idxKirschMax = find(freqSimData.freqHz(1:maxIdx,idx) <= bandwidthHz(j)+1, 1,'last');
+        idxKirschMin = find(freqSimData.freqHz(1:maxIdx,idx) >= max(0,minimumFrequency-0.1), 1);        
+        idxKirschMax = find(freqSimData.freqHz(1:maxIdx,idx) <= bandwidthHz(j)+0.1, 1,'last');
         idxKirschMid = idxKirschMin + round(0.5*(idxKirschMax-idxKirschMin));
 
         %idxKmeans=kmeans(freqSimData.coherenceSqFrequency(0:idxKirschMax,idx),2);

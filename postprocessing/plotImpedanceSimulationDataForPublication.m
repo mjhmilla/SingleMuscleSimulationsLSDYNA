@@ -19,17 +19,35 @@ firstStiffnessDampingFile=0;
 lastStiffnessDampingFile=0;
 switch lsdynaMuscleUniform.nameLabel
     case 'MAT156'
+        if(contains(simulationDirectoryName,'impedance_0p528stim_0p8mm_35Hz'))
+            stiffnessDampingHandleVisibility='on';
+        end
+        if(contains(simulationDirectoryName,'impedance_0p019stim_0p8mm_35Hz'))
+            firstStiffnessDampingFile=1;
+        end
+        if(contains(simulationDirectoryName,'impedance_0p528stim_0p8mm_35Hz'))
+            lastStiffnessDampingFile=1;
+        end        
     case 'EHTMM'
-        if(contains(simulationDirectoryName,'impedance_0p266stim_0p8mm_35Hz'))
+        if(contains(simulationDirectoryName,'impedance_0p319stim_0p8mm_35Hz'))
             stiffnessDampingHandleVisibility='on';
         end
         if(contains(simulationDirectoryName,'impedance_0p027stim_0p8mm_35Hz'))
             firstStiffnessDampingFile=1;
         end
-        if(contains(simulationDirectoryName,'impedance_0p266stim_0p8mm_35Hz'))
+        if(contains(simulationDirectoryName,'impedance_0p319stim_0p8mm_35Hz'))
             lastStiffnessDampingFile=1;
         end
     case 'VEXAT'
+        if(contains(simulationDirectoryName,'impedance_0p532stim_0p8mm_35Hz'))
+            stiffnessDampingHandleVisibility='on';
+        end
+        if(contains(simulationDirectoryName,'impedance_0p019stim_0p8mm_35Hz'))
+            firstStiffnessDampingFile=1;
+        end
+        if(contains(simulationDirectoryName,'impedance_0p532stim_0p8mm_35Hz'))
+            lastStiffnessDampingFile=1;
+        end        
 end
 
 minimumFrequency        = 4;
