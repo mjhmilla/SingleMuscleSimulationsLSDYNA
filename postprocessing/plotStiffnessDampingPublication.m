@@ -147,13 +147,13 @@ if(flag_addReferenceData==1)
     box off;
     
     ylabel('Stiffness (N/mm)');
-    yticks([0:5:10]);
+    yticks([-5:5:10]);
 
     xlabel('Force (N)');
     xticks([0:6:12]);
     
-    xlim([0,12.01]);
-    ylim([0,10.01]);    
+    xlim([0,12.1]);
+    ylim([-5.01,10.01]);    
 
 
 
@@ -184,13 +184,13 @@ if(flag_addReferenceData==1)
     box off;
     
     ylabel('Damping (N/(mm/s))');
-    yticks([0:0.05:0.1]);
+    yticks([0:0.02:0.12]);
 
     xlabel('Force (N)');
     xticks([0:6:12]);
 
     xlim([0,12.01]);
-    ylim([0,0.101]);     
+    ylim([0,0.121]);     
 end
 
 if(flag_addSimulationData==1)
@@ -255,26 +255,28 @@ if(flag_addSimulationData==1)
             errK(i,1) = simK-expK;
         end
         lsqErrK = sqrt(mean(errK.^2));
-        text(12,0,...
-             sprintf('%s RMSE\n%1.2f N/mm\n\n',...
-             modelName, lsqErrK),...
+        text(0.5,-5,...
+             sprintf('RMSE\n%1.2f N/mm\n\n',...
+             lsqErrK),...
              'FontSize',6,...
              'Color',simulationModelColor,...
-             'HorizontalAlignment','right',...
+             'HorizontalAlignment','left',...
              'VerticalAlignment','bottom');        
-        text(12,0,...
+        text(0.5,-5,...
              sprintf('\n\nKBR1994 LSQ\n k=%1.2ff+%1.2f',...
              lsqKBR1994K.dydx,lsqKBR1994K.x0),...
              'FontSize',6,...
              'Color',[0,0,0],...
-             'HorizontalAlignment','right',...
+             'HorizontalAlignment','left',...
              'VerticalAlignment','bottom');
         hold on;        
     end
 
     if(contains(simulationHandleVisibility,'on'))
-        lgdH=legend('Location','NorthWest');
-        %set(lgdH,'FontSize',legendFontSize);        
+        lgdH=legend('Location','NorthEast');
+        %set(lgdH,'FontSize',legendFontSize);  
+        lgdPos = lgdH.Position;
+        lgdH.Position = [lgdPos(1)+lgdPos(3)*0.15,lgdPos(2)+lgdPos(4)*0.5,lgdPos(3),lgdPos(4)];
         lgdH.FontSize=legendFontSize;
         legend boxoff;  
         hold on;
@@ -327,8 +329,8 @@ if(flag_addSimulationData==1)
         end
         lsqErrD = sqrt(mean(errD.^2));
         text(12,0,...
-             sprintf('%s RMSE\n%1.3f N/(mm/s)\n\n',...
-             modelName, lsqErrD),...
+             sprintf('RMSE\n%1.3f N/(mm/s)\n\n',...
+             lsqErrD),...
              'FontSize',6,...
              'Color',simulationModelColor,...
              'HorizontalAlignment','right',...
@@ -345,7 +347,9 @@ if(flag_addSimulationData==1)
     end
 
     if(contains(simulationHandleVisibility,'on'))    
-        lgdH=legend('Location','NorthWest');
+        lgdH=legend('Location','NorthEast');
+        lgdPos = lgdH.Position;
+        lgdH.Position = [lgdPos(1)+lgdPos(3)*0.15,lgdPos(2)+lgdPos(4)*0.5,lgdPos(3),lgdPos(4)];        
         lgdH.FontSize=legendFontSize;
         legend boxoff;  
         hold on;

@@ -13,12 +13,12 @@ function [figH] = ...
                       referenceColorA, referenceColorB)
 
 figure(figH);
-
+disp(simulationDirectoryName);
 stiffnessDampingHandleVisibility='off';
 firstStiffnessDampingFile=0;
 lastStiffnessDampingFile=0;
 switch lsdynaMuscleUniform.nameLabel
-    case 'MAT156'
+    case 'MAT156' 
         if(contains(simulationDirectoryName,'impedance_0p528stim_0p8mm_35Hz'))
             stiffnessDampingHandleVisibility='on';
         end
@@ -169,9 +169,7 @@ if(flag_addSimulationData==1)
 
     end
     if(config.bandwidthHz == 35 && config.amplitudeMM == 0.8)
-
-              
-        if( nominalForce <= 12)    
+               
           freqSimData = calcSignalGainAndPhase(...
                                 lsdynaBinout.elout.beam.axial(2:end,1),...
                                 nominalLength,...
@@ -211,9 +209,7 @@ if(flag_addSimulationData==1)
                       stiffnessDampingHandleVisibility,...
                       firstStiffnessDampingFile,...
                       lastStiffnessDampingFile);
-          
-        end
-
+         
     end
 
     %flag_frequencyAnalysisMuscleModelsPlotKD,...

@@ -214,8 +214,18 @@ switch modelName
                                 & uniformModelData.time <= stimTimeE) = stimHigh;
         end
 
-        uniformModelData.lp     = -lsdynaBinout.nodout.z_coordinate;
-        uniformModelData.vp     = -lsdynaBinout.nodout.z_velocity;
+        %The sense of the length function for the impedance trials is 
+        %opposite that of all other simulations. This is not ideal, but
+        %has been done out of necessity.
+        if(contains(simulationTypeStr,'impedance_Kirsch1994'))
+            uniformModelData.lp     = lsdynaBinout.nodout.z_coordinate;
+            uniformModelData.vp     = lsdynaBinout.nodout.z_velocity;            
+        else
+            uniformModelData.lp     = -lsdynaBinout.nodout.z_coordinate;
+            uniformModelData.vp     = -lsdynaBinout.nodout.z_velocity;
+        end
+
+        uniformModelData.fceN   = lsdynaBinout.elout.beam.axial ./ maxActiveIsometricForce;
         
         uniformModelData.lceN   = (uniformModelData.lp)./optimalFiberLength;
         uniformModelData.lceATN = uniformModelData.lceN; 
@@ -226,7 +236,7 @@ switch modelName
         uniformModelData.ltNDot     = zeros(size(uniformModelData.time));
         uniformModelData.alphaDot   = zeros(size(uniformModelData.time));
 
-        uniformModelData.fceN       = lsdynaBinout.elout.beam.axial ./ maxActiveIsometricForce;
+        
         uniformModelData.fpeN       = zeros(size(uniformModelData.time));
         uniformModelData.fseN       = zeros(size(uniformModelData.time));
         uniformModelData.dseN       = zeros(size(uniformModelData.time));        

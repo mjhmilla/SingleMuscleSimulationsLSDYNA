@@ -101,7 +101,7 @@ for idxNominalLength = 1:1:size(nominalLength,2)
         x  = inputFunctions.x(   inputFunctions.idxSignal, idxWave);
         
         y  = tendonForce(inputFunctions.idxSignal, idx);
-        yo = y(round(inputFunctions.padding*0.5),1);
+        yo = y(round(inputFunctions.padding*0.75),1);
         y  = y - yo;
         freqSimData.force(:,idx)  =  tendonForce(:, idx);
 

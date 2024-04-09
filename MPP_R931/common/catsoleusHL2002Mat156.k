@@ -6,7 +6,7 @@ $#     alm       sfr       svs       svr       ssp
   -2899501       1.0       -10       -12       -11              
 $
 *DEFINE_CURVE
-$#    lcid      sidr       sfa       sfo      offa      offo    dattyp
+$#    lcid      sidr       sfa       sfo      offa      offo
         10         0       1.0       1.0       0.0       0.0
 $#                a1                  o1
    0.138223813782472   0.000091917113026
@@ -112,7 +112,7 @@ $#                a1                  o1
    1.975895864703294   0.000122708504192
 $
 *DEFINE_CURVE
-$#    lcid      sidr       sfa       sfo      offa      offo    dattyp
+$#    lcid      sidr       sfa       sfo      offa      offo    
         11         0       1.0       1.0       0.0       0.0
 $#                a1                  o1
    0.777104585643014   0.000097749031973
@@ -218,7 +218,7 @@ $#                a1                  o1
    1.435496107363803   0.992105541899188
 $
 *DEFINE_CURVE
-$#    lcid      sidr       sfa       sfo      offa      offo    dattyp
+$#    lcid      sidr       sfa       sfo      offa      offo
         12         0       1.0       1.0       0.0       0.0
 $#                a1                  o1
   -1.110000000000000   0.000122056884766
