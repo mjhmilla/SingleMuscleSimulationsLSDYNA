@@ -6,7 +6,7 @@ rootDir = pwd;
 assert(contains(rootDir(1,end-29:end),'SingleMuscleSimulationsLSDYNA'),...
        'Error: must start this with matlab in the main directory');
 
-modelName       = 'umat43';
+modelName       = 'mat156';
 simulationTypeStr  = 'impedance_Kirsch1994';
 releaseName     = 'MPP_R931';
 

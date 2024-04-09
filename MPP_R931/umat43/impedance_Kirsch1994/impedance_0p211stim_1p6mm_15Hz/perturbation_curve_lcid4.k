@@ -1,6 +1,6 @@
 *DEFINE_CURVE
-$#    lcid      sidr       sfa       sfo      offa      offo    dattyp
-         4         0       1.0       1.0       0.0       0.0
+$#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint
+         4         0       1.0       1.0       0.0       0.0         1      2047
 $#                a1                  o1
            0.0000000           0.0000000
            0.0030015           0.0000000

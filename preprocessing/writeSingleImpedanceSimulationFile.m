@@ -69,10 +69,17 @@ fprintf(fid,'$\n');
 fprintf(fid,'*END\n');
 fclose(fid);
 
+npts = length(inputFunctions.x(:,idxWave));
+nptsStr = num2str(npts-1);
+while length(nptsStr) < 10
+    nptsStr=  [' ',nptsStr];
+end
+
+
 fid=fopen('perturbation_curve_lcid4.k','w');
 fprintf(fid,'*DEFINE_CURVE\n');
-fprintf(fid,'$#    lcid      sidr       sfa       sfo      offa      offo    dattyp\n');
-fprintf(fid,'         4         0       1.0       1.0       0.0       0.0\n');
+fprintf(fid,'$#    lcid      sidr       sfa       sfo      offa      offo    dattyp     lcint\n');
+fprintf(fid,'         4         0       1.0       1.0       0.0       0.0         1%s\n',nptsStr);
 fprintf(fid,'$#                a1                  o1\n');
 for indexTime=1:1:length(inputFunctions.time)
     if( inputFunctions.x(indexTime,idxWave) >= 0)
