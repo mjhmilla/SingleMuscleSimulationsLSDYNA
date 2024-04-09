@@ -13,7 +13,7 @@ R       et 0.045826
 R   vceMax 4.650
 R shiftPEE -0.007396    
 R scalePEE 0.810583  
-R    dtInt 0.0001
+R    dtInt 0.00005
 R    dtOut 0.010
 RlceNScale 0.95
 *END

@@ -122,9 +122,10 @@ switch modelName
         fpeNAtLceOpt = 0.027249144257421; 
         fisoAT = fiso*cos(penOpt);
 
-        ex5N        = 5/fisoAT-fpeNAtLceOpt;
-        exMin       = 1/fisoAT-fpeNAtLceOpt;
-        exMax       = 12/fisoAT-fpeNAtLceOpt;
+        scale = 5/4.88;
+        ex5N        = (5/fisoAT-fpeNAtLceOpt)*scale;
+        exMin       = (1/fisoAT-fpeNAtLceOpt)*scale;
+        exMax       = (12/fisoAT-fpeNAtLceOpt)*scale;
         excitationSeries    = [exMin:((exMax-exMin)/(9)):exMax];
 
     otherwise

@@ -40,13 +40,13 @@ switch lsdynaMuscleUniform.nameLabel
         end
 
     case 'VEXAT'
-        if(contains(simulationDirectoryName,'impedance_0p532stim_0p8mm_35Hz'))
+        if(contains(simulationDirectoryName,'impedance_0p545stim_0p8mm_35Hz'))
             stiffnessDampingHandleVisibility='on';
         end
-        if(contains(simulationDirectoryName,'impedance_0p019stim_0p8mm_35Hz'))
+        if(contains(simulationDirectoryName,'impedance_0p020stim_0p8mm_35Hz'))
             firstStiffnessDampingFile=1;
         end
-        if(contains(simulationDirectoryName,'impedance_0p532stim_0p8mm_35Hz'))
+        if(contains(simulationDirectoryName,'impedance_0p545stim_0p8mm_35Hz'))
             lastStiffnessDampingFile=1;
         end        
 
