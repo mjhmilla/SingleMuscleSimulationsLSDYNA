@@ -1,5 +1,6 @@
 function success = writeImpedanceSimulationFiles(excitationSeries, ...
-                            inputFunctions,impedanceFolder)
+                            inputFunctions,lsdynaImpedanceFcnName,...
+                            impedanceFolder)
 success = 0;
 
 workingDirectory = pwd;
@@ -48,7 +49,7 @@ for indexExcitation=1:1:length(excitationSeries)
             fprintf(fid,'../\n');
             fprintf(fid,'$\n');
             fprintf(fid,'*INCLUDE\n');
-            fprintf(fid,'../impedance.k\n');
+            fprintf(fid,'../%s\n',lsdynaImpedanceFcnName);
             fprintf(fid,'$\n');
             fprintf(fid,'*INCLUDE\n');
             fprintf(fid,'perturbation_curve_lcid4.k\n');            
