@@ -13,6 +13,7 @@
 %%
 
 function freqSimData = calcSignalGainAndPhase(...
+                        pathLength,...
                         tendonForce,...
                         nominalLength,...
                         nominalForce,...
@@ -41,7 +42,12 @@ function freqSimData = calcSignalGainAndPhase(...
 success = 0;
 
 
+assert(inputFunctions.samples==length(pathLength));
+assert(inputFunctions.samples==length(tendonForce));
+
 samplePoints=inputFunctions.samples;
+
+
 
 numberOfSimulations=size(activation,2)*length(amplitudeMM)*length(bandwidthHz);
 freqSimData = struct('force',  zeros(samplePoints, numberOfSimulations),...      
@@ -94,13 +100,16 @@ for idxNominalLength = 1:1:size(nominalLength,2)
         %idxMidPadding = round(0.5*inputFunctions.padding);
         freqSimData.nominalForce(1,idx)        = nominalForce(1,idxActivation);
 
+        %x  = inputFunctions.x(   inputFunctions.idxSignal, idxWave);
+        x = pathLength;
+        xo= x(round(inputFunctions.padding*0.75),1);
+        x=x-xo;
 
-        idxWave = getSignalIndex(amplitudeMM(i),bandwidthHz(j),...
-                                  inputFunctions);
+        xFFT = fft(x);
+        s = complex(0,1).*(inputFunctions.freq(:,1));
+        xdot = ifft(xFFT.*s,'symmetric');
 
-        x  = inputFunctions.x(   inputFunctions.idxSignal, idxWave);
-        
-        y  = tendonForce(inputFunctions.idxSignal, idx);
+        y  = tendonForce;%(inputFunctions.idxSignal, idx);
         yo = y(round(inputFunctions.padding*0.75),1);
         y  = y - yo;
         freqSimData.force(:,idx)  =  tendonForce(:, idx);
@@ -202,13 +211,13 @@ for idxNominalLength = 1:1:size(nominalLength,2)
         %response of the spring-damper model of best fit.
 
         modelResponseTime = ...
-          (inputFunctions.x(inputFunctions.idxSignal,idxWave).*freqSimData.stiffness(1,idx) ...
-          +inputFunctions.xdot(inputFunctions.idxSignal,idxWave).*freqSimData.damping(1,idx));
+          (x(inputFunctions.idxSignal).*freqSimData.stiffness(1,idx) ...
+          +xdot(inputFunctions.idxSignal).*freqSimData.damping(1,idx));
 
 
         freqSimData.forceKD(:,idx) = ...
-           (inputFunctions.x(:,idxWave)   ).*(freqSimData.stiffness(1,idx)) ...
-          +(inputFunctions.xdot(:,idxWave)).*(freqSimData.damping(1,idx));
+           (x   ).*(freqSimData.stiffness(1,idx)) ...
+          +(xdot).*(freqSimData.damping(1,idx));
 
         modelResponseFreq = ...
           calcFrequencyModelResponse( freqSimData.stiffness(1,idx),...
@@ -296,12 +305,15 @@ for idxNominalLength = 1:1:size(nominalLength,2)
         trialLabel = '';
 
         if(flag_usingOctave==0)
+          idxWave = getSignalIndex(amplitudeMM(i),bandwidthHz(j),...
+                                     inputFunctions);            
           trialLabel = inputFunctions.labels(idxWave,:);              
         else
           trialLabel = sprintf('%s mm %s Hz',...
-            num2str(inputFunctions.amplitudeMM(1,idxWave)),...
-            num2str(inputFunctions.bandwidthHz(1,idxWave)));                
+            num2str(amplitudeMM(i)),...
+            num2str(bandwidthHz(j)));                
         end
+
 
 
         fprintf('%i. %s\n',idx,trialLabel);

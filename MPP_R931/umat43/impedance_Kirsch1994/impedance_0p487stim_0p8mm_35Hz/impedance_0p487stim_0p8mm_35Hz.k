@@ -7,7 +7,7 @@ $
 ../
 $
 *INCLUDE
-../impedance.k
+../impedanceKBR1994Fig12.k
 $
 *INCLUDE
 perturbation_curve_lcid4.k
