@@ -329,6 +329,8 @@ if(strcmp(modelName,'umat43')==1)
       simulationInformation(idx).musclePropertyCard     = ...
           ['..',filesep,'..',filesep,'common',filesep,'catsoleusHL2002Umat43.k'];   
 
+      %All of these parameters are shared by the HL2002, and the Fig 3 
+      %and Fig 12 versions of the KBR1994 simulations
       simulationInformation(idx).optimalFiberLength         = 'lceOpt';
       simulationInformation(idx).maximumIsometricForce      = 'fceOpt';
       simulationInformation(idx).tendonSlackLength          = 'ltSlk';

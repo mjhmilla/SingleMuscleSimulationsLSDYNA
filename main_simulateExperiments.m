@@ -8,8 +8,19 @@ opengl('save','software');
 % User-defined script variables
 %%
 
+addpath(genpath('numeric'));
+addpath(genpath('curves'));
+addpath(genpath('preprocessing'));
+addpath(genpath('postprocessing'));
+addpath(genpath('ReferenceExperiments'));
+
 % Define which Releases shall be tested
 Releases    =  {'MPP_R931'};
+
+
+cs = getPaulTolColourSchemes('highContrast');
+
+
 
 greyA = [0,0,0];
 greyB = [1,1,1].*0.5;
@@ -32,27 +43,27 @@ redB = redA.*0.5;% + [1,1,1].*0.5;
 dataColorA=greyA;
 dataColorB=greyB;
 
-models(1) = struct('id',0,'name','');
+models(3) = struct('id',0,'name','');
 % 
 % indexVIVA              = 1;
 % models(indexVIVA).id   = 1;
 % models(indexVIVA).name ='viva';
 % models(indexVIVA).colors= [greenA;greenB];
-
+% 
 indexMat56                = 1;
 models(indexMat56).id     = 1;
 models(indexMat56).name   ='mat156';
-models(indexMat56).colors = [redA;redB];
+models(indexMat56).colors = [cs.red;cs.red];
 
-% indexUmat41              = 2;
-% models(indexUmat41).id   = 2;
-% models(indexUmat41).name ='umat41';
-% models(indexUmat41).colors= [magentaA;magentaB];
+indexUmat41              = 2;
+models(indexUmat41).id   = 2;
+models(indexUmat41).name ='umat41';
+models(indexUmat41).colors= [cs.yellow;cs.yellow];
 
-% indexUmat43              = 3;
-% models(indexUmat43).id   = 3;
-% models(indexUmat43).name ='umat43';
-% models(indexUmat43).colors= [blueA;blueB];
+indexUmat43              = 3;
+models(indexUmat43).id   = 3;
+models(indexUmat43).name ='umat43';
+models(indexUmat43).colors= [cs.blue;cs.blue];
 
 
 flag_preProcessSimulationData       = 0; 
@@ -77,14 +88,14 @@ flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
 flag_enableEccentricExperiment          = 0;
-flag_enableImpedanceExperiment          = 1;
+flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 0;
 flag_enableReflexExperiment_kN_mm_ms    = 0;
 
 flag_enableActivePassiveForceLengthExperimentViva   = 0;
 flag_enableForceVelocityExperimentViva              = 0;
-flag_enableActivePassiveForceLengthExperiment       = 0;
+flag_enableActivePassiveForceLengthExperiment       = 1;
 flag_enableForceVelocityExperiment                  = 0;
 
 if(flag_enableForceVelocityExperimentViva ...
@@ -188,13 +199,6 @@ baseSignalFileName  = [ 'baseFunction',signalFileEnding,'.mat'];
 %% paths
 outputFolder            = 'output';
 structFolder            = fullfile('output','structs',filesep);
-
-
-addpath(genpath('numeric'));
-addpath(genpath('curves'));
-addpath(genpath('preprocessing'));
-addpath(genpath('postprocessing'));
-addpath(genpath('ReferenceExperiments'));
 
 
 %% Plot configuration
@@ -556,8 +560,15 @@ if(flag_postProcessSimulationData==1)
                       numberOfVerticalPlotRowsSpecific      = 1;                 
                     case 'impedance_Kirsch1994'
                       numberOfHorizontalPlotColumnsSpecific = 1;
-                      numberOfVerticalPlotRowsSpecific      = 6; 
-                      sampleTimeK = getParameterFieldValue('impedance.k','dtSignal');                      
+                      numberOfVerticalPlotRowsSpecific      = 6;
+                      if(contains(models(indexModel).name,'umat43'))
+                        %Both Fig3 and Fig12 simulations have the same
+                        %dtSignal value.
+                        sampleTimeK = getParameterFieldValue('impedanceKBR1994Fig3.k','dtSignal'); 
+                      else
+                        sampleTimeK = getParameterFieldValue('impedance.k','dtSignal'); 
+                      end
+                                           
                       assert(abs(sampleTimeK-sampleTime)<sqrt(eps));    
 
                       numberOfHorizontalPlotColumnsPublication  = 6; 

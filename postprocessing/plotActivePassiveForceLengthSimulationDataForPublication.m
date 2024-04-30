@@ -23,8 +23,10 @@ flag_plotWinters2011      = 0;
 flag_plotScottBrownLoeb1996_fig3_active=1;
 flag_plotScottBrownLoeb1996_fig3_passive=0;
 
+flag_plotHoltAzizi2014      =0;
+flag_plotRackWestbury1969   =1;
 
-flag_plotBrownScottLoeb1996_fig7=1;
+flag_plotBrownScottLoeb1996_fig7=0;
 flag_plotRodeSiebertHerzogBlickhan2009=1;
 
 flag_passiveStiffnessRmse=0;
@@ -540,19 +542,6 @@ if(flag_addSimulationData==1)
                 lineAndMarkerSettings,...
                 plotSettings,...
                 flag_plotInNormalizedCoordinates);
-            
-
-
-            [lgdH,lgdIcons, lgdPlots, lgdTxt]=...
-                legend('Location','NorthWest','FontSize',fontSizeLegend,...
-                       'AutoUpdate','on'); 
-            [lgdH,lgdIcons, lgdPlots, lgdTxt,XDataOrig,XDataUpd] = ...
-                scaleLegendLines(0.75,lgdH,lgdIcons, lgdPlots, lgdTxt);
-            pos=get(lgdH,'Position');
-            pos(1)=pos(1)-(XDataUpd(1)-XDataOrig(1))*pos(3) + 0.03;
-            pos(2)=pos(2)+0.05;
-            set(lgdH,'Position',pos);            
-            legend boxoff;
 
             %%
             % Add experimental data illustrating the shift of the peak
@@ -567,12 +556,34 @@ if(flag_addSimulationData==1)
             [valMax,idxMax] = max(dataForceLength(:,idxY));
             peakLceNFalN = [dataForceLength(idxMax,idxX),dataForceLength(idxMax,idxY)];            
             
-            labelHA2014    = 'Exp: HA2014 Frog PL WM (sub max)';
-            expColor=[0,0,0];
-            figH = addHoltAzizi2014ActiveForceLengthShift(...
-                    figH,subplotFl,peakLceNFalN,labelHA2014,expColor,...
-                    muscleArchitecture,...
-                    flag_plotInNormalizedCoordinates);
+            if(flag_plotHoltAzizi2014==1)
+                labelHA2014    = 'Exp: HA2014 Frog PL WM (sub max)';
+                expColor=[0,0,0];
+                figH = addHoltAzizi2014ActiveForceLengthShift(...
+                        figH,subplotFl,peakLceNFalN,labelHA2014,expColor,...
+                        muscleArchitecture,...
+                        flag_plotInNormalizedCoordinates);
+            end
+            if(flag_plotRackWestbury1969==1)
+                labelRW1969    = 'Exp: RW1969Cat Sol WM';
+                expColor=[0,0,0];
+                figH = addRackWestbury1969ActiveForceLength(...
+                        figH,subplotFl,peakLceNFalN,labelRW1969,expColor,...
+                        muscleArchitecture,...
+                        flag_plotInNormalizedCoordinates);
+            end
+            
+
+            [lgdH,lgdIcons, lgdPlots, lgdTxt]=...
+                legend('Location','NorthWest','FontSize',fontSizeLegend,...
+                       'AutoUpdate','on'); 
+            [lgdH,lgdIcons, lgdPlots, lgdTxt,XDataOrig,XDataUpd] = ...
+                scaleLegendLines(0.75,lgdH,lgdIcons, lgdPlots, lgdTxt);
+            pos=get(lgdH,'Position');
+            pos(1)=pos(1)-(XDataUpd(1)-XDataOrig(1))*pos(3) + 0.03;
+            pos(2)=pos(2)+0.05;
+            set(lgdH,'Position',pos);            
+            legend boxoff;            
             
         else
             fid=fopen([simulationFolder,filesep,'record.csv'],'a');
