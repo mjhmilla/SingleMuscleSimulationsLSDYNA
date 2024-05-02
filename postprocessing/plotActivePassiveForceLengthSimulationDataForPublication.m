@@ -20,7 +20,7 @@ flag_plotSmeulders2004     =0;
 flag_plotGollapudiLin2009 = 0;
 flag_plotSiebert2015      = 0;
 flag_plotWinters2011      = 0;
-flag_plotScottBrownLoeb1996_fig3_active=1;
+flag_plotScottBrownLoeb1996_fig3_active =1;
 flag_plotScottBrownLoeb1996_fig3_passive=0;
 
 flag_plotHoltAzizi2014      =0;
@@ -43,7 +43,9 @@ passiveFolder=pwd;
 
 cd(trialFolder);
 
-
+csExp.dark = [1,1,1].*0.5;
+csExp.med = [1,1,1].*0.65;
+csExp.light = [1,1,1].*0.8;
 
 %%
 %Active and passive data points of the starting of the Herzog & Leonard
@@ -74,6 +76,7 @@ fileExpDataPassiveForceLength   = [simulationFolder,filesep,'dataExpPassive.csv'
 idRodeSiebertHerzogBlickhan2009 = 1;
 idScottBrownLoeb1996            = 2;
 idBrownScottLoeb1996            = 3;
+idRackWestbury1969              = 4;
 
 indexRow = indexModel;
 
@@ -214,8 +217,8 @@ if(flag_addReferenceData==1)
 
     if(flag_plotRodeSiebertHerzogBlickhan2009==1)
         labelRSHB2009='Exp: RSHB2009 Cat Sol WM';
-        colorRSHB2009a=[1,1,1].*0.75;
-        colorRSHB2009b=[1,1,1].*0.75;
+        colorRSHB2009a=csExp.light;
+        colorRSHB2009b=csExp.light;
         figH = addRodeSiebertHerzogBlickhan2009ForceLength(...
                     figH,subplotFl,labelRSHB2009,...
                     colorRSHB2009a,colorRSHB2009b,...
@@ -237,8 +240,8 @@ if(flag_addReferenceData==1)
     end
 
     labelSBL1996 = 'Exp: SBL1996 Cat Sol WM';
-    colorSBL1996A = [1,1,1].*0.5;
-    colorSBL1996B = [1,1,1].*0.5;  
+    colorSBL1996A = csExp.med;
+    colorSBL1996B = csExp.med;  
 
     if(flag_plotScottBrownLoeb1996_fig3_active==1)
         figH = addScottBrownLoeb1996ActiveForceLength(...
@@ -274,6 +277,7 @@ if(flag_addReferenceData==1)
 
 
     if(flag_plotWinters2011==1)
+        disp('Warning: Winters 2011 not included in RMSE calculation');
         expColorA = [1,1,1].*0.7; 
         expColorB = [1,1,1].*0.3;     
         labelWTLW2011  = 'Exp: WTLW2011 Rabbit EDII/EDL/TA WM';
@@ -292,6 +296,7 @@ if(flag_addReferenceData==1)
     end
 
     if(flag_plotGollapudiLin2009 == 1)
+        disp('Warning: Gollapudi 2009 not included in RMSE calculation');
         expColor        = [0,0,0];
         labelGL2009     = 'Exp: GL2009 Human LGAS SF';
         lceOptHuman = 2.725;
@@ -308,6 +313,7 @@ if(flag_addReferenceData==1)
     end
 
     if(flag_plotSmeulders2004==1)
+        disp('Warning: Smeulders 2004 not included in RMSE calculation');
         labelSKHHH2004 = 'Exp: SKHHH2004 Human FCU WM';
         expColor =[0,0,0];
         disp('Warning: Smeulders experimental data not used in RMSE calculation');
@@ -317,6 +323,19 @@ if(flag_addReferenceData==1)
                     flag_plotInNormalizedCoordinates);
     end
 
+    if(flag_plotRackWestbury1969==1)
+        labelRW1969    = 'Exp: RW1969Cat Sol WM';
+        expColor=csExp.dark;
+        flag_addLines=1;
+        flag_addAnnotation=0;
+        figH = addRackWestbury1969ActiveForceLength(...
+                figH,subplotFl,[],labelRW1969,expColor,...
+                muscleArchitecture,...
+                flag_addLines,flag_addAnnotation,...
+                flag_plotInNormalizedCoordinates,...
+                fileExpDataActiveForceLength,...
+                idRackWestbury1969);
+    end    
 
 end
 
@@ -465,11 +484,13 @@ if(flag_addSimulationData==1)
             displayNameStr = [lsdynaMuscleUniform.nameLabel,...
                    sprintf('(%1.1f)',dataForceLength(1,1))];            
                      
+            flag_addAnnotation=1;
             figH = addSimulationActiveForceLength(...
                 figH,subplotFl,dataForceLength,displayNameStr,...
                 muscleArchitecture,...
                 lineAndMarkerSettings,...
                 plotSettings,...
+                flag_addAnnotation,...
                 flag_plotInNormalizedCoordinates);
 
                 xDelta=abs(diff(plotSettings(idx).xLim))*0.05;
@@ -536,11 +557,13 @@ if(flag_addSimulationData==1)
             displayNameStr = [lsdynaMuscleUniform.nameLabel,...
                    sprintf('(%1.1f)',dataForceLength(1,1))];   
 
+            flag_addAnnotation=0;
             figH = addSimulationActiveForceLength(...
                 figH,subplotFl,dataForceLength,displayNameStr,...
                 muscleArchitecture,...
                 lineAndMarkerSettings,...
                 plotSettings,...
+                flag_addAnnotation,...
                 flag_plotInNormalizedCoordinates);
 
             %%
@@ -567,9 +590,12 @@ if(flag_addSimulationData==1)
             if(flag_plotRackWestbury1969==1)
                 labelRW1969    = 'Exp: RW1969Cat Sol WM';
                 expColor=[0,0,0];
+                flag_addLines=0;
+                flag_addAnnotation=1;
                 figH = addRackWestbury1969ActiveForceLength(...
                         figH,subplotFl,peakLceNFalN,labelRW1969,expColor,...
                         muscleArchitecture,...
+                        flag_addLines,flag_addAnnotation,...
                         flag_plotInNormalizedCoordinates);
             end
             

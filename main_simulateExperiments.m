@@ -43,7 +43,7 @@ redB = redA.*0.5;% + [1,1,1].*0.5;
 dataColorA=greyA;
 dataColorB=greyB;
 
-models(3) = struct('id',0,'name','');
+models(1) = struct('id',0,'name','');
 % 
 % indexVIVA              = 1;
 % models(indexVIVA).id   = 1;
@@ -59,7 +59,7 @@ indexUmat41              = 2;
 models(indexUmat41).id   = 2;
 models(indexUmat41).name ='umat41';
 models(indexUmat41).colors= [cs.yellow;cs.yellow];
-
+ 
 indexUmat43              = 3;
 models(indexUmat43).id   = 3;
 models(indexUmat43).name ='umat43';

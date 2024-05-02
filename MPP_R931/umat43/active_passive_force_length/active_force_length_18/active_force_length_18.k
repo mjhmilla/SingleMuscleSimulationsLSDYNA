@@ -3,7 +3,7 @@
 $#    name       val
 RpathLenN0  1.200000
 RpathLenN1  1.200000
-R   actVal  0.700000
+R   actVal  0.643424
 $
 *INCLUDE_PATH_RELATIVE
 ../

@@ -10,7 +10,7 @@ clear all;
 rootDir = pwd;
 
 
-modelName       = 'umat41'; 
+modelName       = 'mat156'; 
 %Options:
 %   umat41
 %   umat43
@@ -27,17 +27,19 @@ releaseName     ='MPP_R931';
 
 
 exMax       = 1.0;
-exSubMax    = 0.7;
+actSubMax    = 0.643424;
 
 switch modelName
     case 'umat41'
-        exSubMax = 0.538343204368895;
+        q0=1e-4;
+        q=actSubMax;
+        exSubMax=(0.5*(q-q0))/(1-(1-0.5)*(q-q0));        
     case 'umat43'
-        exSubMax = 0.7;
+        exSubMax = actSubMax;
     case 'viva'
-        exSubMax = 0.7;
+        exSubMax = actSubMax;
     case 'mat156'
-        exSubMax = 0.7;
+        exSubMax = actSubMax;
     otherwise
         assert(0,'Error: invalid modelName selection');
 end
