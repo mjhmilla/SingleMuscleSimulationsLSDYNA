@@ -15,24 +15,35 @@ figure(figH);
 
 fontSizeLegend=6;
 
-flag_plotInNormalizedCoordinates=1;
-flag_plotSmeulders2004     =0;
-flag_plotGollapudiLin2009 = 0;
-flag_plotSiebert2015      = 0;
-flag_plotWinters2011      = 0;
-flag_plotScottBrownLoeb1996_fig3_active =1;
-flag_plotScottBrownLoeb1996_fig3_passive=0;
+flag_plotInNormalizedCoordinates        = 1;
+flag_plotSmeulders2004                  = 0;
+flag_plotGollapudiLin2009               = 0;
+flag_plotSiebert2015                    = 0;
+flag_plotWinters2011                    = 0;
+flag_plotScottBrownLoeb1996_fig3_active = 1;
+flag_plotScottBrownLoeb1996_fig3_passive= 0;
+flag_plotHoltAzizi2014                  = 0;
+flag_plotRackWestbury1969               = 1;
+flag_plotHerzogLeonard1997KeyPoints     = 1;
+flag_plotHerzogLeonard2002KeyPoints     = 1;
 
-flag_plotHoltAzizi2014      =0;
-flag_plotRackWestbury1969   =1;
-
-flag_plotBrownScottLoeb1996_fig7=0;
-flag_plotRodeSiebertHerzogBlickhan2009=1;
+flag_plotBrownScottLoeb1996_fig7        = 0;
+flag_plotRodeSiebertHerzogBlickhan2009  = 1;
 
 flag_passiveStiffnessRmse=0;
 
 xTextRmse=1.6;
 yTextRmse=0.2;
+
+switch indexModel
+    case 1
+        titleLabel = {'A.','B.','C.'};
+    case 2
+        titleLabel = {'D.','E.','F.'};        
+    case 3
+        titleLabel = {'G.','H.','I.'};
+
+end
 
 trialFolder=pwd;
 cd ..;
@@ -43,8 +54,8 @@ passiveFolder=pwd;
 
 cd(trialFolder);
 
-csExp.dark = [1,1,1].*0.5;
-csExp.med = [1,1,1].*0.65;
+csExp.dark  = [1,1,1].*0.5;
+csExp.med   = [1,1,1].*0.65;
 csExp.light = [1,1,1].*0.8;
 
 %%
@@ -77,6 +88,7 @@ idRodeSiebertHerzogBlickhan2009 = 1;
 idScottBrownLoeb1996            = 2;
 idBrownScottLoeb1996            = 3;
 idRackWestbury1969              = 4;
+idHerzogLeonard1997             = 5;
 
 indexRow = indexModel;
 
@@ -134,18 +146,21 @@ else
         round([60,optimalFiberLength,optimalFiberLength+tendonSlackLength,240],3,'significant');
 end
 plotSettings(idx).yTicks = round([0,1].*maximumIsometricForce,3,'significant');
+plotSettings(idx).titleLabel = titleLabel{1};
 
 idx=2;
 plotSettings(idx).xLim   = plotSettings(1).xLim;
 plotSettings(idx).yLim   = plotSettings(1).yLim;
 plotSettings(idx).xTicks = plotSettings(1).xTicks;
 plotSettings(idx).yTicks = plotSettings(1).yTicks;
+plotSettings(idx).titleLabel = titleLabel{2};
 
 idx=3;
 plotSettings(idx).xLim   = round([(timeStart-timeEpsilon),(timeEnd+timeEpsilon)],3,'significant');
 plotSettings(idx).yLim   = plotSettings(1).yLim;
 plotSettings(idx).xTicks = round([timeStart,timeA,timeMid,timeB,timeEnd],3,'significant');
 plotSettings(idx).yTicks = plotSettings(1).yTicks;
+plotSettings(idx).titleLabel = titleLabel{3};
 
 if(flag_plotInNormalizedCoordinates==1)    
     idx=1;
@@ -216,7 +231,7 @@ if(flag_addReferenceData==1)
     end
 
     if(flag_plotRodeSiebertHerzogBlickhan2009==1)
-        labelRSHB2009='Exp: RSHB2009 Cat Sol WM';
+        labelRSHB2009='Exp: RSHB2009';
         colorRSHB2009a=csExp.light;
         colorRSHB2009b=csExp.light;
         figH = addRodeSiebertHerzogBlickhan2009ForceLength(...
@@ -239,7 +254,7 @@ if(flag_addReferenceData==1)
         
     end
 
-    labelSBL1996 = 'Exp: SBL1996 Cat Sol WM';
+    labelSBL1996 = 'Exp: SBL1996';
     colorSBL1996A = csExp.med;
     colorSBL1996B = csExp.med;  
 
@@ -324,14 +339,15 @@ if(flag_addReferenceData==1)
     end
 
     if(flag_plotRackWestbury1969==1)
-        labelRW1969    = 'Exp: RW1969Cat Sol WM';
+        labelRW1969    = 'Exp: RW1969';
         expColor=csExp.dark;
         flag_addLines=1;
         flag_addAnnotation=0;
         figH = addRackWestbury1969ActiveForceLength(...
                 figH,subplotFl,[],labelRW1969,expColor,...
                 muscleArchitecture,...
-                flag_addLines,flag_addAnnotation,...
+                flag_addLines,...
+                flag_addAnnotation,...                
                 flag_plotInNormalizedCoordinates,...
                 fileExpDataActiveForceLength,...
                 idRackWestbury1969);
@@ -481,17 +497,41 @@ if(flag_addSimulationData==1)
             fclose(fid);
             dataForceLength = csvread([simulationFolder,filesep,'record.csv']);
 
-            displayNameStr = [lsdynaMuscleUniform.nameLabel,...
-                   sprintf('(%1.1f)',dataForceLength(1,1))];            
+            %displayNameStr = [lsdynaMuscleUniform.nameLabel,...
+            %       sprintf('(%1.1f)',dataForceLength(1,1))];            
+            displayNameStr = lsdynaMuscleUniform.nameLabel;            
                      
             flag_addAnnotation=1;
+            addEntryToLegend = 0;
             figH = addSimulationActiveForceLength(...
                 figH,subplotFl,dataForceLength,displayNameStr,...
                 muscleArchitecture,...
                 lineAndMarkerSettings,...
                 plotSettings,...
                 flag_addAnnotation,...
+                addEntryToLegend,...
                 flag_plotInNormalizedCoordinates);
+
+            if(flag_plotHerzogLeonard1997KeyPoints==1)
+                labelHL1997    = 'Exp: HL1997';
+                expColor=[0,0,0];
+                addPassive0AddActive1=1;
+                figH = addHerzogLeonard1997KeyPoints(...
+                        figH,subplotFl,subplotFpe,labelHL1997,expColor,...
+                        muscleArchitecture,...
+                        flag_plotInNormalizedCoordinates,...
+                        addPassive0AddActive1);
+            end 
+            if(flag_plotHerzogLeonard2002KeyPoints==1)
+                labelHL2002    = 'Exp: HL2002';
+                expColor=[0,0,0];
+                addPassive0AddActive1=1;
+                figH = addHerzogLeonard2002KeyPoints(...
+                        figH,subplotFl,labelHL2002,expColor,...
+                        muscleArchitecture,...
+                        flag_plotInNormalizedCoordinates,...
+                        addPassive0AddActive1);
+            end             
 
                 xDelta=abs(diff(plotSettings(idx).xLim))*0.05;
                 yDelta=abs(diff(plotSettings(idx).yLim))*0.05;               
@@ -554,16 +594,19 @@ if(flag_addSimulationData==1)
             dataForceLength = csvread([simulationFolder,filesep,'record.csv']); 
 
 
-            displayNameStr = [lsdynaMuscleUniform.nameLabel,...
-                   sprintf('(%1.1f)',dataForceLength(1,1))];   
+            %displayNameStr = [lsdynaMuscleUniform.nameLabel,...
+            %       sprintf('(%1.1f)',dataForceLength(1,1))];
+            displayNameStr = lsdynaMuscleUniform.nameLabel;
 
             flag_addAnnotation=0;
+            addEntryToLegend = 1;
             figH = addSimulationActiveForceLength(...
                 figH,subplotFl,dataForceLength,displayNameStr,...
                 muscleArchitecture,...
                 lineAndMarkerSettings,...
                 plotSettings,...
                 flag_addAnnotation,...
+                addEntryToLegend,...
                 flag_plotInNormalizedCoordinates);
 
             %%
@@ -632,7 +675,7 @@ if(flag_addSimulationData==1)
             xlabel('Path Length (mm)');
             ylabel('Tendon Force (N)');   
         end
-        title('B. Active force-length relations');        
+        title([plotSettings(idx).titleLabel,' ',lsdynaMuscleUniform.nameLabel,' $$f^{L}$$']);        
     end
 
     if(flag_passiveData)
@@ -643,6 +686,17 @@ if(flag_addSimulationData==1)
             lineAndMarkerSettings,...
             plotSettings,...
             flag_plotInNormalizedCoordinates);
+
+        if(flag_plotHerzogLeonard1997KeyPoints==1)
+            labelHL1997    = 'Exp: HL1997Cat Sol WM';
+            expColor=[0,0,0];
+            addPassive0AddActive1=0;
+            figH = addHerzogLeonard1997KeyPoints(...
+                    figH,subplotFl,subplotFpe,labelHL1997,expColor,...
+                    muscleArchitecture,...
+                    flag_plotInNormalizedCoordinates,...
+                    addPassive0AddActive1);
+        end           
     
         [lgdH,lgdIcons, lgdPlots, lgdTxt]=...
             legend('Location','NorthWest','FontSize',fontSizeLegend,...

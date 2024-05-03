@@ -5,7 +5,7 @@ function figH = addSimulationActiveForceTimeSeries(...
             muscleArchitecture,...
             lineType,lineWidthModel,lineColor,...
             markerSize,markerLineWidth,markerFaceColor,...
-            plotSettings,...
+            plotSettings,...            
             flag_plotInNormalizedCoordinates)
 
 optimalFiberLength      =muscleArchitecture.lceOpt;
@@ -86,12 +86,14 @@ if(flag_plotInNormalizedCoordinates==1)
 else
     ylabel('Tendon Force (N)');
 end
-  
-title('C. Example time series data');        
+
+idx=3;
+title([plotSettings(idx).titleLabel, ' ',lsdynaMuscleUniform.nameLabel,...
+       ' time-series data' ]);        
 
 box off;
 
-idx=3;
+
 xlim(plotSettings(idx).xLim);
 ylim(plotSettings(idx).yLim);
 xticks(plotSettings(idx).xTicks);

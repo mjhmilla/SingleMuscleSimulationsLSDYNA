@@ -327,7 +327,7 @@ if(flag_addReferenceData==1)
             labelHL1997='Exp: HL1997';
          
             
-            expColorA = [1,1,1].*0.75;
+            expColorA = [1,1,1].*0.9;
             expColorB = [1,1,1].*0;
         
             addConcentricData = -1;

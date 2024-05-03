@@ -182,6 +182,6 @@ else
     ylabel('Tendon Force (N)');             
 end
 
-title('A. Passive force-length relations');
+title([plotSettings(idx).titleLabel,' ',lsdynaMuscleUniform.nameLabel,' $$f^{PE}$$']);
 
 
