@@ -688,7 +688,7 @@ if(flag_addSimulationData==1)
             flag_plotInNormalizedCoordinates);
 
         if(flag_plotHerzogLeonard1997KeyPoints==1)
-            labelHL1997    = 'Exp: HL1997Cat Sol WM';
+            labelHL1997    = 'Exp: HL1997Cat';
             expColor=[0,0,0];
             addPassive0AddActive1=0;
             figH = addHerzogLeonard1997KeyPoints(...

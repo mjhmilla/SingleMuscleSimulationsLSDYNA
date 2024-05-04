@@ -1,5 +1,6 @@
 function figH = addMashimaAkazawaKushimaFujii1972ForceVelocity(figH, ...
                     subplotPosition, labelData,  expColor, vceMaxExp,...
+                    addLegendEntry,...
                     fileNameToAppendProcessedData,...
                     idData)
 
@@ -19,15 +20,22 @@ dataMAKF1972fvN = loadDigitizedData(fileMAKF1972fvN,...
                  'c09','c10','c11','c12',...
                  'c13','c14','c15','c16'},...
                 {'Mashima, Akazawa, Kushima, Fujii, 1972'}); 
-
-hVis = 'on';
-
-fid=fopen(fileNameToAppendProcessedData,'a');
+hVis='off';
+if(addLegendEntry==1)
+    hVis = 'on';
+end
+if(isempty(fileNameToAppendProcessedData)==0)
+    fid=fopen(fileNameToAppendProcessedData,'a');
+end
 
 for idx=1:1:length(dataMAKF1972fvN)
     vceMean = mean(-dataMAKF1972fvN(idx).y);
-
-    if(vceMean < 0)
+    [fmax,idxFmax] = max(dataMAKF1972fvN(idx).x);
+    [vmax,idxVmax] = min(-dataMAKF1972fvN(idx).y./vceMaxExp);
+    refErr = abs(dataMAKF1972fvN(idx).x(idxFmax,1) - 0.18);
+%    refErr = abs(dataMAKF1972fvN(idx).x(idxFmax,1) - 0.18);
+    
+    if(vceMean < 0 && refErr < 0.01)
         if(dataMAKF1972fvN(idx).x < 0.75)
             plot(-dataMAKF1972fvN(idx).y./vceMaxExp,...
                  dataMAKF1972fvN(idx).x,...
@@ -70,13 +78,9 @@ for idx=1:1:length(dataMAKF1972fvN)
             hold on;
         
         
-            [fmax,idxFmax] = max(dataMAKF1972fvN(idx).x);
-            [vmax,idxVmax] = min(-dataMAKF1972fvN(idx).y./vceMaxExp);
-
-            refErr = abs(dataMAKF1972fvN(idx).x(idxFmax,1) - 0.18);
 
 
-            if(refErr < 0.01)
+            if(refErr < 0.01 && addLegendEntry)
                 xPt=-dataMAKF1972fvN(idx).y(idxFmax,1)./vceMaxExp;
                 yPt=dataMAKF1972fvN(idx).x(idxFmax,1);
                 dx=0.05*2;
@@ -113,14 +117,17 @@ for idx=1:1:length(dataMAKF1972fvN)
 
         hVis = 'off';
     
-        for indexData=1:1:length(dataMAKF1972fvN(idx).x(:,1))
-            fprintf(fid,'%1.3f,%1.3f,%i,%i\n',...
-                    -dataMAKF1972fvN(idx).y(indexData,1)./vceMaxExp,...
-                     dataMAKF1972fvN(idx).x(indexData,1),...
-                     idData,idx);
-        end    
+        if(isempty(fileNameToAppendProcessedData)==0)
+            for indexData=1:1:length(dataMAKF1972fvN(idx).x(:,1))
+                fprintf(fid,'%1.3f,%1.3f,%i,%i\n',...
+                        -dataMAKF1972fvN(idx).y(indexData,1)./vceMaxExp,...
+                         dataMAKF1972fvN(idx).x(indexData,1),...
+                         idData,idx);
+            end  
+        end
     end
         
 end
-
-fclose(fid);
+if(isempty(fileNameToAppendProcessedData)==0)
+    fclose(fid);
+end

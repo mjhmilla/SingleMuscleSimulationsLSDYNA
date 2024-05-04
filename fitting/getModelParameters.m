@@ -1,5 +1,5 @@
 function [mat156,umat41,umat43] = ...
-    getCommonModelParameters(commonParameterFolder,expAbbrv,...
+    getModelParameters(commonParameterFolder,expAbbrv,...
                                 flag_assertCommonParamsIdentical)
 
 tol=1e-5;
@@ -50,8 +50,8 @@ umat41.nuCEasc    = getParameterFieldValue(umat41ParameterFile, 'nuCEasc');
 umat41.dWdes      = getParameterFieldValue(umat41ParameterFile, 'dWdes');
 umat41.nuCEdes    = getParameterFieldValue(umat41ParameterFile, 'nuCEdes');
 
-umat41.dUSEEnll   = getLsdynaCardFieldValue(umat41CardFile, 'dUSEEnll');
-umat41.duSEEl     = getLsdynaCardFieldValue(umat41CardFile, 'duSEEl');
+umat41.dUSEEnll   = getParameterFieldValue(umat41ParameterFile, 'dUSEEnll');
+umat41.duSEEl     = getParameterFieldValue(umat41ParameterFile, 'duSEEl');
 
 
 
@@ -102,7 +102,6 @@ if(flag_assertCommonParamsIdentical==1)
 
 end
 
-
 mat156.lceOpt     =getParameterFieldValue(mat156ParameterFile,'lceOpt');
 mat156.fceOpt     =getParameterFieldValue(mat156ParameterFile,'fceOpt');
 mat156.lceOptAT   =getParameterFieldValue(mat156ParameterFile,'lceOptAT');
@@ -116,7 +115,6 @@ mat156.vceMax     =getParameterFieldValue(mat156ParameterFile,'vceMax');
 mat156.dtInt      =getParameterFieldValue(mat156ParameterFile,'dtInt');
 mat156.dtOut      =getParameterFieldValue(mat156ParameterFile,'dtOut');
 mat156.lceNScale  =getParameterFieldValue(mat156ParameterFile,'lceNScale');
-
 
 if(flag_assertCommonParamsIdentical==1)
 

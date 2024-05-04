@@ -28,7 +28,12 @@ umat43Curves.ft.ktN = ...
     calcCentralDifferenceDataSeries(umat43Curves.ft.ltN,umat43Curves.ft.ftN);
 
 figure(fig);
-subplot(subPlotPanel(1,1),subPlotPanel(1,2),subPlotPanel(1,3));
+if(length(subPlotPanel)==3)
+    subplot(subPlotPanel(1,1),subPlotPanel(1,2),subPlotPanel(1,3));
+end
+if(length(subPlotPanel)==4)
+    subplot('Position',subPlotPanel);
+end
     plot(umat41Curves.ft.ltN,umat41Curves.ft.ftN,'-','Color',umat41Color,...
         'DisplayName','umat41');
     hold on;

@@ -20,30 +20,12 @@ Releases    =  {'MPP_R931'};
 
 cs = getPaulTolColourSchemes('highContrast');
 
-
-
 greyA = [0,0,0];
 greyB = [1,1,1].*0.5;
-
-blueA  = [0, 0.4470, 0.7410];
-blueB  = blueA.*0.5;% + [1,1,1].*0.5;
-
-greenA = [0, 0.75, 0.75];
-greenB = greenA.*0.5;% + [1,1,1].*0.5;
-
-maroonA= [0.6350, 0.0780, 0.1840];
-maroonB= maroonA.*0.5;% + [1,1,1].*0.5;
-
-magentaA = [0.75, 0, 0.75];
-magentaB = magentaA.*0.5;% + [1,1,1].*0.5;
-
-redA = [193, 39, 45]./255;
-redB = redA.*0.5;% + [1,1,1].*0.5;
-
 dataColorA=greyA;
 dataColorB=greyB;
 
-models(1) = struct('id',0,'name','');
+models(3) = struct('id',0,'name','');
 % 
 % indexVIVA              = 1;
 % models(indexVIVA).id   = 1;
@@ -96,8 +78,8 @@ flag_enableReflexExperiment_kN_mm_ms    = 0;
 
 flag_enableActivePassiveForceLengthExperimentViva   = 0;
 flag_enableForceVelocityExperimentViva              = 0;
-flag_enableActivePassiveForceLengthExperiment       = 1;
-flag_enableForceVelocityExperiment                  = 0;
+flag_enableActivePassiveForceLengthExperiment       = 0;
+flag_enableForceVelocityExperiment                  = 1;
 
 if(flag_enableForceVelocityExperimentViva ...
         || flag_enableActivePassiveForceLengthExperimentViva)

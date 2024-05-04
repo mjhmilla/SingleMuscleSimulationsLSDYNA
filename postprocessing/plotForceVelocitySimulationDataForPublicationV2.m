@@ -24,6 +24,9 @@ flag_addBrownScottLoeb1996=1;
 flag_addScottBrownLoeb1996=1;
 flag_addMashimaAkazawaKushimaFujii1972=1;
 
+expColorA = [1,1,1].*0.9;
+expColorB = [1,1,1].*0;
+
 if(contains(simulationDirectoryName,'isometric'))
     flag_addSimulationData=0;
 end
@@ -327,8 +330,7 @@ if(flag_addReferenceData==1)
             labelHL1997='Exp: HL1997';
          
             
-            expColorA = [1,1,1].*0.9;
-            expColorB = [1,1,1].*0;
+
         
             addConcentricData = -1;
             addEccentricData  =  1;
@@ -398,16 +400,30 @@ if(flag_addReferenceData==1)
             [val,idxMap] = sort(dataFvSample(:,1));
             dataFvSample = dataFvSample(idxMap,:);
         
-            expColor = expColorB;
-            figH = addHerzogLeonard1997ForceVelocity(...
-                            figH,subplotFvExp,labelHL1997,...
-                            dataFvSample, ...
-                            expColor,...
-                            lineAndMarkerSettings.lineWidth,...
-                            plotSettings,...
-                            musclePropertiesHL1997,...
-                            fileExpDataForceVelocity,...
-                            idHerzogLeonard1997); 
+            writematrix(dataFvSample,...
+                fullfile(referenceDataFolder,'dataHerzogLeonard1997.csv'),...
+                'FileType','text',...
+                'Delimiter',',');
+
+            dataFvSampleNms=zeros(size(dataFvSample));
+            dataFvSampleNms(:,1) = dataFvSample(:,1).*(...
+                    musclePropertiesHL1997.lceOpt*musclePropertiesHL1997.vmax);
+            dataFvSampleNms(:,2) = dataFvSample(:,2).*(musclePropertiesHL1997.fiso);
+
+            writematrix(dataFvSampleNms,...
+                fullfile(referenceDataFolder,'dataHerzogLeonard1997Nms.csv'),...
+                'FileType','text',...
+                'Delimiter',',');            
+%             expColor = expColorB;
+%             figH = addHerzogLeonard1997ForceVelocity(...
+%                             figH,subplotFvExp,labelHL1997,...
+%                             dataFvSample, ...
+%                             expColor,...
+%                             lineAndMarkerSettings.lineWidth,...
+%                             plotSettings,...
+%                             musclePropertiesHL1997,...
+%                             fileExpDataForceVelocity,...
+%                             idHerzogLeonard1997); 
 
             vmaxExp=musclePropertiesHL1997.vmax;
             subplot('Position',subplotFvExp);
@@ -467,8 +483,10 @@ if(flag_addSimulationData==1)
             || contains(simulationDirectoryName,simMetaData.fileNameSubMaxActEnd))
 
         lineAndMarkerSettings.lineType='-';
+        addLegendEntry=0;
         if(contains(simulationDirectoryName,simMetaData.fileNameSubMaxActEnd))
-            lineAndMarkerSettings.lineType='--';
+            lineAndMarkerSettings.lineType='-';
+            addLegendEntry=1;          
         end
 
         dataFv = csvread([simulationFolder,filesep,'record.csv']);
@@ -478,7 +496,35 @@ if(flag_addSimulationData==1)
                             figH,subplotFv,...
                             dataFv, ...
                             lsdynaMuscleUniform,...
-                            lineAndMarkerSettings);
+                            lineAndMarkerSettings,...
+                            addLegendEntry);
+
+        if(contains(simulationDirectoryName,simMetaData.fileNameMaxActEnd))
+            if(flag_addMashimaAkazawaKushimaFujii1972==1)
+                labelMAKF1972='Exp: MAKF1972 Frog F';
+                expColor = [1,1,1].*0.5;
+                vceMaxExp=3.75;
+                figH = addMashimaAkazawaKushimaFujii1972ForceVelocity(...
+                        figH,subplotFv, labelMAKF1972, ...
+                        expColor,...
+                        vceMaxExp,...
+                        1,...
+                        [],...
+                        idMashimaAkazawaKushimaFujii1972);
+            end  
+
+            dataFvSample=readmatrix(...
+                fullfile(referenceDataFolder,'dataHerzogLeonard1997.csv'));
+            expColor = expColorB;   
+            labelHL1997='Exp: HL1997 (fit)';
+            figH = addHerzogLeonard1997ForceVelocity(...
+                            figH,subplotFv,labelHL1997,...
+                            dataFvSample, ...
+                            expColor,...
+                            lineAndMarkerSettings.lineWidth,...
+                            plotSettings,...
+                            musclePropertiesHL1997);         
+        end
 
         if(contains(simulationDirectoryName,simMetaData.fileNameSubMaxActEnd))
             figure(figH);
@@ -492,6 +538,7 @@ if(flag_addSimulationData==1)
                         figH,subplotFv, labelMAKF1972, ...
                         expColor,...
                         vceMaxExp,...
+                        0,...
                         fileExpDataForceVelocitySubmax,...
                         idMashimaAkazawaKushimaFujii1972);
             end
@@ -656,17 +703,17 @@ if(contains(simulationDirectoryName,simMetaData.fileNameSubMaxActEnd)==1 ...
 
         switch indexCol
             case 1
-                subPlotLabel0 = 'A.';
-                subPlotLabel1 = 'D.';
-                subPlotLabel2 = 'G.';
+                subPlotLabel0 = 'A. MAT156 $$f^{v}$$';
+                subPlotLabel1 = 'D. Shortening:  4mm at 2.6mm/s';
+                subPlotLabel2 = 'G. Lengthening: 4mm at 2.5mm/s';
             case 2
-                subPlotLabel0 = 'B.';
-                subPlotLabel1 = 'E.';
-                subPlotLabel2 = 'H.';
+                subPlotLabel0 = 'B. EHTMM $$f^{v}$$';
+                subPlotLabel1 = 'E. Shortening:  4mm at 9.6mm/s';
+                subPlotLabel2 = 'H. Lengthening: 4mm at 9.5mm/s';
             case 3
-                subPlotLabel0 = 'C.';
-                subPlotLabel1 = 'E.';
-                subPlotLabel2 = 'H.';
+                subPlotLabel0 = 'C. VEXAT $$f^{v}$$';
+                subPlotLabel1 = 'F. Shortening:  4mm at 22.4mm/s';
+                subPlotLabel2 = 'I. Lengthening: 4mm at 23.4mm/s';
             otherwise assert(0)
         end
 
@@ -697,14 +744,14 @@ if(contains(simulationDirectoryName,simMetaData.fileNameSubMaxActEnd)==1 ...
         subplot('Position',reshape(subPlotLayout(1,col,:),1,4));
             xlabel('Norm. Velocity ($$v^P/v^{M}_{max}$$)');
             ylabel('Norm. Force ($$f/f^{M}_o$$)');
-            title([subPlotLabel0,' Force-velocity relation measurements']);  
+            title([subPlotLabel0]);  
         
         
         subplot('Position',reshape(subPlotLayout(2,col,:),1,4));
         yyaxis left;    
             xlabel('Time (s)');
             ylabel('Norm. Force ($$f/f^{M}_o$$)');    
-            title([subPlotLabel1,' Ramp-shortening measurements']);  
+            title([subPlotLabel1]);  
             ax=gca;
             ax.YAxis(1).Color = [0,0,0];
             ax.YAxis(2).Color = lineColorRampA;        
@@ -733,7 +780,7 @@ if(contains(simulationDirectoryName,simMetaData.fileNameSubMaxActEnd)==1 ...
         yyaxis left;
             xlabel('Time (ms)');
             ylabel('Norm. Force ($$f/f^{M}_o$$)');    
-            title([subPlotLabel2,' Ramp-lengthening measurements']); 
+            title([subPlotLabel2]); 
             ax=gca;
             ax.YAxis(1).Color = [0,0,0];
             ax.YAxis(2).Color = lineColorRampA;        
@@ -744,7 +791,7 @@ if(contains(simulationDirectoryName,simMetaData.fileNameSubMaxActEnd)==1 ...
                 scaleLegendLines(0.75,lgdH,lgdIcons, lgdPlots, lgdTxt);
             pos=get(lgdH,'Position');
             pos(1)=pos(1)-(XDataUpd(1)-XDataOrig(1))*pos(3) + 0.03;
-            pos(2)=pos(2)+0.01;
+            %pos(2)=pos(2)+0.01;
             set(lgdH,'Position',pos);            
             legend boxoff;
         yyaxis right;

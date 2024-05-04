@@ -15,9 +15,11 @@ addpath(genpath('preprocessing'));
 addpath(genpath('postprocessing'));
 addpath(genpath('ReferenceExperiments'));
 
-mat156Color = [193, 39, 45]./255;
-umat41Color = [0.75, 0, 0.75];
-umat43Color = [0, 0.4470, 0.7410];
+cs = getPaulTolColourSchemes('highContrast');
+
+mat156Color = cs.red;
+umat41Color = cs.yellow;
+umat43Color = cs.blue;
 
 mm2m=0.001;
 
@@ -145,13 +147,15 @@ expDataFpe.name='HL2002';
 expKeyPtsDataFpe.time = [];
 
 expKeyPtsDataFpe.lmt =...
-    ( [keyPtsHL2002.data([4,7],keyPtsHL2002.colLengthA); ...
-       keyPtsHL2002.data([1],keyPtsHL2002.colLengthB)].*mm2m ...
+    ( [keyPtsHL2002.data([12],keyPtsHL2002.colLengthA); ...
+       keyPtsHL2002.data([4,7],keyPtsHL2002.colLengthA); ...
+       keyPtsHL2002.data([12],keyPtsHL2002.colLengthB)].*mm2m ...
     + keyPtsHL2002.lceRef );
 
 expKeyPtsDataFpe.fmt =...
-     [keyPtsHL2002.data([4,7],keyPtsHL2002.colForceFirst+2*3);...
-      keyPtsHL2002.data([1],keyPtsHL2002.colForceFirst+2*2)];
+     [keyPtsHL2002.data([12],keyPtsHL2002.colForceFirst);...
+      keyPtsHL2002.data([4,7],keyPtsHL2002.colForceFirst);...
+      keyPtsHL2002.data([12],keyPtsHL2002.colForceFirst+2)];
 
 expKeyPtsDataFpe.name = 'HL2002';
 
@@ -162,7 +166,7 @@ expKeyPtsDataFpe.fmt = ...
     [expKeyPtsDataFpe.fmt;expDataFpe.fmt(end)];
 
 expKeyPtsDataFpe.weights = ones(size(expKeyPtsDataFpe.lmt));
-expKeyPtsDataFpe.weights(1,1)=0.1;
+expKeyPtsDataFpe.weights(1:2,1)=0.1;
 
 
 %
@@ -216,8 +220,8 @@ expKeyPtsDataFal.lmt =...
     + keyPtsHL2002.lceRef );
 
 expKeyPtsDataFal.fmt =...
-     [keyPtsHL2002.data([1,4,7],keyPtsHL2002.colForceFirst+2*4);...
-      keyPtsHL2002.data([10,11],keyPtsHL2002.colForceFirst+2*4)];
+     [keyPtsHL2002.data([1,4,7],keyPtsHL2002.colForceFirst+2);...
+      keyPtsHL2002.data([10,11],keyPtsHL2002.colForceFirst+2)];
 
 expKeyPtsDataFal.name = 'HL2002';
 

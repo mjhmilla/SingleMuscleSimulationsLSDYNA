@@ -505,20 +505,28 @@ if(      (   trialNumber >= simMetaData.numberHL1997ShorteningStart ...
         pathLen0 = getParameterValueFromD3HSPFile(d3hspFileName, 'PATHLEN0');
         pathLen1 = getParameterValueFromD3HSPFile(d3hspFileName, 'PATHLEN1');
         rampTime = getParameterValueFromD3HSPFile(d3hspFileName, 'RAMPTIME');
+        pathLen = (pathLen1-pathLen0).*1000;
         pathVelMM = ((pathLen1-pathLen0)./rampTime)*1000;
+
+
     
         idxClosest=nan;
         errSmallest=inf;
-    
+        velBest=0;
         for idx=1:1:length(dataHL1997Length)
             vel = diff(dataHL1997Length(idx).y)./diff(dataHL1997Length(idx).x);       
             err = abs(vel(2,1)-pathVelMM);
             if(err < errSmallest)
                 idxClosest=idx;
                 errSmallest=err;
+                velBest=vel(2,1);
             end
         end
     
+        %text(0,1,sprintf('%1.1fmm %1.1fmm/s',pathLen,velBest),...
+        %     'FontSize',6,'HorizontalAlignment','left');
+        %hold on;
+
         %Found a candidate. Evaluate the RMSE of the force signal
         errForce = zeros(size(lsdynaMuscleUniform.time,1),1).*nan;
         for i=1:1:length(lsdynaMuscleUniform.time)

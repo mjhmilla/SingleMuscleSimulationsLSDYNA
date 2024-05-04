@@ -15,5 +15,6 @@ R shiftPEE -0.1358
 R scalePEE 1.0
 R    dtInt 0.00005
 R    dtOut 0.010
+RlceNScale 1.0
 *END
 
