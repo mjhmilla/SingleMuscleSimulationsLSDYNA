@@ -2,6 +2,18 @@ clc;
 close all;
 clear all;
 
+%Test to see if the Matlab terminal is in the correct directory
+currDirContents = dir;
+[pathToParent,parentFolderName,ext] = fileparts(currDirContents(1).folder);
+matlabScriptPath = '';
+rootFolderName = 'SingleMuscleSimulationsLSDYNA';
+if(strcmp(currDirContents(1).name,'.') ...
+        && contains(parentFolderName,rootFolderName))
+    matlabScriptPath = pwd;
+end    
+outputFolder            = 'output';
+refExperimentFolder     = 'ReferenceExperiments';
+
 addpath(genpath('models'));
 addpath(genpath('fitting'));
 addpath(genpath('numeric'));
@@ -13,9 +25,16 @@ addpath(genpath('ReferenceExperiments'));
 cs = getPaulTolColourSchemes('highContrast');
 
 plotSettings.mat156.color = cs.red;
-plotSettings.umat41.color = cs.yellow;
-plotSettings.umat43.color = cs.blue;
+plotSettings.mat156.label = 'MAT156';
+plotSettings.mat156.lineWidth= 2;
 
+plotSettings.umat41.color = cs.yellow;
+plotSettings.umat41.label = 'EHTMM';
+plotSettings.umat41.lineWidth = 2;
+
+plotSettings.umat43.color = cs.blue;
+plotSettings.umat43.label = 'VEXAT';
+plotSettings.umat43.lineWidth =2;
 mm2m=0.001;
 
 
@@ -99,24 +118,50 @@ load('output/structs/defaultFelineSoleus.mat');
 
 % Tendon
 %
-fit.HL1997.ft.ktNIso = 30;        %Scott & Loeb (1995)
+ft.ktNIso = 30;        %Scott & Loeb (1995)
 %Scott SH, Loeb GE. Mechanical properties of aponeurosis and tendon of the 
 % cat soleus muscle during whole‐muscle isometric contractions. 
 % Journal of Morphology. 1995 Apr;224(1):73-86.
 
-% Active-force-length relation
-%
 
-% Passive-force-length relation
-%
+filePath = fullfile(refExperimentFolder,...
+                    'eccentric_HerzogLeonard2002',...
+                    'digitizedKeyPointsHerzogLeonard2002.csv');
 
-% Force-velocity relation
-%
+dataHL2002KeyPoints = readmatrix(filePath,'NumHeaderLines',1);
+
+fileHL1997Length = [matlabScriptPath,filesep,...
+                   'ReferenceExperiments',filesep,...
+                   'force_velocity',filesep,...
+                   'fig_HerzogLeonard1997Fig1A_length.csv'];
+
+fileHL1997Force = [matlabScriptPath,filesep,...
+                   'ReferenceExperiments',filesep,...
+                   'force_velocity',filesep,...
+                   'fig_HerzogLeonard1997Fig1A_forces.csv'];
+
+dataHL1997Length = loadDigitizedData(fileHL1997Length,...
+                'Time ($$s$$)','Length ($$mm$$)',...
+                {'c01','c02','c03','c04','c05',...
+                 'c06','c07','c08','c09','c10','c11'},...
+                {'Herzog and Leonard 1997'}); 
+
+dataHL1997Force = loadDigitizedData(fileHL1997Force,...
+                'Time ($$s$$)','Force ($$N$$)',...
+                {'c01','c02','c03','c04','c05',...
+                 'c06','c07','c08','c09','c10','c11'},...
+                {'Herzog and Leonard 1997'}); 
+
 
 %%
 %Fit the models
 %%
 
+%%
+% Tendon
+%%
+
+% 1.
 %The VEXAT tendon model is a template that is scaled by 1 parameter: the
 %tendon strain at 1 isometric force. We solve for that tendon strain that
 %results in the desired stiffness at 1 isometric force
@@ -124,18 +169,41 @@ fit.HL1997.ft.ktNIso = 30;        %Scott & Loeb (1995)
 [params.HL1997.umat43Upd] = ...
     fitVEXATTendon(...
         params.HL1997.umat43Upd,...
-        fit.HL1997.ft,...
+        ft,...
         felineSoleusNormMuscleQuadraticCurves.tendonForceLengthNormCurve);
 
+% 2.
 % The EHTMM has many parameters. To make it as similar to the VEXAT tendon
-% as possible we adjust it to develop the same ktNIso at the same strain
-fit.HL1997.ft.etIso=params.HL1997.umat43Upd.et;
+% as possible (so that we're comparing the formulations rather than the 
+% curves) we adjust it to develop the same ktNIso at the same strain
+ft.etIso=params.HL1997.umat43Upd.et;
+
+%And we add a single sample in the middle of the toe region
+ft.etSample = (1/2)*(2/3)*(params.HL1997.umat43Upd.et);
+ft.ftNSample=zeros(size(ft.etSample));
+for i=1:1:length(ft.etSample)
+    ft.ftNSample(i,1)=...
+        calcQuadraticBezierYFcnXDerivative(...
+            ft.etSample(i,1)/params.HL1997.umat43Upd.et,...
+            felineSoleusNormMuscleQuadraticCurves.tendonForceLengthNormCurve,0);
+end
 
 [params.HL1997.umat41Upd, umat41ftError] =...
         fitEHTMMTendon(...
             params.HL1997.umat41Upd, ...
-            fit.HL1997.ft);
+            ft);
 
+%%
+% Active force-length relation
+%%
+
+%%
+% Passive force-length relation
+%%
+
+%%
+% Force-velocity relation
+%%
 
 
 %%
@@ -156,11 +224,21 @@ figFitting=figure;
         params.HL1997.umat41Upd,...
         params.HL1997.umat43Upd,...
         felineSoleusNormMuscleQuadraticCurves,...
-        reshape(subPlotPanel(1,1,:),1,4),...
-        plotSettings.umat41.color,...
-        plotSettings.umat43.color);
+        reshape(subPlotPanel(1,3,:),1,4),...
+        plotSettings);
 
 
 
 
+%%
+%Write the plot to file
+%%
+figure(figFitting);      
+figFitting=configPlotExporter(figFitting, ...
+            pageWidth, pageHeight);
+fileName =    ['fig_MuscleFitting_Publication'];
+print('-dpdf', [matlabScriptPath,'/',outputFolder,'/',...
+      fileName,'.pdf']);
 
+saveas(figFitting,[matlabScriptPath,'/',outputFolder,'/',...
+      fileName],'fig');
