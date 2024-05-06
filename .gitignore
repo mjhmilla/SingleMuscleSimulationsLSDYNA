@@ -1,4 +1,4 @@
-~lock.*
+*~lock.*
 *.csv#
 *.ods
 *.orig

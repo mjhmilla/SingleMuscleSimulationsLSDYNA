@@ -2,6 +2,14 @@ clc;
 close all;
 clear all;
 
+expData = 'HL2002';
+% HL1997 (Herzog & Leonard 1997)
+% HL2002 (Herzog & Leonard 2002)
+
+flag_zeroMAT156TendonSlackLength=1;
+flag_plotHL1997AnnotationData=0;
+flag_plotHL2002AnnotationData=0;
+
 %Test to see if the Matlab terminal is in the correct directory
 currDirContents = dir;
 [pathToParent,parentFolderName,ext] = fileparts(currDirContents(1).folder);
@@ -65,52 +73,11 @@ set(groot,'defaultFigurePaperType','A4');
 %%
 %Load parameters
 %%
-expAbbrv = 'HL2002';
+expAbbrv = expData;
 modelFolder = fullfile('MPP_R931','common');
 flag_assertCommonParamsIdentical=1;
 [mat156,umat41,umat43] = getModelParameters(modelFolder,expAbbrv,...
                           flag_assertCommonParamsIdentical);
-
-%Not changed
-params.HL2002.mat156=mat156;
-params.HL2002.umat41=umat41;
-params.HL2002.umat43=umat43;
-
-%These values will be updated during the fitting process
-params.HL2002.mat156Upd=mat156;
-params.HL2002.umat41Upd=umat41;
-params.HL2002.umat43Upd=umat43;
-
-
-expAbbrv = 'HL1997';
-modelFolder = fullfile('MPP_R931','common');
-flag_assertCommonParamsIdentical=1;
-[mat156,umat41,umat43] = getModelParameters(modelFolder,expAbbrv,...
-                          flag_assertCommonParamsIdentical);
-
-%Not changed
-params.HL1997.mat156=mat156;
-params.HL1997.umat41=umat41;
-params.HL1997.umat43=umat43;
-
-%These values will be updated during the fitting proces
-params.HL1997.mat156Upd=mat156;
-params.HL1997.umat41Upd=umat41;
-params.HL1997.umat43Upd=umat43;
-
-disp('Add function to set the architectural parameters');
-
-%%
-% Load the reference Bezier curves for umat43 and mat156
-%
-%   Generated using: 
-%       main_createExplicitBezierSplineMuscleCurves.m
-%   From:
-%       https://github.com/mjhmilla/FastMuscleCurves
-%%
-
-load('output/structs/defaultFelineSoleusQuadraticCurves.mat');
-load('output/structs/defaultFelineSoleus.mat');
 
 %%
 % Load fitting data
@@ -123,34 +90,29 @@ ft.ktNIso = 30;        %Scott & Loeb (1995)
 % cat soleus muscle during whole‐muscle isometric contractions. 
 % Journal of Morphology. 1995 Apr;224(1):73-86.
 
+keyPointsHL1997 = getHerzogLeonard1997KeyPoints(matlabScriptPath,...
+                    refExperimentFolder,flag_plotHL1997AnnotationData);
 
-filePath = fullfile(refExperimentFolder,...
-                    'eccentric_HerzogLeonard2002',...
-                    'digitizedKeyPointsHerzogLeonard2002.csv');
+keyPointsHL2002 = getHerzogLeonard2002KeyPoints(matlabScriptPath,...
+                    refExperimentFolder,flag_plotHL2002AnnotationData);
 
-dataHL2002KeyPoints = readmatrix(filePath,'NumHeaderLines',1);
+%%
+%Starting architectural parameters
+%%
+modelParams = setArchitecturalParameters(modelParams,...
+           dataHL1997Length,dataHL1997Force,dataHL2002KeyPoints);
 
-fileHL1997Length = [matlabScriptPath,filesep,...
-                   'ReferenceExperiments',filesep,...
-                   'force_velocity',filesep,...
-                   'fig_HerzogLeonard1997Fig1A_length.csv'];
+%%
+% Load the reference Bezier curves for umat43 and mat156
+%
+%   Generated using: 
+%       main_createExplicitBezierSplineMuscleCurves.m
+%   From:
+%       https://github.com/mjhmilla/FastMuscleCurves
+%%
 
-fileHL1997Force = [matlabScriptPath,filesep,...
-                   'ReferenceExperiments',filesep,...
-                   'force_velocity',filesep,...
-                   'fig_HerzogLeonard1997Fig1A_forces.csv'];
-
-dataHL1997Length = loadDigitizedData(fileHL1997Length,...
-                'Time ($$s$$)','Length ($$mm$$)',...
-                {'c01','c02','c03','c04','c05',...
-                 'c06','c07','c08','c09','c10','c11'},...
-                {'Herzog and Leonard 1997'}); 
-
-dataHL1997Force = loadDigitizedData(fileHL1997Force,...
-                'Time ($$s$$)','Force ($$N$$)',...
-                {'c01','c02','c03','c04','c05',...
-                 'c06','c07','c08','c09','c10','c11'},...
-                {'Herzog and Leonard 1997'}); 
+load('output/structs/defaultFelineSoleusQuadraticCurves.mat');
+load('output/structs/defaultFelineSoleus.mat');
 
 
 %%
@@ -166,9 +128,9 @@ dataHL1997Force = loadDigitizedData(fileHL1997Force,...
 %tendon strain at 1 isometric force. We solve for that tendon strain that
 %results in the desired stiffness at 1 isometric force
 
-[params.HL1997.umat43Upd] = ...
+[params.umat43Upd] = ...
     fitVEXATTendon(...
-        params.HL1997.umat43Upd,...
+        params.umat43Upd,...
         ft,...
         felineSoleusNormMuscleQuadraticCurves.tendonForceLengthNormCurve);
 
@@ -176,27 +138,29 @@ dataHL1997Force = loadDigitizedData(fileHL1997Force,...
 % The EHTMM has many parameters. To make it as similar to the VEXAT tendon
 % as possible (so that we're comparing the formulations rather than the 
 % curves) we adjust it to develop the same ktNIso at the same strain
-ft.etIso=params.HL1997.umat43Upd.et;
+ft.etIso=params.umat43Upd.et;
 
 %And we add a single sample in the middle of the toe region
-ft.etSample = (1/2)*(2/3)*(params.HL1997.umat43Upd.et);
+ft.etSample = (1/2)*(2/3)*(params.umat43Upd.et);
 ft.ftNSample=zeros(size(ft.etSample));
 for i=1:1:length(ft.etSample)
     ft.ftNSample(i,1)=...
         calcQuadraticBezierYFcnXDerivative(...
-            ft.etSample(i,1)/params.HL1997.umat43Upd.et,...
+            ft.etSample(i,1)/params.umat43Upd.et,...
             felineSoleusNormMuscleQuadraticCurves.tendonForceLengthNormCurve,0);
 end
 
-[params.HL1997.umat41Upd, umat41ftError] =...
+[params.umat41Upd, umat41ftError] =...
         fitEHTMMTendon(...
-            params.HL1997.umat41Upd, ...
+            params.umat41Upd, ...
             ft);
 
 %%
 % Active force-length relation
 %%
-
+params.umat43Upd = ...
+        fitVEXATActiveForceLengthRelation(params.umat43Upd,...
+                    dataHL2002KeyPoints, dataHL1997Length,dataHL1997Force);
 %%
 % Passive force-length relation
 %%
@@ -221,8 +185,8 @@ figFitting=figure;
 [fig,umat41Curves,umat43Curves]= ...
     addFittedTendonPlot(...
         figFitting,...
-        params.HL1997.umat41Upd,...
-        params.HL1997.umat43Upd,...
+        params.umat41Upd,...
+        params.umat43Upd,...
         felineSoleusNormMuscleQuadraticCurves,...
         reshape(subPlotPanel(1,3,:),1,4),...
         plotSettings);
