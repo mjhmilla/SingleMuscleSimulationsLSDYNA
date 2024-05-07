@@ -5,7 +5,10 @@ errFcn = @(arg)calcEHTMMTendonError(arg,umat41,fitTendonParams);
 
 x0 =[1;1;1];
 
-[argBest]=lsqnonlin(errFcn,x0);
+options=optimset('Display','off');
+[argBest,resnorm,residual,exitflag]=lsqnonlin(errFcn,x0,[],[],options);
+assert(exitflag==1);
+
 errVal = errFcn(argBest);
 
 fittingError=errVal;

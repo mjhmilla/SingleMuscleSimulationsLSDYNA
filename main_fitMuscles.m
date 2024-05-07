@@ -2,13 +2,40 @@ clc;
 close all;
 clear all;
 
+%%
+% When fitting the CE to experimental data the elasticity of the tendon 
+% is ignored because
+%
+% 1. Cat soleus tendon is short: 27 mm for a 38 mm CE. With a stiffness
+%    of 30 fiso/ltSlk, or 42 fiso/lceOpt, the variation of force in these experiments 
+%    (0.73 - 1.0 fiso) will introduce an unaccounted for length change
+%    in the tendon of 1 fiso/42 - 0.73 fiso/42 = 0.6%. Note, I can use
+%    42 fiso/lceOpt as the tendon stiffness for this estimate because 
+%    the forces of 0.73-1 fiso are within the linear range of the tendon.
+%    Note: the error incurred due to the rigid tendon assumption grows
+%    as the ratio of tendon slack to optimal fiber length grows, and 
+%    becomes unacceptable for a human achilles tendon for example where
+%    the tendon is around 8-12 times longer than the CE.
+%
+% 2. It is a non-trival complication to include a tendon during the 
+%    fitting process: both fl and fpe have to be simultaneously fitted
+%    since the tendon affects both of these parallel elements and vice
+%    versa. Fitting the force-velocity relation is quite challenging:
+%    the experiment has to be simulated to do the fitting unless
+%    assumptions are made aboue the distribution of contraction velocity
+%    between the CE and the tendon.
+%%
+
 expData = 'HL2002';
 % HL1997 (Herzog & Leonard 1997)
 % HL2002 (Herzog & Leonard 2002)
 
 flag_zeroMAT156TendonSlackLength=1;
-flag_plotHL1997AnnotationData=0;
-flag_plotHL2002AnnotationData=0;
+
+flag_plotHL1997AnnotationData           =0;
+flag_plotHL2002AnnotationData           =0;
+flag_plotVEXATActiveForceLengthFitting  =1;
+flag_plotEHTMMActiveForceLengthFitting  =1;
 
 %Test to see if the Matlab terminal is in the correct directory
 currDirContents = dir;
@@ -35,14 +62,28 @@ cs = getPaulTolColourSchemes('highContrast');
 plotSettings.mat156.color = cs.red;
 plotSettings.mat156.label = 'MAT156';
 plotSettings.mat156.lineWidth= 2;
+plotSettings.mat156.lineType= '-';
 
 plotSettings.umat41.color = cs.yellow;
 plotSettings.umat41.label = 'EHTMM';
 plotSettings.umat41.lineWidth = 2;
+plotSettings.umat41.lineType = '-';
 
 plotSettings.umat43.color = cs.blue;
 plotSettings.umat43.label = 'VEXAT';
 plotSettings.umat43.lineWidth =2;
+plotSettings.umat43.lineType = '-';
+
+plotSettings.HL1997.color       = [0,0,0];
+plotSettings.HL1997.label       = 'Exp: HL1997';
+plotSettings.HL1997.lineWidth   = 1;
+plotSettings.HL1997.lineType    = 's';
+
+plotSettings.HL2002.color       = [1,1,1];
+plotSettings.HL2002.label       = 'Exp: HL2002';
+plotSettings.HL2002.lineWidth   = 1;
+plotSettings.HL2002.lineType    = 'o';
+
 mm2m=0.001;
 
 
@@ -78,7 +119,15 @@ modelFolder = fullfile('MPP_R931','common');
 flag_assertCommonParamsIdentical=1;
 [mat156,umat41,umat43] = getModelParameters(modelFolder,expAbbrv,...
                           flag_assertCommonParamsIdentical);
+%Not changed
+modelParams.mat156=mat156;
+modelParams.umat41=umat41;
+modelParams.umat43=umat43;
 
+%Updated
+modelParams.mat156Upd=mat156;
+modelParams.umat41Upd=umat41;
+modelParams.umat43Upd=umat43;
 %%
 % Load fitting data
 %%
@@ -100,8 +149,9 @@ keyPointsHL2002 = getHerzogLeonard2002KeyPoints(matlabScriptPath,...
 %Starting architectural parameters
 %%
 modelParams = setArchitecturalParameters(modelParams,...
-           dataHL1997Length,dataHL1997Force,dataHL2002KeyPoints);
-
+                    expData,keyPointsHL1997,keyPointsHL2002,...
+                    flag_zeroMAT156TendonSlackLength);
+   
 %%
 % Load the reference Bezier curves for umat43 and mat156
 %
@@ -110,57 +160,44 @@ modelParams = setArchitecturalParameters(modelParams,...
 %   From:
 %       https://github.com/mjhmilla/FastMuscleCurves
 %%
-
 load('output/structs/defaultFelineSoleusQuadraticCurves.mat');
 load('output/structs/defaultFelineSoleus.mat');
 
 
-%%
-%Fit the models
-%%
-
-%%
-% Tendon
-%%
-
-% 1.
-%The VEXAT tendon model is a template that is scaled by 1 parameter: the
-%tendon strain at 1 isometric force. We solve for that tendon strain that
-%results in the desired stiffness at 1 isometric force
-
-[params.umat43Upd] = ...
-    fitVEXATTendon(...
-        params.umat43Upd,...
-        ft,...
-        felineSoleusNormMuscleQuadraticCurves.tendonForceLengthNormCurve);
-
-% 2.
-% The EHTMM has many parameters. To make it as similar to the VEXAT tendon
-% as possible (so that we're comparing the formulations rather than the 
-% curves) we adjust it to develop the same ktNIso at the same strain
-ft.etIso=params.umat43Upd.et;
-
-%And we add a single sample in the middle of the toe region
-ft.etSample = (1/2)*(2/3)*(params.umat43Upd.et);
-ft.ftNSample=zeros(size(ft.etSample));
-for i=1:1:length(ft.etSample)
-    ft.ftNSample(i,1)=...
-        calcQuadraticBezierYFcnXDerivative(...
-            ft.etSample(i,1)/params.umat43Upd.et,...
-            felineSoleusNormMuscleQuadraticCurves.tendonForceLengthNormCurve,0);
-end
-
-[params.umat41Upd, umat41ftError] =...
-        fitEHTMMTendon(...
-            params.umat41Upd, ...
-            ft);
 
 %%
 % Active force-length relation
+%  This must be fitted first since lceOpt and fceOpt are adjusted
+%  when fitting the active-force-length relation.
 %%
-params.umat43Upd = ...
-        fitVEXATActiveForceLengthRelation(params.umat43Upd,...
-                    dataHL2002KeyPoints, dataHL1997Length,dataHL1997Force);
+
+% VEXAT:
+%  Adjust lceOpt and fceOpt to best fit either HL1997 or HL2002.
+[modelParams.umat43Upd, keyPointsHL1997, keyPointsHL2002]= ...
+        fitVEXATActiveForceLengthRelation(expData,...
+            modelParams.umat43Upd,...
+            felineSoleusNormMuscleQuadraticCurves.activeForceLengthCurve,...
+            keyPointsHL1997, keyPointsHL2002,...
+            flag_plotVEXATActiveForceLengthFitting);
+
+fieldsToUpdate = {'lceOptAT','fceOptAT','lceOpt','fceOpt'};
+for i=1:1:length(fieldsToUpdate)
+    modelParams.umat41Upd.(fieldsToUpdate{i})= ...
+        modelParams.umat43Upd.(fieldsToUpdate{i});
+    modelParams.umat156Upd.(fieldsToUpdate{i})= ...
+        modelParams.umat43Upd.(fieldsToUpdate{i});
+end
+
+% EHTMM
+% Fit the parameters to minimize the squared error with 
+% HL1997 and HL2002
+modelParams.umat41Upd = ...
+    fitEHTMMActiveForceLengthRelation(expData, ...
+                       modelParams.umat41Upd, ...
+                       keyPointsHL1997, keyPointsHL2002,...
+                       flag_plotEHTMMActiveForceLengthFitting);
+
+
 %%
 % Passive force-length relation
 %%
@@ -168,6 +205,43 @@ params.umat43Upd = ...
 %%
 % Force-velocity relation
 %%
+
+
+%%
+% Tendon
+%%
+
+%The VEXAT tendon model is a template that is scaled by 1 parameter: the
+%tendon strain at 1 isometric force. We solve for that tendon strain that
+%results in the desired stiffness at 1 isometric force
+
+[modelParams.umat43Upd] = ...
+    fitVEXATTendon(...
+        modelParams.umat43Upd,...
+        ft,...
+        felineSoleusNormMuscleQuadraticCurves.tendonForceLengthNormCurve);
+
+% The EHTMM has many parameters. To make it as similar to the VEXAT tendon
+% as possible (so that we're comparing the formulations rather than the 
+% curves) we adjust it to develop the same ktNIso at the same strain
+ft.etIso=modelParams.umat43Upd.et;
+
+%And we add a single sample in the middle of the toe region
+ft.etSample = (1/2)*(2/3)*(modelParams.umat43Upd.et);
+ft.ftNSample=zeros(size(ft.etSample));
+for i=1:1:length(ft.etSample)
+    ft.ftNSample(i,1)=...
+        calcQuadraticBezierYFcnXDerivative(...
+            ft.etSample(i,1)/modelParams.umat43Upd.et,...
+            felineSoleusNormMuscleQuadraticCurves.tendonForceLengthNormCurve,0);
+end
+
+[modelParams.umat41Upd, umat41ftError] =...
+        fitEHTMMTendon(...
+            modelParams.umat41Upd, ...
+            ft);
+
+
 
 
 %%
@@ -182,15 +256,26 @@ params.umat43Upd = ...
 
 figFitting=figure;
 
-[fig,umat41Curves,umat43Curves]= ...
+
+
+[figFitting]= ...
     addFittedTendonPlot(...
         figFitting,...
-        params.umat41Upd,...
-        params.umat43Upd,...
+        modelParams.umat41Upd,...
+        modelParams.umat43Upd,...
         felineSoleusNormMuscleQuadraticCurves,...
         reshape(subPlotPanel(1,3,:),1,4),...
         plotSettings);
 
+[figFitting]= ...
+    addFittedActiveForceLengthPlotV2(...
+        figFitting,...
+        modelParams.umat41Upd,...
+        modelParams.umat43Upd,...
+        felineSoleusNormMuscleQuadraticCurves,...
+        keyPointsHL1997, keyPointsHL2002,...
+        reshape(subPlotPanel(1,1,:),1,4),...
+        plotSettings);
 
 
 

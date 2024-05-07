@@ -1,5 +1,8 @@
 function modelParams = setArchitecturalParameters(modelParams,...
-           dataHL1997Length,dataHL1997Force,dataHL2002KeyPoints)
+           expData,keyPointsHL1997,keyPointsHL2002,...
+           flag_zeroMAT156TendonSlackLength)
+
+mm2m=0.001;
 
 lceOptScottLoeb1995  = 38/1000;
 ltSlkScottLoeb1995   = 27/1000;
@@ -24,94 +27,69 @@ lceOptHL2002 = (27/0.63)/1000; % From the text: pg 1277 paragraph 2;
 switch expData
     case 'HL1997'
 
-        %The optimal fiber length is not stated in Herzog & Leonard.
-        %Here we take the largest active force as an estimate for the
-        %optimal fiber force
-       
-        %longest ce length passive forces
-        fpeOptATSeries = [];
-        fmtOptATSeries = [];        
-        for i=1:1:5
-            timePassive = dataHL1997Length(i).x(1)+0.1;
-            timeActive  = dataHL1997Length(i).x(2);
-            fpe = interp1(dataHL1997Force(i).x,dataHL1997Force(i).y,...
-                          timePassive);
-            fmt = interp1(dataHL1997Force(i).x,dataHL1997Force(i).y,...
-                          timeActive);
-            fpeOptATSeries=[fpeOptATSeries;fpe];
-            fmtOptATSeries=[fmtOptATSeries;fmt];            
-        end
 
         arch.penOptD    = penOptDSacksLoeb1995;
         arch.penOpt     = arch.penOptD*(pi/180);
         
-        %This ignores the small reduction in fpe that will occur 
-        %due to the lengthening of the tendon. Since the tendon is 
-        %short (27 mm) the amount of tendon strain (0.0458) is small
-        %(1.2366 mm) in terms of the CE length (38 mm): around 3.25%        
-        arch.fceOptAT   = mean(fmtOptATSeries)-mean(fpeOptATSeries);
-
+        %The optimal fiber length is not stated in Herzog & Leonard.
+        %Here we take the largest active force as an estimate for the
+        %optimal fiber force     
+        arch.fceOptAT   = max(keyPointsHL1997.fl.f);
         arch.fceOpt     = arch.fceOptAT/cos(arch.penOpt);
+
+        %The optimal fiber length is not measured nor stated in HL1997
         arch.lceOpt     = lceOptScottLoeb1995;
         arch.ltSlk      = ltSlkScottLoeb1995;
         arch.fceOptAT   = arch.fceOpt*cos(arch.penOpt);
         arch.lceOptAT   = arch.lceOpt*cos(arch.penOpt);   
+
     case 'HL2002'
-        %0mm passive forces
-        fpeOptATSeries = ([dataHL2002KeyPoints(1:3,5);...
-                   dataHL2002KeyPoints(10,5);...
-                   dataHL2002KeyPoints(12:14,5)]);
-        %0mm active forces
-        fmtOptATSeries = ([dataHL2002KeyPoints(1:3,7);...
-                   dataHL2002KeyPoints(10,7)]);
-
-        %As before this ignores the small reduction in fpe ...
-        fceOptAT = mean(fmtOptATSeries)-mean(fpeOptATSeries);
-
-        arch.fceOptAT   = fceOptAT;
         arch.penOptD    = penOptDSacksLoeb1995;
         arch.penOpt     = arch.penOptD*(pi/180);
+
+        [fceOptAT, idxFceOptAT] = max(keyPointsHL2002.fl.f);
+        arch.fceOptAT   = fceOptAT;
         arch.fceOpt     = arch.fceOptAT/cos(arch.penOpt);
-        arch.lceOpt     = lceOptHL2002;
-        arch.lceOptAT   = arch.lceOpt/cos(arch.penOpt);
+        arch.lceOptAT   = lceOptHL2002 + keyPointsHL2002.fl.l(idxFceOptAT)*mm2m;
+        arch.lceOpt     = arch.lceOptAT/cos(arch.penOpt);
         arch.ltSlk      = ...
             (ltSlkScottLoeb1995/lceOptScottLoeb1995)*lceOptHL2002;
         %Maintain the same tendon-to-ce length ratio as Scott & Loeb
 end
 
 
-%Not changed
-params.mat156=mat156;
-params.umat41=umat41;
-params.umat43=umat43;
-
-%These values will be updated during the fitting process
-params.mat156Upd=mat156;
-params.umat41Upd=umat41;
-params.umat43Upd=umat43;
-
 modelUpd = {'mat156Upd','umat41Upd','umat43Upd'};
 
 %Update the architectural parameters of the updated model params
 archParams = fields(arch);
+disp('setArchitecturalParameters')
 for i=1:1:length(archParams)
-    disp(['Difference ',archParams{i}]);
-    disp(params.mat156Upd.(archParams{i})-arch.(archParams{i}));
-    disp(params.umat41Upd.(archParams{i})-arch.(archParams{i}));
-    disp(params.umat43Upd.(archParams{i})-arch.(archParams{i}));
-    
-    if(flag_zeroMAT156TendonSlackLength==1 && contains(archParams{i},'ltSlk')==0)
-        params.mat156Upd.(archParams{i})=arch.(archParams{i});
-        params.mat156Upd.('et')=0;
+    fprintf('\tDifference %s\n',archParams{i});
+    if(flag_zeroMAT156TendonSlackLength==1 && contains(archParams{i},'ltSlk')==1)
+        fprintf('\t\t%s\t%1.3e\n','mat156',...
+                modelParams.mat156Upd.(archParams{i})-0);
+    else
+        fprintf('\t\t%s\t%1.3e\n','mat156',...
+                modelParams.mat156Upd.(archParams{i})-arch.(archParams{i}));        
     end
-    params.umat41Upd.(archParams{i})=arch.(archParams{i});
-    params.umat43Upd.(archParams{i})=arch.(archParams{i});
+
+    fprintf('\t\t%s\t%1.3e\n','umat41',...
+        modelParams.umat41Upd.(archParams{i})-arch.(archParams{i}));
+    fprintf('\t\t%s\t%1.3e\n','umat43',...
+        modelParams.umat43Upd.(archParams{i})-arch.(archParams{i}));
+    
+    if(flag_zeroMAT156TendonSlackLength==1 && contains(archParams{i},'ltSlk')==1)
+        modelParams.mat156Upd.(archParams{i})=0;
+        modelParams.mat156Upd.('et')=0;
+    end
+    modelParams.umat41Upd.(archParams{i})=arch.(archParams{i});
+    modelParams.umat43Upd.(archParams{i})=arch.(archParams{i});
 end
 
 for i=1:1:length(modelUpd)
-    params.(modelUpd{i}).lmtOptAT = ...
-        params.(modelUpd{i}).lceOptAT ... 
-       +params.(modelUpd{i}).ltSlk;
+    modelParams.(modelUpd{i}).lmtOptAT = ...
+        modelParams.(modelUpd{i}).lceOptAT ... 
+       +modelParams.(modelUpd{i}).ltSlk;
 end
 
 here=1;
