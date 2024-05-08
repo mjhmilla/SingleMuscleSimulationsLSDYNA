@@ -17,8 +17,8 @@ umat41.dFSEE0   = umat41.dFSEE0*argBest(1,1);
 umat41.duSEEl   = umat41.duSEEl*argBest(2,1);
 umat41.dUSEEnll = umat41.dUSEEnll*argBest(3,1);
 
-fceOptAT=umat41.fceOptAT;
-lceOptAT=umat41.lceOptAT;
+fceOptAT= umat41.fceOptAT;
+lceOptAT= umat41.lceOptAT;
 dUSEEnll= umat41.dUSEEnll;
 duSEEl  = umat41.duSEEl;
 lSEE0   = umat41.ltSlk;

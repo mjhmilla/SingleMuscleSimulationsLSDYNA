@@ -3,27 +3,29 @@ close all;
 clear all;
 
 %%
-% When fitting the CE to experimental data the elasticity of the tendon 
-% is ignored because
 %
-% 1. Cat soleus tendon is short: 27 mm for a 38 mm CE. With a stiffness
-%    of 30 fiso/ltSlk, or 42 fiso/lceOpt, the variation of force in these experiments 
-%    (0.73 - 1.0 fiso) will introduce an unaccounted for length change
-%    in the tendon of 1 fiso/42 - 0.73 fiso/42 = 0.6%. Note, I can use
-%    42 fiso/lceOpt as the tendon stiffness for this estimate because 
-%    the forces of 0.73-1 fiso are within the linear range of the tendon.
-%    Note: the error incurred due to the rigid tendon assumption grows
-%    as the ratio of tendon slack to optimal fiber length grows, and 
-%    becomes unacceptable for a human achilles tendon for example where
-%    the tendon is around 8-12 times longer than the CE.
+% The elasticity of the tendon is ignored when fitting
 %
-% 2. It is a non-trival complication to include a tendon during the 
-%    fitting process: both fl and fpe have to be simultaneously fitted
-%    since the tendon affects both of these parallel elements and vice
-%    versa. Fitting the force-velocity relation is quite challenging:
+% 1. The tendon is in the toe region (which is compliant) for all recorded 
+%    data points. For a cat soleus this will introduce upto 3.47% ltSlk
+%    or 1.1mm in unaccounted tendon length change. This may be noticeable
+%
+% 2. Active-force-length relation:
+%    The cat soleus tendon is short: 27 mm for a 38 mm CE. With a stiffness
+%    of 30 fiso/ltSlk, or 42 fiso/lceOpt, the variation of force in these 
+%    experiments (0.73 - 1.0 fiso) will introduce an unaccounted for length 
+%    change in the tendon of 1 fiso/42 - 0.73 fiso/42 = 0.6% or 0.25mm. 
+%    Note, I can use 42 fiso/lceOpt as the tendon stiffness for this 
+%    estimate because the forces of 0.73-1 fiso are within the linear range 
+%    of the tendon.
+%
+%
+% 3. Force-velocity relation: 
+%    Fitting the force-velocity relation is quite challenging:
 %    the experiment has to be simulated to do the fitting unless
 %    assumptions are made aboue the distribution of contraction velocity
 %    between the CE and the tendon.
+%
 %%
 
 expData = 'HL2002';
@@ -34,8 +36,10 @@ flag_zeroMAT156TendonSlackLength=1;
 
 flag_plotHL1997AnnotationData           =0;
 flag_plotHL2002AnnotationData           =0;
-flag_plotVEXATActiveForceLengthFitting  =1;
-flag_plotEHTMMActiveForceLengthFitting  =1;
+flag_plotVEXATActiveForceLengthFitting  =0;
+flag_plotEHTMMActiveForceLengthFitting  =0;
+flag_plotVEXATPassiveForceLengthFitting =1;
+flag_plotEHTMMPassiveForceLengthFitting =1;
 
 %Test to see if the Matlab terminal is in the correct directory
 currDirContents = dir;
@@ -199,15 +203,6 @@ modelParams.umat41Upd = ...
 
 
 %%
-% Passive force-length relation
-%%
-
-%%
-% Force-velocity relation
-%%
-
-
-%%
 % Tendon
 %%
 
@@ -240,6 +235,33 @@ end
         fitEHTMMTendon(...
             modelParams.umat41Upd, ...
             ft);
+
+%%
+% Passive force-length relation
+%%
+vexatCurves=[];
+[modelParams.umat43Upd, keyPointsVEXATFpe,vexatCurves]= ...
+    fitVEXATPassiveForceLengthRelation(...
+        expData,...
+        modelParams.umat43Upd,...
+        keyPointsHL1997, keyPointsHL2002,...
+        felineSoleusNormMuscleQuadraticCurves.fiberForceLengthCurve,...
+        felineSoleusNormMuscleQuadraticCurves.tendonForceLengthNormCurve,...        
+        felineSoleusNormMuscleQuadraticCurves.tendonForceLengthInverseNormCurve,...
+        vexatCurves,...
+        flag_plotVEXATPassiveForceLengthFitting);
+
+modelParams.umat41Upd = ...
+    fitEHTMMPassiveForceLengthRelation(...
+        expData,...
+        modelParams.umat41Upd,...
+        keyPointsHL1997, keyPointsHL2002,...
+        keyPointsVEXATFpe,...
+        flag_plotEHTMMPassiveForceLengthFitting);
+
+%%
+% Force-velocity relation
+%%
 
 
 
@@ -277,7 +299,16 @@ figFitting=figure;
         reshape(subPlotPanel(1,1,:),1,4),...
         plotSettings);
 
-
+[figFitting]= ...
+    addFittedPassiveForceLengthPlotV2(...
+        figFitting,...
+        expData,...        
+        modelParams.umat41Upd,...
+        modelParams.umat43Upd,...
+        felineSoleusNormMuscleQuadraticCurves,...
+        keyPointsHL1997, keyPointsHL2002,keyPointsVEXATFpe,...
+        reshape(subPlotPanel(1,2,:),1,4),...
+        plotSettings);
 
 %%
 %Write the plot to file
