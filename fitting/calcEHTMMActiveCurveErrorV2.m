@@ -17,19 +17,19 @@ errVec = zeros(length(keyPointsHL1997.fl.l)+length(keyPointsHL2002.fl.l),1);
 idx=1;
 for i=1:1:length(keyPointsHL1997.fl.l)
     %The EHTMM has no pennation model and so I'm using lceAT directly
-    lceOptAT = keyPointsHL1997.lceOptAT;
-    lceATExp = keyPointsHL1997.fl.lceNAT(i,1)*lceOptAT;
+    lceOptAT = keyPointsHL1997.lceOpt*cos(umat41.penOpt);
+    lceATExp = keyPointsHL1997.fl.lceNAT(i,1)*keyPointsHL1997.lceOpt;
     fceNATExp = keyPointsHL1997.fl.fceNAT(i,1);
 
 
-    falNAT = calcFisomUmat41(lceATExp,lceOptAT,dWdes,nuCEdes,dWasc,nuCEasc);
+    falNAT =calcFisomUmat41(lceATExp,lceOptAT,dWdes,nuCEdes,dWasc,nuCEasc);
     errVec(idx,1)=falNAT - fceNATExp;
     idx=idx+1;
 end
 for i=1:1:length(keyPointsHL2002.fl.l)
-    lceOptAT = keyPointsHL2002.lceOptAT;    
-    lceATExp = keyPointsHL2002.fl.lceNAT(i,1)*lceOptAT;
-    fceNATExp = keyPointsHL2002.fl.fceNAT(i,1);
+    lceOptAT    = keyPointsHL2002.lceOpt*cos(umat41.penOpt);    
+    lceATExp    = keyPointsHL2002.fl.lceNAT(i,1)*keyPointsHL2002.lceOpt;
+    fceNATExp   = keyPointsHL2002.fl.fceNAT(i,1);
 
     falNAT = calcFisomUmat41(lceATExp,lceOptAT,dWdes,nuCEdes,dWasc,nuCEasc);
     errVec(idx,1)=falNAT - fceNATExp;

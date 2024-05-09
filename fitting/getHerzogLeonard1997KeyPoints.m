@@ -39,12 +39,26 @@ keyPointsHL1997.units.t='seconds';
 
 %Raw data
 fpeSeries       = struct('l',[],'f',[]);
-flIsoSeries    = struct('l',[],'f',[]);
+flIsoSeries    = struct('l',[],'f',[],'fmt',[]);
 fmtVelSeries    = struct('v',[],'f',[],'l',[]);
 
 %11 is isometric (around 37 N)
-fisoMid = dataHL1997Force(11).y(1);
+fmtMid  = dataHL1997Force(11).y(1);
 
+forceASet=[];
+for i=6:1:10
+    forceASet=[forceASet; dataHL1997Force(i).y(1)];
+end
+forceBSet=[];
+for i=1:1:5
+    forceBSet=[forceBSet; dataHL1997Force(i).y(1)];
+end
+
+forceA  =  mean(forceASet); 
+forceB  =  mean(forceBSet); 
+fpeMid  = interp1([-4;4],[forceA;forceB],0);
+fpeMid  = forceA + 0.5*(fpeMid-forceA); %To make the curve slightly concave up
+fisoMid = fmtMid-fpeMid;
 
 %1-5 is shortening;
 for i=1:1:10
@@ -58,6 +72,7 @@ for i=1:1:10
 
     timeIso   = dataHL1997Length(i).x(2);
     lengthIso = dataHL1997Length(i).y(2);
+
     fmtIsoInterp = interp1(dataHL1997Force(i).x, ...
                              dataHL1997Force(i).y,...
                              timeIso);
@@ -68,12 +83,21 @@ for i=1:1:10
     timeIso= dataHL1997Force(i).x(idxIso);
     fl = fmtIso-fpe;
 
+    if(i==1)
+        fprintf('getHerzogLeonard1997KeyPoints\n');
+        fprintf('\t\tfl=fmt-fpe is an approximation because fmt and fpe\n')
+        fprintf('\t\thave different CE lengths because the tendon is \n')
+        fprintf('\t\tunder different loads, but the musculotendon has \n')
+        fprintf('\t\tthe same length\n');
+    end
 
     flIsoSeries.l   = [flIsoSeries.l; lengthIso];
     flIsoSeries.f   = [flIsoSeries.f; fl];
+    flIsoSeries.fmt = [flIsoSeries.fmt; fmtIso];
 
-    timeVel = dataHL1997Length(i).x(3);
-    lengthVel=dataHL1997Length(i).y(3);
+    timeVel   = dataHL1997Length(i).x(3);
+    lengthVel = dataHL1997Length(i).y(3);
+
     forceVelInterp = interp1(dataHL1997Force(i).x, ...
                              dataHL1997Force(i).y,...
                              timeVel);
@@ -99,9 +123,6 @@ for i=1:1:10
     fmtVelSeries.v     = [fmtVelSeries.v;v];
     fmtVelSeries.f     = [fmtVelSeries.f;fv];
 
-
-
-    
     if(flag_plotAnnotationData==1)
         if(i==1)
             figHL1997 = figure;
@@ -143,11 +164,8 @@ for i=1:1:10
             ylim([-4.5,16]);
 
         title(['Fig.1A HL1997: ',sprintf('%1.1f mm/s',v)]);
-
         ylabel('Length (mm)');        
 
-
-    
     end    
 end
 
@@ -175,9 +193,15 @@ keyPointsHL1997.fl.f = [flIsoSeries.f(idxShortening);...
                         fisoMid;...
                         flIsoSeries.f(idxLengthening)];
 
+keyPointsHL1997.fl.fmt = [flIsoSeries.fmt(idxShortening);...
+                          fmtMid;...
+                        flIsoSeries.fmt(idxLengthening)];
+
+
 [lengthOrdered, indexOrdered] = sort(keyPointsHL1997.fl.l);
 keyPointsHL1997.fl.l = keyPointsHL1997.fl.l(indexOrdered);
 keyPointsHL1997.fl.f = keyPointsHL1997.fl.f(indexOrdered);
+keyPointsHL1997.fl.fmt= keyPointsHL1997.fl.fmt(indexOrdered);
 
 %Force velocity
 [vSorted, idxSorted] = sort(fmtVelSeries.v);

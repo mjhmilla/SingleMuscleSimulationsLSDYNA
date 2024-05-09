@@ -60,14 +60,10 @@ dataFig7C = readmatrix(filePath7C,'NumHeaderLines',1);
 keyPointsHL2002.fpe.l = [];
 keyPointsHL2002.fpe.f = [];
 
-%Active force length
-keyPointsHL2002.fmt.l = [];
-keyPointsHL2002.fmt.f = [];
-
 %Active force length with passive component removed
 keyPointsHL2002.fl.l = [];
 keyPointsHL2002.fl.f = [];
-
+keyPointsHL2002.fl.fmt= [];
 
 if(flag_plotAnnotationData==1)
     figHL2002 = figure;
@@ -148,10 +144,16 @@ for i=1:1:3
                              dataHL2002(:,colL(1,1)),...
                              pointsHL2002(rowKp,kPCol.t1));
                 f1 = pointsHL2002(rowKp,kPCol.f1);
-                keyPointsHL2002.fmt.l = [keyPointsHL2002.fmt.l; l1];
-                keyPointsHL2002.fmt.f = [keyPointsHL2002.fmt.f; f1]; 
+                keyPointsHL2002.fl.fmt = [keyPointsHL2002.fl.fmt; f1];
 
                 fa = f1-f0;
+                if(i==1 && j==1)
+                    fprintf('getHerzogLeonard2002KeyPoints\n');
+                    fprintf('\t\tfl=fmt-fpe (fa=f1-f0) is an approximation because fmt and fpe\n');
+                    fprintf('\t\thave different CE lengths because the tendon is\n');
+                    fprintf('\t\tunder different loads, but the musculotendon has\n');
+                    fprintf('\t\tthe same length\n');
+                end
                 keyPointsHL2002.fl.l = [keyPointsHL2002.fl.l; l1];
                 keyPointsHL2002.fl.f = [keyPointsHL2002.fl.f; fa]; 
             end
@@ -262,16 +264,13 @@ keyPointsHL2002.fpe.l = keyPointsHL2002.fpe.l(indexOrdered);
 keyPointsHL2002.fpe.f = keyPointsHL2002.fpe.f(indexOrdered);
 
 %Active force length
-[lengthOrdered, indexOrdered] = sort(keyPointsHL2002.fmt.l);
 
-keyPointsHL2002.fmt.l = keyPointsHL2002.fmt.l(indexOrdered);
-keyPointsHL2002.fmt.f = keyPointsHL2002.fmt.f(indexOrdered);
-
-%Active force length with passive component removed
+%Active force length 
 [lengthOrdered, indexOrdered] = sort(keyPointsHL2002.fl.l);
 
 keyPointsHL2002.fl.l = keyPointsHL2002.fl.l(indexOrdered);
 keyPointsHL2002.fl.f = keyPointsHL2002.fl.f(indexOrdered);
+keyPointsHL2002.fl.fmt= keyPointsHL2002.fl.fmt(indexOrdered);
 
 if(flag_plotAnnotationData==1)
     figDebug=figure;
@@ -285,7 +284,7 @@ if(flag_plotAnnotationData==1)
     subplot(1,2,2);
         plot(keyPointsHL2002.fl.l,keyPointsHL2002.fl.f,'ok');
         hold on;
-        plot(keyPointsHL2002.fmt.l,keyPointsHL2002.fmt.f,'xr');
+        plot(keyPointsHL2002.fl.l,keyPointsHL2002.fl.fmt,'xr');
         hold on;
         xlabel('Length (mm)');
         ylabel('Force (N)');

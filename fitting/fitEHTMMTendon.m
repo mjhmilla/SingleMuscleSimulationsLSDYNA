@@ -1,4 +1,5 @@
-function [umat41, fittingError] = fitEHTMMTendon(umat41, fitTendonParams)
+function [umat41, fittingError,ehtmmCurves] = ...
+    fitEHTMMTendon(umat41, fitTendonParams,ehtmmCurves)
 
 
 errFcn = @(arg)calcEHTMMTendonError(arg,umat41,fitTendonParams);
@@ -28,8 +29,29 @@ lsee = calcFseeInverseUmat41(fceOptAT,lSEE0,dUSEEnll,duSEEl,dFSEE0);
 
 umat41.et = (lsee-lSEE0)/lSEE0;
 
+%%
+%Sample the curves
+%%
+etIso   = umat41.et;
+
+npts=100;
+etN = [0:(etIso/(npts-1)):etIso]';
+ltN = 1+etN;
+ltN = [0;ltN];
+ftN = zeros(size(ltN));
+ktN = zeros(size(ltN));
+for i=1:1:length(ltN)
+    lt = ltN(i,1)*umat41.ltSlk;
+    fsee = calcFseeUmat41(lt,lSEE0,dUSEEnll,duSEEl,dFSEE0);
+    ksee = calcFseeDerUmat41(lt,lSEE0,dUSEEnll,duSEEl,dFSEE0);
+    ftN(i,1)=fsee/umat41.fceOptAT;
+    ktN(i,1)=ksee/(umat41.fceOptAT/umat41.ltSlk);
+end
+
+ehtmmCurves.ft.ltN=ltN;
+ehtmmCurves.ft.ftN=ftN;
+ehtmmCurves.ft.ktN=ktN;
 
 
-here=1;
 
 
