@@ -15,12 +15,6 @@ clear all;
 % contracting. Lucky for us the amount of error will be small for a 
 % cat soleus because the tendon is smaller than the muscle.
 %
-% Note: To avoid simulataneously fitting the active, passive and tendon
-%       force length curves I assume that the starting value for umat43.et
-%       (tendon strain at 1 norm force) is close to the correct value. 
-%       This makes it possible to better take into account the 
-%       (un measured) tendon strain in the experimental data sets of 
-%       Herzog and Leonard 1997 and 2002.
 % 
 %%
 
@@ -135,7 +129,7 @@ modelParams.umat43Upd=umat43;
 
 % Tendon
 %
-ft.ktNIso = 30;        %Scott & Loeb (1995)
+ktNIso = 30;        %Scott & Loeb (1995)
 %Scott SH, Loeb GE. Mechanical properties of aponeurosis and tendon of the 
 % cat soleus muscle during whole‐muscle isometric contractions. 
 % Journal of Morphology. 1995 Apr;224(1):73-86.
@@ -164,6 +158,26 @@ modelParams = setArchitecturalParameters(modelParams,...
 load('output/structs/defaultFelineSoleusQuadraticCurves.mat');
 load('output/structs/defaultFelineSoleus.mat');
 
+%%
+% Fitting
+%%
+%These structures hold curve samples for later plotting
+vexatCurves = [];
+ehtmmCurves = [];
+%%
+% Tendon VEXAT
+%%
+
+%The VEXAT tendon model is a template that is scaled by 1 parameter: the
+%tendon strain at 1 isometric force. We solve for that tendon strain that
+%results in the desired stiffness at 1 isometric force
+
+[modelParams.umat43Upd,vexatCurves] = ...
+    fitVEXATTendon(...
+        modelParams.umat43Upd,...
+        ktNIso,...
+        felineSoleusNormMuscleQuadraticCurves.tendonForceLengthNormCurve,...
+        vexatCurves);
 
 
 %%
@@ -182,6 +196,7 @@ load('output/structs/defaultFelineSoleus.mat');
             felineSoleusNormMuscleQuadraticCurves.activeForceLengthCurve,...
             felineSoleusNormMuscleQuadraticCurves.tendonForceLengthInverseNormCurve,...
             keyPointsHL1997, keyPointsHL2002,...
+            vexatCurves,...
             flag_plotVEXATActiveForceLengthFitting);
 
 disp('Setting all models to have the same lceOpt, fceOpt, lceOptAT, fceOptAT');
@@ -200,43 +215,34 @@ end
     fitEHTMMActiveForceLengthRelation(expData, ...
                        modelParams.umat41Upd, ...
                        keyPointsHL1997, keyPointsHL2002,...
+                       ehtmmCurves,...
                        flag_plotEHTMMActiveForceLengthFitting);
 
 
 %%
-% Tendon
+% Tendon EHTMM
 %%
-
-%The VEXAT tendon model is a template that is scaled by 1 parameter: the
-%tendon strain at 1 isometric force. We solve for that tendon strain that
-%results in the desired stiffness at 1 isometric force
-
-[modelParams.umat43Upd,vexatCurves] = ...
-    fitVEXATTendon(...
-        modelParams.umat43Upd,...
-        ft,...
-        felineSoleusNormMuscleQuadraticCurves.tendonForceLengthNormCurve,...
-        vexatCurves);
 
 % The EHTMM has many parameters. To make it as similar to the VEXAT tendon
 % as possible (so that we're comparing the formulations rather than the 
 % curves) we adjust it to develop the same ktNIso at the same strain
-ft.etIso=modelParams.umat43Upd.et;
+keyPointsTendon.ktNIso = ktNIso;
+keyPointsTendon.etIso=modelParams.umat43Upd.et;
 
 %And we add a single sample in the middle of the toe region
-ft.etSample = (1/2)*(2/3)*(modelParams.umat43Upd.et);
-ft.ftNSample=zeros(size(ft.etSample));
-for i=1:1:length(ft.etSample)
-    ft.ftNSample(i,1)=...
+keyPointsTendon.etSample = (1/2)*(2/3)*(modelParams.umat43Upd.et);
+keyPointsTendon.ftNSample=zeros(size(keyPointsTendon.etSample));
+for i=1:1:length(keyPointsTendon.etSample)
+    keyPointsTendon.ftNSample(i,1)=...
         calcQuadraticBezierYFcnXDerivative(...
-            ft.etSample(i,1)/modelParams.umat43Upd.et,...
+            keyPointsTendon.etSample(i,1)/modelParams.umat43Upd.et,...
             felineSoleusNormMuscleQuadraticCurves.tendonForceLengthNormCurve,0);
 end
 
 [modelParams.umat41Upd, umat41ftError,ehtmmCurves] =...
         fitEHTMMTendon(...
             modelParams.umat41Upd, ...
-            ft,...
+            keyPointsTendon,...
             ehtmmCurves);
 
 %%

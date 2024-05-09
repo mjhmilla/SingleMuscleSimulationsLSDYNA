@@ -1,4 +1,4 @@
-function [umat43,vexatCurves]= fitVEXATTendon(umat43,fitTendonParams,...
+function [umat43,vexatCurves]= fitVEXATTendon(umat43,ktNIso,...
                                   tendonNormCurve,vexatCurves)
 
 %The tendon curve is normalized so that at a strain of 1 it reaches
@@ -16,7 +16,7 @@ function [umat43,vexatCurves]= fitVEXATTendon(umat43,fitTendonParams,...
 
 etN     = 1;
 ktNNIso = calcQuadraticBezierYFcnXDerivative(etN,tendonNormCurve,1);
-etIso   = ktNNIso/fitTendonParams.ktNIso;
+etIso   = ktNNIso/ktNIso;
 umat43.et=etIso;
 
 %%

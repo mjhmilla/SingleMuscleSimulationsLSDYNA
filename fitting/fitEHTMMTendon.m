@@ -1,8 +1,8 @@
 function [umat41, fittingError,ehtmmCurves] = ...
-    fitEHTMMTendon(umat41, fitTendonParams,ehtmmCurves)
+    fitEHTMMTendon(umat41, keyPointsTendon,ehtmmCurves)
 
 
-errFcn = @(arg)calcEHTMMTendonError(arg,umat41,fitTendonParams);
+errFcn = @(arg)calcEHTMMTendonError(arg,umat41,keyPointsTendon);
 
 x0 =[1;1;1];
 
