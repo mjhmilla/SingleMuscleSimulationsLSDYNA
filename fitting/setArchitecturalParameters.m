@@ -34,7 +34,8 @@ switch expData
         %The optimal fiber length is not stated in Herzog & Leonard.
         %Here we take the largest active force as an estimate for the
         %optimal fiber force     
-        arch.fceOptAT   = max(keyPointsHL1997.fl.f);
+        arch.fceOptAT   = max(keyPointsHL1997.fl.fmt...
+                             -keyPointsHL1997.fl.fpe);
         arch.fceOpt     = arch.fceOptAT/cos(arch.penOpt);
 
         %The optimal fiber length is not measured nor stated in HL1997
@@ -47,7 +48,8 @@ switch expData
         arch.penOptD    = penOptDSacksLoeb1995;
         arch.penOpt     = arch.penOptD*(pi/180);
 
-        [fceOptAT, idxFceOptAT] = max(keyPointsHL2002.fl.f);
+        [fceOptAT, idxFceOptAT] = max(keyPointsHL2002.fl.fmt...
+                                     -keyPointsHL2002.fl.fpe);
         arch.fceOptAT   = fceOptAT;
         arch.fceOpt     = arch.fceOptAT/cos(arch.penOpt);
         arch.lceOptAT   = lceOptHL2002 + keyPointsHL2002.fl.l(idxFceOptAT)*mm2m;

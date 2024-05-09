@@ -15,40 +15,32 @@ lceNATZero  = args(3,1);
 lceOpt = lceOptAT/cos(umat43.penOpt);
 fceOpt = fceOptAT/cos(umat43.penOpt);
 
-lt = calcVEXATTendonLength(...
-            (keyPointsExp.fl.fmt).*(keyPointsScaling.force),...
-            fceOpt,...
+% The experimental data to measure the passive and active force length
+% relation has measurments at the same musculotendon length. Due to
+% tendon elasticity unfortunately these measurements are not at the 
+% same CE length. Here I'll fit a temporary quadratic model to the
+% passive data and use it to evaluate the passive curve at the CE
+% lengths of the active measurements.
+
+[fal,fpeUpd,lrefUpd] = calcActiveForceLengthWithElasticTendon(...
+            keyPointsExp.fl.l*keyPointsScaling.length,...
+            keyPointsExp.fl.fmt*keyPointsScaling.force,...
+            keyPointsExp.fl.fpe*keyPointsScaling.force,...
+            keyPointsExp.fl.clusters,...
+            lceNATZero*lceOpt,...
             tendonForceLengthInverseNormCurve,...
-            umat43.et,...
-            umat43.ltSlk);
-dlt = lt-umat43.ltSlk;
+            umat43.et,umat43.ltSlk,fceOpt);
 
-lceAT = (keyPointsExp.fl.l).*(keyPointsScaling.length) ...
-        -dlt + lceNATZero*lceOpt;
+expLceNAT = lrefUpd ./ lceOpt;
+%expFceNAT = (keyPointsExp.fl.fmt*keyPointsScaling.force...
+%             - exp.fl.fpe)./fceOpt;
+expFceNAT = fal./fceOpt;
 
-lceNAT = lceAT./lceOpt;
-
-% deltaLt = zeros(size(keyPointsExp.fl.l));
-% for i=1:1:length(keyPointsExp.fl.f)
-%     ft      = keyPointsExp.fl.fmt(i,1)*keyPointsScaling.force;
-%     ftN     = ft/fceOpt;
-%     etN     = calcQuadraticBezierYFcnXDerivative(ftN,...
-%                 tendonForceLengthInverseNormCurve,0);
-%     et              = etN*umat43.et;
-%     deltaLt(i,1)    = et*umat43.ltSlk;
-% end
-% 
-% lceNAT = ( (keyPointsExp.fl.l).*keyPointsScaling.length - deltaLt ...
-%          + lceNATZero*lceOpt)./lceOpt;
-% 
-fceNAT= ((keyPointsExp.fl.f).*(keyPointsScaling.force))./fceOpt;
-
-errVec = zeros(size(lceNAT));
-
+errVec = zeros(size(expLceNAT));
 
 for i=1:1:length(errVec)
     
-    fibKin = calcFixedWidthPennatedFiberKinematics(lceNAT(i,1)*lceOpt,...
+    fibKin = calcFixedWidthPennatedFiberKinematics(expLceNAT(i,1)*lceOpt,...
                                         0,...
                                         lceOpt,...
                                         umat43.penOpt);
@@ -59,6 +51,6 @@ for i=1:1:length(errVec)
 
     falN = calcQuadraticBezierYFcnXDerivative(lceN,activeForceLengthCurve,0);
 
-    errVec(i,1)= falN*cos(alpha)-fceNAT(i,1);
+    errVec(i,1)= falN*cos(alpha)-expFceNAT(i,1);
 end
 here=1;

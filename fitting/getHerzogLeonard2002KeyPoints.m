@@ -62,7 +62,7 @@ keyPointsHL2002.fpe.f = [];
 
 %Active force length with passive component removed
 keyPointsHL2002.fl.l = [];
-keyPointsHL2002.fl.f = [];
+keyPointsHL2002.fl.fpe = [];
 keyPointsHL2002.fl.fmt= [];
 
 if(flag_plotAnnotationData==1)
@@ -146,16 +146,8 @@ for i=1:1:3
                 f1 = pointsHL2002(rowKp,kPCol.f1);
                 keyPointsHL2002.fl.fmt = [keyPointsHL2002.fl.fmt; f1];
 
-                fa = f1-f0;
-                if(i==1 && j==1)
-                    fprintf('getHerzogLeonard2002KeyPoints\n');
-                    fprintf('\t\tfl=fmt-fpe (fa=f1-f0) is an approximation because fmt and fpe\n');
-                    fprintf('\t\thave different CE lengths because the tendon is\n');
-                    fprintf('\t\tunder different loads, but the musculotendon has\n');
-                    fprintf('\t\tthe same length\n');
-                end
                 keyPointsHL2002.fl.l = [keyPointsHL2002.fl.l; l1];
-                keyPointsHL2002.fl.f = [keyPointsHL2002.fl.f; fa]; 
+                keyPointsHL2002.fl.fpe= [keyPointsHL2002.fl.fpe; f0]; 
             end
         end
 
@@ -262,6 +254,7 @@ end
 
 keyPointsHL2002.fpe.l = keyPointsHL2002.fpe.l(indexOrdered);
 keyPointsHL2002.fpe.f = keyPointsHL2002.fpe.f(indexOrdered);
+keyPointsHL2002.fpe.clusters=4;
 
 %Active force length
 
@@ -269,8 +262,9 @@ keyPointsHL2002.fpe.f = keyPointsHL2002.fpe.f(indexOrdered);
 [lengthOrdered, indexOrdered] = sort(keyPointsHL2002.fl.l);
 
 keyPointsHL2002.fl.l = keyPointsHL2002.fl.l(indexOrdered);
-keyPointsHL2002.fl.f = keyPointsHL2002.fl.f(indexOrdered);
+keyPointsHL2002.fl.fpe= keyPointsHL2002.fl.fpe(indexOrdered);
 keyPointsHL2002.fl.fmt= keyPointsHL2002.fl.fmt(indexOrdered);
+keyPointsHL2002.fl.clusters=4;
 
 if(flag_plotAnnotationData==1)
     figDebug=figure;
@@ -282,9 +276,9 @@ if(flag_plotAnnotationData==1)
         box off;
         title('Passive force-length relation')
     subplot(1,2,2);
-        plot(keyPointsHL2002.fl.l,keyPointsHL2002.fl.f,'ok');
+        plot(keyPointsHL2002.fl.l,keyPointsHL2002.fl.fpe,'xk');
         hold on;
-        plot(keyPointsHL2002.fl.l,keyPointsHL2002.fl.fmt,'xr');
+        plot(keyPointsHL2002.fl.l,keyPointsHL2002.fl.fmt,'or');
         hold on;
         xlabel('Length (mm)');
         ylabel('Force (N)');

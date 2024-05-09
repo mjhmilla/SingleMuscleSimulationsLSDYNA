@@ -57,7 +57,8 @@ mm2m=0.001;
 keyPointsScaling.length = mm2m;
 keyPointsScaling.force = 1;
 
-[defaultSoln.fceOptAT, idxFceOptAT] = max(keyPointsHL1997.fl.f);
+[defaultSoln.fceOptAT, idxFceOptAT] = max(keyPointsHL1997.fl.fmt ...
+                                         -keyPointsHL1997.fl.fpe);
 defaultSoln.lceOptAT                = umat43.lceOptAT;
 
 errFcnHL1997 = @(arg)calcVEXATActiveForceLengthError(arg,....
@@ -103,25 +104,19 @@ fprintf('\tHL1997 fitted values\n\t\t%1.4f\tlceOpt\n\t\t%1.4f\tfceOpt\n\t\t%1.4f
 %%
 %Normalize the keypoint quantities
 %%
-
-% 
-% 
-% %Update the active force length relation
-lt = calcVEXATTendonLength(...
-            (keyPointsHL1997.fl.fmt).*(keyPointsScaling.force),...
-            keyPointsHL1997.fceOpt,...
+[fal,fpeUpd,lrefUpd] = calcActiveForceLengthWithElasticTendon(...
+            keyPointsHL1997.fl.l*keyPointsScaling.length,...
+            keyPointsHL1997.fl.fmt*keyPointsScaling.force,...
+            keyPointsHL1997.fl.fpe*keyPointsScaling.force,...
+            keyPointsHL1997.fl.clusters,...
+            keyPointsHL1997.lceNATZero*keyPointsHL1997.lceOpt,...
             tendonForceLengthInverseNormCurve,...
             umat43.et,...
-            umat43.ltSlk);
-dlt = lt-umat43.ltSlk;
+            umat43.ltSlk,...
+            keyPointsHL1997.fceOpt);
 
-keyPointsHL1997.fl.lceNAT = (...
-    (keyPointsHL1997.fl.l).*mm2m ...
-     -dlt ...
-      + keyPointsHL1997.lceNATZero*keyPointsHL1997.lceOpt...
-     )./keyPointsHL1997.lceOpt;
-
-keyPointsHL1997.fl.fceNAT = keyPointsHL1997.fl.f ./ keyPointsHL1997.fceOpt;
+keyPointsHL1997.fl.lceNAT = lrefUpd./keyPointsHL1997.lceOpt;
+keyPointsHL1997.fl.fceNAT = fal./keyPointsHL1997.fceOpt;
 
 %And the passive force-length relation
 lt = calcVEXATTendonLength(...
@@ -142,27 +137,6 @@ keyPointsHL1997.fpe.fceNAT = keyPointsHL1997.fpe.f ./ keyPointsHL1997.fceOpt;
 keyPointsHL1997.fv.vN = keyPointsHL1997.fv.v./keyPointsHL1997.lceOpt;
 keyPointsHL1997.fv.fN = keyPointsHL1997.fv.f./keyPointsHL1997.fceOpt;
 
-% %Project data on the fiber
-% for i=1:1:length(keyPointsHL1997.fl.lceNAT)
-%     lceOpt  = keyPointsHL1997.lceOpt;
-%     fceOpt  = keyPointsHL1997.fceOpt;
-%     lceOptAT = keyPointsHL1997.lceOptAT;
-%     fceOptAT = keyPointsHL1997.fceOptAT;
-% 
-%     lceAT  = keyPointsHL1997.fl.lceNAT(i,1)*lceOpt;
-%     fceAT  = keyPointsHL1997.fl.fceNAT(i,1)*fceOpt;
-% 
-%     fibKin  = calcFixedWidthPennatedFiberKinematics(lceAT,...
-%                                     0,...
-%                                     lceOpt,...
-%                                     umat43.penOpt);
-%     lce     = fibKin.fiberLength;
-%     alpha   = fibKin.pennationAngle;   
-%     fce     = fceAT/cos(alpha);
-% 
-%     keyPointsHL1997.fl.lceN(i,1) = lce/lceOpt;
-%     keyPointsHL1997.fl.fceN(i,1) = fce/fceOpt; 
-% end
 
 %%
 % Descending limb: Herzog & Leonard 2002
@@ -177,7 +151,9 @@ keyPointsScaling.force = 1;
 
 lceOptAT = (27/0.63)*mm2m;
 
-[defaultSoln.fceOptAT, idxFceOptAT] = max(keyPointsHL2002.fl.f);
+[defaultSoln.fceOptAT, idxFceOptAT] = max(keyPointsHL2002.fl.fmt...
+                                         -keyPointsHL2002.fl.fpe);
+
 defaultSoln.lceOptAT = lceOptAT + keyPointsHL2002.fl.l(idxFceOptAT).*mm2m;
 
 x0 = [1;1;1];
@@ -202,7 +178,7 @@ errFcnHL2002 = @(arg)calcVEXATActiveForceLengthError(arg,....
 
 options=optimset('Display','off');
 [x1, resnorm,residualHL2002,exitflag] = lsqnonlin(errFcnHL2002,x0,lb,ub,options);
-assert(exitflag==1 || exitflag==3);
+assert(exitflag==1 || exitflag==2 || exitflag==3);
 
 vexatCurves.fl.rmse = sqrt(mean([residualHL1997;residualHL2002].^2));
 
@@ -219,21 +195,23 @@ fprintf('\tHL2002 fitting\n\t\t%1.4f\tlceOpt\n\t\t%1.4f\tfceOpt\n\t\t%1.4f\tlceN
 
 
 %%
-%Normalize the keypoint quantities
+%Project experimental key point quantities into the CE and normalize
 %%
-lt = calcVEXATTendonLength(...
-            (keyPointsHL2002.fl.fmt).*(keyPointsScaling.force),...
-            keyPointsHL2002.fceOpt,...
+
+[fal,fpeUpd,lrefUpd] = calcActiveForceLengthWithElasticTendon(...
+            keyPointsHL2002.fl.l*keyPointsScaling.length,...
+            keyPointsHL2002.fl.fmt*keyPointsScaling.force,...
+            keyPointsHL2002.fl.fpe*keyPointsScaling.force,...
+            keyPointsHL2002.fl.clusters,...
+            keyPointsHL2002.lceNATZero*keyPointsHL2002.lceOpt,...
             tendonForceLengthInverseNormCurve,...
             umat43.et,...
-            umat43.ltSlk);
-dlt = lt-umat43.ltSlk;
-keyPointsHL2002.fl.lceNAT = ((keyPointsHL2002.fl.l).*mm2m ...
-                            - dlt ...
-                            + keyPointsHL2002.lceNATZero*keyPointsHL2002.lceOpt ...
-                           )./keyPointsHL2002.lceOpt;
+            umat43.ltSlk,...
+            keyPointsHL2002.fceOpt);
 
-keyPointsHL2002.fl.fceNAT = keyPointsHL2002.fl.f ./ keyPointsHL2002.fceOpt;
+keyPointsHL2002.fl.lceNAT = lrefUpd./keyPointsHL2002.lceOpt;
+keyPointsHL2002.fl.fceNAT = fal./keyPointsHL2002.fceOpt;
+
 
 %And the passive force-length relation
 lt = calcVEXATTendonLength(...
@@ -249,31 +227,8 @@ keyPointsHL2002.fpe.lceNAT = ...
       - dlt ...
       + keyPointsHL2002.lceNATZero*keyPointsHL2002.lceOpt...
       )./keyPointsHL2002.lceOpt;
+
 keyPointsHL2002.fpe.fceNAT = keyPointsHL2002.fpe.f ./ keyPointsHL2002.fceOpt;
-
-% %Project data on the fiber
-% for i=1:1:length(keyPointsHL2002.fl.lceNAT)
-%     lceOpt  = keyPointsHL2002.lceOpt;
-%     fceOpt  = keyPointsHL2002.fceOpt;
-%     lceOptAT = keyPointsHL2002.lceOptAT;
-%     fceOptAT = keyPointsHL2002.fceOptAT;
-% 
-%     lceAT  = keyPointsHL2002.fl.lceNAT(i,1)*lceOptAT;
-%     fceAT  = keyPointsHL2002.fl.fceNAT(i,1)*fceOptAT;
-% 
-%     fibKin  = calcFixedWidthPennatedFiberKinematics(lceAT,...
-%                                     0,...
-%                                     lceOpt,...
-%                                     umat43.penOpt);
-%     lce     = fibKin.fiberLength;
-%     alpha   = fibKin.pennationAngle;   
-%     fce     = fceAT/cos(alpha);
-% 
-%     keyPointsHL2002.fl.lceN(i,1) = lce/lceOpt;
-%     keyPointsHL2002.fl.fceN(i,1) = fce/fceOpt; 
-% end
-
-
 
 switch expData
     case 'HL1997'

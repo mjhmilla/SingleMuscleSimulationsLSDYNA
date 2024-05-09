@@ -39,7 +39,7 @@ keyPointsHL1997.units.t='seconds';
 
 %Raw data
 fpeSeries       = struct('l',[],'f',[]);
-flIsoSeries    = struct('l',[],'f',[],'fmt',[]);
+flIsoSeries    = struct('l',[],'fpe',[],'fmt',[]);
 fmtVelSeries    = struct('v',[],'f',[],'l',[]);
 
 %11 is isometric (around 37 N)
@@ -83,16 +83,16 @@ for i=1:1:10
     timeIso= dataHL1997Force(i).x(idxIso);
     fl = fmtIso-fpe;
 
-    if(i==1)
-        fprintf('getHerzogLeonard1997KeyPoints\n');
-        fprintf('\t\tfl=fmt-fpe is an approximation because fmt and fpe\n')
-        fprintf('\t\thave different CE lengths because the tendon is \n')
-        fprintf('\t\tunder different loads, but the musculotendon has \n')
-        fprintf('\t\tthe same length\n');
-    end
+%     if(i==1)
+%         fprintf('getHerzogLeonard1997KeyPoints\n');
+%         fprintf('\t\tfl=fmt-fpe is an approximation because fmt and fpe\n')
+%         fprintf('\t\thave different CE lengths because the tendon is \n')
+%         fprintf('\t\tunder different loads, but the musculotendon has \n')
+%         fprintf('\t\tthe same length\n');
+%     end
 
     flIsoSeries.l   = [flIsoSeries.l; lengthIso];
-    flIsoSeries.f   = [flIsoSeries.f; fl];
+    flIsoSeries.fpe   = [flIsoSeries.fpe; fpe];
     flIsoSeries.fmt = [flIsoSeries.fmt; fmtIso];
 
     timeVel   = dataHL1997Length(i).x(3);
@@ -183,25 +183,23 @@ keyPointsHL1997.fpe.f = [fpeSeries.f(idxShortening);...
 [lengthOrdered, indexOrdered] = sort(keyPointsHL1997.fpe.l);
 keyPointsHL1997.fpe.l = keyPointsHL1997.fpe.l(indexOrdered);
 keyPointsHL1997.fpe.f = keyPointsHL1997.fpe.f(indexOrdered);
-
+keyPointsHL1997.fpe.clusters=2;
 %Active force length
 keyPointsHL1997.fl.l = [flIsoSeries.l(idxShortening);...
-                        0;...
                         flIsoSeries.l(idxLengthening)];
 
-keyPointsHL1997.fl.f = [flIsoSeries.f(idxShortening);...
-                        fisoMid;...
-                        flIsoSeries.f(idxLengthening)];
+keyPointsHL1997.fl.fpe = [flIsoSeries.fpe(idxShortening);...
+                          flIsoSeries.fpe(idxLengthening)];
 
 keyPointsHL1997.fl.fmt = [flIsoSeries.fmt(idxShortening);...
-                          fmtMid;...
-                        flIsoSeries.fmt(idxLengthening)];
-
+                          flIsoSeries.fmt(idxLengthening)];
+keyPointsHL1997.fl.clusters=2;
 
 [lengthOrdered, indexOrdered] = sort(keyPointsHL1997.fl.l);
 keyPointsHL1997.fl.l = keyPointsHL1997.fl.l(indexOrdered);
-keyPointsHL1997.fl.f = keyPointsHL1997.fl.f(indexOrdered);
+keyPointsHL1997.fl.fpe = keyPointsHL1997.fl.fpe(indexOrdered);
 keyPointsHL1997.fl.fmt= keyPointsHL1997.fl.fmt(indexOrdered);
+
 
 %Force velocity
 [vSorted, idxSorted] = sort(fmtVelSeries.v);
@@ -209,6 +207,7 @@ keyPointsHL1997.fl.fmt= keyPointsHL1997.fl.fmt(indexOrdered);
 keyPointsHL1997.fv.l = fmtVelSeries.l(idxSorted);
 keyPointsHL1997.fv.v = fmtVelSeries.v(idxSorted);
 keyPointsHL1997.fv.f = fmtVelSeries.f(idxSorted);
+keyPointsHL1997.fv.clusters=length(fmtVelSeries.f(idxSorted));
 
 if(flag_plotAnnotationData==1)
     figDebug=figure;
@@ -220,7 +219,9 @@ if(flag_plotAnnotationData==1)
         box off;
         title('Passive force-length relation')
     subplot(1,3,2);
-        plot(keyPointsHL1997.fl.l,keyPointsHL1997.fl.f,'ok');
+        plot(keyPointsHL1997.fl.l,keyPointsHL1997.fl.fmt,'or');
+        hold on;
+        plot(keyPointsHL1997.fl.l,keyPointsHL1997.fl.fpe,'xk');
         hold on;
         xlabel('Length (mm)');
         ylabel('Force (N)');
