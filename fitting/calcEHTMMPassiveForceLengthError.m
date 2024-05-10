@@ -66,7 +66,8 @@ if(fitMode==2)
     FPEE    = arg(2,1)*umat41.FPEE;
     nuPEE   = arg(3,1)*umat41.nuPEE;
     
-    errVec = zeros(3+floor(length(vexatFpeSample.lceNAT)/10),1);
+    %errVec = zeros(3+floor(length(vexatFpeSample.lceNAT)/10),1);
+    errVec = zeros(3+1,1);
     %%
     %HL2002: single point from the FPE measurement
     %%
@@ -135,7 +136,8 @@ if(fitMode==2)
     fmin = 0.1;
     fmax = 0.6;
     idxMin = find(vexatFpeSample.fceNAT > fmin*0.5,1);
-    for k=1:1:8
+    %for k=1:1:1
+    k=4;
         
         n = (k-1)/(8-1);
         fsample = fmin + n*(fmax-fmin);        
@@ -154,7 +156,7 @@ if(fitMode==2)
         fpeNAT = fpeAT/umat41.fceOptAT;
         errVec(idx,1) = fpeNAT - fsample;
         idx=idx+1;
-    end
+    %end
 
     here=1;
 end
