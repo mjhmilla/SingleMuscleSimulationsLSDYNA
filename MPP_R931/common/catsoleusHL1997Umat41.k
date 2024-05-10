@@ -8,9 +8,9 @@ $#   ivect     ifail    itherm    ihyper      ieos      lmca    unused    unused
 $#  ActOpt   STIM_ID        q0    tauq/c betaq/eta         k         m
          1        -3    1.0E-4     0.025       0.5                
 $#    Fmax    lCEopt     dWdes   nuCEdes     dWasc   nuCEasc     Arel0     Brel0      
- &fceOptAT &lceOptAT    &dWdes  &nuCEdes    &dWasc  &nuCEasc 0.1240458 0.5550417
+ &fceOptAT &lceOptAT    &dWdes  &nuCEdes    &dWasc  &nuCEasc     &Arel     &Brel
 $#    Secc      Fecc     LPEE0     nuPEE      FPEE     lSEE0  dUSEEnll    duSEEl
- 0.7725022 1.4391543    &LPEE0    &nuPEE     &FPEE    &ltSlk &dUSEEnll   &duSEEl
+     &Secc     &Fecc    &LPEE0    &nuPEE     &FPEE    &ltSlk &dUSEEnll   &duSEEl
 $#  dFSEE0   Damping    Param1    Param2    Output     dtOut
    &dFSEE0       3.0       0.3      0.01         2    &dtOut    
 $#

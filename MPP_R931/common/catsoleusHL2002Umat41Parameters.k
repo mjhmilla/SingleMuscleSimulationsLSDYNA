@@ -23,6 +23,10 @@ R    dWdes 0.470961
 R  nuCEdes 1.328409
 R    dtInt 0.00005
 R    dtOut 0.010
+R     Arel 0.1240458
+R     Brel 0.5550417
+R     Secc 0.7725022
+R     Fecc 1.4391543
 RlceNScale 0.95
 *PARAMETER_EXPRESSION
 $#    name expression

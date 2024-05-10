@@ -40,7 +40,7 @@ keyPointsHL1997.units.t='seconds';
 %Raw data
 fpeSeries       = struct('l',[],'f',[]);
 flIsoSeries    = struct('l',[],'fpe',[],'fmt',[]);
-fmtVelSeries    = struct('v',[],'f',[],'l',[]);
+fmtVelSeries    = struct('v',[],'fmt',[],'l',[]);
 
 %11 is isometric (around 37 N)
 fmtMid  = dataHL1997Force(11).y(1);
@@ -111,7 +111,7 @@ for i=1:1:10
     %short tendons that do not strain much relative to the contractile 
     %element. Lucky for us the cat soleus has a short tendon (27 mm)
     %relative to the contractile element length (38 mm)
-    fv = (fmtVel-fpe)/fisoMid;
+    %fv = (fmtVel-fpe)/fisoMid;
 
     dl = dataHL1997Length(i).y(3)-dataHL1997Length(i).y(2);
     dt = dataHL1997Length(i).x(3)-dataHL1997Length(i).x(2);
@@ -121,7 +121,7 @@ for i=1:1:10
 
     fmtVelSeries.l     = [fmtVelSeries.l;lend];
     fmtVelSeries.v     = [fmtVelSeries.v;v];
-    fmtVelSeries.f     = [fmtVelSeries.f;fv];
+    fmtVelSeries.fmt   = [fmtVelSeries.fmt;fmtVel];
 
     if(flag_plotAnnotationData==1)
         if(i==1)
@@ -204,10 +204,11 @@ keyPointsHL1997.fl.fmt= keyPointsHL1997.fl.fmt(indexOrdered);
 %Force velocity
 [vSorted, idxSorted] = sort(fmtVelSeries.v);
 
-keyPointsHL1997.fv.l = fmtVelSeries.l(idxSorted);
-keyPointsHL1997.fv.v = fmtVelSeries.v(idxSorted);
-keyPointsHL1997.fv.f = fmtVelSeries.f(idxSorted);
-keyPointsHL1997.fv.clusters=length(fmtVelSeries.f(idxSorted));
+keyPointsHL1997.fv.l   = fmtVelSeries.l(idxSorted);
+keyPointsHL1997.fv.v   = fmtVelSeries.v(idxSorted);
+keyPointsHL1997.fv.fmt = fmtVelSeries.fmt(idxSorted);
+keyPointsHL1997.fv.fmtMid=fisoMid;
+keyPointsHL1997.fv.clusters=length(fmtVelSeries.l(idxSorted));
 
 if(flag_plotAnnotationData==1)
     figDebug=figure;
@@ -228,7 +229,7 @@ if(flag_plotAnnotationData==1)
         box off;
         title('Active force-length relation');
     subplot(1,3,3);
-        plot(keyPointsHL1997.fv.v,keyPointsHL1997.fv.f,'ok');
+        plot(keyPointsHL1997.fv.v,keyPointsHL1997.fv.fmt,'ok');
         hold on;
         xlabel('Velocity (mm/s)');
         ylabel('Force (N)');

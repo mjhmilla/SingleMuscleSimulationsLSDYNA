@@ -1,15 +1,16 @@
 function [fal,fpeUpd,lrefUpd] = calcActiveForceLengthWithElasticTendon(...
-                        lref,fmt,fpe,clusters,...
+                        lmtRef,fmt,...
+                        lpeRef,fpe,fpeClusters,...
                         loffset,...
                         tendonForceLengthInverseNormCurve,...
                         etIso,ltSlk,fceOpt)
 
 %%
-% Fit a model to the passive-force-length data clusters
+% Fit a model to the passive-force-length data fpeClusters
 %%
 modelType = 1;
 interpolant='linear';
-if(clusters > 3)
+if(fpeClusters > 3)
     interpolant='spline';
 end
 
@@ -23,9 +24,9 @@ ltFpe = calcVEXATTendonLength(...
             etIso,...
             ltSlk);
 
-lceFpe = lref-(ltFpe-ltSlk) + loffset;
+lceFpe = lpeRef-(ltFpe-ltSlk) + loffset;
 
-k = kmeans(lceFpe, clusters);
+k = kmeans(lceFpe, fpeClusters);
 fpeModel.lce = zeros(max(k),1);
 fpeModel.f = zeros(max(k),1);
 for i=1:1:max(k)
@@ -79,7 +80,7 @@ ltFmt = calcVEXATTendonLength(...
             etIso,...
             ltSlk);
 
-lrefUpd = lref -(ltFmt-ltSlk) + loffset;
+lrefUpd = lmtRef -(ltFmt-ltSlk) + loffset;
 
 %%
 % Evaluate the fpe model at these lengths

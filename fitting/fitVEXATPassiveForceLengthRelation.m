@@ -46,39 +46,6 @@ if(contains(expData,'HL1997'))
 
     shiftPE=x1(1,1);
     umat43.shiftPE=shiftPE;
-
-%     %Shift the fpe curve so that it intersects the passive point
-% 
-%     %1. Evaluate the length and force of the +4 mm point
-%     k = kmeans(keyPointsHL1997.fpe.lceNAT,keyPointsHL1997.fpe.clusters);
-%     meanLceNAT = zeros(max(k),1);
-%     meanFceNAT = zeros(max(k),1);
-%     for i=1:1:max(k)
-%         idx = find(k==i);
-%         meanLceNAT(i,1) = mean(keyPointsHL1997.fpe.lceNAT(idx,1));
-%         meanFceNAT(i,1) = mean(keyPointsHL1997.fpe.fceNAT(idx,1));
-%     end
-%     [lceNAT1,idx1] =max(meanLceNAT);
-%     fceNAT1 = meanFceNAT(idx1);
-% 
-%     %2. Evaluate the pennation model
-%     lceAT1 = lceNAT1*umat43.lceOpt;
-%     fibKin = calcFixedWidthPennatedFiberKinematics(lceAT1,...
-%                                         0,...
-%                                         umat43.lceOpt,...
-%                                         umat43.penOpt);
-%     lce1     = fibKin.fiberLength;
-%     alpha1   = fibKin.pennationAngle;
-%     lceN1    = lce1/umat43.lceOpt;     
-%     fceN1    = fceNAT1/cos(alpha1);
-% 
-%     %3. Evaluate the length of the fpe curve at fceNAT
-%     lceN2 = calcQuadraticBezierYFcnXDerivative(fceN1/umat43.scalePE,...
-%                                        fiberForceLengthInverseCurve,0);
-%     shiftPE = lceN1-(lceN2+umat43.shiftPE);
-%     umat43.shiftPE=shiftPE;
-%     here=1;
-
 end
 
 disp('fitVEXATPassiveForceLengthRelation')

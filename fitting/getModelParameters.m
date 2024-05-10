@@ -53,6 +53,10 @@ umat41.nuCEdes    = getParameterFieldValue(umat41ParameterFile, 'nuCEdes');
 umat41.dUSEEnll   = getParameterFieldValue(umat41ParameterFile, 'dUSEEnll');
 umat41.duSEEl     = getParameterFieldValue(umat41ParameterFile, 'duSEEl');
 
+umat41.Arel   = getParameterFieldValue(umat41ParameterFile, 'Arel');
+umat41.Brel   = getParameterFieldValue(umat41ParameterFile, 'Brel');
+umat41.Secc   = getParameterFieldValue(umat41ParameterFile, 'Secc');
+umat41.Fecc   = getParameterFieldValue(umat41ParameterFile, 'Fecc');
 
 
 

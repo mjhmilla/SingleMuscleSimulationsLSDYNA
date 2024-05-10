@@ -25,12 +25,17 @@ flag_addHL1997PassiveCurveToHL2002Figure=1;
 
 flag_zeroMAT156TendonSlackLength=1;
 
-flag_plotHL1997AnnotationData           =0;
-flag_plotHL2002AnnotationData           =0;
-flag_plotVEXATActiveForceLengthFitting  =0;
-flag_plotEHTMMActiveForceLengthFitting  =0;
-flag_plotVEXATPassiveForceLengthFitting =1;
-flag_plotEHTMMPassiveForceLengthFitting =1;
+flag_plotHL1997AnnotationData           = 0;
+flag_plotHL2002AnnotationData           = 0;
+
+flag_plotVEXATActiveForceLengthFitting  = 0;
+flag_plotEHTMMActiveForceLengthFitting  = 0;
+
+flag_plotVEXATPassiveForceLengthFitting = 0;
+flag_plotEHTMMPassiveForceLengthFitting = 0;
+
+flag_plotVEXATForceVelocityFitting      = 1;
+flag_plotEHTMMForceVelocityFitting      = 1;
 
 %Test to see if the Matlab terminal is in the correct directory
 currDirContents = dir;
@@ -214,8 +219,10 @@ ehtmmCurves = [];
             vexatCurves,...
             flag_plotVEXATActiveForceLengthFitting);
 
-disp('Setting all models to have the same lceOpt, fceOpt, lceOptAT, fceOptAT');
-fieldsToUpdate = {'lceOptAT','fceOptAT','lceOpt','fceOpt','ltSlk'};
+disp(['Setting all models to have the same lceOpt, fceOpt, lceOptAT, fceOptAT,',...
+      ' lceNScale']);
+fieldsToUpdate = {'lceOptAT','fceOptAT','lceOpt','fceOpt',...
+                  'ltSlk','lceNScale'};
 for i=1:1:length(fieldsToUpdate)
     modelParams.umat41Upd.(fieldsToUpdate{i})= ...
         modelParams.umat43Upd.(fieldsToUpdate{i});
@@ -287,9 +294,22 @@ end
 %%
 % Force-velocity relation
 %%
+[modelParams.umat43Upd, vexatCurves]= ...
+    fitVEXATForceVelocityRelation(...
+        expData,...
+        modelParams.umat43Upd,...
+        keyPointsHL1997,...
+        felineSoleusNormMuscleQuadraticCurves.fiberForceVelocityCurve,...
+        vexatCurves,...
+        flag_plotVEXATForceVelocityFitting);
 
 
-
+[modelParams.umat41Upd, ehtmmCurves]= ...
+    fitEHTMMForceVelocityRelation(...
+        modelParams.umat41Upd,...
+        keyPointsHL1997,...
+        ehtmmCurves,...
+        flag_plotEHTMMForceVelocityFitting);
 
 %%
 %Plot the fitted results
