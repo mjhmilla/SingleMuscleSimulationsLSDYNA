@@ -114,6 +114,14 @@ modelFolder = fullfile('MPP_R931','common');
 flag_assertCommonParamsIdentical=1;
 [mat156,umat41,umat43] = getModelParameters(modelFolder,expAbbrv,...
                           flag_assertCommonParamsIdentical);
+
+%Add a field tendon slack length to optimal CE length ratio
+lceOptScottLoeb1995  = 38/1000;
+ltSlkScottLoeb1995   = 27/1000;
+mat156.tdnToCe = ltSlkScottLoeb1995/lceOptScottLoeb1995;
+umat41.tdnToCe = ltSlkScottLoeb1995/lceOptScottLoeb1995;
+umat43.tdnToCe = ltSlkScottLoeb1995/lceOptScottLoeb1995;
+
 %Not changed
 modelParams.mat156=mat156;
 modelParams.umat41=umat41;
@@ -172,6 +180,7 @@ ehtmmCurves = [];
 %tendon strain at 1 isometric force. We solve for that tendon strain that
 %results in the desired stiffness at 1 isometric force
 
+%Only depends on ktNIso.
 [modelParams.umat43Upd,vexatCurves] = ...
     fitVEXATTendon(...
         modelParams.umat43Upd,...
@@ -200,7 +209,7 @@ ehtmmCurves = [];
             flag_plotVEXATActiveForceLengthFitting);
 
 disp('Setting all models to have the same lceOpt, fceOpt, lceOptAT, fceOptAT');
-fieldsToUpdate = {'lceOptAT','fceOptAT','lceOpt','fceOpt'};
+fieldsToUpdate = {'lceOptAT','fceOptAT','lceOpt','fceOpt','ltSlk'};
 for i=1:1:length(fieldsToUpdate)
     modelParams.umat41Upd.(fieldsToUpdate{i})= ...
         modelParams.umat43Upd.(fieldsToUpdate{i});

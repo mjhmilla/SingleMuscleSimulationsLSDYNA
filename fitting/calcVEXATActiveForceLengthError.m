@@ -15,6 +15,8 @@ lceNATZero  = args(3,1);
 lceOpt = lceOptAT/cos(umat43.penOpt);
 fceOpt = fceOptAT/cos(umat43.penOpt);
 
+ltSlk = umat43.tdnToCe*lceOpt;
+
 % The experimental data to measure the passive and active force length
 % relation has measurments at the same musculotendon length. Due to
 % tendon elasticity unfortunately these measurements are not at the 
@@ -29,7 +31,7 @@ fceOpt = fceOptAT/cos(umat43.penOpt);
             keyPointsExp.fl.clusters,...
             lceNATZero*lceOpt,...
             tendonForceLengthInverseNormCurve,...
-            umat43.et,umat43.ltSlk,fceOpt);
+            umat43.et,ltSlk,fceOpt);
 
 expLceNAT = lrefUpd ./ lceOpt;
 %expFceNAT = (keyPointsExp.fl.fmt*keyPointsScaling.force...

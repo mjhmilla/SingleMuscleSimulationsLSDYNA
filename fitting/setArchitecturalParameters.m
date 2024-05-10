@@ -44,6 +44,8 @@ switch expData
         arch.fceOptAT   = arch.fceOpt*cos(arch.penOpt);
         arch.lceOptAT   = arch.lceOpt*cos(arch.penOpt);   
 
+        arch.tdnToCe = arch.ltSlk/arch.lceOpt;
+
     case 'HL2002'
         arch.penOptD    = penOptDSacksLoeb1995;
         arch.penOpt     = arch.penOptD*(pi/180);
@@ -57,6 +59,8 @@ switch expData
         arch.ltSlk      = ...
             (ltSlkScottLoeb1995/lceOptScottLoeb1995)*lceOptHL2002;
         %Maintain the same tendon-to-ce length ratio as Scott & Loeb
+        arch.tdnToCe = arch.ltSlk/arch.lceOpt;
+
 end
 
 
