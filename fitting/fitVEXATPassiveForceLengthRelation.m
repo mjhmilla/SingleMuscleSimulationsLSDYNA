@@ -3,13 +3,17 @@ function [umat43, keyPointsVEXATFpe, vexatCurves]= ...
                     umat43,...
                     keyPointsHL1997, keyPointsHL2002,...
                     fiberForceLengthCurve,...
+                    fiberForceLengthInverseCurve,...
                     vexatCurves,...
                     flag_plotVEXATPassiveForceLengthFitting)
 
-assert(contains(expData,'HL1997')==0,'Error: Need to add HL1997 fpe fit');
 
+fitMode=1;
 errFcn = @(arg)calcVEXATPassiveForceLengthError(arg,umat43,...
-                        keyPointsHL2002,fiberForceLengthCurve);
+                        keyPointsHL2002,...
+                        keyPointsHL1997,...
+                        fiberForceLengthCurve,...
+                        fitMode);
 
 x0 = [0;1];
 options     = optimset('Display','off','TolF',1e-9);
@@ -24,6 +28,58 @@ scalePE =x1(2,1);
 umat43.shiftPE=shiftPE;
 umat43.scalePE=scalePE;
 
+%HL1997 contains too few points to fit an entire fpe curve. Instead
+%I'm just going to shift the fitted HL2002 curve until it intersects
+%with the only significant data point.
+if(contains(expData,'HL1997'))
+
+    fitMode=2;
+    errFcn2 = @(arg)calcVEXATPassiveForceLengthError(arg,umat43,...
+                            keyPointsHL2002,...
+                            keyPointsHL1997,...
+                            fiberForceLengthCurve,...
+                            fitMode);
+    
+    x0 = [shiftPE];
+    options     = optimset('Display','off','TolF',1e-9);
+    [x1, resnorm,residual,exitflag]   = lsqnonlin(errFcn2,x0,[],[],options); 
+
+    shiftPE=x1(1,1);
+    umat43.shiftPE=shiftPE;
+
+%     %Shift the fpe curve so that it intersects the passive point
+% 
+%     %1. Evaluate the length and force of the +4 mm point
+%     k = kmeans(keyPointsHL1997.fpe.lceNAT,keyPointsHL1997.fpe.clusters);
+%     meanLceNAT = zeros(max(k),1);
+%     meanFceNAT = zeros(max(k),1);
+%     for i=1:1:max(k)
+%         idx = find(k==i);
+%         meanLceNAT(i,1) = mean(keyPointsHL1997.fpe.lceNAT(idx,1));
+%         meanFceNAT(i,1) = mean(keyPointsHL1997.fpe.fceNAT(idx,1));
+%     end
+%     [lceNAT1,idx1] =max(meanLceNAT);
+%     fceNAT1 = meanFceNAT(idx1);
+% 
+%     %2. Evaluate the pennation model
+%     lceAT1 = lceNAT1*umat43.lceOpt;
+%     fibKin = calcFixedWidthPennatedFiberKinematics(lceAT1,...
+%                                         0,...
+%                                         umat43.lceOpt,...
+%                                         umat43.penOpt);
+%     lce1     = fibKin.fiberLength;
+%     alpha1   = fibKin.pennationAngle;
+%     lceN1    = lce1/umat43.lceOpt;     
+%     fceN1    = fceNAT1/cos(alpha1);
+% 
+%     %3. Evaluate the length of the fpe curve at fceNAT
+%     lceN2 = calcQuadraticBezierYFcnXDerivative(fceN1/umat43.scalePE,...
+%                                        fiberForceLengthInverseCurve,0);
+%     shiftPE = lceN1-(lceN2+umat43.shiftPE);
+%     umat43.shiftPE=shiftPE;
+%     here=1;
+
+end
 
 disp('fitVEXATPassiveForceLengthRelation')
 fprintf('\t\t%1.4f\t%s\n\t\t%1.4f\t%s\n',...
@@ -34,7 +90,6 @@ fpeN    = zeros(size(lceN));
 lceNAT  = zeros(size(lceN));
 fpeNAT  = zeros(size(lceN));   
 kpeNAT  = zeros(size(lceN));
-lmtNAT  = zeros(size(lceN));
 
 lceOptAT    = umat43.lceOptAT;
 lceOpt      = umat43.lceOpt;

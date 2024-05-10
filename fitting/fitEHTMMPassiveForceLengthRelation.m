@@ -1,16 +1,23 @@
-function [umat41, ehtmmCurves ]= fitEHTMMPassiveForceLengthRelation(...
-        expData,umat41,...
-        keyPointsHL1997, keyPointsHL2002,...
+function [umat41, ehtmmCurves ]= ...
+    fitEHTMMPassiveForceLengthRelation(...
+        expData,...
+        umat41,...
+        keyPointsHL1997, ...
+        keyPointsHL2002,...
         keyPointsVEXATFpe,...
         ehtmmCurves,...
+        vexatCurves,...
         flag_plotEHTMMPassiveForceLengthFitting)
 
-assert(contains(expData,'HL1997')==0,'Error: Need to add HL1997 fpe fit');
 
+
+fitMode=1;
 errFcn = @(arg)calcEHTMMPassiveForceLengthError(arg,umat41,...
-                        keyPointsHL2002,keyPointsVEXATFpe);
+                        keyPointsHL2002,keyPointsHL1997,...
+                        keyPointsVEXATFpe,vexatCurves.fpe,...
+                        fitMode);
 
-x0 = [0.6;0.5;4]./[umat41.LPEE0;umat41.FPEE;umat41.nuPEE];
+x0 = [1;1;1];
 
 options     = optimset('Display','off','MaxIter',1e6);
 [x1, resnorm,residual,exitflag]   = lsqnonlin(errFcn,x0,[],[],options);
@@ -20,6 +27,26 @@ LPEE0   = x1(1,1)*umat41.LPEE0;
 FPEE    = x1(2,1)*umat41.FPEE;
 nuPEE   = x1(3,1)*umat41.nuPEE;
 
+
+if(contains(expData,'HL1997'))
+    fitMode=2;
+    errFcn2 = @(arg)calcEHTMMPassiveForceLengthError(arg,umat41,...
+                            keyPointsHL2002,keyPointsHL1997,...
+                            keyPointsVEXATFpe,vexatCurves.fpe,...
+                            fitMode);
+    
+    x0 = x1;
+    
+    options     = optimset('Display','off','MaxIter',1e6);
+    [x1, resnorm,residual,exitflag]   = lsqnonlin(errFcn2,x0,[],[],options);
+    assert(exitflag==1 || exitflag==3);
+    
+    LPEE0   = x1(1,1)*umat41.LPEE0;
+    FPEE    = x1(2,1)*umat41.FPEE;
+    nuPEE   = x1(3,1)*umat41.nuPEE;    
+
+end
+
 umat41.LPEE0 = LPEE0;
 umat41.FPEE  = FPEE;
 umat41.nuPEE = nuPEE;
@@ -27,6 +54,8 @@ umat41.nuPEE = nuPEE;
 lceNAT   = [0.7:0.01:1.4]';
 fpeNAT   = zeros(size(lceNAT)); 
 kpeNAT   = zeros(size(lceNAT)); 
+
+
 
 
 for i=1:1:length(lceNAT)

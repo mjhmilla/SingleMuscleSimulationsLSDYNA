@@ -22,12 +22,13 @@ expData = 'HL2002';
 % HL1997 (Herzog & Leonard 1997)
 % HL2002 (Herzog & Leonard 2002)
 
+
 flag_zeroMAT156TendonSlackLength=1;
 
 flag_plotHL1997AnnotationData           =0;
 flag_plotHL2002AnnotationData           =0;
-flag_plotVEXATActiveForceLengthFitting  =1;
-flag_plotEHTMMActiveForceLengthFitting  =1;
+flag_plotVEXATActiveForceLengthFitting  =0;
+flag_plotEHTMMActiveForceLengthFitting  =0;
 flag_plotVEXATPassiveForceLengthFitting =1;
 flag_plotEHTMMPassiveForceLengthFitting =1;
 
@@ -264,6 +265,7 @@ end
         modelParams.umat43Upd,...
         keyPointsHL1997, keyPointsHL2002,...
         felineSoleusNormMuscleQuadraticCurves.fiberForceLengthCurve,...
+        felineSoleusNormMuscleQuadraticCurves.fiberForceLengthInverseCurve,...
         vexatCurves,...
         flag_plotVEXATPassiveForceLengthFitting);
 
@@ -274,6 +276,7 @@ end
         keyPointsHL1997, keyPointsHL2002,...
         keyPointsVEXATFpe,...
         ehtmmCurves,...
+        vexatCurves,...
         flag_plotEHTMMPassiveForceLengthFitting);
 
 %%
@@ -338,7 +341,7 @@ figFitting=figure;
 figure(figFitting);      
 figFitting=configPlotExporter(figFitting, ...
             pageWidth, pageHeight);
-fileName =    ['fig_MuscleFitting_Publication'];
+fileName =    ['fig_MuscleFitting_',expData,'_Publication'];
 print('-dpdf', [matlabScriptPath,'/',outputFolder,'/',...
       fileName,'.pdf']);
 
