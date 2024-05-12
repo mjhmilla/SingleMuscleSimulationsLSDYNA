@@ -1,34 +1,38 @@
 function errVec = calcEHTMMForceVelocityError(arg,...
                                         umat41,...
                                         keyPointsHL1997,...
+                                        keyPointsVEXATFv,...
                                         keyPointsScaling)
 
 
-Arel = arg(1,1)*umat41.Arel;
-Brel = arg(2,1)*umat41.Brel;
-Fecc=umat41.Fecc;
-Secc=umat41.Secc;
+%Arel = arg(1,1)*umat41.Arel;
+Brel = umat41.Brel*arg(1,1);
+Arel = Brel/keyPointsVEXATFv.vceMax;
+Fecc = umat41.Fecc*arg(2,1);
+Secc = umat41.Secc*arg(3,1);
 
-idxShortening = find(keyPointsHL1997.fv.v <= 0);
-errVec        = zeros(length(idxShortening),1);
+%idxShortening = find(keyPointsHL1997.fv.v <= 0);
+%errVec        = zeros(length(idxShortening),1);
 
+errVec        = zeros(length(keyPointsHL1997.fv.v),1);
 q = 1;
 Fisom=1;
 
 
-for i=1:1:length(idxShortening)
+for i=1:1:length(errVec)
 
-    idx=idxShortening(i);
+    idx=i;%idxShortening(i);
 
     lceAT = keyPointsHL1997.fv.lce(idx,1)*keyPointsScaling.length;
-    vceAT = keyPointsHL1997.fv.v(idx,1)*keyPointsScaling.velocity;
-
+    vceNAT = keyPointsHL1997.fv.vceNAT(idx,1);
+    vceAT  = vceNAT*umat41.lceOptAT;
+    
     fv = calcFvUmat41(vceAT,umat41.lceOpt,umat41.lceOpt,...
                       umat41.fceOptAT,Fisom,q,Arel,Brel,Fecc,Secc);
 
     fvN = fv/umat41.fceOptAT;
 
-    errVec(i,1)=fvN-keyPointsHL1997.fv.fvN(idx,1);
+    errVec(i,1)=fvN-keyPointsHL1997.fv.fceNAT(idx,1);
 
 end
 

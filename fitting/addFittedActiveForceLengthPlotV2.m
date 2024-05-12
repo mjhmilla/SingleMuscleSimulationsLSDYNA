@@ -138,6 +138,8 @@ figure(figH);
             'FontSize',6);
     hold on;    
 
+    yticks([0,1]);
+
     box off;
     
     xlim([min(umat43Curves.fl.lceNAT),max(umat43Curves.fl.lceNAT)]);
@@ -145,7 +147,7 @@ figure(figH);
 
     xlabel('Norm. Length ($$\ell/\ell^M_o$$)');
     ylabel('Norm. Force ($$f/f^M_o$$)');    
-    title('A. Active force length fitting $$\mathbf{f}^\mathrm{L}$$');
+    title('C. Active force length fitting $$\mathbf{f}^\mathrm{L}$$');
 
     [lgdH, lgdIcons, lgdPlots, lgdTxt]=...
         legend('Location','southeast','FontSize',6);

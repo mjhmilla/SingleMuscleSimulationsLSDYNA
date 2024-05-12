@@ -151,7 +151,10 @@ keyPointsHL1997.fpe.fceNAT = keyPointsHL1997.fpe.f ./ keyPointsHL1997.fceOpt;
             keyPointsHL1997.ltSlk,...
             keyPointsHL1997.fceOpt);
 
-keyPointsHL1997.fv.fvN = fal./keyPointsHL1997.fv.fmtMid;
+keyPointsHL1997.fv.fceNAT = fal./keyPointsHL1997.fv.fmtMid;
+keyPointsHL1997.fv.vceNAT = ...
+    (keyPointsHL1997.fv.v .* keyPointsScaling.length)...
+    ./ keyPointsHL1997.lceOpt;
 keyPointsHL1997.fv.lce = lrefUpd*(1/keyPointsScaling.length);
 keyPointsHL1997.fv.fpe= fpeUpd*(1/keyPointsScaling.force);
 

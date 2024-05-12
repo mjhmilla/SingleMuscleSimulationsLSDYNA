@@ -6,16 +6,17 @@ function errVec = calcVEXATForceVelocityError(arg,...
 
 vceMax = arg(1,1)*umat43.vceMax;
 
-idxShortening = find(keyPointsHL1997.fv.v <= 0);
-errVec=zeros(length(idxShortening),1);
+%idxShortening = find(keyPointsHL1997.fv.v <= 0);
+%errVec=zeros(length(idxShortening),1);
+errVec = zeros(length(keyPointsHL1997.fv.v),1);
 
-for i=1:1:length(idxShortening)
+for i=1:1:length(errVec)
 
-    idx=idxShortening(i);
+    idx=i;%idxShortening(i);
 
-    lceAT = keyPointsHL1997.fv.lce(idx,1)*keyPointsScaling.length;
-    vceAT = keyPointsHL1997.fv.v(idx,1)*keyPointsScaling.velocity;
-
+    lceAT  = keyPointsHL1997.fv.lce(idx,1)*keyPointsScaling.length;
+    vceNAT = keyPointsHL1997.fv.vceNAT(idx,1);
+    vceAT  = vceNAT*umat43.lceOpt;
 
     fibKin = calcFixedWidthPennatedFiberKinematics(lceAT,...
                                         vceAT,...
@@ -31,8 +32,8 @@ for i=1:1:length(idxShortening)
 
     fvN = calcQuadraticBezierYFcnXDerivative(dlceNN,...
                     fiberForceVelocityCurve,0);
-
-    errVec(i,1)=fvN-keyPointsHL1997.fv.fvN(idx,1);
+    fvNAT = fvN*cos(alpha);
+    errVec(i,1)=fvNAT-keyPointsHL1997.fv.fceNAT(idx,1);
 
 end
 
