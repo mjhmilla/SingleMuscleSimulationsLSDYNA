@@ -168,7 +168,7 @@ figure(figH);
 
     xlabel('Norm. Length ($$\ell/\ell^M_o$$)');
     ylabel('Norm. Force ($$f/f^M_o$$)');    
-    title('D. Passive force length fitting $$\mathbf{f}^\mathrm{PE}$$');
+    title('D. Passive element fitting $$\mathbf{f}^\mathrm{PE}$$');
 
     [lgdH, lgdIcons, lgdPlots, lgdTxt]=...
         legend('Location','northwest','FontSize',6);

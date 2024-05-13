@@ -127,7 +127,8 @@ figure(figH);
     yticks([0,1,round(umat41.Fecc,2)]);
 
     xlabel('Norm. Velocity ($$v/\ell^M_o$$)');
-    ylabel('Norm. Force ($$f/f^M_o$$)');    
+    yH = ylabel('Norm. Force ($$f/f^M_o$$)');    
+    yH.Position(1) = yH.Position(1) - yH.Position(1)*(1.5/10);  
     title('F. Force velocity fitting $$\mathbf{f}^\mathrm{V}$$');
 
     [lgdH, lgdIcons, lgdPlots, lgdTxt]=...

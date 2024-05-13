@@ -100,4 +100,4 @@ figure(figH);
 
     xlabel('Norm. Length ($$\ell^T/\ell^T_s$$)');
     ylabel('Norm. Force ($$f^T/f^M_o$$)');
-    title('B. Tendon force length fitting $$\mathbf{f}^\mathrm{T}$$');
+    title('B. Tendon fitting $$\mathbf{f}^\mathrm{T}$$');
