@@ -18,8 +18,8 @@ $
 *PARAMETER_EXPRESSION
 $#    name expression
 RtimeRamp0 &rampStart
-R pathLen0 &pathLenN0*&lceOpt*cos(&penOpt)+&ltSlk*(1.+&et)
-R pathLen1 &pathLenN1*&lceOpt*cos(&penOpt)+&ltSlk*(1.+&et)
+R pathLen0 &lp0HL1997+&len0
+R pathLen1 &lp0HL1997+&len1
 RtimeRamp1 &timeRamp0+&rampTime
 $
 *TITLE

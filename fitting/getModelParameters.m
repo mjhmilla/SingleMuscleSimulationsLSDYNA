@@ -37,11 +37,9 @@ umat41.penOptD    = getParameterFieldValue(umat41ParameterFile,'penOptD');
 umat41.ltSlk      = getParameterFieldValue(umat41ParameterFile,'ltSlk');
 umat41.et         = getParameterFieldValue(umat41ParameterFile,'et');
 umat41.dFSEE0     = getParameterFieldValue(umat41ParameterFile,'dFSEE0');
+umat41.dUSEEnll   = getParameterFieldValue(umat41ParameterFile, 'dUSEEnll');
+umat41.duSEEl     = getParameterFieldValue(umat41ParameterFile, 'duSEEl');
 umat41.vceMax     = getParameterFieldValue(umat41ParameterFile,'vceMax');
-umat41.dtInt      = getParameterFieldValue(umat41ParameterFile,'dtInt');
-umat41.dtOut      = getParameterFieldValue(umat41ParameterFile,'dtOut');
-umat41.lceNScale  = getParameterFieldValue(umat41ParameterFile,'lceNScale');
-
 umat41.LPEE0      = getParameterFieldValue(umat41ParameterFile, 'LPEE0');
 umat41.FPEE       = getParameterFieldValue(umat41ParameterFile, 'FPEE');   
 umat41.nuPEE      = getParameterFieldValue(umat41ParameterFile, 'nuPEE');
@@ -49,15 +47,18 @@ umat41.dWasc      = getParameterFieldValue(umat41ParameterFile, 'dWasc');
 umat41.nuCEasc    = getParameterFieldValue(umat41ParameterFile, 'nuCEasc');
 umat41.dWdes      = getParameterFieldValue(umat41ParameterFile, 'dWdes');
 umat41.nuCEdes    = getParameterFieldValue(umat41ParameterFile, 'nuCEdes');
-
-umat41.dUSEEnll   = getParameterFieldValue(umat41ParameterFile, 'dUSEEnll');
-umat41.duSEEl     = getParameterFieldValue(umat41ParameterFile, 'duSEEl');
-
 umat41.Arel   = getParameterFieldValue(umat41ParameterFile, 'Arel');
 umat41.Brel   = getParameterFieldValue(umat41ParameterFile, 'Brel');
 umat41.Secc   = getParameterFieldValue(umat41ParameterFile, 'Secc');
 umat41.Fecc   = getParameterFieldValue(umat41ParameterFile, 'Fecc');
-
+umat41.dtInt      = getParameterFieldValue(umat41ParameterFile,'dtInt');
+umat41.dtOut      = getParameterFieldValue(umat41ParameterFile,'dtOut');
+umat41.extraLines ={''};
+if(contains(expAbbrv,'HL2002')==1)
+    umat41.extraLines = {   '*PARAMETER_EXPRESSION',...
+                            '$#    name expression',...
+                            'R       kt &dFSEE0/(&duSEEl*&ltSlk)'};
+end
 
 
 umat43.lceOpt     =getParameterFieldValue(umat43ParameterFile,'lceOpt');
@@ -74,7 +75,8 @@ umat43.shiftPEE   =getParameterFieldValue(umat43ParameterFile,'shiftPEE');
 umat43.scalePEE   =getParameterFieldValue(umat43ParameterFile,'scalePEE');
 umat43.dtInt      =getParameterFieldValue(umat43ParameterFile,'dtInt');
 umat43.dtOut      =getParameterFieldValue(umat43ParameterFile,'dtOut');
-umat43.lceNScale  =getParameterFieldValue(umat43ParameterFile,'lceNScale');
+umat43.extraLines ={''};
+
 
 if(flag_assertCommonParamsIdentical==1)
 
@@ -101,8 +103,8 @@ if(flag_assertCommonParamsIdentical==1)
     end    
     assert( abs(umat43.dtOut     -umat41.dtOut    )<tol,...
         'Error: umat41 and umat43 differ at dtOut '   ); 
-    assert( abs(umat43.lceNScale -umat41.lceNScale)<tol,...
-        'Error: umat41 and umat43 differ at lceNScale'); 
+%    assert( abs(umat43.lceNScale -umat41.lceNScale)<tol,...
+%        'Error: umat41 and umat43 differ at lceNScale'); 
 
 end
 
@@ -118,7 +120,10 @@ mat156.et         =getParameterFieldValue(mat156ParameterFile,'et');
 mat156.vceMax     =getParameterFieldValue(mat156ParameterFile,'vceMax');
 mat156.dtInt      =getParameterFieldValue(mat156ParameterFile,'dtInt');
 mat156.dtOut      =getParameterFieldValue(mat156ParameterFile,'dtOut');
-mat156.lceNScale  =getParameterFieldValue(mat156ParameterFile,'lceNScale');
+%mat156.lceNScale  =getParameterFieldValue(mat156ParameterFile,'lceNScale');
+mat156.extraLines ={''};
+
+
 
 if(flag_assertCommonParamsIdentical==1)
 
@@ -141,7 +146,7 @@ if(flag_assertCommonParamsIdentical==1)
     end
     assert( abs(mat156.dtOut     -umat43.dtOut    )<tol,...
         'Error: mat156 and umat43 differ at dtOut '   ); 
-    assert( abs(mat156.lceNScale -umat43.lceNScale)<tol,...
-        'Error: mat156 and umat43 differ at lceNScale'); 
+%    assert( abs(mat156.lceNScale -umat43.lceNScale)<tol,...
+%        'Error: mat156 and umat43 differ at lceNScale'); 
 
 end

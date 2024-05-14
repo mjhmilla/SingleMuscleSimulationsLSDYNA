@@ -10,9 +10,10 @@ assert(contains(rootDir(1,end-29:end),'SingleMuscleSimulationsLSDYNA'),...
        'Error: must start this with matlab in the main directory');
 
 
+flag_lengthsNormalized=0;
 
 %Settings
-modelName       = 'umat43'; 
+modelName       = 'umat41'; 
 %Options:
 %   umat41
 %   umat43
@@ -243,10 +244,15 @@ for indexExcitation=1:1:2
             lceOpt = musclePropertiesHL1997.lceOpt;
             lceOptNOffset= musclePropertiesHL1997.lceNOffset;
 
-            length0 = rampDataHL1997(idx).length(1,1)...
-                         + lceOpt*lceOptNOffset;
-            length1 = rampDataHL1997(idx).length(1,2)...
-                         + lceOpt*lceOptNOffset;
+            if(flag_lengthsNormalized==1)
+                length0 = rampDataHL1997(idx).length(1,1)...
+                             + lceOpt*lceOptNOffset;
+                length1 = rampDataHL1997(idx).length(1,2)...
+                             + lceOpt*lceOptNOffset;
+            else
+                length0 = rampDataHL1997(idx).length(1,1);
+                length1 = rampDataHL1997(idx).length(1,2);                
+            end
 
             time0 = rampDataHL1997(idx).time(1,1);
             time1 = rampDataHL1997(idx).time(1,2);
@@ -255,7 +261,8 @@ for indexExcitation=1:1:2
             success = writeForceVelocityLSDYNAFile(...
                         [simName,'.k'], ex,...
                         length0,length1,lceOpt,...
-                        time0,time1);
+                        time0,time1,...
+                        flag_lengthsNormalized);
 
             trialNumber=trialNumber+1;
             cd ..;
@@ -277,10 +284,15 @@ for indexExcitation=1:1:2
             lceOptNOffset= musclePropertiesHL1997.lceNOffset;
 
             idxHL1997Ref = idxHL1997Offset+4;
-            length0 = rampDataHL1997(idxHL1997Ref).length(1,1)...
-                         + lceOpt*lceOptNOffset;
-            length1 = rampDataHL1997(idxHL1997Ref).length(1,2)...
-                         + lceOpt*lceOptNOffset;
+            if(flag_lengthsNormalized==1)
+                length0 = rampDataHL1997(idxHL1997Ref).length(1,1)...
+                             + lceOpt*lceOptNOffset;
+                length1 = rampDataHL1997(idxHL1997Ref).length(1,2)...
+                             + lceOpt*lceOptNOffset;
+            else
+                length0 = rampDataHL1997(idxHL1997Ref).length(1,1);
+                length1 = rampDataHL1997(idxHL1997Ref).length(1,2);
+            end
 
             velocity = rampDataHL1997(idxHL1997Ref).velocity(1,1);
             velocity = velocity*(2^idx);
@@ -290,7 +302,8 @@ for indexExcitation=1:1:2
             success = writeForceVelocityLSDYNAFile(...
                         [simName,'.k'], ex, ...
                         length0,length1,lceOpt,...
-                        time0,time1);            
+                        time0,time1,...
+                        flag_lengthsNormalized);            
     
             trialNumber=trialNumber+1;
             cd ..;
@@ -315,17 +328,25 @@ for indexExcitation=1:1:2
     lceOptNOffset= musclePropertiesHL1997.lceNOffset;
     
     idxHL1997Ref = idxHL1997Offset+4;
-    length0 = lceOpt*lceOptNOffset;
-    length1 = lceOpt*lceOptNOffset;
+
     
     velocity = 0;
     time0 = 1.5;
     time1 = time0+1;
     
+    if(flag_lengthsNormalized==1)
+        length0 = lceOpt*lceOptNOffset;
+        length1 = lceOpt*lceOptNOffset;
+    else
+        length0 = 0;
+        length1 = 0;        
+    end
+
     success = writeForceVelocityLSDYNAFile(...
                 [simName,'.k'], ex, ...
                 length0,length1,lceOpt,...
-                time0,time1);            
+                time0,time1,...
+                flag_lengthsNormalized);            
     
     trialNumber=trialNumber+1;
     cd ..;    

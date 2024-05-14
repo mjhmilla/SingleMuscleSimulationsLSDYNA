@@ -24,7 +24,7 @@ RstimTimeA &stimTimeS-0.001
 RstimTimeB &stimTimeE+0.001
 R  stimLow 0.0
 R stimHigh 0.0
-R pathLenO &lceOptAT*&lceNScale
+R pathLenO &lp0HL2002
 R pathLenS &pathLenO+&rampLenS
 R pathLenE &pathLenO+&rampLenE  
 R    timeE &stimTimeE+5.0

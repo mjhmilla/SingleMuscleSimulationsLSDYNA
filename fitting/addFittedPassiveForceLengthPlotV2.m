@@ -159,7 +159,7 @@ figure(figH);
     
     yticks([0,1]);
 
-    lcePeZero=fiberForceLengthCurve.xEnd(1,1)-umat43.shiftPEE;
+    lcePeZero=fiberForceLengthCurve.xEnd(1,1)+umat43.shiftPEE;
     xticks([round(lcePeZero,2),round(lceNATOne,2)]);
     
 

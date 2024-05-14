@@ -1,9 +1,9 @@
 *KEYWORD
 *PARAMETER
 $#    name       val
-RpathLenN0  0.689474
-RpathLenN1  0.794737
-R  pathVel  0.230502
+R     len0  -0.004000
+R     len1  0.000000
+R  pathVel  0.008759
 RrampStart  1.509500
 R  rampEnd  1.966170
 R rampTime  0.456670

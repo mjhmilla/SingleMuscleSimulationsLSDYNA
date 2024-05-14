@@ -85,8 +85,6 @@ options=optimset('Display','off');
 [x1, resnorm,residualHL1997,exitflag] = lsqnonlin(errFcnHL1997,x0,lb,ub,options);
 assert(exitflag==1 || exitflag==3);
 
-
-
 keyPointsHL1997.lceOpt = defaultSoln.lceOptAT*x1(1,1) / cos(umat43.penOpt);
 keyPointsHL1997.fceOpt = defaultSoln.fceOptAT*x1(2,1) / cos(umat43.penOpt);
 keyPointsHL1997.lceNATZero  = x1(3,1);
@@ -177,8 +175,8 @@ lceOptAT = (27/0.63)*mm2m;
 defaultSoln.lceOptAT = lceOptAT + keyPointsHL2002.fl.l(idxFceOptAT).*mm2m;
 
 x0 = [1;1;1];
-ub = [1.2;1.05;1.05]; 
-lb = [0.8;0.95;0.95];
+ub = [1.05;1.05;1.05]; 
+lb = [0.95;0.95;0.95];
 
 %
 % lceOptAT +/- 20% error is allowed because this parameter was not reported
@@ -261,14 +259,14 @@ switch expData
         umat43.fceOpt   = keyPointsHL1997.fceOpt;
         umat43.lceOpt   = keyPointsHL1997.lceOpt;   
         umat43.ltSlk    = keyPointsHL1997.ltSlk;   
-        umat43.lceNScale= 1;
+        
     case 'HL2002'
         umat43.fceOptAT = keyPointsHL2002.fceOpt*cos(umat43.penOpt);
         umat43.lceOptAT = keyPointsHL2002.lceOpt*cos(umat43.penOpt);
         umat43.fceOpt   = keyPointsHL2002.fceOpt;
         umat43.lceOpt   = keyPointsHL2002.lceOpt; 
         umat43.ltSlk    = keyPointsHL2002.ltSlk;     
-        umat43.lceNScale= keyPointsHL2002.lceNATZero;
+        
         
     otherwise
         assert(0,'Error: expData must be HL1997 or HL2002')

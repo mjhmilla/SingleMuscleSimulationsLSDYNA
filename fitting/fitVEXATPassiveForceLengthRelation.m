@@ -22,11 +22,11 @@ options     = optimset('Display','off','TolF',1e-9);
 
 
 
-shiftPE =x1(1,1);
-scalePE =x1(2,1);
+shiftPEE =x1(1,1);
+scalePEE =x1(2,1);
 
-umat43.shiftPE=shiftPE;
-umat43.scalePE=scalePE;
+umat43.shiftPEE=shiftPEE;
+umat43.scalePEE=scalePEE;
 
 %HL1997 contains too few points to fit an entire fpe curve. Instead
 %I'm just going to shift the fitted HL2002 curve until it intersects
@@ -40,17 +40,17 @@ if(contains(expData,'HL1997'))
                             fiberForceLengthCurve,...
                             fitMode);
     
-    x0 = [shiftPE];
+    x0 = [shiftPEE];
     options     = optimset('Display','off','TolF',1e-9);
     [x1, resnorm,residual,exitflag]   = lsqnonlin(errFcn2,x0,[],[],options); 
 
-    shiftPE=x1(1,1);
-    umat43.shiftPE=shiftPE;
+    shiftPEE=x1(1,1);
+    umat43.shiftPEE=shiftPEE;
 end
 
 disp('fitVEXATPassiveForceLengthRelation')
 fprintf('\t\t%1.4f\t%s\n\t\t%1.4f\t%s\n',...
-        shiftPE,'shiftPE',scalePE,'scalePE');
+        shiftPEE,'shiftPEE',scalePEE,'scalePEE');
 
 lceN    = [0.7:0.01:1.4]';
 fpeN    = zeros(size(lceN)); 
@@ -71,9 +71,9 @@ for i=1:1:length(lceNAT)
     lceNAT(i,1) = fibKin.fiberLengthAlongTendon./lceOpt;
     alpha = fibKin.pennationAngle;
 
-    fpeN(i,1) = scalePE * calcQuadraticBezierYFcnXDerivative(lceN(i,1)-shiftPE,...
+    fpeN(i,1) = scalePEE * calcQuadraticBezierYFcnXDerivative(lceN(i,1)-shiftPEE,...
                                             fiberForceLengthCurve,0);
-    kpeN(i,1) = scalePE * calcQuadraticBezierYFcnXDerivative(lceN(i,1)-shiftPE,...
+    kpeN(i,1) = scalePEE * calcQuadraticBezierYFcnXDerivative(lceN(i,1)-shiftPEE,...
                                             fiberForceLengthCurve,1);
     fpeNAT(i,1) = fpeN(i,1)*cos(alpha);   
     kpeNAT(i,1) = kpeN(i,1)*cos(alpha);   

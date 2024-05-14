@@ -26,7 +26,7 @@ ub = [];%[2;2];
 %Brel = x1(2,1)*umat41.Brel;
 
 Brel = umat41.Brel*x1(1,1);
-Arel = Brel/keyPointsVEXATFv.vceMax;
+Arel = Brel/keyPointsVEXATFv.vceMaxAT;
 Fecc = umat41.Fecc*x1(2,1);
 Secc = umat41.Secc*x1(3,1);
 

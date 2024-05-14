@@ -1,4 +1,4 @@
-function [umat43,vexatCurves]= ...
+function [umat43,vexatCurves,keyPointsVEXATFv]= ...
             fitVEXATForceVelocityRelation(...
                     umat43,...
                     keyPointsHL1997,...
@@ -62,6 +62,16 @@ end
 vexatCurves.fv.vceNNAT   = vceNNAT;
 vexatCurves.fv.fceNAT    = fceNAT;
 vexatCurves.fv.rmse = sqrt(mean(residual.^2));
+
+lceOpt      = umat43.lceOpt;
+alphaOpt    = umat43.penOpt;
+alphaDotOpt = -(vceMax/lceOpt)*tan(alphaOpt);
+vceMaxAT    = vceMax*cos(alphaOpt)-lceOpt*sin(alphaOpt)*alphaDotOpt;
+
+keyPointsVEXATFv.vceMax = vceMax;
+keyPointsVEXATFv.vceMaxAT= vceMaxAT;
+
+
 
 if(flag_plotVEXATForceVelocityFitting==1)    
     figVEXATFv = figure;

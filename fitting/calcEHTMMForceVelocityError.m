@@ -7,7 +7,7 @@ function errVec = calcEHTMMForceVelocityError(arg,...
 
 %Arel = arg(1,1)*umat41.Arel;
 Brel = umat41.Brel*arg(1,1);
-Arel = Brel/keyPointsVEXATFv.vceMax;
+Arel = Brel/keyPointsVEXATFv.vceMaxAT;
 Fecc = umat41.Fecc*arg(2,1);
 Secc = umat41.Secc*arg(3,1);
 

@@ -31,7 +31,7 @@ lceNATOne = interp1(vexatCurves.fecm.fceNAT(idxMin:end) ...
                   + vexatCurves.f2.fceNAT(idxMin:end),...
                     vexatCurves.fecm.lceNAT(idxMin:end),1);
 
-lcePeZero=fiberForceLengthCurve.xEnd(1,1)-umat43.shiftPEE;
+lcePeZero=fiberForceLengthCurve.xEnd(1,1)+umat43.shiftPEE;
 
 figure(figH);
     if(length(subPlotPanel)==3)

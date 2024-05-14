@@ -16,8 +16,8 @@ $
 *PARAMETER_EXPRESSION
 $#    name expression
 RtimeRamp0 &rampStart
-R pathLen0 &pathLenN0*&lceOptAT+&ltSlk
-R pathLen1 &pathLenN1*&lceOptAT+&ltSlk
+R pathLen0 &lp0HL1997+&len0
+R pathLen1 &lp0HL1997+&len1
 RtimeRamp1 &timeRamp0+&rampTime
 R      sno &pathLen0/(&lceOptAT+&ltSlk)
 R stimHigh &actVal

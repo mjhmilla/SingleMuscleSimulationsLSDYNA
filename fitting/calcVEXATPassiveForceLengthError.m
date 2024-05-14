@@ -5,8 +5,8 @@ function errVec = calcVEXATPassiveForceLengthError(arg,umat43,...
 
 
 if(fitMode==1)
-    shiftPE = arg(1,1);
-    scalePE = arg(2,1);
+    shiftPEE = arg(1,1);
+    scalePEE = arg(2,1);
     errVec = zeros(length(keyPointsHL2002.fpe.lceNAT),1);
     
     for i=1:1:length(keyPointsHL2002.fpe.lceNAT)
@@ -22,7 +22,7 @@ if(fitMode==1)
         alpha   = fibKin.pennationAngle;
         lceN    = lce/umat43.lceOpt; 
     
-        fpeN = scalePE * calcQuadraticBezierYFcnXDerivative(lceN-shiftPE,...
+        fpeN = scalePEE * calcQuadraticBezierYFcnXDerivative(lceN-shiftPEE,...
                                                 fiberForceLengthCurve,0);
     
         fpeNAT = fpeN*cos(alpha);
@@ -33,8 +33,8 @@ if(fitMode==1)
 end
 
 if(fitMode==2)
-    shiftPE = arg(1,1);
-    scalePE = umat43.scalePE;
+    shiftPEE = arg(1,1);
+    scalePEE = umat43.scalePEE;
     %1. Evaluate the length and force of the +4 mm point
     k = kmeans(keyPointsHL1997.fpe.lceNAT,keyPointsHL1997.fpe.clusters);
     meanLceNAT = zeros(max(k),1);
@@ -58,7 +58,7 @@ if(fitMode==2)
     lceN1    = lce1/umat43.lceOpt;     
 
     %3. Evaluate the curve value
-    fpeN = scalePE * calcQuadraticBezierYFcnXDerivative(lceN1-shiftPE,...
+    fpeN = scalePEE * calcQuadraticBezierYFcnXDerivative(lceN1-shiftPEE,...
                                             fiberForceLengthCurve,0);
 
     fpeNAT = fpeN*cos(alpha1);

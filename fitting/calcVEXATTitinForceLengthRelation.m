@@ -41,13 +41,13 @@ samples = [min(fpeDomain):((max(fpeDomain)-min(fpeDomain))/(n-1)):max(fpeDomain)
 
 
 
-shiftPE = umat43.shiftPE;
-scalePE = umat43.scalePE;
+shiftPEE = umat43.shiftPEE;
+scalePEE = umat43.scalePEE;
 
 %%
 % The fECM curve is expressed as a half sarcomere element
 %%
-shiftECM = 0.5*shiftPE;
+shiftECM = 0.5*shiftPEE;
 
 %%
 % The proximal and distal titin elements are inseries. We distribute
@@ -57,8 +57,8 @@ shiftECM = 0.5*shiftPE;
 k1THN = curves.forceLengthProximalTitinCurve.dydxEnd(1,2);
 k2THN = curves.forceLengthDistalTitinCurve.dydxEnd(1,2);
 
-shift1THN = (0.5*shiftPE)*((k2THN)/(k1THN+k2THN));
-shift2THN = (0.5*shiftPE)*((k1THN)/(k1THN+k2THN));
+shift1THN = (0.5*shiftPEE)*((k2THN)/(k1THN+k2THN));
+shift2THN = (0.5*shiftPEE)*((k1THN)/(k1THN+k2THN));
 
 vexatCurves.fecm.lceNAT = zeros(size(samples));
 vexatCurves.fecm.fceNAT = zeros(size(samples));
@@ -93,14 +93,14 @@ for i=1:1:length(samples)
     iterMax=100;
     while(abs(lerr) > 1e-6 && iter < iterMax)
     
-        lPH   = calcQuadraticBezierYFcnXDerivative(f/scalePE,...
+        lPH   = calcQuadraticBezierYFcnXDerivative(f/scalePEE,...
                     curves.forceLengthProximalTitinInverseCurve,0)+shift1THN;
-        dPH   = calcQuadraticBezierYFcnXDerivative(f/scalePE,...
+        dPH   = calcQuadraticBezierYFcnXDerivative(f/scalePEE,...
                     curves.forceLengthProximalTitinInverseCurve,1)+shift1THN;
     
-        lDH   = calcQuadraticBezierYFcnXDerivative(f/scalePE,...
+        lDH   = calcQuadraticBezierYFcnXDerivative(f/scalePEE,...
                     curves.forceLengthDistalTitinInverseCurve,0)+shift2THN;
-        dDH  = calcQuadraticBezierYFcnXDerivative(f/scalePE,...
+        dDH  = calcQuadraticBezierYFcnXDerivative(f/scalePEE,...
                     curves.forceLengthDistalTitinInverseCurve,1)+shift2THN;
     
         lerr = (lPH + lDH ...
@@ -116,17 +116,17 @@ for i=1:1:length(samples)
     assert(abs(lerr)<=1e-6);
 
 
-    f1N = scalePE*(1-lambda)*calcQuadraticBezierYFcnXDerivative(...
+    f1N = scalePEE*(1-lambda)*calcQuadraticBezierYFcnXDerivative(...
                                 lPH-shift1THN,...
                                 curves.forceLengthProximalTitinCurve,0);
     f1NAT = f1N*cos(alpha);
 
-    f2N = scalePE*(1-lambda)*calcQuadraticBezierYFcnXDerivative(...
+    f2N = scalePEE*(1-lambda)*calcQuadraticBezierYFcnXDerivative(...
                                 lDH-shift2THN,...
                                 curves.forceLengthDistalTitinCurve,0);
     f2NAT = f2N*cos(alpha);
 
-    fecmN = scalePE*lambda*calcQuadraticBezierYFcnXDerivative(...
+    fecmN = scalePEE*lambda*calcQuadraticBezierYFcnXDerivative(...
                             lceNAT*0.5-shiftECM,...
                             curves.forceLengthECMHalfCurve,0);    
     fecmNAT = fecmN*cos(alpha);
@@ -134,8 +134,8 @@ for i=1:1:length(samples)
     assert(abs(f1N-f2N)<1e-6);
 
     %Just to check
-    fpeN = scalePE*calcQuadraticBezierYFcnXDerivative(...
-                    lceN-shiftPE,...
+    fpeN = scalePEE*calcQuadraticBezierYFcnXDerivative(...
+                    lceN-shiftPEE,...
                     curves.fiberForceLengthCurve,...
                     0);
 

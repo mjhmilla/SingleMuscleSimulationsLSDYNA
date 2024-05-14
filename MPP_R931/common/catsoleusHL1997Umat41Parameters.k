@@ -1,33 +1,33 @@
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R   lceOpt 0.038
-R   fceOpt 41.661837
-R lceOptAT 0.0377168
-R fceOptAT 41.351296
-R lmtOptAT 0.0681679
+R   lceOpt 0.0356335
+R   fceOpt 42.261190
+R lceOptAT 0.0353679
+R fceOptAT 41.946182
+R lmtOptAT 0.0620306
 R   penOpt 0.1221730
-R  penOptD 7.0 
-R    ltSlk 0.0304511
-R       et 0.045826
-R   dFSEE0 27.5735
-R dUSEEnll 0.0347222
-R   duSEEl 0.0222222
-R   vceMax 4.65
-R    LPEE0 0.8176253
-R     FPEE 2.031664
-R    nuPEE 1.5907747
-R    dWasc 0.5656740
-R  nuCEasc 2.082109
-R    dWdes 0.470961
-R  nuCEdes 1.328409
-R    dtInt 0.00005
-R    dtOut 0.010
-R     Arel 0.1240458
-R     Brel 0.5550417
-R     Secc 0.7725022
-R     Fecc 1.4391543
-RlceNScale 1.0
-
+R  penOptD 7.0000000
+R    ltSlk 0.0253185
+R       et 0.0458333
+R   dFSEE0 16.830996
+R dUSEEnll 0.0258751
+R   duSEEl 0.0133751
+R   vceMax 3.1849567
+R    LPEE0 0.8291669
+R     FPEE 4.6344832
+R    nuPEE 2.0578872
+R    dWasc 0.6680296
+R  nuCEasc 1.5661445
+R    dWdes 0.5842785
+R  nuCEdes 1.1799823
+R     Arel 0.1396396
+R     Brel 0.4447460
+R     Secc 11.230888
+R     Fecc 1.2709450
+R    dtInt 0.0000500
+R    dtOut 0.0100000
+R  tdnToCe 0.7105263
+Rlp0HL1997 0.0555299
+R lp0K1994 0.0610363
 *END
-
