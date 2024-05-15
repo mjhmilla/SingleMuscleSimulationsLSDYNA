@@ -13,6 +13,9 @@ R       et 0.0458333
 R   vceMax 2.8640480
 R shiftPEE 0.0049490
 R scalePEE 1.2970012
+RlambdaECM 0.5600000
+R lPevkPtN 0.5000000
+RlceHNLb1A 0.8433680
 R    dtInt 0.0000500
 R    dtOut 0.0100000
 R  tdnToCe 0.7050328

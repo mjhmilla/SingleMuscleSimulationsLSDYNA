@@ -5,10 +5,22 @@ function vexatCurves = calcVEXATTitinForceLengthRelation(...
                                 vexatCurves,...
                                 flag_plotVEXATTitinForceLengthCurves)
 
+
+assert(abs(umat43.lPevkPtN -sarcomere.normPevkToActinAttachmentPoint)<1e-6,...
+       ['Error: The titin curves used to generate these plots have been',...
+        'made using a fixed value for lPevkPtN that differs from the ',...
+        'the settings of umat43. This can be improved by interpolating',...
+        'the titin curves for lPevkPtN=0 and lPevkPtN=1 as is done in',...
+        'the Fortran model. In the interest of time I have not done this',...
+        'here.']);
+
 fpeDomain = curves.('fiberForceLengthCurve').xEnd ...
                  +[-0.01,0.01];  
-n = 100;
-samples = [min(fpeDomain):((max(fpeDomain)-min(fpeDomain))/(n-1)):max(fpeDomain)]';
+n = 200;
+
+lce0 = min(fpeDomain)*0.4;
+lce1 = max(fpeDomain) + (max(fpeDomain)-min(fpeDomain));
+samples = [lce0:((lce1-lce0)/(n-1)):lce1]';
 
 %flag_usingQuadraticCurves = 1;
 
@@ -153,15 +165,32 @@ for i=1:1:length(samples)
     vexatCurves.f2.lceNAT(i,1)=lceNAT;
     vexatCurves.f2.fceNAT(i,1)=f2NAT;
 
-    if(i==1)
+    %When active the f1 section has a fixed length and only the 
+    %f2 section stretches, at least in the limit when the titin-actin 
+    % damper really fixes titin.
+    if(lceN <= umat43.lceHNLb1A || i == 1)
         l12Fixed =  lPH ...
                     + sarcomere.ZLineToT12NormLengthAtOptimalFiberLength ...
                     + sarcomere.IGDFixedNormLengthAtOptimalFiberLength;
     end
     
-    l2NATactive = ((lDH + l12Fixed)*2)*cos(alpha);
-    vexatCurves.f2.active.lceNAT(i,1)= l2NATactive;
-    vexatCurves.f2.active.fceNAT(i,1)=f2NAT;
+    lceNActive = (l12Fixed + lDH)*2;
+
+    fibKinActive = calcFixedWidthPennatedFiberKinematicsAlongTendon(lceNActive*umat43.lceOpt,...
+                                    0,...
+                                    umat43.lceOpt,...
+                                    umat43.penOpt);   
+
+    lceATActive   = fibKinActive.fiberLengthAlongTendon;
+    alphaActive   = fibKinActive.pennationAngle;
+    lceNATActive  = lceATActive/umat43.lceOpt;    
+
+    fecmNActive = scalePEE*lambda*calcQuadraticBezierYFcnXDerivative(...
+                            lceNActive*0.5-shiftECM,...
+                            curves.forceLengthECMHalfCurve,0);    
+
+    vexatCurves.active.lceNAT(i,1)= lceNActive*cos(alphaActive);
+    vexatCurves.active.fceNAT(i,1)= (fecmNActive+f2N)*cos(alphaActive);
 
 end
 
