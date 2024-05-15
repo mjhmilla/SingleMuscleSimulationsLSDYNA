@@ -18,9 +18,20 @@ clear all;
 % 
 %%
 
-expData = 'HL1997';
+expData = 'HL2002';
 % HL1997 (Herzog & Leonard 1997)
 % HL2002 (Herzog & Leonard 2002)
+
+switch expData
+    case 'HL1997'
+        modeReferenceLength=0;
+    case 'HL2002'
+        modeReferenceLength=1;
+end
+%0. Evaluate the reference length for HL1997 and HL2002 using the target 
+%   value of lceN when active at the reference length
+%1. Evaluate the reference length for for HL1997 and HL2002 using the 
+%   target passive force at the longest length
 
 flag_addTendonLengthChangeToMat156    = 1;
 flag_plotMAT156Curves                 = 1;
@@ -352,7 +363,11 @@ modelParams.mat156Upd.vceMax = keyPointsVEXATFv.vceMaxAT;
         modelParams.umat43Upd,...
         keyPointsHL1997, ...
         keyPointsHL2002,...
-        felineSoleusNormMuscleQuadraticCurves);
+        felineSoleusNormMuscleQuadraticCurves,...
+        vexatCurves,...
+        ehtmmCurves,...
+        modeReferenceLength,...
+        flag_addTendonLengthChangeToMat156);
 
 %%
 % Write the new parameter files

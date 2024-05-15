@@ -13,6 +13,10 @@ function [figH] = ...
 
 figure(figH);
 
+if(contains(simulationDirectoryName,'force_velocity_06'))
+    here=1;
+end
+
 if(contains(simulationDirectoryName,'isometric'))
     return;
 end

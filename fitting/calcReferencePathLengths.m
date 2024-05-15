@@ -2,10 +2,68 @@ function [mat156,umat41,umat43]=calcReferencePathLengths(expData,...
                                     mat156,umat41,umat43,...
                                     keyPointsHL1997,...
                                     keyPointsHL2002,...
-                                    umat43QuadraticCurves)
+                                    umat43QuadraticCurves,... 
+                                    vexatCurves,...
+                                    ehtmmCurves,...
+                                    modeReferenceLength,...
+                                    flag_addTendonLengthChangeToMat156)
+
+switch expData
+    case 'HL1997'
+        idx = kmeans(keyPointsHL1997.fpe.f,keyPointsHL1997.fpe.clusters);
+        fpeExp.lp = zeros(keyPointsHL1997.fpe.clusters,1);
+        fpeExp.fmt = zeros(keyPointsHL1997.fpe.clusters,1);
+        for i=1:1:keyPointsHL1997.fpe.clusters
+            cIdx = find(idx == i);
+            fpeExp.lp(i,1)  = mean(keyPointsHL1997.fpe.l(cIdx));
+            fpeExp.fmt(i,1) = mean(keyPointsHL1997.fpe.f(cIdx));
+        end
+        [val,sIdx]=sort(fpeExp.fmt);
+        fpeExp.lp=fpeExp.lp(sIdx);        
+        fpeExp.fmt=fpeExp.fmt(sIdx);
+
+        fpeExp.lp =keyPointsHL1997.nms.l;
+        fpeExp.fmt=keyPointsHL1997.nms.f;
+
+        fpeExp.lpN = fpeExp.lp ./ keyPointsHL1997lceOpt;
+        fpeExp.fmtN = fpeExp.fmt ./ keyPointsHL1997.fceOpt;
+        
+
+    case 'HL2002'
+        idx = kmeans(keyPointsHL2002.fpe.f,keyPointsHL2002.fpe.clusters);
+        fpeExp.lp = zeros(keyPointsHL2002.fpe.clusters,1);
+        fpeExp.fmt = zeros(keyPointsHL2002.fpe.clusters,1);
+        for i=1:1:keyPointsHL2002.fpe.clusters
+            cIdx = find(idx == i);
+            fpeExp.lp(i,1)  = mean(keyPointsHL2002.fpe.l(cIdx));
+            fpeExp.fmt(i,1) = mean(keyPointsHL2002.fpe.f(cIdx));
+        end
+        [val,sIdx]=sort(fpeExp.fmt);
+        fpeExp.lp=fpeExp.lp(sIdx);        
+        fpeExp.fmt=fpeExp.fmt(sIdx); 
+
+        fpeExp.lp   = fpeExp.lp.*keyPointsHL2002.nms.l;
+        fpeExp.fmt  = fpeExp.fmt.*keyPointsHL2002.nms.f;
+        fpeExp.lpN  = fpeExp.lp ./ keyPointsHL2002.lceOpt;
+        fpeExp.fmtN = fpeExp.fmt ./ keyPointsHL2002.fceOpt;
+        
+end
+
+[fpeMaxN,idx]    = max(fpeExp.fmtN);
+fpeExp.fit.lpN   = fpeExp.lpN(idx);
+fpeExp.fit.fmtN  = fpeMaxN;
+
+
+%From the 9mm/s 9mm stretch trial
+% fpe.lpAT   = 0.009;   %target values
+% fpe.fmtAT  = 6.33634; %target values
+% fpe.mat156 = 0;
+% fpe.umat41 = 9.37132;
+% fpe.umat43 = 9.42862;
+
+
 
 lceNATStart = 0;
-
 switch expData
     case 'HL1997'
         lceNATStart = keyPointsHL1997.lceNATZero;
@@ -16,7 +74,28 @@ end
 lp0Str= ['lp0',expData];
 
 %MAT156 has no tendon
-mat156.(lp0Str) = lceNATStart*mat156.lceOptAT;
+switch modeReferenceLength
+    case 0
+        mat156.(lp0Str) = lceNATStart*mat156.lceOptAT;
+    case 1
+        idxMin = find(vexatCurves.fpe.fceNAT>0.05);
+        
+
+        lceNAT = interp1(vexatCurves.fpe.fceNAT(idxMin:end),...
+                         vexatCurves.fpe.lceNAT(idxMin:end),...
+                         fpeExp.fit.fmtN);
+        lceAT = lceNAT*mat156.lceOptAT;
+        dlt = 0;
+        if(flag_addTendonLengthChangeToMat156==1)
+            etN = calcQuadraticBezierYFcnXDerivative(fpeExp.fit.fmtN,...
+                    umat43QuadraticCurves.tendonForceLengthInverseNormCurve,0);
+            et = etN*umat43.et;
+            dlt = et*umat43.ltSlk;
+        end
+
+
+        mat156.(lp0Str) = lceAT+dlt;
+end
 mat156.lmtOptAT = mat156.lceOptAT;
 mat156.lp0K1994 = mat156.lceOptAT;
 
@@ -51,7 +130,13 @@ lsee = calcFseeInverseUmat41(fceAT,...
                              umat41.duSEEl,...
                              umat41.dFSEE0);
 
-umat41.(lp0Str) = lceAT + lsee;
+
+switch modeReferenceLength
+    case 0
+        umat41.(lp0Str) = lceAT + lsee;
+    case 1
+        umat41.(lp0Str) = nan;
+end
 
 %%
 %And now lmtOptAT: max activation at lceOptAT
@@ -134,7 +219,15 @@ etN = calcQuadraticBezierYFcnXDerivative(fceNAT,....
                 umat43QuadraticCurves.tendonForceLengthInverseNormCurve,0);
 et = etN*umat43.et;
 
-umat43.(lp0Str) = lce*cos(alpha) + (1+et)*umat43.ltSlk;
+
+
+switch modeReferenceLength
+    case 0
+        umat43.(lp0Str) = lce*cos(alpha) + (1+et)*umat43.ltSlk;
+    case 1
+        umat41.(lp0Str) = nan;
+end
+
 
 %%
 %Maximum activation

@@ -70,7 +70,7 @@ flag_generatePublicationPlots       = 1;
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
-flag_enableEccentricExperiment          = 0;
+flag_enableEccentricExperiment          = 1;
 flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 0;
@@ -79,7 +79,7 @@ flag_enableReflexExperiment_kN_mm_ms    = 0;
 flag_enableActivePassiveForceLengthExperimentViva   = 0;
 flag_enableForceVelocityExperimentViva              = 0;
 flag_enableActivePassiveForceLengthExperiment       = 0;
-flag_enableForceVelocityExperiment                  = 1;
+flag_enableForceVelocityExperiment                  = 0;
 
 if(flag_enableForceVelocityExperimentViva ...
         || flag_enableActivePassiveForceLengthExperimentViva)

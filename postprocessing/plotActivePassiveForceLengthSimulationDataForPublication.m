@@ -24,8 +24,8 @@ flag_plotScottBrownLoeb1996_fig3_active = 1;
 flag_plotScottBrownLoeb1996_fig3_passive= 0;
 flag_plotHoltAzizi2014                  = 0;
 flag_plotRackWestbury1969               = 1;
-flag_plotHerzogLeonard1997KeyPoints     = 1;
-flag_plotHerzogLeonard2002KeyPoints     = 1;
+flag_plotHerzogLeonard1997KeyPoints     = 0;
+flag_plotHerzogLeonard2002KeyPoints     = 0;
 
 flag_plotBrownScottLoeb1996_fig7        = 0;
 flag_plotRodeSiebertHerzogBlickhan2009  = 1;

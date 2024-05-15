@@ -250,6 +250,10 @@ for i=1:1:3
     end
 end
 
+%Scaling to bring the units to Newton, meter, second
+keyPointsHL2002.nms.l = 0.001;
+keyPointsHL2002.nms.f = 1;
+
 [lengthOrdered, indexOrdered] = sort(keyPointsHL2002.fpe.l);
 
 keyPointsHL2002.fpe.l = keyPointsHL2002.fpe.l(indexOrdered);

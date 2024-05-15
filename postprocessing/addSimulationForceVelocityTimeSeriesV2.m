@@ -134,20 +134,22 @@ faNSample = (fB-fA)/maximumIsometricForce;
 %to zero over a few steps. 
 idx = indexRamp1;
 if(contains(simulationDirectoryName,'isometric')==0)
-    dfR =(lsdynaMuscleUniform.vp(idx,1)...
-        - lsdynaMuscleUniform.vp(idx-1,1));
-    while( abs(dfR) > 1e-8 && idx > indexRamp0)
-        idx=idx-1;
-        dfR =(lsdynaMuscleUniform.vp(idx,1)...
-            - lsdynaMuscleUniform.vp(idx-1,1));                
-    end        
-    if(idx <= indexRamp0)
-        [val,idx]=max(abs(lsdynaMuscleUniform.vp(indexRamp0:indexRamp1,1)));
-        idx = indexRamp0+idx-1;
-    end
-    assert(idx >= indexRamp0,...
-        ['Error: the loop used to refine the end of'...
-         ' the ramp continued to the beginning of the ramp']);
+%     dfR =(lsdynaMuscleUniform.vp(idx,1)...
+%         - lsdynaMuscleUniform.vp(idx-1,1));
+%     while( abs(dfR) > 1e-8 && idx > indexRamp0)
+%         idx=idx-1;
+%         dfR =(lsdynaMuscleUniform.vp(idx,1)...
+%             - lsdynaMuscleUniform.vp(idx-1,1));                
+%     end        
+%     if(idx <= indexRamp0)
+%         [val,idx]=max(abs(lsdynaMuscleUniform.vp(indexRamp0:indexRamp1,1)));
+%         idx = indexRamp0+idx-1;
+%     end
+%     assert(idx >= indexRamp0,...
+%         ['Error: the loop used to refine the end of'...
+%          ' the ramp continued to the beginning of the ramp']);
+    idx = find( abs(lsdynaMuscleUniform.vp) > 1e-6,1,'last');
+
 else
     idx=indexRamp1;
 end

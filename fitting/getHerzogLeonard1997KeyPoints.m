@@ -32,10 +32,15 @@ dataHL1997Force = loadDigitizedData(fileHL1997Force,...
 %keyPointsHL1997.fceOptAT = 0;
 %keyPointsHL1997.lceOptAT = 0;
 
+
 keyPointsHL1997.units.l='mm';
 keyPointsHL1997.units.v='mm/s';
 keyPointsHL1997.units.f='N';
 keyPointsHL1997.units.t='seconds';
+
+%Scaling to bring the units to Newton, meter, second
+keyPointsHL1997.nms.l=0.001;
+keyPointsHL1997.nms.f=1;
 
 %Raw data
 fpeSeries       = struct('l',[],'f',[]);
