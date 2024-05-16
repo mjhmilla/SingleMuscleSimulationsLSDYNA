@@ -1,5 +1,5 @@
 function keyPointsHL2002 = getHerzogLeonard2002KeyPoints(matlabScriptPath,...
-                    refExperimentFolder,flag_plotAnnotationData)
+                    refExperimentFolder,scaleFpe,flag_plotAnnotationData)
 
 filePath = fullfile(matlabScriptPath,refExperimentFolder,...
                     'eccentric_HerzogLeonard2002',...
@@ -257,7 +257,7 @@ keyPointsHL2002.nms.f = 1;
 [lengthOrdered, indexOrdered] = sort(keyPointsHL2002.fpe.l);
 
 keyPointsHL2002.fpe.l = keyPointsHL2002.fpe.l(indexOrdered);
-keyPointsHL2002.fpe.f = keyPointsHL2002.fpe.f(indexOrdered);
+keyPointsHL2002.fpe.f = keyPointsHL2002.fpe.f(indexOrdered).*scaleFpe;
 keyPointsHL2002.fpe.clusters=4;
 
 %Active force length

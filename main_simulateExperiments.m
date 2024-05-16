@@ -89,7 +89,7 @@ if(flag_enableForceVelocityExperimentViva ...
     disp('         a publication.');
 end
 
-runOneTrial = [];
+runOneTrial = ['ramp_9mmps_9mm'];
 
 flag_sinusoid_aniType = 0; 
 % This is only relevant when post-processing SinusoidExperiment
@@ -451,6 +451,16 @@ if(flag_postProcessSimulationData==1)
                 simulationDirectories           = ...
                   simulationDirectories([simulationDirectories.isdir]==true);
         
+%                 if(isempty(runOneTrial)==0)
+%                     indexRunOneTrial=0;
+%                     for i=1:1:length(simulationDirectories)
+%                         if(contains(simulationDirectories(i).name,runOneTrial))
+%                             indexRunOneTrial=i;
+%                         end
+%                     end
+%                     simulationDirectories=simulationDirectories(indexRunOneTrial);
+%                 end
+
                 %Set the path for the reference data
                 
 

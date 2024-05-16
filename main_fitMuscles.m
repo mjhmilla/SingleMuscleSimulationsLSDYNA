@@ -166,6 +166,13 @@ modelParams.umat43=umat43;
 modelParams.mat156Upd=mat156;
 modelParams.umat41Upd=umat41;
 modelParams.umat43Upd=umat43;
+
+titinFields=fields(titin);
+for i=1:1:length(titinFields)
+    disp(titinFields{i});
+   modelParams.umat43Upd.(titinFields{i})= ...
+       titin.(titinFields{i});
+end
 %%
 % Load fitting data
 %%
@@ -180,8 +187,12 @@ ktNIso = 30;        %Scott & Loeb (1995)
 keyPointsHL1997 = getHerzogLeonard1997KeyPoints(matlabScriptPath,...
                     refExperimentFolder,flag_plotHL1997AnnotationData);
 
+%To align the passive curve with the final fpe value after
+%it has had time to settle.
+scaleFpeHL2002 = 6.038/7.3;
 keyPointsHL2002 = getHerzogLeonard2002KeyPoints(matlabScriptPath,...
-                    refExperimentFolder,flag_plotHL2002AnnotationData);
+                    refExperimentFolder,scaleFpeHL2002,...
+                    flag_plotHL2002AnnotationData);
 
 %%
 %Starting architectural parameters
@@ -317,12 +328,7 @@ end
 %%
 % Passive force-length relation
 %%
-titinFields=fields(titin);
-for i=1:1:length(titinFields)
-    disp(titinFields{i});
-   modelParams.umat43Upd.(titinFields{i})= ...
-       titin.(titinFields{i});
-end
+
 
 [modelParams.umat43Upd, keyPointsVEXATFpe,vexatCurves]= ...
     fitVEXATPassiveForceLengthRelation(...

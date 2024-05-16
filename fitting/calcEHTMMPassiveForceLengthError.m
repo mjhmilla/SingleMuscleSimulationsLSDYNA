@@ -136,7 +136,9 @@ if(fitMode==2)
     fmin = 0.1;
     fmax = 0.6;
     idxMin = find(vexatFpeSample.fceNAT > fmin*0.5,1);
-    %for k=1:1:1
+    idxMax = find(vexatFpeSample.fceNAT > 1,1);
+    
+   % for k=1:10:idxMax
     k=4;
         
         n = (k-1)/(8-1);

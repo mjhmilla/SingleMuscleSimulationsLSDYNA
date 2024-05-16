@@ -35,7 +35,9 @@ if(contains(expData,'HL1997'))
                             keyPointsVEXATFpe,vexatCurves.fpe,...
                             fitMode);
     
-    x0 = x1;
+    LPEE0 = max(keyPointsHL1997.fpe.lceNAT)*0.8;
+    x0 = [LPEE0;FPEE;nuPEE]./[umat41.LPEE0;umat41.FPEE;umat41.nuPEE];
+    
     
     options     = optimset('Display','off','MaxIter',1e6);
     [x1, resnorm,residual,exitflag]   = lsqnonlin(errFcn2,x0,[],[],options);
