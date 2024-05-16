@@ -1,4 +1,4 @@
-function success = writeFortranVector(dataX, dataY, tableId, fullFilePath)
+function success = writeFortranVector(dataX, dataY, tableId, fullFilePath,flag_readWriteAppend)
 
 success = 0;
 
@@ -6,7 +6,7 @@ assert(size(dataX,2)==1 && size(dataY,2)==1,'Error: both dataX and dataY must be
 assert(size(dataX,1)==size(dataY,1),'Error: dataX and dataY must have the same length');
 assert(abs(round(tableId)-tableId) < eps,'Error tableId must be an integer');
 
-fid = fopen(fullFilePath,'w');
+fid = fopen(fullFilePath,flag_readWriteAppend);
 assert(fid,'Error: fullFilePath failed to open');
 
 idStr = sprintf('%i',tableId);

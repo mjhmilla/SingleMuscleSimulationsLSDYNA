@@ -156,6 +156,8 @@ simRefDataMap(12).refLengthColumn    = 13;
 simRefDataMap(12).plotColumn         = 3;
 simRefDataMap(12).activation         = 0;
 
+
+
 % Add the reference data
 if(flag_addReferenceData==1)
 
@@ -286,6 +288,8 @@ if(flag_addReferenceData==1)
                         %length column
                         colId = data.colheaders{indexColumnHeader}(2:3);
                         assert( contains(data.colheaders{indexColumnHeader+1},colId));
+
+
                         
                     end
     
@@ -803,6 +807,10 @@ if(flag_addSimulationData)
 
     %If we have found a ramp that has a 9mm length change, plot it
     if(indexRamp ~= 0)
+
+        if(contains(simulationFile,'ramp_9mmps_9mm'))
+            here=1;
+        end
 
         indexRowA = 1;
         indexRowB = indexRowA+1;

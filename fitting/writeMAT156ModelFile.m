@@ -146,19 +146,52 @@ for i=1:1:length(fvValues.x)
     fvValues.yAT(i,1) = fceOpt*fvValues.y(i,1)*cos(alpha)/fceOptAT;
 end
 
+fmFiles = [];
 
+mat156PrePostFolder = fullfile(modelFolder,'mat156');
 
-falFile = fullfile(modelFolder,...
-            ['mat156_',expAbbrv,'_activeForceLengthCurve.f']);
-fpeFile = fullfile(modelFolder,...
-            ['mat156_',expAbbrv,'_passiveForceLengthCurve.f']);
-fvFile  = fullfile(modelFolder,...
-            ['mat156_',expAbbrv,'_forceVelocityCurve.f']);
+switch expAbbrv
+    case 'HL1997'
+        fmFiles={['catsoleus',expAbbrv,'Mat156']};
+    case 'HL2002'
+        fmFile1 = ['catsoleus',expAbbrv,'Mat156'];
+        fmFile2 = ['catsoleusKBR1994Mat156'];
+        fmFiles = {fmFile1,fmFile2};
+end
 
+% falFile = fullfile(modelFolder,...
+%             ['mat156_',expAbbrv,'_activeForceLengthCurve.f']);
+% fpeFile = fullfile(modelFolder,...
+%             ['mat156_',expAbbrv,'_passiveForceLengthCurve.f']);
+% fvFile  = fullfile(modelFolder,...
+%             ['mat156_',expAbbrv,'_forceVelocityCurve.f']);
 
-success = writeFortranVector(falValues.xAT, falValues.yAT, 10, falFile);
-success = writeFortranVector(fpeValues.xAT, fpeValues.yAT, 11, fpeFile);
-success = writeFortranVector( fvValues.xAT,  fvValues.yAT, 12, fvFile);
+for idx=1:1:length(fmFiles)
+    preFile  = fullfile(mat156PrePostFolder,[fmFiles{idx},'_pre.k']);
+    postFile = fullfile(mat156PrePostFolder,[fmFiles{idx},'_post.k']);
+    fileName = fullfile(modelFolder,[fmFiles{idx},'.k']);
+
+    success = copyfile(preFile,fileName);
+    assert(success==1,['Error: failed to copy ',preFile]);
+
+    success = writeFortranVector(...
+                falValues.xAT, falValues.yAT, 10, fileName,'a');
+    assert(success==1,['Error: failed to write fal to',preFile]);
+
+    success = writeFortranVector(...
+                fpeValues.xAT, fpeValues.yAT, 11, fileName,'a');
+    assert(success==1,['Error: failed to write fpe to',preFile]);
+    
+    success = writeFortranVector(...
+                fvValues.xAT,  fvValues.yAT, 12, fileName,'a');
+    assert(success==1,['Error: failed to write fv to',preFile]);
+
+    strPost = fileread(postFile);
+    fid = fopen(fileName,'a');
+    fprintf(fid,'%s',strPost);
+    fclose(fid);
+    
+end
 
 
 if(flag_plotMAT156Curves==1)
