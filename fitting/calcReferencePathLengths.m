@@ -77,8 +77,8 @@ switch expData
 end
 
 lp0Str= ['lp0',expData];
-lp0StrA= ['lp0',expData,'A'];
-lp0StrB= ['lp0',expData,'B'];
+lp0StrA= ['lpA',expData];
+lp0StrB= ['lpB',expData];
 
 %MAT156 has no tendon
 %switch modeReferenceLength
