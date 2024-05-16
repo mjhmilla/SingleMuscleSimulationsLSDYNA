@@ -16,6 +16,7 @@ R scalePEE 1.2970012
 RlambdaECM 0.56
 R lPevkPtN 0.5
 RlceHNLb1A 0.40
+R beta1AHN 60.0
 R    dtInt 0.0000500
 R    dtOut 0.0100000
 R  tdnToCe 0.7050328
