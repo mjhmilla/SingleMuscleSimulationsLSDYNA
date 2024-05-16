@@ -24,6 +24,10 @@ expData = 'HL2002';
 % HL1997 (Herzog & Leonard 1997)
 % HL2002 (Herzog & Leonard 2002)
 
+titin.lambdaECM = 0.56;
+titin.lPevkPtN  = 0.45;
+titin.beta1AHN  = 55;
+
 switch expData
     case 'HL1997'
         modeReferenceLength=1;
@@ -35,7 +39,7 @@ end
 %1. Evaluate the reference length for for HL1997 and HL2002 using the 
 %   target passive force at the longest length
 
-flag_addTendonLengthChangeToMat156    = 1;
+flag_addTendonLengthChangeToMat156    = 0;
 flag_plotMAT156Curves                 = 1;
 
 flag_assertCommonParamsIdentical=0;
@@ -313,6 +317,12 @@ end
 %%
 % Passive force-length relation
 %%
+titinFields=fields(titin);
+for i=1:1:length(titinFields)
+    disp(titinFields{i});
+   modelParams.umat43Upd.(titinFields{i})= ...
+       titin.(titinFields{i});
+end
 
 [modelParams.umat43Upd, keyPointsVEXATFpe,vexatCurves]= ...
     fitVEXATPassiveForceLengthRelation(...
