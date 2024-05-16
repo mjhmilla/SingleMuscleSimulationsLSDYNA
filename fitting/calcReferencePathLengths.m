@@ -77,30 +77,35 @@ switch expData
 end
 
 lp0Str= ['lp0',expData];
+lp0StrA= ['lp0',expData,'A'];
+lp0StrB= ['lp0',expData,'B'];
 
 %MAT156 has no tendon
-switch modeReferenceLength
-    case 0
+%switch modeReferenceLength
+%    case 0
         
-        mat156.(lp0Str) = lceATStart;
-    case 1
+mat156.(lp0StrA) = lceATStart;
+%    case 1
 
-        idxMin = find(vexatCurves.fecm.fceNAT>0.01);        
-        lceNAT = interp1(vexatCurves.fecm.fceNAT(idxMin:end) ...
-                       + vexatCurves.f2.fceNAT(idxMin:end),...
-                         vexatCurves.fecm.lceNAT(idxMin:end),...
-                         fpeExp.fit.fceNAT);
-        lceAT = lceNAT*mat156.lceOptAT;
-        dlt = 0;
-        if(flag_addTendonLengthChangeToMat156==1)
-            etN = calcQuadraticBezierYFcnXDerivative(fpeExp.fit.fceNAT,...
-                    umat43QuadraticCurves.tendonForceLengthInverseNormCurve,0);
-            et = etN*umat43.et;
-            dlt = et*umat43.ltSlk;
-        end
-
-        mat156.(lp0Str) = lceAT+dlt - fpeExp.fit.l;
+idxMin = find(vexatCurves.fecm.fceNAT>0.01);        
+lceNAT = interp1(vexatCurves.fecm.fceNAT(idxMin:end) ...
+               + vexatCurves.f2.fceNAT(idxMin:end),...
+                 vexatCurves.fecm.lceNAT(idxMin:end),...
+                 fpeExp.fit.fceNAT);
+lceAT = lceNAT*mat156.lceOptAT;
+dlt = 0;
+if(flag_addTendonLengthChangeToMat156==1)
+    etN = calcQuadraticBezierYFcnXDerivative(fpeExp.fit.fceNAT,...
+            umat43QuadraticCurves.tendonForceLengthInverseNormCurve,0);
+    et = etN*umat43.et;
+    dlt = et*umat43.ltSlk;
 end
+
+mat156.(lp0StrB) = lceAT+dlt - fpeExp.fit.l;
+
+%end
+mat156.(lp0Str) = 0.5*(mat156.(lp0StrA)+mat156.(lp0StrB));
+
 mat156.lmtOptAT = mat156.lceOptAT;
 mat156.lp0K1994 = mat156.lceOptAT;
 
@@ -136,29 +141,30 @@ lsee = calcFseeInverseUmat41(fceAT,...
                              umat41.dFSEE0);
 
 
-switch modeReferenceLength
-    case 0
-        umat41.(lp0Str) = lceAT + lsee;
-    case 1
-        umat41.(lp0Str) = nan;
-        
-        lceAT = calcFpeeInverseUmat41(fpeExp.fit.f,...
-                              umat41.lceOptAT,...
-                              umat41.dWdes,...
-                              umat41.fceOptAT,...
-                              umat41.FPEE,...
-                              umat41.LPEE0,...
-                              umat41.nuPEE);
+%switch modeReferenceLength
+%    case 0
+umat41.(lp0StrA) = lceAT + lsee;
+%    case 1
 
-        lsee = calcFseeInverseUmat41(fpeExp.fit.f,...
-                                umat41.ltSlk,...
-                                umat41.dUSEEnll,...
-                                umat41.duSEEl,...
-                                umat41.dFSEE0);
+lceAT = calcFpeeInverseUmat41(fpeExp.fit.f,...
+                      umat41.lceOptAT,...
+                      umat41.dWdes,...
+                      umat41.fceOptAT,...
+                      umat41.FPEE,...
+                      umat41.LPEE0,...
+                      umat41.nuPEE);
 
-        umat41.(lp0Str)=lceAT+lsee - fpeExp.fit.l;
+lsee = calcFseeInverseUmat41(fpeExp.fit.f,...
+                        umat41.ltSlk,...
+                        umat41.dUSEEnll,...
+                        umat41.duSEEl,...
+                        umat41.dFSEE0);
 
-end
+umat41.(lp0StrB)=lceAT+lsee - fpeExp.fit.l;
+
+umat41.(lp0Str) = 0.5*(umat41.(lp0StrA)+umat41.(lp0StrB));
+
+%end
 
 %%
 %And now lmtOptAT: max activation at lceOptAT
@@ -243,29 +249,29 @@ et = etN*umat43.et;
 
 
 
-switch modeReferenceLength
-    case 0
-        umat43.(lp0Str) = lce*cos(alpha) + (1+et)*umat43.ltSlk;
-    case 1
-        umat43.(lp0Str) = nan;
-
-        %Use pre-calculated values along the tendon 
-        idxMin = find(vexatCurves.fecm.fceNAT > 0.01,1,'first');
-        lceNAT = interp1(vexatCurves.fecm.fceNAT(idxMin:end) ...
-                       + vexatCurves.f2.fceNAT(idxMin:end),...
-                         vexatCurves.fecm.lceNAT(idxMin:end),...
-                         fpeExp.fit.fceNAT);
+%switch modeReferenceLength
+%    case 0
+umat43.(lp0StrA) = lce*cos(alpha) + (1+et)*umat43.ltSlk;
+%    case 1
 
 
-        idxMin = find(vexatCurves.ft.ftN > 0.01,1,'first');
-        ltN    = interp1(vexatCurves.ft.ftN(idxMin:end),...
-                         vexatCurves.ft.ltN(idxMin:end),...
-                         fpeExp.fit.fceNAT);
-                
-        umat43.(lp0Str) = lceNAT*umat43.lceOpt+ltN*umat43.ltSlk-fpeExp.fit.l;
+%Use pre-calculated values along the tendon 
+idxMin = find(vexatCurves.fecm.fceNAT > 0.01,1,'first');
+lceNAT = interp1(vexatCurves.fecm.fceNAT(idxMin:end) ...
+               + vexatCurves.f2.fceNAT(idxMin:end),...
+                 vexatCurves.fecm.lceNAT(idxMin:end),...
+                 fpeExp.fit.fceNAT);
 
-end
 
+idxMin = find(vexatCurves.ft.ftN > 0.01,1,'first');
+ltN    = interp1(vexatCurves.ft.ftN(idxMin:end),...
+                 vexatCurves.ft.ltN(idxMin:end),...
+                 fpeExp.fit.fceNAT);
+        
+umat43.(lp0StrB) = lceNAT*umat43.lceOpt+ltN*umat43.ltSlk-fpeExp.fit.l;
+%end
+
+umat43.(lp0Str) = 0.5*(umat43.(lp0StrA)+umat43.(lp0StrB)); 
 
 %%
 %Maximum activation
