@@ -18,15 +18,11 @@ clear all;
 % 
 %%
 
-flag_writeLSDYNAFiles=1;
 
-expData = 'HL2002';
+
+expData = 'HL1997';
 % HL1997 (Herzog & Leonard 1997)
 % HL2002 (Herzog & Leonard 2002)
-
-titin.lambdaECM = 0.56;
-titin.lPevkPtN  = 0.45;
-titin.beta1AHN  = 55;
 
 switch expData
     case 'HL1997'
@@ -39,14 +35,14 @@ end
 %1. Evaluate the reference length for for HL1997 and HL2002 using the 
 %   target passive force at the longest length
 
+flag_writeLSDYNAFiles=1;
+
 flag_addTendonLengthChangeToMat156    = 0;
 flag_plotMAT156Curves                 = 1;
 
 flag_assertCommonParamsIdentical=0;
 
-flag_addHL1997PassiveCurveToHL2002Figure=1;
-
-flag_zeroMAT156TendonSlackLength=1;
+flag_zeroMAT156TendonSlackLength        =1;
 
 flag_plotHL1997AnnotationData           = 0;
 flag_plotHL2002AnnotationData           = 0;
@@ -54,12 +50,19 @@ flag_plotHL2002AnnotationData           = 0;
 flag_plotVEXATActiveForceLengthFitting  = 0;
 flag_plotEHTMMActiveForceLengthFitting  = 0;
 
+flag_addHL1997PassiveCurveToHL2002Figure= 1;
 flag_plotVEXATPassiveForceLengthFitting = 0;
-flag_plotVEXATTitinForceLengthCurves    = 0;
 flag_plotEHTMMPassiveForceLengthFitting = 0;
+
+flag_plotVEXATTitinForceLengthCurves    = 0;
 
 flag_plotVEXATForceVelocityFitting      = 0;
 flag_plotEHTMMForceVelocityFitting      = 0;
+
+%Default titin properties used across all simulations
+titin.lambdaECM = 0.56;
+titin.lPevkPtN  = 0.5;
+titin.beta1AHN  = 55;
 
 %Test to see if the Matlab terminal is in the correct directory
 currDirContents = dir;
@@ -187,11 +190,8 @@ ktNIso = 30;        %Scott & Loeb (1995)
 keyPointsHL1997 = getHerzogLeonard1997KeyPoints(matlabScriptPath,...
                     refExperimentFolder,flag_plotHL1997AnnotationData);
 
-%To align the passive curve with the final fpe value after
-%it has had time to settle.
-scaleFpeHL2002 = 6.038/7.3;
 keyPointsHL2002 = getHerzogLeonard2002KeyPoints(matlabScriptPath,...
-                    refExperimentFolder,scaleFpeHL2002,...
+                    refExperimentFolder,...
                     flag_plotHL2002AnnotationData);
 
 %%

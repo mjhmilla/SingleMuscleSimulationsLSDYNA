@@ -1,5 +1,5 @@
 function keyPointsHL2002 = getHerzogLeonard2002KeyPoints(matlabScriptPath,...
-                    refExperimentFolder,scaleFpe,flag_plotAnnotationData)
+                    refExperimentFolder,flag_plotAnnotationData)
 
 filePath = fullfile(matlabScriptPath,refExperimentFolder,...
                     'eccentric_HerzogLeonard2002',...
@@ -132,12 +132,32 @@ for i=1:1:3
         assert(length(colF)==1);
 
         if(isnan(rowKp)==0)
+            
             l0 = interp1(dataHL2002(:,colTime),...
                          dataHL2002(:,colL(1,1)),...
                          pointsHL2002(rowKp,kPCol.t0));
             f0 = pointsHL2002(rowKp,kPCol.f0); 
-            keyPointsHL2002.fpe.l = [keyPointsHL2002.fpe.l; l0];
-            keyPointsHL2002.fpe.f = [keyPointsHL2002.fpe.f; f0];
+
+            %The passive values of the 9mm isometric trials are 
+            %quite a bit higher than the trials that are being simulated.
+            %These values are so close to the peak passive force of the
+            %ramp trials that I think the passive element has not yet
+            %settled. As such I'm excluding these from the fit.
+            if(j ~= 5)
+                keyPointsHL2002.fpe.l = [keyPointsHL2002.fpe.l; l0];
+                keyPointsHL2002.fpe.f = [keyPointsHL2002.fpe.f; f0]; 
+            end
+
+            %Include the final values of the passive 9mm ramp
+            if(j == 6)
+                l2 = interp1(dataHL2002(:,colTime),...
+                             dataHL2002(:,colL(1,1)),...
+                             pointsHL2002(rowKp,kPCol.t2));
+                f2 = pointsHL2002(rowKp,kPCol.f2); 
+                keyPointsHL2002.fpe.l = [keyPointsHL2002.fpe.l; l2];
+                keyPointsHL2002.fpe.f = [keyPointsHL2002.fpe.f; f2];                 
+            end
+
             if(j <= 5)
 
                 l1 = interp1(dataHL2002(:,colTime),...
@@ -257,7 +277,7 @@ keyPointsHL2002.nms.f = 1;
 [lengthOrdered, indexOrdered] = sort(keyPointsHL2002.fpe.l);
 
 keyPointsHL2002.fpe.l = keyPointsHL2002.fpe.l(indexOrdered);
-keyPointsHL2002.fpe.f = keyPointsHL2002.fpe.f(indexOrdered).*scaleFpe;
+keyPointsHL2002.fpe.f = keyPointsHL2002.fpe.f(indexOrdered);
 keyPointsHL2002.fpe.clusters=4;
 
 %Active force length

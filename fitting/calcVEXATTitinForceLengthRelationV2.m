@@ -95,12 +95,12 @@ for i=1:1:length(samples)
         lPH   = calcQuadraticBezierYFcnXDerivative(f/scalePEE,...
                     titinCurves.forceLengthProximalTitinInverseCurve,0)+shift1THN;
         dPH   = calcQuadraticBezierYFcnXDerivative(f/scalePEE,...
-                    titinCurves.forceLengthProximalTitinInverseCurve,1)+shift1THN;
+                    titinCurves.forceLengthProximalTitinInverseCurve,1)*(1/scalePEE);
     
         lDH   = calcQuadraticBezierYFcnXDerivative(f/scalePEE,...
                     titinCurves.forceLengthDistalTitinInverseCurve,0)+shift2THN;
         dDH  = calcQuadraticBezierYFcnXDerivative(f/scalePEE,...
-                    titinCurves.forceLengthDistalTitinInverseCurve,1)+shift2THN;
+                    titinCurves.forceLengthDistalTitinInverseCurve,1)*(1/scalePEE);
     
         lerr = (lPH + lDH ...
                 + sarcomere.ZLineToT12NormLengthAtOptimalFiberLength ...
@@ -109,6 +109,11 @@ for i=1:1:length(samples)
         dlerr= dPH + dDH;
         df   = -lerr/dlerr;
         f    = f+df;
+
+        if(f<=0)
+            f = calcQuadraticBezierYFcnXDerivative(0,...
+                 titinCurves.forceLengthDistalTitinCurve,0)*scalePEE;
+        end
     
         iter=iter+1;
     end
