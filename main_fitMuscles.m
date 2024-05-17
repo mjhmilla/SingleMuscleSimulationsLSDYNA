@@ -14,8 +14,6 @@ clear all;
 % relation. Why? We have no way of knowing how fast the tendon is 
 % contracting. Lucky for us the amount of error will be small for a 
 % cat soleus because the tendon is smaller than the muscle.
-%
-% 
 %%
 
 

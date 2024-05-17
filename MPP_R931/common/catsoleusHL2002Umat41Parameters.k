@@ -32,6 +32,7 @@ RlpAHL2002 0.0769762
 RlpBHL2002 0.0750254
 Rlp0HL2002 0.0760008
 R lp0K1994 0.0776096
+R       kt NaN
 *PARAMETER_EXPRESSION
 $#    name expression
 R       kt &dFSEE0/(&duSEEl*&ltSlk)

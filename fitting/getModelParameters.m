@@ -23,62 +23,19 @@ umat43CardFile = fullfile(commonParameterFolder,...
                             ['catsoleus',expAbbrv,'Umat43.k']);
 
 
-%getLsdynaCardFieldValue(...
-%                                  simulationInformation(indexSimulationInfo).musclePropertyCard,...
-%                                  simulationInformation(indexSimulationInfo).pennationAngleDegrees);
-
-umat41.lceOpt     = getParameterFieldValue(umat41ParameterFile,'lceOpt');
-umat41.fceOpt     = getParameterFieldValue(umat41ParameterFile,'fceOpt');
-umat41.lceOptAT   = getParameterFieldValue(umat41ParameterFile,'lceOptAT');
-umat41.fceOptAT   = getParameterFieldValue(umat41ParameterFile,'fceOptAT');
-umat41.lmtOptAT   = getParameterFieldValue(umat41ParameterFile,'lmtOptAT');
-umat41.penOpt     = getParameterFieldValue(umat41ParameterFile,'penOpt');
-umat41.penOptD    = getParameterFieldValue(umat41ParameterFile,'penOptD');
-umat41.ltSlk      = getParameterFieldValue(umat41ParameterFile,'ltSlk');
-umat41.et         = getParameterFieldValue(umat41ParameterFile,'et');
-umat41.dFSEE0     = getParameterFieldValue(umat41ParameterFile,'dFSEE0');
-umat41.dUSEEnll   = getParameterFieldValue(umat41ParameterFile, 'dUSEEnll');
-umat41.duSEEl     = getParameterFieldValue(umat41ParameterFile, 'duSEEl');
-umat41.vceMax     = getParameterFieldValue(umat41ParameterFile,'vceMax');
-umat41.LPEE0      = getParameterFieldValue(umat41ParameterFile, 'LPEE0');
-umat41.FPEE       = getParameterFieldValue(umat41ParameterFile, 'FPEE');   
-umat41.nuPEE      = getParameterFieldValue(umat41ParameterFile, 'nuPEE');
-umat41.dWasc      = getParameterFieldValue(umat41ParameterFile, 'dWasc');
-umat41.nuCEasc    = getParameterFieldValue(umat41ParameterFile, 'nuCEasc');
-umat41.dWdes      = getParameterFieldValue(umat41ParameterFile, 'dWdes');
-umat41.nuCEdes    = getParameterFieldValue(umat41ParameterFile, 'nuCEdes');
-umat41.Arel   = getParameterFieldValue(umat41ParameterFile, 'Arel');
-umat41.Brel   = getParameterFieldValue(umat41ParameterFile, 'Brel');
-umat41.Secc   = getParameterFieldValue(umat41ParameterFile, 'Secc');
-umat41.Fecc   = getParameterFieldValue(umat41ParameterFile, 'Fecc');
-umat41.dtInt      = getParameterFieldValue(umat41ParameterFile,'dtInt');
-umat41.dtOut      = getParameterFieldValue(umat41ParameterFile,'dtOut');
+%umat41 = getParametersUmat41(umat41ParameterFile);
+umat41 = getAllParameterFieldsAndValues(umat41ParameterFile);
 umat41.extraLines ={''};
-if(contains(expAbbrv,'HL2002')==1)
+if(contains(umat41ParameterFile,'HL2002')==1)
     umat41.extraLines = {   '*PARAMETER_EXPRESSION',...
                             '$#    name expression',...
                             'R       kt &dFSEE0/(&duSEEl*&ltSlk)'};
 end
 
+%umat43 = getParametersUmat43(umat43ParameterFile);
+umat43 = getAllParameterFieldsAndValues(umat43ParameterFile);
+umat43.extraLines = {''};
 
-umat43.lceOpt     =getParameterFieldValue(umat43ParameterFile,'lceOpt');
-umat43.fceOpt     =getParameterFieldValue(umat43ParameterFile,'fceOpt');
-umat43.lceOptAT   =getParameterFieldValue(umat43ParameterFile,'lceOptAT');
-umat43.fceOptAT   =getParameterFieldValue(umat43ParameterFile,'fceOptAT');
-umat43.lmtOptAT   =getParameterFieldValue(umat43ParameterFile,'lmtOptAT');
-umat43.penOpt     =getParameterFieldValue(umat43ParameterFile,'penOpt');
-umat43.penOptD    =getParameterFieldValue(umat43ParameterFile,'penOptD');
-umat43.ltSlk      =getParameterFieldValue(umat43ParameterFile,'ltSlk');
-umat43.et         =getParameterFieldValue(umat43ParameterFile,'et');
-umat43.vceMax     =getParameterFieldValue(umat43ParameterFile,'vceMax');
-umat43.shiftPEE   =getParameterFieldValue(umat43ParameterFile,'shiftPEE');
-umat43.scalePEE   =getParameterFieldValue(umat43ParameterFile,'scalePEE');
-umat43.lambdaECM  =getParameterFieldValue(umat43ParameterFile,'lambdaECM');
-umat43.lPevkPtN   =getParameterFieldValue(umat43ParameterFile,'lPevkPtN');
-umat43.lceHNLb1A  =getParameterFieldValue(umat43ParameterFile,'lceHNLb1A');
-umat43.dtInt      =getParameterFieldValue(umat43ParameterFile,'dtInt');
-umat43.dtOut      =getParameterFieldValue(umat43ParameterFile,'dtOut');
-umat43.extraLines ={''};
 
 
 if(flag_assertCommonParamsIdentical==1)
@@ -111,21 +68,9 @@ if(flag_assertCommonParamsIdentical==1)
 
 end
 
-mat156.lceOpt     =getParameterFieldValue(mat156ParameterFile,'lceOpt');
-mat156.fceOpt     =getParameterFieldValue(mat156ParameterFile,'fceOpt');
-mat156.lceOptAT   =getParameterFieldValue(mat156ParameterFile,'lceOptAT');
-mat156.fceOptAT   =getParameterFieldValue(mat156ParameterFile,'fceOptAT');
-mat156.lmtOptAT   =getParameterFieldValue(mat156ParameterFile,'lmtOptAT');
-mat156.penOpt     =getParameterFieldValue(mat156ParameterFile,'penOpt');
-mat156.penOptD    =getParameterFieldValue(mat156ParameterFile,'penOptD');
-mat156.ltSlk      =getParameterFieldValue(mat156ParameterFile,'ltSlk');
-mat156.et         =getParameterFieldValue(mat156ParameterFile,'et');
-mat156.vceMax     =getParameterFieldValue(mat156ParameterFile,'vceMax');
-mat156.dtInt      =getParameterFieldValue(mat156ParameterFile,'dtInt');
-mat156.dtOut      =getParameterFieldValue(mat156ParameterFile,'dtOut');
-%mat156.lceNScale  =getParameterFieldValue(mat156ParameterFile,'lceNScale');
-mat156.extraLines ={''};
-
+%mat156 = getParametersMat156(mat156ParameterFile);
+mat156 = getAllParameterFieldsAndValues(mat156ParameterFile);
+mat156.extraLines = {''};
 
 
 if(flag_assertCommonParamsIdentical==1)
