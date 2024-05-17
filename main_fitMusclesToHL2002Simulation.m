@@ -31,7 +31,7 @@ if(strcmp(currDirContents(1).name,'.') ...
     rootFolderPath = pwd;
 end 
 
-flag_testing  = 0;
+flag_testing  = 1;
 
 maxIterations = 12;
 

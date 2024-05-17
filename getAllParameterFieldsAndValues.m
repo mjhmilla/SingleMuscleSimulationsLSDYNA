@@ -12,7 +12,7 @@ params=[];
 
 while ~feof(fid) && parametersEnded==0
     
-    if(contains(line,'*PARAMETER')==1)
+    if(contains(line,'*PARAMETER')==1 && parametersStarted==0)
         parametersStarted=1;
         line=fgetl(fid);
     elseif(strcmp(line(1,1),'*') && parametersStarted==1)
