@@ -17,7 +17,14 @@ errFcn = @(arg)calcEHTMMPassiveForceLengthError(arg,umat41,...
                         keyPointsVEXATFpe,vexatCurves.fpe,...
                         fitMode);
 
+
+
 x0 = [1;1;1];
+
+%Strange solutions result when LPEE0 is greater than the smallest data
+%point
+LPEE0init   = 0.75*min(keyPointsHL2002.fpe.lceNAT);
+x0(1,1) = LPEE0init/umat41.LPEE0;
 
 options     = optimset('Display','off','MaxIter',1e6);
 [x1, resnorm,residual,exitflag]   = lsqnonlin(errFcn,x0,[],[],options);
@@ -35,8 +42,9 @@ if(contains(expData,'HL1997'))
                             keyPointsVEXATFpe,vexatCurves.fpe,...
                             fitMode);
     
-    LPEE0 = max(keyPointsHL1997.fpe.lceNAT)*0.8;
-    x0 = [LPEE0;FPEE;nuPEE]./[umat41.LPEE0;umat41.FPEE;umat41.nuPEE];
+    LPEE0init = min(keyPointsHL1997.fpe.lceNAT)*0.75;
+    x0 = x1;
+    x0(1,1) = LPEE0init/umat41.LPEE0;
     
     
     options     = optimset('Display','off','MaxIter',1e6);
