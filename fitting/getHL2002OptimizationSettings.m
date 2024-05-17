@@ -17,11 +17,12 @@ switch typeOfFitting
         timeFinal = 12;
         timeAnalysis = timeFinal;
 
-        switch modelName
+        switch fitInfo.model
             case 'mat156'
                 optimizationVariable = '';
                 optimizationDelta = 0; 
-                optimizationBounds = [];                
+                optimizationBounds = []; 
+                assert(0,'Error: Not yet implemented');
             case 'umat41'
                 optimizationVariable = 'FPEE';
                 optimizationDelta = modelParams.FPEE*0.25; 

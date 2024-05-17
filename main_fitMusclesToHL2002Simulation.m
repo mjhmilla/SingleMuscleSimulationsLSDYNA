@@ -31,20 +31,26 @@ if(strcmp(currDirContents(1).name,'.') ...
     rootFolderPath = pwd;
 end 
 
+flag_testing  = 0;
 
-flag_testing=0;
+maxIterations = 12;
 
 modelName     = 'umat43';
-typeOfFitting =2;
+
+%typeOfFitting
 % 0. All: initial length
 % 1. All: final passive force
 % 2. umat43: lPevkN
 % 3. umat43: betaA
 
+typeOfFitting = 2;
 success = fittingSimulationHL2002(typeOfFitting, modelName, ...
                                   lsdynaBin, releaseName, rootFolderPath,...
-                                  flag_testing);
-
+                                  flag_testing, maxIterations);
+typeOfFitting = 3;
+success = fittingSimulationHL2002(typeOfFitting, modelName, ...
+                                  lsdynaBin, releaseName, rootFolderPath,...
+                                  flag_testing, maxIterations);
 
 
 

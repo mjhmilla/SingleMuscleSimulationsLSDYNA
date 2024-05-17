@@ -276,7 +276,7 @@ ehtmmCurves = [];
 
 disp(['Setting all models to have the same lceOpt, fceOpt, lceOptAT, fceOptAT,']);
 fieldsToUpdate = {'lceOptAT','fceOptAT','lceOpt','fceOpt',...
-                  'ltSlk'};
+                  'ltSlk','lceNAT0'};
 for i=1:1:length(fieldsToUpdate)
     modelParams.umat41Upd.(fieldsToUpdate{i})= ...
         modelParams.umat43Upd.(fieldsToUpdate{i});

@@ -258,7 +258,8 @@ switch expData
         umat43.lceOptAT = keyPointsHL1997.lceOpt*cos(umat43.penOpt);
         umat43.fceOpt   = keyPointsHL1997.fceOpt;
         umat43.lceOpt   = keyPointsHL1997.lceOpt;   
-        umat43.ltSlk    = keyPointsHL1997.ltSlk;   
+        umat43.ltSlk    = keyPointsHL1997.ltSlk; 
+        umat43.lceNAT0  = keyPointsHL1997.lceNATZero;
         
     case 'HL2002'
         umat43.fceOptAT = keyPointsHL2002.fceOpt*cos(umat43.penOpt);
@@ -266,8 +267,8 @@ switch expData
         umat43.fceOpt   = keyPointsHL2002.fceOpt;
         umat43.lceOpt   = keyPointsHL2002.lceOpt; 
         umat43.ltSlk    = keyPointsHL2002.ltSlk;     
-        
-        
+        umat43.lceNAT0  = keyPointsHL2002.lceNATZero;
+                
     otherwise
         assert(0,'Error: expData must be HL1997 or HL2002')
 end
