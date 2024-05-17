@@ -142,6 +142,9 @@ fclose(fidLog);
 
 matParams.(fittingInfo.optimizationVariable) = valBest;
 
-
+success = writeLSDYNAMuscleParameterFile(...
+            fittingInfo.simulationConstantFile,...
+            matParams,...
+            '');
 
 

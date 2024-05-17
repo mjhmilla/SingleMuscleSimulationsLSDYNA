@@ -1,9 +1,16 @@
+flag_outerLoopMode=1;
+
+if(flag_outerLoopMode==0)
+    clc;
+    clear all;
+    close all;
+    opengl('save','software');
+    simulationMode=3;
+end
+
 %% This script performs the validation tests isometric, concentric and quick release 
 %% for different release version of the referenceDataPath EHTMM
-clc;
-clear all;
-close all;
-opengl('save','software');
+
 %%
 % User-defined script variables
 %%
@@ -48,7 +55,6 @@ models(indexUmat43).id   = 3;
 models(indexUmat43).name ='umat43';
 models(indexUmat43).colors= [cs.blue;cs.blue];
 
-
 flag_preProcessSimulationData       = 0; 
 %Setting this to 1 will perform any preprocessing needed of the enabled 
 %experiments. At the moment this is limited to generating the random perturbation
@@ -70,7 +76,7 @@ flag_generatePublicationPlots       = 1;
 flag_enableIsometricExperiment          = 0;
 flag_enableConcentricExperiment         = 0;
 flag_enableQuickReleaseExperiment       = 0;
-flag_enableEccentricExperiment          = 1;
+flag_enableEccentricExperiment          = 0;
 flag_enableImpedanceExperiment          = 0;
 flag_enableSinusoidExperiment           = 0;
 flag_enableReflexExperiment             = 0;
@@ -80,6 +86,18 @@ flag_enableActivePassiveForceLengthExperimentViva   = 0;
 flag_enableForceVelocityExperimentViva              = 0;
 flag_enableActivePassiveForceLengthExperiment       = 0;
 flag_enableForceVelocityExperiment                  = 0;
+
+switch simulationMode
+    case 0
+        flag_enableActivePassiveForceLengthExperiment=1;
+    case 1
+        flag_enableForceVelocityExperiment=1;
+    case 2
+        flag_enableEccentricExperiment=1;
+    case 3
+        flag_enableImpedanceExperiment=1;
+end
+
 
 if(flag_enableForceVelocityExperimentViva ...
         || flag_enableActivePassiveForceLengthExperimentViva)
