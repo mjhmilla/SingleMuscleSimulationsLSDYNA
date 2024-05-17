@@ -61,8 +61,15 @@ valBest = matParams.(fittingInfo.optimizationVariable);
 
 fprintf('\t%1.3f\n',errBest);
 
+fidLog = fopen(fullfile(rootFolderPath,'fitting.log'),'a');
+fprintf(fidLog,'%1.6f\t%1.6f\t%s\t%s\t%s\n',...
+    errBest,valBest,fittingInfo.optimizationVariable,'(start)',fittingInfo.model);
+fclose(fidLog);
+
+
 delta = fittingInfo.optimizationDelta;
 
+flag_hitBound=0;
 for i=1:1:maxIterations
     for j=1:1:2
         step = 0;
@@ -75,9 +82,11 @@ for i=1:1:maxIterations
         valTest = valBest+step;
         if(valTest < fittingInfo.optimizationBounds(1,1))
             valTest=fittingInfo.optimizationBounds(1,1);
+            flag_hitBound=1;
         end
         if(valTest > fittingInfo.optimizationBounds(1,2))
             valTest=fittingInfo.optimizationBounds(1,2);
+            flag_hitBound=1;
         end
 
         matParams.(fittingInfo.optimizationVariable) = valTest;
@@ -119,6 +128,18 @@ for i=1:1:maxIterations
 end
 
 fprintf('%1.6f\t%s\t%s\n',valBest,fittingInfo.optimizationVariable,'(best)');
+
+fidLog = fopen(fullfile(rootFolderPath,'fitting.log'),'a');
+
+hitBound='';
+if(flag_hitBound==1)
+    hitBound = 'hitBound';
+end
+
+fprintf(fidLog,'%1.6f\t%1.6f\t%s\t%s\t%s\t%s\n',...
+    errBest,valBest,fittingInfo.optimizationVariable,'(best)',hitBound,fittingInfo.model);
+fclose(fidLog);
+
 matParams.(fittingInfo.optimizationVariable) = valBest;
 
 

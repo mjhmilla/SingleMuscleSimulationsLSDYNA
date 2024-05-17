@@ -19,7 +19,7 @@ switch typeOfFitting
                            fittingInfo.timeAnalysis);
         errDiff = simValue-expValue;        
     case 2
-        npts =10;
+        npts =20;
         errDiff = zeros(npts,1);
     
         t0 =fittingInfo.timeAnalysis(1,1);
@@ -36,7 +36,7 @@ switch typeOfFitting
             errDiff(i,1) = simValue-expValue;        
         end
     case 3
-        npts =10;
+        npts =20;
         errDiff = zeros(npts,1);
     
         t0 =fittingInfo.timeAnalysis(1,1);
