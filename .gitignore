@@ -41,6 +41,7 @@ kill_by_pid
 *.cfile
 *.0000000002
 scr0000*
+!ReferenceExperiments/eccentric_HerzogLeonard2002/digitizedKeyPointsHerzogLeonard2002
 !ReferenceExperiments/active_passive_force_length/GallopudiLin2009_FiberActiveForceLength.csv
 !ReferenceExperiments/active_passive_force_length/GallopudiLin2009_FiberPassiveForceLength.csv
 !ReferenceExperiments/active_passive_force_length/GollapudiLin2009_Fig6.csv
