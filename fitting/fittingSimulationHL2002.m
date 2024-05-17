@@ -30,7 +30,7 @@ matParams.(fittingInfo.optimizationVariable) = ...
     matParams.(fittingInfo.optimizationVariable);
 
 %Set the final time
-matParams.fitTimeE = fittingInfo.timeFinal;
+matParams.fitTimeE = fittingInfo.timeFinal+0.1;
 
 %Write the parameter file
 success = writeLSDYNAMuscleParameterFile(...

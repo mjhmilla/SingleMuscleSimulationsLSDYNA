@@ -33,7 +33,7 @@ end
 
 flag_testing  = 0;
 
-maxIterations = 12;
+maxIterations = 4;
 
 
 

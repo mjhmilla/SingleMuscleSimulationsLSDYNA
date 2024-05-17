@@ -9,32 +9,39 @@ switch typeOfFitting
         targetValue = matParams.lceNAT0;
         simValue    = interp1(uniformModelData.time,...
                            uniformModelData.lceATN,...
-                           fittingInfo.timeAnalysis);
+                           fittingInfo.timeAnalysis,'linear','extrap');
         errDiff = simValue-targetValue;
     case 1
         expValue = interp1(fittingInfo.expTime,fittingInfo.expForce,...
-                           fittingInfo.timeAnalysis);
+                           fittingInfo.timeAnalysis,'linear','extrap');
         simValue = interp1(uniformModelData.eloutTime,...
                            uniformModelData.eloutAxialBeamForceNorm.*uniformModelData.fmtOpt,...
-                           fittingInfo.timeAnalysis);
+                           fittingInfo.timeAnalysis,'linear','extrap');
         errDiff = simValue-expValue;        
     case 2
         npts =20;
         errDiff = zeros(npts,1);
+
+        expValue = interp1(fittingInfo.expTime,fittingInfo.expForce,...
+                           fittingInfo.timeAnalysis(1,2),'linear','extrap');
+        simValue = interp1(uniformModelData.eloutTime,...
+                           uniformModelData.eloutAxialBeamForceNorm.*uniformModelData.fmtOpt,...
+                           fittingInfo.timeAnalysis(1,2),'linear','extrap');
+        errDiff = simValue-expValue;         
     
-        t0 =fittingInfo.timeAnalysis(1,1);
-        t1 = fittingInfo.timeAnalysis(1,2);
-        dt =(t1-t0)/(npts-1);
-        timeVec = [t0:dt:t1]';
-        for i=1:1:length(timeVec)
-            expValue = interp1(fittingInfo.expTime,fittingInfo.expForce,...
-                               timeVec(i,1));
-            simValue = ...
-                interp1(uniformModelData.eloutTime,...
-                        uniformModelData.eloutAxialBeamForceNorm.*uniformModelData.fmtOpt,...
-                        timeVec(i,1));
-            errDiff(i,1) = simValue-expValue;        
-        end
+%         t0 =fittingInfo.timeAnalysis(1,1);
+%         t1 = fittingInfo.timeAnalysis(1,2);
+%         dt =(t1-t0)/(npts-1);
+%         timeVec = [t0:dt:t1]';
+%         for i=1:1:length(timeVec)
+%             expValue = interp1(fittingInfo.expTime,fittingInfo.expForce,...
+%                                timeVec(i,1));
+%             simValue = ...
+%                 interp1(uniformModelData.eloutTime,...
+%                         uniformModelData.eloutAxialBeamForceNorm.*uniformModelData.fmtOpt,...
+%                         timeVec(i,1));
+%             errDiff(i,1) = simValue-expValue;        
+%         end
     case 3
         npts =20;
         errDiff = zeros(npts,1);
@@ -45,11 +52,11 @@ switch typeOfFitting
         timeVec = [t0:dt:t1]';
         for i=1:1:length(timeVec)
             expValue = interp1(fittingInfo.expTime,fittingInfo.expForce,...
-                               timeVec(i,1));
+                               timeVec(i,1),'linear','extrap');
             simValue = ...
                 interp1(uniformModelData.eloutTime,...
                         uniformModelData.eloutAxialBeamForceNorm.*uniformModelData.fmtOpt,...
-                        timeVec(i,1));
+                        timeVec(i,1),'linear','extrap');
             errDiff(i,1) = simValue-expValue;        
         end
     
