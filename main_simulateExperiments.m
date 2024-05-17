@@ -54,10 +54,10 @@ flag_preProcessSimulationData       = 0;
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
 
-flag_runSimulations                 = 0;
+flag_runSimulations                 = 1;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 1;
+flag_postProcessSimulationData      = 0;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_sizePlotsForSlides = 0; %0: means use journal paper slides
