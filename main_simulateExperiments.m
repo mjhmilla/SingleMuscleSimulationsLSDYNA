@@ -1,11 +1,11 @@
-flag_outerLoopMode=1;
+flag_outerLoopMode=0;
 
 if(flag_outerLoopMode==0)
     clc;
     clear all;
     close all;
     opengl('save','software');
-    simulationMode=3;
+    simulationMode=2;
 end
 
 %% This script performs the validation tests isometric, concentric and quick release 
@@ -59,11 +59,10 @@ flag_preProcessSimulationData       = 0;
 %Setting this to 1 will perform any preprocessing needed of the enabled 
 %experiments. At the moment this is limited to generating the random perturbation
 %signals used in the impedance experiments.
-
-flag_runSimulations                 = 1;
+flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 0;
+flag_postProcessSimulationData      = 1;
 %Setting this to 1 will generate plots of the enabled experiments
 
 flag_sizePlotsForSlides = 0; %0: means use journal paper slides
