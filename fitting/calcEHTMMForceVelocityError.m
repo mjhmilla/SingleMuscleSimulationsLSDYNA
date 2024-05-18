@@ -1,8 +1,7 @@
 function errVec = calcEHTMMForceVelocityError(arg,...
                                         umat41,...
                                         keyPointsHL1997,...
-                                        keyPointsVEXATFv,...
-                                        keyPointsScaling)
+                                        keyPointsVEXATFv)
 
 
 %Arel = arg(1,1)*umat41.Arel;
@@ -23,8 +22,8 @@ for i=1:1:length(errVec)
 
     idx=i;%idxShortening(i);
 
-    lceAT = keyPointsHL1997.fv.lce(idx,1)*keyPointsScaling.length;
-    vceNAT = keyPointsHL1997.fv.vceNAT(idx,1);
+    lceAT = keyPointsHL1997.fv.umat41.lceAT(idx,1)*keyPointsHL1997.nms.l;
+    vceNAT = keyPointsHL1997.fv.umat41.vceNAT(idx,1);
     vceAT  = vceNAT*umat41.lceOptAT;
     
     fv = calcFvUmat41(vceAT,umat41.lceOpt,umat41.lceOpt,...
@@ -32,7 +31,7 @@ for i=1:1:length(errVec)
 
     fvN = fv/umat41.fceOptAT;
 
-    errVec(i,1)=fvN-keyPointsHL1997.fv.fceNAT(idx,1);
+    errVec(i,1)=fvN-keyPointsHL1997.fv.umat41.fceNAT(idx,1);
 
 end
 

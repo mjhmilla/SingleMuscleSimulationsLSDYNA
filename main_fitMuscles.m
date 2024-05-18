@@ -5,7 +5,7 @@ if(flag_outerLoopMode==0)
     close all;
     clear all;
     flag_enablePlotting=1;
-    expData = 'HL1997';
+    expData = 'HL2002';
 else
     flag_enablePlotting=0;    
 end
@@ -40,6 +40,8 @@ end
 %   value of lceN when active at the reference length
 %1. Evaluate the reference length for for HL1997 and HL2002 using the 
 %   target passive force at the longest length
+%2. Use the average of 1 and 2
+%
 
 flag_writeLSDYNAFiles=1;
 
@@ -53,17 +55,19 @@ flag_zeroMAT156TendonSlackLength        =1;
 flag_plotHL1997AnnotationData           = 0*flag_enablePlotting;
 flag_plotHL2002AnnotationData           = 0*flag_enablePlotting;
 
-flag_plotVEXATActiveForceLengthFitting  = 0*flag_enablePlotting;
-flag_plotEHTMMActiveForceLengthFitting  = 0*flag_enablePlotting;
+flag_plotVEXATActiveForceLengthFitting  = 1*flag_enablePlotting;
+flag_plotEHTMMActiveForceLengthFitting  = 1*flag_enablePlotting;
 
 flag_addHL1997PassiveCurveToHL2002Figure= 1*flag_enablePlotting;
-flag_plotVEXATPassiveForceLengthFitting = 0*flag_enablePlotting;
-flag_plotEHTMMPassiveForceLengthFitting = 0*flag_enablePlotting;
+flag_plotVEXATPassiveForceLengthFitting = 1*flag_enablePlotting;
+flag_plotEHTMMPassiveForceLengthFitting = 1*flag_enablePlotting;
 
 flag_plotVEXATTitinForceLengthCurves    = 0*flag_enablePlotting;
 
-flag_plotVEXATForceVelocityFitting      = 0*flag_enablePlotting;
-flag_plotEHTMMForceVelocityFitting      = 0*flag_enablePlotting;
+flag_plotVEXATForceVelocityFitting      = 1*flag_enablePlotting;
+flag_plotEHTMMForceVelocityFitting      = 1*flag_enablePlotting;
+
+flag_plotMAT156Curves                 = 1*flag_enablePlotting;
 
 %Default titin properties used across all simulations
 titin.lambdaECM = 0.56;
@@ -272,7 +276,7 @@ ehtmmCurves = [];
 % VEXAT:
 %  Adjust lceOpt and fceOpt to best fit either HL1997 or HL2002.
 %  Subtract off tendon strain from the experimental key points
-%  which works nicely only if the tendon models are similar
+%  and store in a sub structure of the keyPoint structures
 [modelParams.umat43Upd, keyPointsHL1997, keyPointsHL2002,vexatCurves]= ...
         fitVEXATActiveForceLengthRelation(expData,...
             modelParams.umat43Upd,...
@@ -293,17 +297,6 @@ for i=1:1:length(fieldsToUpdate)
 end
 modelParams.mat156Upd.ltSlk=0;
 modelParams.mat156Upd.et=0;
-
-% EHTMM
-% Fit the parameters to minimize the squared error with 
-% HL1997 and HL2002
-[modelParams.umat41Upd,ehtmmCurves] = ...
-    fitEHTMMActiveForceLengthRelation(expData, ...
-                       modelParams.umat41Upd, ...
-                       keyPointsHL1997, keyPointsHL2002,...
-                       ehtmmCurves,...
-                       flag_plotEHTMMActiveForceLengthFitting);
-
 
 %%
 % Tendon EHTMM
@@ -330,6 +323,17 @@ end
             modelParams.umat41Upd, ...
             keyPointsTendon,...
             ehtmmCurves);
+%%
+% Active-force length relation EHTMM
+%     Fit the parameters to minimize the squared error with 
+%     HL1997 and HL2002
+%%
+[modelParams.umat41Upd,keyPointsHL1997, keyPointsHL2002,ehtmmCurves] = ...
+    fitEHTMMActiveForceLengthRelation(expData, ...
+                       modelParams.umat41Upd, ...
+                       keyPointsHL1997, keyPointsHL2002,...
+                       ehtmmCurves,...
+                       flag_plotEHTMMActiveForceLengthFitting);
 
 %%
 % Passive force-length relation
@@ -432,7 +436,7 @@ if(flag_writeLSDYNAFiles==1)
                 modelParams.umat43Upd);
     
     flag_addTendonLengthChangeToMat156PEE = 1;
-    flag_plotMAT156Curves                 = 1;
+    
     
     success = writeMAT156ModelFile(...
                 modelFolder,...

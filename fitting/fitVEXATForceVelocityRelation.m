@@ -7,18 +7,9 @@ function [umat43,vexatCurves,keyPointsVEXATFv]= ...
                     flag_plotVEXATForceVelocityFitting)
 
 
-
-
-
-mm2m=0.001;
-keyPointsScaling.length = mm2m;
-keyPointsScaling.force = 1;
-keyPointsScaling.velocity = mm2m;
-
 errFcn = @(arg)calcVEXATForceVelocityError(arg,...
                         umat43,...
                         keyPointsHL1997,...
-                        keyPointsScaling,...
                         fiberForceVelocityCurve);
 
 x0 = [1];
@@ -71,14 +62,12 @@ vceMaxAT    = vceMax*cos(alphaOpt)-lceOpt*sin(alphaOpt)*alphaDotOpt;
 keyPointsVEXATFv.vceMax = vceMax;
 keyPointsVEXATFv.vceMaxAT= vceMaxAT;
 
-
-
 if(flag_plotVEXATForceVelocityFitting==1)    
     figVEXATFv = figure;
         plot(vceNNAT.*vceMax,fceNAT,'-k','DisplayName','VEXAT');
         hold on;
-        plot(keyPointsHL1997.fv.vceNAT,...
-             keyPointsHL1997.fv.fceNAT,'ok',...
+        plot(keyPointsHL1997.fv.umat43.vceNAT,...
+             keyPointsHL1997.fv.umat43.fceNAT,'ok',...
              'DisplayName','HL1997');
         hold on;
         xlabel('Norm. Length ($$\ell/\ell^M_o$$');

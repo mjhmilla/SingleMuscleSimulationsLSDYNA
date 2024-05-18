@@ -2,6 +2,13 @@ clc;
 close all;
 clear all;
 
+
+flag_testing  = 0;
+maxIterations = 12;
+
+flag_fitInitialLength=1;
+flag_fitTitinProperties=1;
+
 addpath(genpath('fitting'));
 addpath(genpath('postprocessing'));
 addpath(genpath('ReferenceExperiments'));
@@ -31,10 +38,6 @@ if(strcmp(currDirContents(1).name,'.') ...
     rootFolderPath = pwd;
 end 
 
-flag_testing  = 0;
-
-maxIterations = 12;
-
 
 
 %typeOfFitting
@@ -43,23 +46,25 @@ maxIterations = 12;
 % 2. umat43: lPevkN
 % 3. umat43: betaA
 
-%Initial length
-% modelName     = 'mat156';
-% typeOfFitting = 0;
-% success = fittingSimulationHL2002(typeOfFitting, modelName, ...
-%                                   lsdynaBin, releaseName, rootFolderPath,...
-%                                   flag_testing, maxIterations);
-% modelName     = 'umat41';
-% typeOfFitting = 0;
-% success = fittingSimulationHL2002(typeOfFitting, modelName, ...
-%                                   lsdynaBin, releaseName, rootFolderPath,...
-%                                   flag_testing, maxIterations);
-% 
-% modelName     = 'umat43';
-% typeOfFitting = 0;
-% success = fittingSimulationHL2002(typeOfFitting, modelName, ...
-%                                   lsdynaBin, releaseName, rootFolderPath,...
-%                                   flag_testing, maxIterations);
+if(flag_fitInitialLength==1)
+    %Initial length
+    modelName     = 'mat156';
+    typeOfFitting = 0;
+    success = fittingSimulationHL2002(typeOfFitting, modelName, ...
+                                      lsdynaBin, releaseName, rootFolderPath,...
+                                      flag_testing, maxIterations);
+    modelName     = 'umat41';
+    typeOfFitting = 0;
+    success = fittingSimulationHL2002(typeOfFitting, modelName, ...
+                                      lsdynaBin, releaseName, rootFolderPath,...
+                                      flag_testing, maxIterations);
+    
+    modelName     = 'umat43';
+    typeOfFitting = 0;
+    success = fittingSimulationHL2002(typeOfFitting, modelName, ...
+                                      lsdynaBin, releaseName, rootFolderPath,...
+                                      flag_testing, maxIterations);
+end
 
 %Final passive force
 % modelName     = 'umat41';
@@ -74,17 +79,19 @@ maxIterations = 12;
 %                                   lsdynaBin, releaseName, rootFolderPath,...
 %                                   flag_testing, maxIterations);
 
-%Titin properties
-modelName     = 'umat43';
-typeOfFitting = 2;
-success = fittingSimulationHL2002(typeOfFitting, modelName, ...
-                                  lsdynaBin, releaseName, rootFolderPath,...
-                                  flag_testing, maxIterations);
-modelName     = 'umat43';
-typeOfFitting = 3;
-success = fittingSimulationHL2002(typeOfFitting, modelName, ...
-                                  lsdynaBin, releaseName, rootFolderPath,...
-                                  flag_testing, maxIterations);
+if(flag_fitTitinProperties==1)
+    %Titin properties
+    modelName     = 'umat43';
+    typeOfFitting = 2;
+    success = fittingSimulationHL2002(typeOfFitting, modelName, ...
+                                      lsdynaBin, releaseName, rootFolderPath,...
+                                      flag_testing, maxIterations);
+    modelName     = 'umat43';
+    typeOfFitting = 3;
+    success = fittingSimulationHL2002(typeOfFitting, modelName, ...
+                                      lsdynaBin, releaseName, rootFolderPath,...
+                                      flag_testing, maxIterations);
+end
 
 
 

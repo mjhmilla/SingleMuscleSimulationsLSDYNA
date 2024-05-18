@@ -1,11 +1,18 @@
-flag_outerLoopMode=0;
+flag_outerLoopMode=1;
 
 if(flag_outerLoopMode==0)
     clc;
     clear all;
     close all;
     opengl('save','software');
-    simulationMode=2;
+    simulationConfig.type='HL2002';
+    %0 fal
+    %1 HL1997
+    %2 HL2002
+    %3 KBR1994
+    simulationConfig.mode='run'; 
+    %0 run
+    %1 plot
 end
 
 %% This script performs the validation tests isometric, concentric and quick release 
@@ -62,8 +69,18 @@ flag_preProcessSimulationData       = 0;
 flag_runSimulations                 = 0;
 %Setting this to 1 will run the simulations that have been enabled
 
-flag_postProcessSimulationData      = 1;
+flag_postProcessSimulationData      = 0;
 %Setting this to 1 will generate plots of the enabled experiments
+
+switch simulationConfig.mode
+    case 'run'
+        flag_runSimulations=1;
+    case 'plot'
+        flag_postProcessSimulationData=1;
+    otherwise
+        assert(0,'Error: simulationConfig.mode incorrectly set');
+
+end
 
 flag_sizePlotsForSlides = 0; %0: means use journal paper slides
 excludeSimulationsNamesThatContain = [];%[{'52mm'}];
@@ -86,15 +103,18 @@ flag_enableForceVelocityExperimentViva              = 0;
 flag_enableActivePassiveForceLengthExperiment       = 0;
 flag_enableForceVelocityExperiment                  = 0;
 
-switch simulationMode
-    case 0
+switch simulationConfig.type
+    case 'fal'
         flag_enableActivePassiveForceLengthExperiment=1;
-    case 1
+    case 'HL1997'
         flag_enableForceVelocityExperiment=1;
-    case 2
+    case 'HL2002'
         flag_enableEccentricExperiment=1;
-    case 3
+    case 'KBR1994'
         flag_enableImpedanceExperiment=1;
+    otherwise
+        assert(0,'Error: simulationConfig.type incorrectly set');
+
 end
 
 

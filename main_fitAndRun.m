@@ -19,7 +19,8 @@ clc;
 close all;
 clear all;
 
-simulationMode=2;
+simulationConfig.type='HL2002';
+simulationConfig.mode='run';
 main_simulateExperiments;
 
 % clc;

@@ -8,7 +8,7 @@ x0 =[1;1;1];
 
 options=optimset('Display','off');
 [argBest,resnorm,residual,exitflag]=lsqnonlin(errFcn,x0,[],[],options);
-assert(exitflag==1);
+assert(exitflag==1||exitflag==2||exitflag==3);
 
 errVal = errFcn(argBest);
 

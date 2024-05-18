@@ -12,12 +12,12 @@ if(fitMode==1)
     FPEE    = arg(2,1)*umat41.FPEE;
     nuPEE   = arg(3,1)*umat41.nuPEE;
     
-    errVec = zeros(length(keyPointsHL2002.fpe.lceNAT)+2,1);
+    errVec = zeros(length(keyPointsHL2002.fpe.umat41.lceNAT)+2,1);
     
     idx=1;
-    for i=1:1:length(keyPointsHL2002.fpe.lceNAT)
+    for i=1:1:length(keyPointsHL2002.fpe.umat41.lceNAT)
 
-        lceNAT = keyPointsHL2002.fpe.lceNAT(i,1);
+        lceNAT = keyPointsHL2002.fpe.umat41.lceNAT(i,1);
         lceAT  = lceNAT*umat41.lceOptAT;
     
         fpeAT= calcFpeeUmat41(lceAT,...
@@ -30,7 +30,7 @@ if(fitMode==1)
     
         fpeNAT = fpeAT/umat41.fceOptAT;
     
-        errVec(idx,1) = fpeNAT - keyPointsHL2002.fpe.fceNAT(i,1);
+        errVec(idx,1) = fpeNAT - keyPointsHL2002.fpe.umat41.fceNAT(i,1);
         idx=idx+1;
     end
     
@@ -72,13 +72,14 @@ if(fitMode==2)
     %HL2002: single point from the FPE measurement
     %%
     idx=1;
-    k = kmeans(keyPointsHL1997.fpe.lceNAT,keyPointsHL1997.fpe.clusters);
+    k = kmeans(keyPointsHL1997.fpe.umat41.lceNAT,...
+               keyPointsHL1997.fpe.clusters);
     meanLceNAT = zeros(max(k),1);
     meanFceNAT = zeros(max(k),1);
     for i=1:1:max(k)
         idxCluster = find(k==i);
-        meanLceNAT(i,1) = mean(keyPointsHL1997.fpe.lceNAT(idxCluster,1));
-        meanFceNAT(i,1) = mean(keyPointsHL1997.fpe.fceNAT(idxCluster,1));
+        meanLceNAT(i,1) = mean(keyPointsHL1997.fpe.umat41.lceNAT(idxCluster,1));
+        meanFceNAT(i,1) = mean(keyPointsHL1997.fpe.umat41.fceNAT(idxCluster,1));
     end
     [lceNAT1,idx1] =max(meanLceNAT);
     fceNAT1 = meanFceNAT(idx1);

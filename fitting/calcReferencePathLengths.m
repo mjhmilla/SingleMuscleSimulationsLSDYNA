@@ -8,9 +8,12 @@ function [mat156,umat41,umat43]=calcReferencePathLengths(expData,...
                                     modeReferenceLength,...
                                     flag_addTendonLengthChangeToMat156)
 
+
+%The normalized passive data is nearly identical when using the
+%umat41 or umat43 tendon. I'm going to use the umat43 tendon data
 switch expData
     case 'HL1997'
-        idx = kmeans(keyPointsHL1997.fpe.fceNAT,...
+        idx = kmeans(keyPointsHL1997.fpe.umat43.fceNAT,...
                      keyPointsHL1997.fpe.clusters);
         fpeExp.lceNAT  = zeros(keyPointsHL1997.fpe.clusters,1);
         fpeExp.fceNAT  = zeros(keyPointsHL1997.fpe.clusters,1);
@@ -19,8 +22,8 @@ switch expData
         
         for i=1:1:keyPointsHL1997.fpe.clusters
             cIdx = find(idx == i);
-            fpeExp.lceNAT(i,1)  = mean(keyPointsHL1997.fpe.lceNAT(cIdx));
-            fpeExp.fceNAT(i,1)  = mean(keyPointsHL1997.fpe.fceNAT(cIdx));
+            fpeExp.lceNAT(i,1)  = mean(keyPointsHL1997.fpe.umat43.lceNAT(cIdx));
+            fpeExp.fceNAT(i,1)  = mean(keyPointsHL1997.fpe.umat43.fceNAT(cIdx));
             fpeExp.l(i,1)       = mean(keyPointsHL1997.fpe.l(cIdx));
             fpeExp.f(i,1)       = mean(keyPointsHL1997.fpe.f(cIdx));
         end
@@ -31,7 +34,7 @@ switch expData
         fpeExp.f=fpeExp.f(sIdx).*keyPointsHL1997.nms.f;
        
     case 'HL2002'
-        idx = kmeans(keyPointsHL2002.fpe.fceNAT,...
+        idx = kmeans(keyPointsHL2002.fpe.umat43.fceNAT,...
                      keyPointsHL2002.fpe.clusters);
 
         fpeExp.lceNAT  = zeros(keyPointsHL2002.fpe.clusters,1);
@@ -40,8 +43,8 @@ switch expData
         fpeExp.f       = zeros(keyPointsHL2002.fpe.clusters,1);        
         for i=1:1:keyPointsHL2002.fpe.clusters
             cIdx = find(idx == i);
-            fpeExp.lceNAT(i,1)  = mean(keyPointsHL2002.fpe.lceNAT(cIdx));
-            fpeExp.fceNAT(i,1) = mean(keyPointsHL2002.fpe.fceNAT(cIdx));
+            fpeExp.lceNAT(i,1)  = mean(keyPointsHL2002.fpe.umat43.lceNAT(cIdx));
+            fpeExp.fceNAT(i,1) = mean(keyPointsHL2002.fpe.umat43.fceNAT(cIdx));
             fpeExp.l(i,1)  = mean(keyPointsHL2002.fpe.l(cIdx));
             fpeExp.f(i,1) = mean(keyPointsHL2002.fpe.f(cIdx));
         end
@@ -68,13 +71,7 @@ fpeExp.fit.f        = fpeExp.f(idx);
 
 
 
-lceATStart = 0;
-switch expData
-    case 'HL1997'
-        lceATStart = keyPointsHL1997.lceNATZero*keyPointsHL1997.lceOpt;
-    case 'HL2002'
-        lceATStart = keyPointsHL2002.lceNATZero*keyPointsHL2002.lceOpt;        
-end
+
 
 lp0Str= ['lp0',expData];
 lp0StrA= ['lpA',expData];
@@ -84,7 +81,13 @@ lp0StrB= ['lpB',expData];
 %switch modeReferenceLength
 %    case 0
         
-mat156.(lp0StrA) = lceATStart;
+switch expData
+    case 'HL1997'
+        mat156.(lp0StrA) = keyPointsHL1997.lceNATZero*mat156.lceOptAT;
+    case 'HL2002'
+        mat156.(lp0StrA) = keyPointsHL2002.lceNATZero*mat156.lceOptAT;        
+end
+
 %    case 1
 
 idxMin = find(vexatCurves.fecm.fceNAT>0.01);        
@@ -104,16 +107,33 @@ end
 mat156.(lp0StrB) = lceAT+dlt - fpeExp.fit.l;
 
 %end
-mat156.(lp0Str) = 0.5*(mat156.(lp0StrA)+mat156.(lp0StrB));
-
 mat156.lmtOptAT = mat156.lceOptAT;
 mat156.lp0K1994 = mat156.lceOptAT;
+
+switch modeReferenceLength
+    case 0
+        mat156.(lp0Str) = mat156.(lp0StrA);
+    case 1
+        mat156.(lp0Str) = mat156.(lp0StrB);
+    case 2
+        mat156.(lp0Str) = 0.5*(mat156.(lp0StrA)+mat156.(lp0StrB));
+end
+
+
 
 %%
 %umat41 (EHTMM) has a tendon
 %   HL1997 & HL2002 starting lengths (max activation)
 %%
-lceAT = lceATStart;
+
+lceAT=nan;
+switch expData
+    case 'HL1997'
+        lceAT = keyPointsHL1997.lceNATZero*umat41.lceOptAT;
+    case 'HL2002'
+        lceAT = keyPointsHL2002.lceNATZero*umat41.lceOptAT;        
+end
+
 
 fpeAT= calcFpeeUmat41(lceAT,...
                       umat41.lceOptAT,...
@@ -162,7 +182,15 @@ lsee = calcFseeInverseUmat41(fpeExp.fit.f,...
 
 umat41.(lp0StrB)=lceAT+lsee - fpeExp.fit.l;
 
-umat41.(lp0Str) = 0.5*(umat41.(lp0StrA)+umat41.(lp0StrB));
+
+switch modeReferenceLength
+    case 0
+        umat41.(lp0Str) = umat41.(lp0StrA);
+    case 1
+        umat41.(lp0Str) = umat41.(lp0StrB);
+    case 2
+        umat41.(lp0Str) = 0.5*(umat41.(lp0StrA)+umat41.(lp0StrB));
+end
 
 %end
 
@@ -217,7 +245,13 @@ umat41.lp0K1994 = lceAT + lsee;
 %umat43 (VEXAT) also has a tendon and the CE is pennated
 %  HL1997 & HL2002 starting lengths (max activation
 %%
-lceAT = lceATStart;
+lceAT=nan;
+switch expData
+    case 'HL1997'
+        lceAT = keyPointsHL1997.lceNATZero*umat43.lceOpt;
+    case 'HL2002'
+        lceAT = keyPointsHL2002.lceNATZero*umat43.lceOpt;        
+end
 
 fibKin = calcFixedWidthPennatedFiberKinematics(lceAT,...
                                     0,...
@@ -225,16 +259,16 @@ fibKin = calcFixedWidthPennatedFiberKinematics(lceAT,...
                                     umat43.penOpt);
 
 lce = fibKin.fiberLength;
-
 alpha=fibKin.pennationAngle;
 
 lceN = lce/umat43.lceOpt;
+lceNAT = lceAT/umat43.lceOpt;
 
-fpeN = umat43.scalePEE * ...
-        calcQuadraticBezierYFcnXDerivative(lceN-umat43.shiftPEE,...
-                  umat43QuadraticCurves.fiberForceLengthCurve,0);
-
-fpeNAT = fpeN*cos(alpha);
+idxMin = find(vexatCurves.fecm.fceNAT>0.001);        
+fpeNAT = interp1(vexatCurves.fecm.lceNAT(idxMin:end),...
+                 vexatCurves.fecm.fceNAT(idxMin:end) ...
+               + vexatCurves.f2.fceNAT(idxMin:end),...                 
+                 lceNAT);
 
 flN = calcQuadraticBezierYFcnXDerivative(lceN,...
         umat43QuadraticCurves.activeForceLengthCurve, 0);
@@ -251,7 +285,7 @@ et = etN*umat43.et;
 
 %switch modeReferenceLength
 %    case 0
-umat43.(lp0StrA) = lce*cos(alpha) + (1+et)*umat43.ltSlk;
+umat43.(lp0StrA) = lceAT + (1+et)*umat43.ltSlk;
 %    case 1
 
 
@@ -273,6 +307,15 @@ umat43.(lp0StrB) = lceNAT*umat43.lceOpt+ltN*umat43.ltSlk-fpeExp.fit.l;
 
 umat43.(lp0Str) = 0.5*(umat43.(lp0StrA)+umat43.(lp0StrB)); 
 
+switch modeReferenceLength
+    case 0
+        umat43.(lp0Str) = umat43.(lp0StrA);
+    case 1
+        umat43.(lp0Str) = umat43.(lp0StrB);
+    case 2
+        umat43.(lp0Str) = 0.5*(umat43.(lp0StrA)+umat43.(lp0StrB));
+end
+
 %%
 %Maximum activation
 %%
@@ -284,19 +327,25 @@ fibKin = calcFixedWidthPennatedFiberKinematicsAlongTendon(...
                                     umat43.lceOpt,...
                                     umat43.penOpt);
 
+lceN    = lce/umat43.lceOpt;
 lceAT   = fibKin.fiberLengthAlongTendon;
+lceNAT  =lceAT /umat43.lceOpt;
 
 alpha   = fibKin.pennationAngle;
 
-lceN    = lce/umat43.lceOpt;
+% fpeN    = umat43.scalePEE * ...
+%             calcQuadraticBezierYFcnXDerivative(lceN-umat43.shiftPEE,...
+%                   umat43QuadraticCurves.fiberForceLengthCurve,0);
+% 
+% fpeNAT = fpeN*cos(alpha);
 
-fpeN    = umat43.scalePEE * ...
-            calcQuadraticBezierYFcnXDerivative(lceN-umat43.shiftPEE,...
-                  umat43QuadraticCurves.fiberForceLengthCurve,0);
+idxMin = find(vexatCurves.fecm.fceNAT > 0.01,1,'first');
+fpeNAT = interp1(vexatCurves.fecm.lceNAT(idxMin:end),...
+                 vexatCurves.fecm.fceNAT(idxMin:end) ...
+               + vexatCurves.f2.fceNAT(idxMin:end),...                 
+                 lceNAT);
 
-fpeNAT = fpeN*cos(alpha);
-
-fceNAT = 1*cos(alpha);
+%fceNAT = 1*cos(alpha);
 
 etN = calcQuadraticBezierYFcnXDerivative(fceNAT+fpeNAT,....
                 umat43QuadraticCurves.tendonForceLengthInverseNormCurve,0);
@@ -316,16 +365,24 @@ fibKin = calcFixedWidthPennatedFiberKinematicsAlongTendon(...
                                     umat43.penOpt);
 
 lceAT   = fibKin.fiberLengthAlongTendon;
+lceNAT  = lceAT / umat43.lceOpt;
 
 alpha   = fibKin.pennationAngle;
 
 lceN    = lce/umat43.lceOpt;
 
-fpeN    = umat43.scalePEE * ...
-            calcQuadraticBezierYFcnXDerivative(lceN-umat43.shiftPEE,...
-                  umat43QuadraticCurves.fiberForceLengthCurve,0);
+% fpeN    = umat43.scalePEE * ...
+%             calcQuadraticBezierYFcnXDerivative(lceN-umat43.shiftPEE,...
+%                   umat43QuadraticCurves.fiberForceLengthCurve,0);
+% 
+% fpeNAT = fpeN*cos(alpha);
 
-fpeNAT = fpeN*cos(alpha);
+idxMin = find(vexatCurves.fecm.fceNAT > 0.01,1,'first');
+fpeNAT = interp1(vexatCurves.fecm.lceNAT(idxMin:end),...
+                 vexatCurves.fecm.fceNAT(idxMin:end) ...
+               + vexatCurves.f2.fceNAT(idxMin:end),...                 
+                 lceNAT);
+
 
 fceNAT = (5/cos(alpha))/umat43.fceOpt -fpeNAT;
 
