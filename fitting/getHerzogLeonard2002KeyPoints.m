@@ -58,7 +58,7 @@ dataFig7C = readmatrix(filePath7C,'NumHeaderLines',1);
 
 %Passive force length
 keyPointsHL2002.fpe.l = [];
-keyPointsHL2002.fpe.f = [];
+keyPointsHL2002.fpe.fmt = [];
 
 %Active force length with passive component removed
 keyPointsHL2002.fl.l = [];
@@ -145,7 +145,7 @@ for i=1:1:3
             %settled. As such I'm excluding these from the fit.
             if(j ~= 5)
                 keyPointsHL2002.fpe.l = [keyPointsHL2002.fpe.l; l0];
-                keyPointsHL2002.fpe.f = [keyPointsHL2002.fpe.f; f0]; 
+                keyPointsHL2002.fpe.fmt = [keyPointsHL2002.fpe.fmt; f0]; 
             end
 
             %Include the final values of the passive 9mm ramp
@@ -155,7 +155,7 @@ for i=1:1:3
                              pointsHL2002(rowKp,kPCol.t2));
                 f2 = pointsHL2002(rowKp,kPCol.f2); 
                 keyPointsHL2002.fpe.l = [keyPointsHL2002.fpe.l; l2];
-                keyPointsHL2002.fpe.f = [keyPointsHL2002.fpe.f; f2];                 
+                keyPointsHL2002.fpe.fmt = [keyPointsHL2002.fpe.fmt; f2];                 
             end
 
             if(j <= 5)
@@ -271,13 +271,17 @@ for i=1:1:3
 end
 
 %Scaling to bring the units to Newton, meter, second
-keyPointsHL2002.nms.l = 0.001;
-keyPointsHL2002.nms.f = 1;
+mm2m = 0.001;
+
+keyPointsHL2002.units.l='m';
+keyPointsHL2002.units.v='m/s';
+keyPointsHL2002.units.f='N';
+keyPointsHL2002.units.t='seconds';
 
 [lengthOrdered, indexOrdered] = sort(keyPointsHL2002.fpe.l);
 
-keyPointsHL2002.fpe.l = keyPointsHL2002.fpe.l(indexOrdered);
-keyPointsHL2002.fpe.f = keyPointsHL2002.fpe.f(indexOrdered);
+keyPointsHL2002.fpe.l = keyPointsHL2002.fpe.l(indexOrdered).*mm2m;
+keyPointsHL2002.fpe.fmt = keyPointsHL2002.fpe.fmt(indexOrdered);
 keyPointsHL2002.fpe.clusters=4;
 
 %Active force length
@@ -285,17 +289,17 @@ keyPointsHL2002.fpe.clusters=4;
 %Active force length 
 [lengthOrdered, indexOrdered] = sort(keyPointsHL2002.fl.l);
 
-keyPointsHL2002.fl.l = keyPointsHL2002.fl.l(indexOrdered);
-keyPointsHL2002.fl.fpe= keyPointsHL2002.fl.fpe(indexOrdered);
-keyPointsHL2002.fl.fmt= keyPointsHL2002.fl.fmt(indexOrdered);
+keyPointsHL2002.fl.l    = keyPointsHL2002.fl.l(indexOrdered).*mm2m;
+keyPointsHL2002.fl.fpe  = keyPointsHL2002.fl.fpe(indexOrdered);
+keyPointsHL2002.fl.fmt  = keyPointsHL2002.fl.fmt(indexOrdered);
 keyPointsHL2002.fl.clusters=4;
 
 if(flag_plotAnnotationData==1)
     figDebug=figure;
     subplot(1,2,1);
-        plot(keyPointsHL2002.fpe.l,keyPointsHL2002.fpe.f,'ok');
+        plot(keyPointsHL2002.fpe.l,keyPointsHL2002.fpe.fmt,'ok');
         hold on;
-        xlabel('Length (mm)');
+        xlabel('Length (m)');
         ylabel('Force (N)');
         box off;
         title('Passive force-length relation')
@@ -304,7 +308,7 @@ if(flag_plotAnnotationData==1)
         hold on;
         plot(keyPointsHL2002.fl.l,keyPointsHL2002.fl.fmt,'or');
         hold on;
-        xlabel('Length (mm)');
+        xlabel('Length (m)');
         ylabel('Force (N)');
         box off;
         title('Active force-length relation');

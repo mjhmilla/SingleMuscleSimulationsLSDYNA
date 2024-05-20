@@ -33,14 +33,7 @@ dataHL1997Force = loadDigitizedData(fileHL1997Force,...
 %keyPointsHL1997.lceOptAT = 0;
 
 
-keyPointsHL1997.units.l='mm';
-keyPointsHL1997.units.v='mm/s';
-keyPointsHL1997.units.f='N';
-keyPointsHL1997.units.t='seconds';
 
-%Scaling to bring the units to Newton, meter, second
-keyPointsHL1997.nms.l=0.001;
-keyPointsHL1997.nms.f=1;
 
 %Raw data
 fpeSeries       = struct('l',[],'f',[]);
@@ -178,20 +171,28 @@ end
 idxShortening=[1:5];
 idxLengthening=[6:10];
 
+keyPointsHL1997.units.l='m';
+keyPointsHL1997.units.v='m/s';
+keyPointsHL1997.units.f='N';
+keyPointsHL1997.units.t='seconds';
+
+%Scaling to bring the units to Newton, meter, second
+mm2m=0.001;
+
 %Passive force length
 keyPointsHL1997.fpe.l = [fpeSeries.l(idxShortening);...
-                         fpeSeries.l(idxLengthening)];
+                         fpeSeries.l(idxLengthening)].*mm2m;
 
-keyPointsHL1997.fpe.f = [fpeSeries.f(idxShortening);...
+keyPointsHL1997.fpe.fmt=[fpeSeries.f(idxShortening);...
                          fpeSeries.f(idxLengthening)];
 
 [lengthOrdered, indexOrdered] = sort(keyPointsHL1997.fpe.l);
 keyPointsHL1997.fpe.l = keyPointsHL1997.fpe.l(indexOrdered);
-keyPointsHL1997.fpe.f = keyPointsHL1997.fpe.f(indexOrdered);
+keyPointsHL1997.fpe.fmt = keyPointsHL1997.fpe.fmt(indexOrdered);
 keyPointsHL1997.fpe.clusters=2;
 %Active force length
 keyPointsHL1997.fl.l = [flIsoSeries.l(idxShortening);...
-                        flIsoSeries.l(idxLengthening)];
+                        flIsoSeries.l(idxLengthening)].*mm2m;
 
 keyPointsHL1997.fl.fpe = [flIsoSeries.fpe(idxShortening);...
                           flIsoSeries.fpe(idxLengthening)];
@@ -209,8 +210,8 @@ keyPointsHL1997.fl.fmt= keyPointsHL1997.fl.fmt(indexOrdered);
 %Force velocity
 [vSorted, idxSorted] = sort(fmtVelSeries.v);
 
-keyPointsHL1997.fv.l   = fmtVelSeries.l(idxSorted);
-keyPointsHL1997.fv.v   = fmtVelSeries.v(idxSorted);
+keyPointsHL1997.fv.l   = fmtVelSeries.l(idxSorted).*mm2m;
+keyPointsHL1997.fv.v   = fmtVelSeries.v(idxSorted).*mm2m;
 keyPointsHL1997.fv.fmt = fmtVelSeries.fmt(idxSorted);
 keyPointsHL1997.fv.fmtMid=fisoMid;
 keyPointsHL1997.fv.clusters=length(fmtVelSeries.l(idxSorted));
@@ -218,9 +219,9 @@ keyPointsHL1997.fv.clusters=length(fmtVelSeries.l(idxSorted));
 if(flag_plotAnnotationData==1)
     figDebug=figure;
     subplot(1,3,1);
-        plot(keyPointsHL1997.fpe.l,keyPointsHL1997.fpe.f,'ok');
+        plot(keyPointsHL1997.fpe.l,keyPointsHL1997.fpe.fmt,'ok');
         hold on;
-        xlabel('Length (mm)');
+        xlabel('Length (m)');
         ylabel('Force (N)');
         box off;
         title('Passive force-length relation')
@@ -229,14 +230,14 @@ if(flag_plotAnnotationData==1)
         hold on;
         plot(keyPointsHL1997.fl.l,keyPointsHL1997.fl.fpe,'xk');
         hold on;
-        xlabel('Length (mm)');
+        xlabel('Length (m)');
         ylabel('Force (N)');
         box off;
         title('Active force-length relation');
     subplot(1,3,3);
         plot(keyPointsHL1997.fv.v,keyPointsHL1997.fv.fmt,'ok');
         hold on;
-        xlabel('Velocity (mm/s)');
+        xlabel('Velocity (m/s)');
         ylabel('Force (N)');
         box off;
         title('Active force-length relation');

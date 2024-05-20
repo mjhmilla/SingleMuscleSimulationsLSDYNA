@@ -83,9 +83,9 @@ lp0StrB= ['lpB',expData];
         
 switch expData
     case 'HL1997'
-        mat156.(lp0StrA) = keyPointsHL1997.lceNATZero*mat156.lceOptAT;
+        mat156.(lp0StrA) = keyPointsHL1997.lceNAT0a*mat156.lceOptAT;
     case 'HL2002'
-        mat156.(lp0StrA) = keyPointsHL2002.lceNATZero*mat156.lceOptAT;        
+        mat156.(lp0StrA) = keyPointsHL2002.lceNAT0a*mat156.lceOptAT;        
 end
 
 %    case 1
@@ -129,9 +129,9 @@ end
 lceAT=nan;
 switch expData
     case 'HL1997'
-        lceAT = keyPointsHL1997.lceNATZero*umat41.lceOptAT;
+        lceAT = keyPointsHL1997.lceNAT0a*umat41.lceOptAT;
     case 'HL2002'
-        lceAT = keyPointsHL2002.lceNATZero*umat41.lceOptAT;        
+        lceAT = keyPointsHL2002.lceNAT0a*umat41.lceOptAT;        
 end
 
 
@@ -248,9 +248,9 @@ umat41.lp0K1994 = lceAT + lsee;
 lceAT=nan;
 switch expData
     case 'HL1997'
-        lceAT = keyPointsHL1997.lceNATZero*umat43.lceOpt;
+        lceAT = keyPointsHL1997.lceNAT0a*umat43.lceOpt;
     case 'HL2002'
-        lceAT = keyPointsHL2002.lceNATZero*umat43.lceOpt;        
+        lceAT = keyPointsHL2002.lceNAT0a*umat43.lceOpt;        
 end
 
 fibKin = calcFixedWidthPennatedFiberKinematics(lceAT,...
