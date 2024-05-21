@@ -28,11 +28,6 @@ else
     
 end
 
-
-
-
-
-
 errVec = zeros(length(expActiveIsometricPts.l)...
               +length(expPassiveIsometricPts.l), 1);
 idx=1;

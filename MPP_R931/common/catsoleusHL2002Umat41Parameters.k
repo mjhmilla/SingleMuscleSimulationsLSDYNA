@@ -1,39 +1,40 @@
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R   lceOpt 0.0518293
-R   fceOpt 21.653714
-R lceOptAT 0.0514430
-R fceOptAT 21.492310
-R lmtOptAT 0.0896600
+R   lceOpt 0.0489606
+R   fceOpt 21.638160
+R lceOptAT 0.0485956
+R fceOptAT 21.476873
+R lmtOptAT 0.0733083
 R   penOpt 0.1221730
 R  penOptD 7.0000000
-R    ltSlk 0.0365414
+R    ltSlk 0.0345285
 R       et 0.0458333
-R   dFSEE0 8.6238361
+R   dFSEE0 8.6176418
 R dUSEEnll 0.0258751
 R   duSEEl 0.0133751
-R   vceMax 3.0591402
-R    LPEE0 0.9967919
-R     FPEE 2.9344127
-R    nuPEE 1.6495273
-R    dWasc 0.8200372
-R  nuCEasc 1.2938772
-R    dWdes 0.5061096
-R  nuCEdes 1.2586140
-R     Arel 0.1662726
-R     Brel 0.5086513
-R     Secc 10.874745
-R     Fecc 1.2485991
+R   vceMax 2.7448105
+R    LPEE0 0.9984104
+R     FPEE 2.0725146
+R    nuPEE 1.3604541
+R    dWasc 0.5435358
+R  nuCEasc 2.0863847
+R    dWdes 0.5853033
+R  nuCEdes 1.1679845
+R     Arel 0.1520794
+R     Brel 0.4174290
+R     Secc 20.096360
+R     Fecc 1.3194354
 R    dtInt 0.0000500
 R    dtOut 0.0100000
-R  tdnToCe 0.7050328
+R  tdnToCe 0.7052300
 RlpAHL2002 0.0883406
 RlpBHL2002 0.0863689
-Rlp0HL2002 0.0863689
+Rlp0HL2002 0.0817024
 R lp0K1994 0.0886977
 R  lceNAT0 0.9746306
 R fitTimeE 2.4700000
+Rlp0HL1997 0.0736373
 *PARAMETER_EXPRESSION
 $#    name expression
 R       kt &dFSEE0/(&duSEEl*&ltSlk)

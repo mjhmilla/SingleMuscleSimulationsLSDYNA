@@ -22,16 +22,16 @@ for i=1:1:length(errVec)
 
     idx=i;%idxShortening(i);
 
-    lceAT = keyPointsHL1997.fv.umat41.lceAT(idx,1)*keyPointsHL1997.nms.l;
-    vceNAT = keyPointsHL1997.fv.umat41.vceNAT(idx,1);
-    vceAT  = vceNAT*umat41.lceOptAT;
+    lp0     = keyPointsHL1997.fv.l(idx,1)+keyPointsHL1997.lp0;
+    vceAT   = keyPointsHL1997.fv.v(idx,1);
     
     fv = calcFvUmat41(vceAT,umat41.lceOpt,umat41.lceOpt,...
                       umat41.fceOptAT,Fisom,q,Arel,Brel,Fecc,Secc);
 
     fvN = fv/umat41.fceOptAT;
+    fvNATExp = keyPointsHL1997.fv.fmt(idx,1) / keyPointsHL1997.fv.fmtMid;
 
-    errVec(i,1)=fvN-keyPointsHL1997.fv.umat41.fceNAT(idx,1);
+    errVec(i,1)=fvN-fvNATExp;
 
 end
 
