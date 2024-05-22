@@ -112,6 +112,43 @@ keyPointsHL2002.ltSlk   = umat43.tdnToCe*lceOptHL2002;
 keyPointsHL2002.lp0     = x1(3,1)*keyPointsHL2002.lceOptAT...
                                 + keyPointsHL2002.ltSlk;
 
+umat43HL2002=umat43;
+umat43HL2002.fceOptAT    = keyPointsHL2002.fceOptAT;
+umat43HL2002.lceOptAT    = keyPointsHL2002.lceOptAT;
+umat43HL2002.fceOpt      = keyPointsHL2002.fceOptAT / cos(umat43.penOpt);
+umat43HL2002.lceOpt      = keyPointsHL2002.lceOptAT / cos(umat43.penOpt);
+umat43HL2002.ltSlk       = keyPointsHL2002.ltSlk;
+umat43HL2002.penOpt      = umat43.penOpt;
+umat43HL2002.shiftPEE    = shiftPEE_HL2002;
+umat43HL2002.scalePEE    = scalePEE_HL2002;
+umat43HL2002.lambdaECM   = umat43.lambdaECM;
+umat43HL2002.lpHL2002    = keyPointsHL2002.lp0;
+umat43HL2002.et          = umat43.et;
+
+activation=1;
+pathLength = keyPointsHL2002.lp0;
+eqSoln = calcVEXATIsometricEquilibrium(...
+            activation,...
+            pathLength,...
+            umat43HL2002,...
+            umat43SarcomereParams,...
+            umat43QuadraticCurves,...
+            umat43QuadraticTitinCurves);
+keyPointsHL2002.lp0_active_lceAT = eqSoln.lceNAT*umat43.lceOpt;
+
+activation=0;
+pathLength = keyPointsHL2002.lp0;
+eqSoln = calcVEXATIsometricEquilibrium(...
+            activation,...
+            pathLength,...
+            umat43HL2002,...
+            umat43SarcomereParams,...
+            umat43QuadraticCurves,...
+            umat43QuadraticTitinCurves);
+keyPointsHL2002.lp0_passive_lceAT = eqSoln.lceNAT*umat43.lceOpt;
+
+
+%RMSE
 idxFpe = [1:1:length(expPassiveIsometricPtsNorm.l)];
 idxFl = [1:1:length(expActiveIsometricPtsNorm.l)] + max(idxFpe);
 rmseHL2002.fpe = errVec(idxFpe) ./ keyPointsHL2002.fceOptAT;
@@ -208,20 +245,49 @@ keyPointsHL1997.ltSlk   = umat43.tdnToCe*lceOptHL1997;
 keyPointsHL1997.lp0     = x1(3,1)*keyPointsHL1997.lceOptAT...
                                 + keyPointsHL1997.ltSlk;
 
+%Update umat43HL1997
+umat43HL1997.fceOptAT = keyPointsHL1997.fceOptAT; 
+umat43HL1997.lceOptAT = keyPointsHL1997.lceOptAT;
+umat43HL1997.fceOpt   = keyPointsHL1997.fceOptAT / cos(umat43.penOpt);        
+umat43HL1997.lceOpt   = keyPointsHL1997.lceOptAT / cos(umat43.penOpt);
+umat43HL1997.ltSlk    = keyPointsHL1997.ltSlk;
+umat43HL1997.penOpt   = umat43.penOpt;
+umat43HL1997.shiftPEE = shiftPEE_HL1997;
+umat43HL1997.scalePEE = scalePEE_HL1997;
+umat43HL1997.lambdaECM = umat43.lambdaECM;
+umat43HL1997.et        = umat43.et;
+umat43HL1997.lp0HL1997 = keyPointsHL1997.lp0;
+
+activation=1;
+pathLength = keyPointsHL1997.lp0;
+eqSoln = calcVEXATIsometricEquilibrium(...
+            activation,...
+            pathLength,...
+            umat43HL1997,...
+            umat43SarcomereParams,...
+            umat43QuadraticCurves,...
+            umat43QuadraticTitinCurves);
+keyPointsHL1997.lp0_active_lceAT = eqSoln.lceNAT*umat43HL1997.lceOpt;
+
+activation=0;
+pathLength = keyPointsHL1997.lp0;
+eqSoln = calcVEXATIsometricEquilibrium(...
+            activation,...
+            pathLength,...
+            umat43HL1997,...
+            umat43SarcomereParams,...
+            umat43QuadraticCurves,...
+            umat43QuadraticTitinCurves);
+keyPointsHL1997.lp0_passive_lceAT = eqSoln.lceNAT*umat43HL1997.lceOpt;
+
+
+%RMSE
 idxFpe = [1:1:length(expPassiveIsometricPtsNorm.l)];
 idxFl = [1:1:length(expActiveIsometricPtsNorm.l)] + max(idxFpe);
 rmseHL1997.fpe = errVec(idxFpe) ./ keyPointsHL1997.fceOptAT;
 rmseHL1997.fl  = errVec(idxFl) ./ keyPointsHL1997.fceOptAT;
 
-%Update umat43HL1997
-umat43HL1997.lceOptAT = keyPointsHL1997.lceOptAT;
-umat43HL1997.fceOptAt = keyPointsHL1997.fceOptAT;        
-umat43HL1997.lp0HL1997= keyPointsHL1997.lp0; 
-umat43HL1997.shiftPEE = shiftPEE_HL1997;
-umat43HL1997.scalePEE = scalePEE_HL1997;
-umat43HL1997.lceOpt   = umat43.lceOptAT / cos(umat43.penOpt);
-umat43HL1997.fceOpt   = umat43.fceOptAT / cos(umat43.penOpt);        
-umat43HL1997.ltSlk    = keyPointsHL1997.ltSlk;
+
 
 %%
 %Normalize the force-velocity curve:

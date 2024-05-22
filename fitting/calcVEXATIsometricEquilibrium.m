@@ -38,70 +38,37 @@ for iterBisection=1:1:maximumBisections
         %Evaluate the difference in force beween the CE and the tendon
         %at this length.
         %%
-
-        %Evaluate the CE length and pennation angle
-        fibKin = calcFixedWidthPennatedFiberKinematics(...
-                    lceAT,0,params.lceOpt,params.penOpt);
-
-        lce     = fibKin.fiberLength;
-        alpha   = fibKin.pennationAngle;        
-        lceN    = lce/params.lceOpt;
-        
-        %Active force length relation
-        falN = calcQuadraticBezierYFcnXDerivative(lceN,...
-           vexatQuadraticCurves.activeForceLengthCurve,0);
-
-        %Force-velocity relation: isometric:
-        fvN = 1;
-
-        %Evaluate the force equilibrium between the two titin segments
-        titinTol = 1e-8;
-        titinIterMax=100;
-        titinSoln = calcVEXATTitinPassiveEquilibrium(lceN, ...
-                shiftPEE, scalePEE,...
-                sarcomere, ...
-                vexatQuadraticCurves, ...
-                vexatQuadraticTitinCurves,...
-                titinTol, titinIterMax);    
-
-        f1N=titinSoln.f1N;
-        f2N=titinSoln.f2N;
-        fecmN=titinSoln.fecmN;
-
-        %Evaluate the ce force
-        fceN  = activation*falN*fvN + (fecmN+f2N);
-        fceNAT= fceN*cos(alpha);
-
-        %Evaluate the tendon force
-        lt  = pathLength - lceAT;
-        ltN = lt / params.ltSlk;
-        et = ltN - 1;
-        etN = et / params.et;
-        ftN = calcQuadraticBezierYFcnXDerivative(etN,...
-                vexatQuadraticCurves.tendonForceLengthNormCurve,0);
+        useElasticTendon=1;
+        modelState = calcVEXATIsometricState(...
+                            activation,...
+                            lceAT,...
+                            pathLength,...
+                            params,...
+                            sarcomere,...
+                            vexatQuadraticCurves,...
+                            vexatQuadraticTitinCurves,...
+                            useElasticTendon);        
 
         %Evaluate the error
-        errTest = abs(fceNAT - ftN);
+        errTest = abs(modelState.fceNAT - modelState.ftN);
 
         iter=iter+1;
 
         if(errTest < errBest)
                 varBest=varTest;
                 errBest=errTest;
-                eqSoln.lceNAT           = lceAT/params.lceOpt;
-                eqSoln.fceNAT           = fceNAT;
-                eqSoln.ftN              = ftN;
-                eqSoln.lceN             = lceN;
-                eqSoln.pennationAngle   = alpha;
-                eqSoln.falN             = falN;
-                eqSoln.fvN              = fvN;
-                eqSoln.fecmN            = fecmN;
-                eqSoln.f1N              = f1N;
-                eqSoln.f2N              = f2N;
-                eqSoln.ltN              = ltN;
+                eqSoln.lceNAT           = modelState.lceNAT;
+                eqSoln.fceNAT           = modelState.fceNAT;
+                eqSoln.ftN              = modelState.ftN;
+                eqSoln.lceN             = modelState.lceN;
+                eqSoln.pennationAngle   = modelState.pennationAngle;
+                eqSoln.falN             = modelState.falN;
+                eqSoln.fvN              = modelState.fvN;
+                eqSoln.fecmN            = modelState.fecmN;
+                eqSoln.f1N              = modelState.f1N;
+                eqSoln.f2N              = modelState.f2N;
+                eqSoln.ltN              = modelState.ltN;
                 eqSoln.ferr             = errBest;
-                eqSoln.l12Err           = titinSoln.err;
-                eqSoln.iter             = titinSoln.iter;
             break
         end
     end
