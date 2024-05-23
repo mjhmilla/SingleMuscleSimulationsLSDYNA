@@ -5,7 +5,7 @@ $
 ../../../common/
 $
 *INCLUDE
-catsoleusKBRFig3Umat43Parameters.k
+catsoleusKBR1994Fig3Umat43Parameters.k
 $
 *KEYWORD
 *PARAMETER

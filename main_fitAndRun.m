@@ -7,7 +7,7 @@ fitFlags= [0;0;0];
 %2 HL1997 - curve fit
 %3 HL2002 - run time fit
 
-runFlags = [1;1;0;1];
+runFlags = [0;0;0;1];
 simMode = 'plot';
 % 1. force-length run
 % 2. HL1997 simulate
