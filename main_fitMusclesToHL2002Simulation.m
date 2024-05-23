@@ -1,13 +1,19 @@
-clc;
-close all;
-clear all;
+flag_outerLoopMode=1;
+
+if(flag_outerLoopMode==0)
+    clc;
+    close all;
+    clear all;
+    flag_fitInitialLength  = 0; 
+    flag_fitTitinProperties= 1;
+end
+
 
 
 flag_testing  = 0;
 maxIterations = 12;
 
-flag_fitInitialLength  = 0; %Now calculated in main_fitMuscles
-flag_fitTitinProperties= 1;
+
 
 addpath(genpath('fitting'));
 addpath(genpath('postprocessing'));
