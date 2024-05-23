@@ -1,6 +1,8 @@
 function success = writeSingleImpedanceSimulationFile(...
                             amplitudeMM, bandwidthHz, excitation,...
-                            inputFunctions,impedanceFolder)
+                            inputFunctions,...
+                            lsdynaImpedanceFcnName,...
+                            impedanceFolder)
 success = 0;
 
 workingDirectory = pwd;
@@ -61,7 +63,7 @@ fprintf(fid,'*INCLUDE_PATH_RELATIVE\n');
 fprintf(fid,'../\n');
 fprintf(fid,'$\n');
 fprintf(fid,'*INCLUDE\n');
-fprintf(fid,'../impedance.k\n');
+fprintf(fid,'../%s\n',lsdynaImpedanceFcnName);
 fprintf(fid,'$\n');
 fprintf(fid,'*INCLUDE\n');
 fprintf(fid,'perturbation_curve_lcid4.k\n');            

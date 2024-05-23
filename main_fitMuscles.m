@@ -5,7 +5,7 @@ if(flag_outerLoopMode==0)
     close all;
     clear all;
     flag_enablePlotting=1;    
-    expData = 'HL2002';
+    expData = 'HL1997';
     flag_fitFromScratch=0;
 else
     flag_enablePlotting=1;    
@@ -457,28 +457,42 @@ vexatRTCurves.fv = vexatCurves.fv;
 %%
 %Reference path lengths
 %%
-modelParams.umat43Upd.lp0K1994  = modelParams.umat43Upd.lp0HL2002;
 
-modelParams.umat41Upd.lp0K1994  = modelParams.umat41Upd.lp0HL2002;
-
+%Copy over starting lengths of umat43RT to mat156
 modelParams.mat156Upd.lp0HL2002 = modelParams.umat43RT.lp0HL2002;
 modelParams.mat156Upd.lp0HL1997 = modelParams.umat43RT.lp0HL1997;
-modelParams.mat156Upd.lp0K1994  = modelParams.umat43RT.lp0HL2002;
+
+
+if(contains(expData,'HL2002'))
+    %Get the starting lengths for K1994
+    [modelParams.mat156Upd,...
+     modelParams.umat41Upd,...
+     modelParams.umat43Upd]=calcKBR1994StartingPathLength(...
+                                        modelParams.mat156Upd,...
+                                        modelParams.umat41Upd,...
+                                        modelParams.umat43Upd,...
+                                        umat43QuadraticCurves,... 
+                                        vexatCurves);
+    modelParams.mat156Upd.lp0K1994  = modelParams.umat43RT.lp0HL2002;
+end
 
 %%
 % Write the new parameter files
 %%
 if(flag_writeLSDYNAFiles==1)
+
+    umat43ExtraParams.kbr1994Fig12 = {'R   kxIsoN 49.1','R   dxIsoN 0.347'};
+    umat43ExtraParams.kbr1994Fig3= {'R   kxIsoN 74.5','R   dxIsoN 0.155'};
+
     success = writeAllLSDYNAMuscleParameterFiles(...
                 modelFolder,...
                 expAbbrv,...
                 modelParams.mat156Upd,...
                 modelParams.umat41Upd,...
-                modelParams.umat43Upd);
-    
-    flag_addTendonLengthChangeToMat156PEE = 1;
-    
-    
+                modelParams.umat43Upd,...
+                umat43ExtraParams);
+        
+
     success = writeMAT156ModelFileV2(...
                 modelFolder,...
                 expAbbrv,...

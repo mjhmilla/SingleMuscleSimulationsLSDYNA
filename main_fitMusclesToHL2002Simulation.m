@@ -6,8 +6,8 @@ clear all;
 flag_testing  = 0;
 maxIterations = 12;
 
-flag_fitInitialLength=1;
-flag_fitTitinProperties=1;
+flag_fitInitialLength  = 0; %Now calculated in main_fitMuscles
+flag_fitTitinProperties= 1;
 
 addpath(genpath('fitting'));
 addpath(genpath('postprocessing'));
@@ -66,18 +66,6 @@ if(flag_fitInitialLength==1)
                                       flag_testing, maxIterations);
 end
 
-%Final passive force
-% modelName     = 'umat41';
-% typeOfFitting = 1;
-% success = fittingSimulationHL2002(typeOfFitting, modelName, ...
-%                                   lsdynaBin, releaseName, rootFolderPath,...
-%                                   flag_testing, maxIterations);
-% 
-% modelName     = 'umat43';
-% typeOfFitting = 1;
-% success = fittingSimulationHL2002(typeOfFitting, modelName, ...
-%                                   lsdynaBin, releaseName, rootFolderPath,...
-%                                   flag_testing, maxIterations);
 
 if(flag_fitTitinProperties==1)
     %Titin properties

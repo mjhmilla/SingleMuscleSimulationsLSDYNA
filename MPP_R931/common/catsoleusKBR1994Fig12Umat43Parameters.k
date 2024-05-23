@@ -1,28 +1,28 @@
 *KEYWORD
 *PARAMETER
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
-R   lceOpt 0.0453506
-R   fceOpt 21.712433
-R lceOptAT 0.0450126
-R fceOptAT 21.550592
-R lmtOptAT 0.0784834
+R   lceOpt 0.0489606
+R   fceOpt 21.638160
+R lceOptAT 0.0485956
+R fceOptAT 21.476873
+R lmtOptAT 0.0733083
 R   penOpt 0.1221730
 R  penOptD 7.0000000
-R    ltSlk 0.0319737
+R    ltSlk 0.0345285
 R       et 0.0458333
-R   vceMax 2.8640480
-R shiftPEE 0.0049490
-R scalePEE 1.2970012
-RlambdaECM 0.56
-R lPevkPtN 0.5
-RlceHNLb1A 0.40
-R beta1AHN 60.0
+R   vceMax 2.7243511
+R shiftPEE -0.017208
+R scalePEE 1.0211194
+RlambdaECM 0.5600000
+R lPevkPtN 0.5000000
+RlceHNLb1A 0.4276200
+R beta1AHN 55.000000
 R    dtInt 0.0000500
 R    dtOut 0.0100000
-R  tdnToCe 0.7050328
-Rlp0HL2002 0.0769929
-R lp0K1994 0.0776009
-R   kxIsoN 49.1   
+R  tdnToCe 0.7052300
+Rlp0HL2002 0.0817024
+R lp0K1994 0.0847455
+Rlp0HL1997 0.0736373
+R   kxIsoN 49.1
 R   dxIsoN 0.347
 *END
-

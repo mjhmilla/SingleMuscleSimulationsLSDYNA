@@ -6,7 +6,7 @@ rootDir = pwd;
 assert(contains(rootDir(1,end-29:end),'SingleMuscleSimulationsLSDYNA'),...
        'Error: must start this with matlab in the main directory');
 
-modelName       = 'mat156';
+modelName       = 'umat41';
 simulationTypeStr  = 'impedance_Kirsch1994';
 releaseName     = 'MPP_R931';
 
@@ -90,7 +90,7 @@ switch modelName
             getParameterFieldValue(...
               fullfile(rootDir,releaseName,'common','catsoleusHL2002Mat156Parameters.k'),...
               'fceOpt');        
-        fpeNAtLceOpt = 0.027249144257421; 
+        fpeNAtLceOpt = 0.046276; 
         ex5N        = 5/fiso-fpeNAtLceOpt;
         exMin       = 1/fiso-fpeNAtLceOpt;
         exMax       = 12/fiso-fpeNAtLceOpt;
@@ -119,7 +119,7 @@ switch modelName
             getParameterFieldValue(...
               fullfile(rootDir,releaseName,'common','catsoleusHL2002Umat43Parameters.k'),...
               'penOpt');  
-        fpeNAtLceOpt = 0.027249144257421; 
+        fpeNAtLceOpt = 0.046276; 
         fisoAT = fiso*cos(penOpt);
 
         scale = 5/4.88;
