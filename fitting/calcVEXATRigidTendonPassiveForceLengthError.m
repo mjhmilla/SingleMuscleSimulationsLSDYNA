@@ -10,7 +10,7 @@ function errVec = calcVEXATRigidTendonPassiveForceLengthError(x,...
                 flag_fittingHL1997)
 
 
-lp0    = pathLengthReference;
+lp0    = pathLengthReference*umat43RT.lceOptAT;
 
 if(flag_fittingHL1997 == 0)
     shiftPEE = x(1,1)*scaleSoln.shiftPEE;

@@ -5,8 +5,8 @@ if(flag_outerLoopMode==0)
     close all;
     clear all;
     flag_enablePlotting=1;    
-    expData = 'HL1997';
-    flag_fitFromScratch=0;
+    expData = 'HL2002';
+    flag_fitFromScratch=1;
 else
     flag_enablePlotting=1;    
     flag_fitFromScratch=1;
