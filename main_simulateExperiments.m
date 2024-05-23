@@ -1,4 +1,4 @@
-flag_outerLoopMode=1;
+flag_outerLoopMode=0;
 
 if(flag_outerLoopMode==0)
     clc;
@@ -10,7 +10,7 @@ if(flag_outerLoopMode==0)
     %1 HL1997
     %2 HL2002
     %3 KBR1994
-    simulationConfig.mode='run'; 
+    simulationConfig.mode='plot'; 
     %0 run
     %1 plot
 end

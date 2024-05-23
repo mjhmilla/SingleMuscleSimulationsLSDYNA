@@ -6,7 +6,7 @@ if(flag_outerLoopMode==0)
     clear all;
     flag_enablePlotting=1;    
     expData = 'HL2002';
-    flag_fitFromScratch=1;
+    flag_fitFromScratch=0;
 else
     flag_enablePlotting=1;    
     flag_fitFromScratch=1;
