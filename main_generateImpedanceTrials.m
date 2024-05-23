@@ -24,6 +24,21 @@ outputFolder        = 'output';
 structFolder        = fullfile('output','structs',filesep);
 
 %%
+% Clean the existing folder of all subfolders
+%%
+cd(simulationTypePath);
+folderContents=dir;
+
+for i=1:1:length(folderContents)
+    here=1;
+    if(folderContents(i).isdir == 1 && length(folderContents(i).name) > 2)
+        system(['rm -rf ', folderContents(i).name]);
+    end
+end
+
+cd(rootDir);
+
+%%
 % Plot configuration
 %%
 flag_sizePlotsForSlides=0;
