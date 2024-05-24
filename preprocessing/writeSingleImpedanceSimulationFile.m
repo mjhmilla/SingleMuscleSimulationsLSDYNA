@@ -2,7 +2,8 @@ function success = writeSingleImpedanceSimulationFile(...
                             amplitudeMM, bandwidthHz, excitation,...
                             inputFunctions,...
                             lsdynaImpedanceFcnName,...
-                            impedanceFolder)
+                            impedanceFolder,...
+                            fileNameId)
 success = 0;
 
 workingDirectory = pwd;
@@ -32,7 +33,7 @@ excitationStr = sprintf('%1.3f',excitation);
 idx = strfind(excitationStr,'.');
 excitationStr(1,idx)='p';
 
-seriesName = ['impedance_',excitationStr,'stim_',waveformName];
+seriesName = ['impedance_',waveformName,fileNameId];
 
 %Check if the folder exists, and if it doesn't, make it
 flag_folderExists=0;

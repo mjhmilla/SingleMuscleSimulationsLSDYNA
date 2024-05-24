@@ -110,9 +110,12 @@ switch modelName
               fullfile(rootDir,releaseName,'common','catsoleusHL2002Mat156Parameters.k'),...
               'fceOpt');        
         fpeNAtLceOpt = 0.046276; 
-        ex5N        = 5/fiso-fpeNAtLceOpt;
-        exMin       = max(0,1/fiso-fpeNAtLceOpt);
-        exMax       = 12/fiso-fpeNAtLceOpt;
+
+        scale=5/4.36008;
+
+        ex5N        = (5/fiso-fpeNAtLceOpt)*scale;
+        exMin       = max(0,1/fiso-fpeNAtLceOpt)*scale;
+        exMax       = (12/fiso-fpeNAtLceOpt)*scale;
         excitationSeries    = [exMin:((exMax-exMin)/(9)):exMax];
 
     case 'umat41'
@@ -123,10 +126,12 @@ switch modelName
         q=exSubMax;
         exSubMax=(0.5*(q-q0))/(1-(1-0.5)*(q-q0));
 
+        scale = 5/5.04897;
+
         newtonToExcitation  = (0.1327646940142737/5);
-        ex5N        = 5*newtonToExcitation;
-        exMin       = max(0,1*newtonToExcitation);
-        exMax       = 12*newtonToExcitation;
+        ex5N        = 5*newtonToExcitation*scale;
+        exMin       = max(0,1*newtonToExcitation)*scale;
+        exMax       = 12*newtonToExcitation*scale;
         excitationSeries    = [exMin:((exMax-exMin)/(9)):exMax];
 
     case 'umat43'
@@ -141,7 +146,7 @@ switch modelName
         fpeNAtLceOpt = 0.046276; 
         fisoAT = fiso*cos(penOpt);
 
-        scale = 5/4.88;
+        scale = 1;
         ex5N        = (5/fisoAT-fpeNAtLceOpt)*scale;
         exMin       = max(0,(1/fisoAT-fpeNAtLceOpt)*scale);
         exMax       = (12/fisoAT-fpeNAtLceOpt)*scale;
@@ -169,13 +174,16 @@ for i=1:1:length(fig3Series.amplitudeMM)
         lsdynaImpedanceFcnName='impedanceKBR1994Fig3.k';
     end
 
+    fileNameId = '';
+
     success = writeSingleImpedanceSimulationFile(...
                 fig3Series.amplitudeMM(i), ...
                 fig3Series.bandwidthHz(i), ...
                 fig3Series.excitation(i),...
                 impedanceInputFunctions, ...
                 lsdynaImpedanceFcnName,...
-                simulationTypePath);
+                simulationTypePath,...
+                fileNameId);
 end
 
 for i=1:1:length(fig12Series.amplitudeMM)
@@ -183,13 +191,28 @@ for i=1:1:length(fig12Series.amplitudeMM)
     if(contains(modelName,'umat43'))
         lsdynaImpedanceFcnName='impedanceKBR1994Fig12.k';
     end    
+
+    fileNameId = num2str(i);
+    while(length(fileNameId) < 2)
+        fileNameId = ['0',fileNameId];
+    end
+
+    if(i==1)
+        fileNameId = [fileNameId,'_first'];
+    end
+    if(i==length(fig12Series.amplitudeMM))
+        fileNameId = [fileNameId,'_last'];        
+    end
+    fileNameId = ['_',fileNameId];
+
     success = writeSingleImpedanceSimulationFile(...
                 fig12Series.amplitudeMM(i), ...
                 fig12Series.bandwidthHz(i), ...
                 fig12Series.excitation(i),...
                 impedanceInputFunctions, ...
                 lsdynaImpedanceFcnName,...
-                simulationTypePath);
+                simulationTypePath,...
+                fileNameId);
 end
 
 if(flag_plotPerturbationWaveform==1)

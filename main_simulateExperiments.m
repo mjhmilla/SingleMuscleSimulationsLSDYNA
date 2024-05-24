@@ -1,11 +1,11 @@
-flag_outerLoopMode=1;
+flag_outerLoopMode=0;
 
 if(flag_outerLoopMode==0)
     clc;
     clear all;
     close all;
     opengl('save','software');
-    simulationConfig.type='HL2002';
+    simulationConfig.type='KBR1994';
     %0 fal
     %1 HL1997
     %2 HL2002
@@ -39,14 +39,14 @@ greyB = [1,1,1].*0.5;
 dataColorA=greyA;
 dataColorB=greyB;
 
-models(3) = struct('id',0,'name','');
-% 
+models(1) = struct('id',0,'name','');
+
 % indexVIVA              = 1;
 % models(indexVIVA).id   = 1;
 % models(indexVIVA).name ='viva';
 % models(indexVIVA).colors= [greenA;greenB];
-% 
-% 
+ 
+ 
 indexMat56                = 1;
 models(indexMat56).id     = 1;
 models(indexMat56).name   ='mat156';
