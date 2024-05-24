@@ -8,7 +8,7 @@ rootDir = pwd;
 assert(contains(rootDir(1,end-29:end),'SingleMuscleSimulationsLSDYNA'),...
        'Error: must start this with matlab in the main directory');
 
-modelName       = 'mat156';
+modelName       = 'umat43';
 simulationTypeStr  = 'impedance_Kirsch1994';
 releaseName     = 'MPP_R931';
 
@@ -111,7 +111,7 @@ switch modelName
               'fceOpt');        
         fpeNAtLceOpt = 0.046276; 
 
-        scale=5/4.36008;
+        scale=(5/4.36008)*(5/4.87);
 
         ex5N        = (5/fiso-fpeNAtLceOpt)*scale;
         exMin       = max(0,1/fiso-fpeNAtLceOpt)*scale;
@@ -126,7 +126,7 @@ switch modelName
         q=exSubMax;
         exSubMax=(0.5*(q-q0))/(1-(1-0.5)*(q-q0));
 
-        scale = 5/5.04897;
+        scale = (5/5.04897)*(5/4.93);
 
         newtonToExcitation  = (0.1327646940142737/5);
         ex5N        = 5*newtonToExcitation*scale;
@@ -146,7 +146,7 @@ switch modelName
         fpeNAtLceOpt = 0.046276; 
         fisoAT = fiso*cos(penOpt);
 
-        scale = 1;
+        scale = 1*(5/4.93);
         ex5N        = (5/fisoAT-fpeNAtLceOpt)*scale;
         exMin       = max(0,(1/fisoAT-fpeNAtLceOpt)*scale);
         exMax       = (12/fisoAT-fpeNAtLceOpt)*scale;

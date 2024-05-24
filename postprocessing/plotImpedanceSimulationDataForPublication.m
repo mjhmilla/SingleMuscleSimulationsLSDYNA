@@ -52,8 +52,11 @@ coherenceSqThreshold    = 0.5;
 config=getConfiguration();
 
 nominalLength = getParameterValueFromD3HSPFile(d3hspFileName,'PATHLENN'); % by construction
-nominalForce  = lsdynaBinout.elout.beam.axial(end,1);    
-activation    = lsdynaMuscleUniform.act(end,1);
+
+idxMidPad = round(inputFunctions.padding*0.5);
+
+nominalForce  = lsdynaBinout.elout.beam.axial(idxMidPad,1);    
+activation    = lsdynaMuscleUniform.act(idxMidPad,1);
 
 if(contains(simulationDirectoryName,'impedance_0p185stim_1p6mm_90Hz') ...
    || contains(simulationDirectoryName,'impedance_0p185stim_1p6mm_15Hz'))

@@ -141,6 +141,8 @@ if(flag_addSimulationData==1)
 
     subplot('Position', reshape(subPlotLayout(idxForce,indexColumn,:),1,4));       
                                              
+        idxMidPad = round(inputFunctions.padding*0.5);
+
         yo = nominalForce;
         
         plot( inputFunctions.time(idxChunk,1),...
@@ -171,7 +173,7 @@ if(flag_addSimulationData==1)
 
         fmax   = max(frequencyAnalysisSimulationData.force(idxChunk,1));
         fmaxKD = max(frequencyAnalysisSimulationData.forceKD(idxChunk,1)+yo);
-        yticks([0,round(nominalForce,2,'significant')]);
+        yticks([0,round(nominalForce,3,'significant')]);
         set(gca,'color','none')
         ylim(yLimSettings(idxForce,:));
 

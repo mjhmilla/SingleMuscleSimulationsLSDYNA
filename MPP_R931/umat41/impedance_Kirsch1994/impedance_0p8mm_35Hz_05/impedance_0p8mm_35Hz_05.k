@@ -1,7 +1,7 @@
 *KEYWORD
 *PARAMETER
 $#    name       val
-R     stim  0.154851
+R     stim  0.157049
 $
 *INCLUDE_PATH_RELATIVE
 ../

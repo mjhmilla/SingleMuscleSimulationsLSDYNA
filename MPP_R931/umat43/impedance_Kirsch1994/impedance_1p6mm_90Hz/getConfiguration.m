@@ -1,3 +1,3 @@
 function config = getConfiguration()
 config=struct('amplitudeMM',1.600000e+00,'bandwidthHz',9.000000e+01,...
-'excitation',1.865333e-01,'indexWaveform',9);
+'excitation',1.891819e-01,'indexWaveform',9);
