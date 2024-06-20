@@ -17,6 +17,8 @@ RlambdaECM 0.5600000
 R lPevkPtN 0.5000000
 RlceHNLb1A 0.3941465
 R beta1AHN 55.000000
+R   kxIsoN 49.1
+R   dxIsoN 0.347
 R    dtInt 0.0000500
 R    dtOut 0.0100000
 R  tdnToCe 0.7105263

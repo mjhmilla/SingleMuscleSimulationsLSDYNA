@@ -6,11 +6,10 @@ if(flag_outerLoopMode==0)
     clear all;
     flag_enablePlotting=1;    
     expData = 'HL2002';
-    flag_fitFromScratch=0;
-else
-    flag_enablePlotting=1;    
     flag_fitFromScratch=1;
-    
+else
+    flag_enablePlotting=0;    
+    flag_fitFromScratch=1;    
 end
 
 %%
@@ -314,11 +313,11 @@ if(flag_fitFromScratch==1)
                 flag_plotVEXATActivePassiveForceLengthFitting);
 
     fitFileName = fullfile('output','structs',['vexatActivePassiveFit_',expData]);
-    fitStruct.umat43=modelParams.umat43Upd;
-    fitStruct.keyPointsHL1997=keyPointsHL1997;
-    fitStruct.keyPointsHL2002=keyPointsHL2002;
-    fitStruct.keyPointsVEXATFpe=keyPointsVEXATFpe;
-    fitStruct.vexatCurves=vexatCurves;
+    fitStruct.umat43            =   modelParams.umat43Upd;
+    fitStruct.keyPointsHL1997   =   keyPointsHL1997;
+    fitStruct.keyPointsHL2002   =   keyPointsHL2002;
+    fitStruct.keyPointsVEXATFpe =   keyPointsVEXATFpe;
+    fitStruct.vexatCurves       =   vexatCurves;
     
     save([fitFileName,'.mat'],'-struct','fitStruct');
 else
@@ -326,11 +325,11 @@ else
     fitFileName = fullfile('output','structs',['vexatActivePassiveFit_',expData]);
     fitStruct=load([fitFileName,'.mat']);
 
-    modelParams.umat43Upd=fitStruct.umat43;
-    keyPointsHL1997=fitStruct.keyPointsHL1997;
-    keyPointsHL2002=fitStruct.keyPointsHL2002;
-    keyPointsVEXATFpe=fitStruct.keyPointsVEXATFpe;
-    vexatCurves = fitStruct.vexatCurves;
+    modelParams.umat43Upd   = fitStruct.umat43;
+    keyPointsHL199          = fitStruct.keyPointsHL1997;
+    keyPointsHL2002         = fitStruct.keyPointsHL2002;
+    keyPointsVEXATFpe       = fitStruct.keyPointsVEXATFpe;
+    vexatCurves             = fitStruct.vexatCurves;
     
 end
 
@@ -346,11 +345,19 @@ for i=1:1:length(fieldsToUpdate)
     modelParams.umat43RT.(fieldsToUpdate{i})= ...
         modelParams.umat43Upd.(fieldsToUpdate{i});
 end
-modelParams.mat156Upd.ltSlk=0;
-modelParams.mat156Upd.et=0;
 
-modelParams.umat43RT.ltSlk=0;
-modelParams.umat43RT.et=0;
+disp(['Setting all umat43 models to have the same titin and XE properties']);
+fieldsToUpdate = {'lPevkPtN','beta1AHN'};
+for i=1:1:length(fieldsToUpdate)
+    modelParams.umat43RT.(fieldsToUpdate{i})= ...
+        modelParams.umat43Upd.(fieldsToUpdate{i});
+end
+
+modelParams.mat156Upd.ltSlk = 0;
+modelParams.mat156Upd.et    = 0;
+
+modelParams.umat43RT.ltSlk  = 0;
+modelParams.umat43RT.et     = 0;
 
 
 
@@ -441,9 +448,9 @@ end
         vexatCurves,...
         flag_plotVEXATForceVelocityFitting);
 
-modelParams.mat156Upd.vceMax = keyPointsVEXATFv.vceMaxAT;
-modelParams.umat43RT.vceMax = keyPointsVEXATFv.vceMax;
-vexatRTCurves.fv = vexatCurves.fv;
+modelParams.mat156Upd.vceMax    = keyPointsVEXATFv.vceMaxAT;
+modelParams.umat43RT.vceMax     = keyPointsVEXATFv.vceMax;
+vexatRTCurves.fv                = vexatCurves.fv;
 
 [modelParams.umat41Upd, ehtmmCurves]= ...
     fitEHTMMForceVelocityRelation(...
@@ -481,8 +488,16 @@ end
 %%
 if(flag_writeLSDYNAFiles==1)
 
-    umat43ExtraParams.kbr1994Fig12 = {'R   kxIsoN 49.1','R   dxIsoN 0.347'};
-    umat43ExtraParams.kbr1994Fig3= {'R   kxIsoN 74.5','R   dxIsoN 0.155'};
+    %umat43ExtraParams.kbr1994Fig12 = {'R   kxIsoN 49.1','R   dxIsoN 0.347'};
+    %umat43ExtraParams.kbr1994Fig3= {'R   kxIsoN 74.5','R   dxIsoN 0.155'};
+
+    kbr1994ExtraParams.Fig3.kxIsoN     = 74.5;
+    kbr1994ExtraParams.Fig3.dxIsoN     =  0.155;
+    kbr1994ExtraParams.Fig12.kxIsoN    = 49.1;
+    kbr1994ExtraParams.Fig12.dxIsoN    =  0.347;
+
+    umat43.kxIsoN = kbr1994ExtraParams.Fig12.kxIsoN;
+    umat43.dxIsoN = kbr1994ExtraParams.Fig12.dxIsoN;
 
     success = writeAllLSDYNAMuscleParameterFiles(...
                 modelFolder,...
@@ -490,7 +505,7 @@ if(flag_writeLSDYNAFiles==1)
                 modelParams.mat156Upd,...
                 modelParams.umat41Upd,...
                 modelParams.umat43Upd,...
-                umat43ExtraParams);
+                kbr1994ExtraParams);
         
 
     success = writeMAT156ModelFileV2(...

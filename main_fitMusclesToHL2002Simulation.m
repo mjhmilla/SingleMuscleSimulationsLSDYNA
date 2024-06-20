@@ -74,17 +74,50 @@ end
 
 
 if(flag_fitTitinProperties==1)
+    typeOfFittingList = [2;3];
     %Titin properties
     modelName     = 'umat43';
-    typeOfFitting = 2;
+    typeOfFitting = typeOfFittingList(1,1);
     success = fittingSimulationHL2002(typeOfFitting, modelName, ...
                                       lsdynaBin, releaseName, rootFolderPath,...
                                       flag_testing, maxIterations);
     modelName     = 'umat43';
-    typeOfFitting = 3;
+    typeOfFitting = typeOfFittingList(2,1);
     success = fittingSimulationHL2002(typeOfFitting, modelName, ...
                                       lsdynaBin, releaseName, rootFolderPath,...
                                       flag_testing, maxIterations);
+
+    %Update all umat43 files to have the same titin parameters
+
+    %Load the updated umat43HL2002 file
+    commonParameterFolder = fullfile('MPP_R931','common');
+    umat43HL2002File      = fullfile(commonParameterFolder,...
+                                ['catsoleusHL2002Umat43Parameters.k']);  
+
+    umat43HL2002 = getAllParameterFieldsAndValues(umat43HL2002File);
+
+    filesToUpdate = {'catsoleusHL1997Umat43Parameters.k',...
+                     'catsoleusKBR1994Fig3Umat43Parameters.k',...
+                     'catsoleusKBR1994Fig12Umat43Parameters.k'};
+
+    for i=1:1:length(filesToUpdate)
+      %Load the file, update, and write the titin parameters
+      umat43File      = fullfile(commonParameterFolder,...
+                                 filesToUpdate{i});  
+
+      umat43 = getAllParameterFieldsAndValues(umat43File);
+
+      for j=1:1:length(typeOfFittingList)
+        fitInfo.model = 'umat43';
+        fitInfo = getHL2002OptimizationSettings(...
+                    umat43,fitInfo,typeOfFittingList(j,1));
+        umat43.(fitInfo.optimizationVariable) = umat43HL2002.(fitInfo.optimizationVariable);
+      end
+
+      successUmat43  = writeLSDYNAMuscleParameterFile(umat43File,...
+                                                      umat43,[]);    
+
+    end
 end
 
 
