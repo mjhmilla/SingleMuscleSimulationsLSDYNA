@@ -16,7 +16,7 @@ flag_lengthsNormalized   =0;
 flag_writeSimulationFiles=1;
 
 %Settings
-modelName       = 'umat43'; 
+modelName       = 'mat156'; 
 %Options:
 %   umat41
 %   umat43
@@ -237,6 +237,10 @@ for indexExcitation=1:1:2
         for idx = idxHL1997Offset:1:(idxHL1997Offset+4)
             assert(rampDataHL1997(idx).velocity*velSign > 0);
 
+            if(trialNumber==14)
+                here=1;
+            end
+
             trialNumberStr = num2str(trialNumber);
             while(length(trialNumberStr)<2)
                 trialNumberStr = ['0', trialNumberStr];
@@ -359,7 +363,8 @@ for indexExcitation=1:1:2
                     flag_lengthsNormalized);            
     end
 
-    trialNumber=trialNumber+1;
+    %trialNumber=trialNumber+1;
     cd ..;    
 end
 
+cd(rootDir);
