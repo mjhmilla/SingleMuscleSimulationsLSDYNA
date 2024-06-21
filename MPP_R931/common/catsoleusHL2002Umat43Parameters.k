@@ -10,15 +10,15 @@ R   penOpt 0.1221730
 R  penOptD 7.0000000
 R    ltSlk 0.0345285
 R       et 0.0458333
-R   vceMax 2.7153959
+R   vceMax 2.7153955
 R shiftPEE -0.017209
 R scalePEE 1.0211200
 RlambdaECM 0.5600000
-R lPevkPtN 0.5921021
+R lPevkPtN 0.5925293
 RlceHNLb1A 0.4276200
-R beta1AHN 55.120850
-R   kxIsoN 49.1
-R   dxIsoN 0.347
+R beta1AHN 55.093994
+R   kxIsoN 49.100000
+R   dxIsoN 0.3470000
 R    dtInt 0.0000500
 R    dtOut 0.0100000
 R  tdnToCe 0.7052300

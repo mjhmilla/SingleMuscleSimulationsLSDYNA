@@ -18,12 +18,30 @@ fprintf(fid,'*PARAMETER\n');
 fprintf(fid,'$#    name       val\n');
 
 if(flag_lengthsNormalized==1)
-    fprintf(fid,'RpathLenN0  %1.6f\n',lceN0);
-    fprintf(fid,'RpathLenN1  %1.6f\n',lceN1);
+    spStr0 = '  ';
+    spStr1 = '  ';    
+    if(lceN0 < 0)
+        spStr0=' ';
+    end
+    if(lceN1 < 0)
+        spStr1=' ';
+    end
+
+    fprintf(fid,'RpathLenN0%s%1.6f\n',spStr0,lceN0);
+    fprintf(fid,'RpathLenN1%s%1.6f\n',spStr0lceN1);
     vceStr = sprintf('%1.6f',vceN);
 else
-    fprintf(fid,'R     len0  %1.6f\n',length0);
-    fprintf(fid,'R     len1  %1.6f\n',length1);
+    spStr0 = '  ';
+    spStr1 = '  ';    
+    if(length0 < 0)
+        spStr0=' ';
+    end
+    if(length1 < 0)
+        spStr1=' ';
+    end
+    
+    fprintf(fid,'R     len0%s%1.6f\n',spStr0,length0);
+    fprintf(fid,'R     len1%s%1.6f\n',spStr1,length1);
     vceStr = sprintf('%1.6f',vce);
 end
 spStr = ' ';

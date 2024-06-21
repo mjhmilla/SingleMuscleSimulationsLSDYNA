@@ -3,6 +3,8 @@ close all;
 clear all;
 
 addpath(genpath('ReferenceExperiments'));
+addpath(genpath('postprocessing'));
+addpath(genpath('numeric'));
 
 rootDir = pwd;
 
@@ -10,10 +12,11 @@ assert(contains(rootDir(1,end-29:end),'SingleMuscleSimulationsLSDYNA'),...
        'Error: must start this with matlab in the main directory');
 
 
-flag_lengthsNormalized=0;
+flag_lengthsNormalized   =0;
+flag_writeSimulationFiles=1;
 
 %Settings
-modelName       = 'umat41'; 
+modelName       = 'umat43'; 
 %Options:
 %   umat41
 %   umat43
@@ -166,7 +169,10 @@ for idx=1:1:length(dataHL1997Force)
     rampDataHL1997(idx).length(1,2) = 0;
     rampDataHL1997(idx).velocity(1,1) = dl*velSign / diff(rampDataHL1997(idx).time);
 
-    fprintf('%i. %1.3f\n',idx,rampDataHL1997(idx).velocity(1,1)./musclePropertiesHL1997.lceOpt);
+    fprintf('%i. %1.3f mm/s\t%1.3f lo/s \n',...
+        idx,...
+        rampDataHL1997(idx).velocity(1,1)*1000,...
+        rampDataHL1997(idx).velocity(1,1)./musclePropertiesHL1997.lceOpt);
 
     yyaxis left;
     plot(dataHL1997Force(idx).x,...
@@ -257,12 +263,13 @@ for indexExcitation=1:1:2
             time0 = rampDataHL1997(idx).time(1,1);
             time1 = rampDataHL1997(idx).time(1,2);
 
-
-            success = writeForceVelocityLSDYNAFile(...
-                        [simName,'.k'], ex,...
-                        length0,length1,lceOpt,...
-                        time0,time1,...
-                        flag_lengthsNormalized);
+            if(flag_writeSimulationFiles==1)
+                success = writeForceVelocityLSDYNAFile(...
+                            [simName,'.k'], ex,...
+                            length0,length1,lceOpt,...
+                            time0,time1,...
+                            flag_lengthsNormalized);
+            end
 
             trialNumber=trialNumber+1;
             cd ..;
@@ -299,12 +306,14 @@ for indexExcitation=1:1:2
             time0 = 1.5;
             time1 = time0 + (length1-length0)/velocity;
 
-            success = writeForceVelocityLSDYNAFile(...
-                        [simName,'.k'], ex, ...
-                        length0,length1,lceOpt,...
-                        time0,time1,...
-                        flag_lengthsNormalized);            
-    
+            if(flag_writeSimulationFiles==1)
+                success = writeForceVelocityLSDYNAFile(...
+                            [simName,'.k'], ex, ...
+                            length0,length1,lceOpt,...
+                            time0,time1,...
+                            flag_lengthsNormalized);            
+            end
+
             trialNumber=trialNumber+1;
             cd ..;
         end
@@ -342,12 +351,14 @@ for indexExcitation=1:1:2
         length1 = 0;        
     end
 
-    success = writeForceVelocityLSDYNAFile(...
-                [simName,'.k'], ex, ...
-                length0,length1,lceOpt,...
-                time0,time1,...
-                flag_lengthsNormalized);            
-    
+    if(flag_writeSimulationFiles==1)
+        success = writeForceVelocityLSDYNAFile(...
+                    [simName,'.k'], ex, ...
+                    length0,length1,lceOpt,...
+                    time0,time1,...
+                    flag_lengthsNormalized);            
+    end
+
     trialNumber=trialNumber+1;
     cd ..;    
 end

@@ -5,7 +5,7 @@ R   lceOpt 0.0479621
 R   fceOpt 40.568189
 R lceOptAT 0.0476046
 R fceOptAT 40.265800
-R lmtOptAT 0.0467411
+R lmtOptAT 0.0476046
 R   penOpt 0.1221730
 R  penOptD 7.0000000
 R    ltSlk 0.0000000

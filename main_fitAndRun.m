@@ -5,12 +5,12 @@ clear all;
 simMode = 'run';
 
 
-fitFlags= [1;1;1];
+fitFlags= [0;0;0];
 %1 HL2002 - curve fit
 %2 HL1997 - curve fit
 %3 HL2002 - run time fit
 
-runFlags = [1;1;1;1];
+runFlags = [0;1;0;0];
 % 1. force-length run
 % 2. HL1997 simulate
 % 3. HL2002 simulate
