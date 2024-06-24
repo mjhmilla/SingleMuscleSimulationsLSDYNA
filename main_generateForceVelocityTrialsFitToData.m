@@ -4,6 +4,7 @@ clear all;
 
 addpath(genpath('ReferenceExperiments'));
 addpath(genpath('postprocessing'));
+addpath(genpath('preprocessing'));
 addpath(genpath('numeric'));
 
 rootDir = pwd;
@@ -16,7 +17,7 @@ flag_lengthsNormalized   =0;
 flag_writeSimulationFiles=1;
 
 %Settings
-modelName       = 'mat156'; 
+modelName       = 'umat43'; 
 %Options:
 %   umat41
 %   umat43
@@ -53,7 +54,7 @@ end
 switch simulationName
     case 'force_velocity'
         exMax       = 1.0;
-        exSubMax    = 0.18;
+        exSubMax    = 0.215565;
         if(contains(modelName,'umat41'))
             q0=1e-4;
             q=exSubMax;
@@ -61,7 +62,7 @@ switch simulationName
         end
     case 'force_velocity_viva'
         exMax       = 1.0;
-        exSubMax    = 0.18;
+        exSubMax    = 0.215565;
         if(contains(modelName,'umat41'))
             q0=1e-4;
             q=exSubMax;

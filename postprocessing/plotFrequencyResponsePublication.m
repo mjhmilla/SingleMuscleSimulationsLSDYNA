@@ -167,7 +167,7 @@ if(flag_addSimulationData==1)
         
         set(gca,'color','none');
         ylim(yLimSettings(idxForce,:));        
-        title([titleLabels{idxForce},' Time domain response (',seriesName,')']);
+        title([titleLabels{idxForce},' Time domain (',seriesName,')']);
         
         box off;
 
@@ -258,7 +258,7 @@ if(flag_addSimulationData==1)
 
         set(gca,'color','none');
         ylim(yLimSettings(idxGain,:));
-        title([titleLabels{idxGain},' Frequency-response: gain (',seriesName,')']);
+        title([titleLabels{idxGain},' Gain (',seriesName,')']);
 
       
         if(flag_addRMSE == 1)
@@ -337,7 +337,7 @@ if(flag_addSimulationData==1)
   
         set(gca,'color','none');
         ylim(yLimSettings(idxPhase,:));
-        title([titleLabels{idxPhase},' Frequency-response: phase (',seriesName,')']);
+        title([titleLabels{idxPhase},' Phase (',seriesName,')']);
 
         if(flag_addRMSE == 1)
             simIdxMin = frequencyAnalysisSimulationData.idxFreqRange(1,1);
@@ -504,7 +504,7 @@ if(flag_addReferenceData==1)
 
         ylabel('Force (N)');
         xlabel('Time (s)');
-        title([titleLabels{idxForce},' Time domain response (',seriesName,')']);
+        title([titleLabels{idxForce},' Time domain (',seriesName,')']);
         set(gca,'color','none');            
         box off;
 
@@ -555,7 +555,7 @@ if(flag_addReferenceData==1)
 
         xlabel('Frequency (Hz)');
         ylabel('Gain (N/mm)');
-        title([titleLabels{idxGain},' Frequency-response: gain (',seriesName,')']);
+        title([titleLabels{idxGain},' Gain (',seriesName,')']);
 
 
     subplot('Position', reshape(subPlotLayout(idxPhase,indexColumn,:),1,4)); 
@@ -605,7 +605,7 @@ if(flag_addReferenceData==1)
 
         xlabel('Frequency (Hz)');
         ylabel('Phase ($$^\circ$$)');    
-        title([titleLabels{idxPhase},' Frequency-response: phase (',seriesName,')']);
+        title([titleLabels{idxPhase},' Phase (',seriesName,')']);
 
 
   subplot('Position', reshape(subPlotLayout(idxCoherence,indexColumn,:),1,4)); 

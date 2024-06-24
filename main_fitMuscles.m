@@ -7,9 +7,19 @@ if(flag_outerLoopMode==0)
     flag_enablePlotting=1;    
     expData = 'HL2002';
     flag_fitFromScratch=1;
+
 else
-    flag_enablePlotting=0;    
-    flag_fitFromScratch=1;    
+    switch simMode
+        case 'run'
+            flag_enablePlotting=0;    
+            flag_fitFromScratch=1;                           
+        case 'plot'
+            flag_enablePlotting=1;    
+            flag_fitFromScratch=0;
+        otherwise
+            assert(0,'Error: simMode must be either run/plot');
+    end
+    
 end
 
 %%
@@ -326,7 +336,7 @@ else
     fitStruct=load([fitFileName,'.mat']);
 
     modelParams.umat43Upd   = fitStruct.umat43;
-    keyPointsHL199          = fitStruct.keyPointsHL1997;
+    keyPointsHL1997         = fitStruct.keyPointsHL1997;
     keyPointsHL2002         = fitStruct.keyPointsHL2002;
     keyPointsVEXATFpe       = fitStruct.keyPointsVEXATFpe;
     vexatCurves             = fitStruct.vexatCurves;

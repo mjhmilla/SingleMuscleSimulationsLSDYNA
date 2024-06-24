@@ -22,11 +22,24 @@ if(contains(simulationDirectoryName,'isometric'))
 end
 
 fontSizeLegend=6;
-
+flag_addHerzogLeonard1997Fit=0;
 flag_addHerzogLeonard1997=1;
 flag_addBrownScottLoeb1996=1;
 flag_addScottBrownLoeb1996=1;
-flag_addMashimaAkazawaKushimaFujii1972=1;
+flag_addMashimaAkazawaKushimaFujii1972=0;
+flag_addJoyceRack1969=1;
+
+if(flag_addMashimaAkazawaKushimaFujii1972==1)
+    vmaxSubMax=-0.51; %Mashima et al 1972 at 0.18 isometric force (read off of plot)
+    assert(flag_addJoyceRack1969==0,...
+           'Error: either Joyce & Rack 1969 is used or Marshima et al. 1972. Not both');
+end
+if(flag_addJoyceRack1969==1)
+    vmaxSubMax=-0.4959; %Calculated by fitting in addJoyceRack1969ForceVelocity
+    assert(flag_addMashimaAkazawaKushimaFujii1972==0,...
+           'Error: either Joyce & Rack 1969 is used or Marshima et al. 1972. Not both');
+end
+
 
 expColorA = [1,1,1].*0.9;
 expColorB = [1,1,1].*0;
@@ -52,6 +65,7 @@ idHerzogLeonard1997             = 1;
 idBrownScottLoeb1996            = 2;
 idScottBrownLoeb1996            = 3;
 idMashimaAkazawaKushimaFujii1972= 4;
+idJoyceRack1969                 = 5;
 
 lineColorRampA = [149, 69, 53]./256;%[1,1,1].*0.5;
 lineColorRampB = lineColorRampA*0.5;
@@ -73,7 +87,10 @@ pennationAngle          =muscleArchitecture.alpha;
 vceNMax                 = getParameterValueFromD3HSPFile(d3hspFileName, 'VCEMAX');
 
 
-
+if(contains(simulationDirectoryName,'force_velocity_14'))
+    fid=fopen(fileExpDataForceVelocitySubmax,'w');
+    fclose(fid);
+end
 
 
 simMetaData.fileNameShorteningStart         = 'force_velocity_00';
@@ -326,6 +343,19 @@ if(flag_addReferenceData==1)
 %                     fileExpDataForceVelocitySubmax,...
 %                     idMashimaAkazawaKushimaFujii1972);
 %         end
+            if(flag_addJoyceRack1969==1)
+                labelJR1969 = 'Exp: JR1969';
+                expColor    = [0,0,0];   
+                idxMaxTrial=1;
+                figH = addJoyceRack1969ForceVelocity(...
+                        figH,subplotFvExp, labelJR1969, ...
+                        expColor,...
+                        1,...
+                        fileExpDataForceVelocity,...
+                        idJoyceRack1969, ...
+                        idxMaxTrial);
+            end
+
     
         if(flag_addHerzogLeonard1997==1)
             %%
@@ -495,7 +525,6 @@ if(flag_addSimulationData==1)
 
         dataFv = csvread([simulationFolder,filesep,'record.csv']);
        
-
         figH = addSimulationForceVelocity(...
                             figH,subplotFv,...
                             dataFv, ...
@@ -504,30 +533,43 @@ if(flag_addSimulationData==1)
                             addLegendEntry);
 
         if(contains(simulationDirectoryName,simMetaData.fileNameMaxActEnd))
-            if(flag_addMashimaAkazawaKushimaFujii1972==1)
-                labelMAKF1972='Exp: MAKF1972 Frog F';
-                expColor = [1,1,1].*0.5;
-                vceMaxExp=3.75;
-                figH = addMashimaAkazawaKushimaFujii1972ForceVelocity(...
-                        figH,subplotFv, labelMAKF1972, ...
-                        expColor,...
-                        vceMaxExp,...
-                        1,...
-                        [],...
-                        idMashimaAkazawaKushimaFujii1972);
-            end  
+%             if(flag_addMashimaAkazawaKushimaFujii1972==1)
+%                 labelMAKF1972='Exp: MAKF1972 Frog F';
+%                 expColor = [1,1,1].*0.5;
+%                 vceMaxExp=3.75;
+%                 figH = addMashimaAkazawaKushimaFujii1972ForceVelocity(...
+%                         figH,subplotFv, labelMAKF1972, ...
+%                         expColor,...
+%                         vceMaxExp,...
+%                         1,...
+%                         [],...
+%                         idMashimaAkazawaKushimaFujii1972);
+%             end 
+% 
+%             if(flag_addJoyceRack1969==1)
+%                 labelJR1969 = 'Exp: JR1969';
+%                 expColor    = [1,1,1].*0.5;              
+%                 figH = addJoyceRack1969ForceVelocity(...
+%                         figH,subplotFv, labelJR1969, ...
+%                         expColor,...
+%                         1,...
+%                         [],...
+%                         idJoyceRack1969);
+%             end
 
-            dataFvSample=readmatrix(...
-                fullfile(referenceDataFolder,'dataHerzogLeonard1997.csv'));
-            expColor = expColorB;   
-            labelHL1997='Exp: HL1997 (fit)';
-            figH = addHerzogLeonard1997ForceVelocity(...
-                            figH,subplotFv,labelHL1997,...
-                            dataFvSample, ...
-                            expColor,...
-                            lineAndMarkerSettings.lineWidth,...
-                            plotSettings,...
-                            musclePropertiesHL1997);         
+            if(flag_addHerzogLeonard1997Fit==1)
+                dataFvSample=readmatrix(...
+                    fullfile(referenceDataFolder,'dataHerzogLeonard1997.csv'));
+                expColor = expColorB;   
+                labelHL1997='Exp: HL1997 (fit)';
+                figH = addHerzogLeonard1997ForceVelocity(...
+                                figH,subplotFv,labelHL1997,...
+                                dataFvSample, ...
+                                expColor,...
+                                lineAndMarkerSettings.lineWidth,...
+                                plotSettings,...
+                                musclePropertiesHL1997);     
+            end
         end
 
         if(contains(simulationDirectoryName,simMetaData.fileNameSubMaxActEnd))
@@ -545,6 +587,19 @@ if(flag_addSimulationData==1)
                         0,...
                         fileExpDataForceVelocitySubmax,...
                         idMashimaAkazawaKushimaFujii1972);
+            end
+
+            if(flag_addJoyceRack1969==1)
+                labelJR1969 = 'Exp: JR1969';
+                expColor    = [0,0,0];   
+                idxMinTrial=4;
+                figH = addJoyceRack1969ForceVelocity(...
+                        figH,subplotFv, labelJR1969, ...
+                        expColor,...
+                        0,...
+                        fileExpDataForceVelocitySubmax,...
+                        idJoyceRack1969, ...
+                        idxMinTrial);
             end
 
             fileIsometricSubMax= ['..',filesep,'isometric_sub_max',filesep,'binout0000'];
@@ -571,7 +626,7 @@ if(flag_addSimulationData==1)
             x = xN1.*s0;
             vceMax=x(1,2);
 
-            vmaxSubMax=-0.51; %Mashima et al 1972 at 0.18 isometric force
+
 
             plot([1,1].*vceMax,[0,0.7],'-k','HandleVisibility','off');
             hold on;            

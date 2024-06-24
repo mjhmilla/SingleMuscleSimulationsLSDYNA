@@ -12,6 +12,7 @@ function [umat43, ...
            keyPointsHL1997,...
            keyPointsHL2002,...
            vexatCurves,...
+           flag_fitParameters,...
            flag_plotVEXATActivePassiveForceLengthFitting)
 
 
@@ -78,9 +79,11 @@ errFcnHL2002 = @(arg)calcVEXATActivePassiveForceLengthError(arg,...
                         flag_fittingHL1997);
 
 
+
 options=optimset('Display','off');
 [x1, resnorm,residualHL1997,exitflag] = ...
     lsqnonlin(errFcnHL2002,x0,lb,ub,options);
+
 
 [errVec, ...
  expActiveIsometricPtsNorm, ...
@@ -327,40 +330,39 @@ keyPointsHL1997.fv.fceNAT = ...
      ( keyPointsHL1997.fv.fmtMid.*ones(size(fvPts.fceAT))-fvPts.fpeAT);
 keyPointsHL1997.fv.vceNAT = ...
     (keyPointsHL1997.fv.v) ./ keyPointsHL1997.lceOptAT;
-
-
-
-%%
-% Update the model's parameters
-%%
-
-switch expData
-    case 'HL1997'
-        umat43.lceOptAT = keyPointsHL1997.lceOptAT;
-        umat43.fceOptAt = keyPointsHL1997.fceOptAT;        
-        umat43.lp0HL1997= keyPointsHL1997.lp0; 
-        umat43.lp0HL2002= keyPointsHL2002.lp0; 
-        umat43.shiftPEE = shiftPEE_HL1997;
-        umat43.scalePEE = scalePEE_HL1997;
-        umat43.lceOpt   = umat43.lceOptAT / cos(umat43.penOpt);
-        umat43.fceOpt   = umat43.fceOptAT / cos(umat43.penOpt);        
-        umat43.ltSlk    = keyPointsHL1997.ltSlk;
-
-    case 'HL2002'
-        umat43.lceOptAT = keyPointsHL2002.lceOptAT;
-        umat43.fceOptAT = keyPointsHL2002.fceOptAT; 
-        umat43.lp0HL1997= keyPointsHL1997.lp0; 
-        umat43.lp0HL2002= keyPointsHL2002.lp0;     
-        umat43.shiftPEE = shiftPEE_HL2002;
-        umat43.scalePEE = scalePEE_HL2002;
-
-        umat43.lceOpt   = umat43.lceOptAT / cos(umat43.penOpt);
-        umat43.fceOpt   = umat43.fceOptAT / cos(umat43.penOpt);        
-        umat43.ltSlk    = keyPointsHL2002.ltSlk;        
-    otherwise
-        assert(0,'Error: expData must be HL1997 or HL2002');
-end
-
+    
+    
+    
+    %%
+    % Update the model's parameters
+    %%
+    
+    switch expData
+        case 'HL1997'
+            umat43.lceOptAT = keyPointsHL1997.lceOptAT;
+            umat43.fceOptAt = keyPointsHL1997.fceOptAT;        
+            umat43.lp0HL1997= keyPointsHL1997.lp0; 
+            umat43.lp0HL2002= keyPointsHL2002.lp0; 
+            umat43.shiftPEE = shiftPEE_HL1997;
+            umat43.scalePEE = scalePEE_HL1997;
+            umat43.lceOpt   = umat43.lceOptAT / cos(umat43.penOpt);
+            umat43.fceOpt   = umat43.fceOptAT / cos(umat43.penOpt);        
+            umat43.ltSlk    = keyPointsHL1997.ltSlk;
+    
+        case 'HL2002'
+            umat43.lceOptAT = keyPointsHL2002.lceOptAT;
+            umat43.fceOptAT = keyPointsHL2002.fceOptAT; 
+            umat43.lp0HL1997= keyPointsHL1997.lp0; 
+            umat43.lp0HL2002= keyPointsHL2002.lp0;     
+            umat43.shiftPEE = shiftPEE_HL2002;
+            umat43.scalePEE = scalePEE_HL2002;
+    
+            umat43.lceOpt   = umat43.lceOptAT / cos(umat43.penOpt);
+            umat43.fceOpt   = umat43.fceOptAT / cos(umat43.penOpt);        
+            umat43.ltSlk    = keyPointsHL2002.ltSlk;        
+        otherwise
+            assert(0,'Error: expData must be HL1997 or HL2002');
+    end
 
 
 %%
@@ -371,7 +373,7 @@ npts=100;
 
 lceNMin = umat43QuadraticCurves.activeForceLengthCurve.xEnd(1,1)-0.1;
 lceNMax = umat43QuadraticCurves.activeForceLengthCurve.xEnd(1,2)+0.1;
-lceN   = [lceNMin:((lceNMax-lceNMin)/(npts-1)):lceNMax]';
+lceN    = [lceNMin:((lceNMax-lceNMin)/(npts-1)):lceNMax]';
 
 vexatCurves.fl.lceNAT   = zeros(size(lceN));
 vexatCurves.fl.fceNAT   = zeros(size(lceN));

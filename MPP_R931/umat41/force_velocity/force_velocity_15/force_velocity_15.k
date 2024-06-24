@@ -7,7 +7,7 @@ R  pathVel -0.004865
 RrampStart  1.519690
 R  rampEnd  2.341910
 R rampTime  0.822220
-R   actVal  0.098841
+R   actVal  0.120740
 $
 *INCLUDE_PATH_RELATIVE
 ../

@@ -605,7 +605,8 @@ if(flag_postProcessSimulationData==1)
 
                       numberOfHorizontalPlotColumnsPublication  = 6; 
                       numberOfVerticalPlotRowsPublication       = 6;
-
+                      plotWidthPub = 3.6;
+                      plotHeightPub= 3.6;
                     case 'force_length'
                       numberOfHorizontalPlotColumnsSpecific = 3;
                       numberOfVerticalPlotRowsSpecific      = 4;
