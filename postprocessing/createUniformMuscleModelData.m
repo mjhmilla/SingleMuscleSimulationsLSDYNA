@@ -153,6 +153,11 @@ switch modelName
         
         uniformModelData.lp   = lsdynaMusout.data(:,lsdynaMusout.indexLp);
         uniformModelData.vp   = lsdynaMusout.data(:,lsdynaMusout.indexVp);
+        
+        %Extra fields for umat43
+        uniformModelData.lsHN  = lsdynaMusout.data(:,lsdynaMusout.indexLsHN);
+        uniformModelData.vsHNN = lsdynaMusout.data(:,lsdynaMusout.indexVsHNN);
+        uniformModelData.vsHNNDot = lsdynaMusout.data(:,lsdynaMusout.indexVsHNNDot);
 
 
         uniformModelData.lceN       = lsdynaMusout.data(:,lsdynaMusout.indexLceN);

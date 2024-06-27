@@ -29,6 +29,7 @@ flag_addScottBrownLoeb1996=1;
 flag_addMashimaAkazawaKushimaFujii1972=0;
 flag_addJoyceRack1969=1;
 
+
 if(flag_addMashimaAkazawaKushimaFujii1972==1)
     vmaxSubMax=-0.51; %Mashima et al 1972 at 0.18 isometric force (read off of plot)
     assert(flag_addJoyceRack1969==0,...
@@ -322,7 +323,7 @@ if(flag_addReferenceData==1)
         if(flag_addBrownScottLoeb1996==1)
             labelBSL1996='Exp: BSL1996';
             expColor = [1,1,1].*0.65;
-            vceMaxExp=4;
+            vceMaxExp=4.05;
             figH = addBrownScottLoeb1996ForceVelocity(...
                     figH,subplotFvExp, labelBSL1996, ...
                     expColor,...

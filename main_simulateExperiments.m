@@ -44,8 +44,7 @@ models(3) = struct('id',0,'name','');
 % indexVIVA              = 1;
 % models(indexVIVA).id   = 1;
 % models(indexVIVA).name ='viva';
-% models(indexVIVA).colors= [greenA;greenB];
- 
+% models(indexVIVA).colors= [greenA;greenB]; 
  
 indexMat56                = 1;
 models(indexMat56).id     = 1;
@@ -57,8 +56,8 @@ models(indexUmat41).id   = 2;
 models(indexUmat41).name ='umat41';
 models(indexUmat41).colors= [cs.yellow;cs.yellow];
  
-indexUmat43              = 3;
-models(indexUmat43).id   = 3;
+indexUmat43              = 1;
+models(indexUmat43).id   = 1;
 models(indexUmat43).name ='umat43';
 models(indexUmat43).colors= [cs.blue;cs.blue];
 
