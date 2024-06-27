@@ -1,9 +1,9 @@
 *KEYWORD
 *PARAMETER
 $#    name       val
-R rampLenE     0.035
+R rampLenE     0.060
 R rampVel      0.006
-R rampLen      0.060
+R rampLen      0.080
 R dT           0.000
 $
 *INCLUDE_PATH_RELATIVE
