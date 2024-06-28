@@ -238,23 +238,44 @@ if(flag_addReferenceData==1)
                 mat156FpeData = [mat156FpeData; xEnd, yEnd];
 
 
-                umat43FlData=...
-                   dlmread(fullfile(referenceCurveFolder,'sample',...
-                   'felineSoleus_activeForceLengthCurve.csv'),',',1,0);
-                umat43FpeData=...
-                   dlmread(fullfile(referenceCurveFolder,'sample',...
-                   'felineSoleus_fiberForceLengthCurve.csv'),',',1,0);
+                %umat43FlData=...
+                %   dlmread(fullfile(referenceCurveFolder,'sample',...
+                %   'felineSoleus_activeForceLengthCurve.csv'),',',1,0);
+                %umat43FpeData=...
+                %   dlmread(fullfile(referenceCurveFolder,'sample',...
+                %   'felineSoleus_fiberForceLengthCurve.csv'),',',1,0);
 
                                  
                 referenced3hsp = fullfile('..','..','..','umat43',...
-                    'eccentric_HerzogLeonard2002','ramp_9mmps_9mm','d3hsp');
+                    'eccentric_HerzogLeonard2002','ramp_reference','d3hsp');
+                kxIsoN   = getParameterValueFromD3HSPFile(referenced3hsp,'KXISON');
 
-                shiftPEE = getParameterValueFromD3HSPFile(referenced3hsp,'SHIFTPEE');
-                scalePEE = getParameterValueFromD3HSPFile(referenced3hsp,'SCALEPEE');
-                umat43FpeData(:,1)=umat43FpeData(:,1)+shiftPEE;
-                for k=2:2:size(umat43FpeData,2)
-                    umat43FpeData(:,k)=umat43FpeData(:,k).*scalePEE;
-                end
+                referenceMusout = fullfile('..','..','..','umat43',...
+                    'eccentric_HerzogLeonard2002','ramp_reference','musout.0000000002');
+
+                [musoutRef,success] = readUmat43MusoutData(referenceMusout);
+
+                cosAlpha = cos( musoutRef.data(:,musoutRef.indexAlpha) );
+    
+                lceATNRef = musoutRef.data(:,musoutRef.indexLceATN);
+               
+
+                umat43FlData = [musoutRef.data(:,musoutRef.indexLceATN), ...
+                                musoutRef.data(:,musoutRef.indexFalN)];
+                umat43FlData(:,2) = umat43FlData(:,2) .* cosAlpha;
+                umat43FlData(:,1) = umat43FlData(:,1) + (2/kxIsoN).* cosAlpha;
+
+                umat43FpeData = [musoutRef.data(:,musoutRef.indexLceATN), ...
+                                musoutRef.data(:,musoutRef.indexFceATN)];
+
+
+
+                %shiftPEE = getParameterValueFromD3HSPFile(referenced3hsp,'SHIFTPEE');
+                %scalePEE = getParameterValueFromD3HSPFile(referenced3hsp,'SCALEPEE');
+                %umat43FpeData(:,1)=umat43FpeData(:,1)+shiftPEE;
+                %for k=2:2:size(umat43FpeData,2)
+                %    umat43FpeData(:,k)=umat43FpeData(:,k).*scalePEE;
+                %end
 
                 flag_useUmat43Reference=1;
                 if(flag_useUmat43Reference==1)
@@ -275,8 +296,11 @@ if(flag_addReferenceData==1)
                 falFpeData=zeros(size(falRefData,1),2);
                 for i=1:1:size(falRefData,1)
                     falFpeData(i,1)=falRefData(i,1);
-                    fpe = interp1(fpeRefData(:,1),...
-                                  fpeRefData(:,2),falFpeData(i,1),...
+                    [uniqueFpeL, ia, ic] = unique(fpeRefData(:,1));
+                    uniqueFpeF = fpeRefData(ia,2);
+
+                    fpe = interp1(uniqueFpeL,...
+                                  uniqueFpeF,falFpeData(i,1),...
                                   'linear','extrap');
                     falFpeData(i,2)=fpe+falRefData(i,2);
                 end
