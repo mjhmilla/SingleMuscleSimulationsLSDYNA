@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function curve = createProximalIgCurve(x0, y0 ,dydx0, ... 
                                        x1, y1, dydx1,...       
                                        x2, y2, dydx2, c, ...

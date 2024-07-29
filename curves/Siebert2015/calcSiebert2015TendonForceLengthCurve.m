@@ -1,3 +1,8 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%%
 function ftN = calcSiebert2015TendonForceLengthCurve(lengthInMM, ftParameters)
 
 ftN = 0;

@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function fisom = calcFisomUmat41(lce,lceOpt,dWdes,nuCEdes, dWasc, nuCEasc)
 
 fisom=0;

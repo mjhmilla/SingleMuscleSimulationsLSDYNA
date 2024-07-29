@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function f = calc1DBezierCurveValue(u, pV)
 %%
 % This function implements De Casteljau's recursive algorithm for

@@ -1,3 +1,8 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%%
 function [x1, x2, y12] = calcSeriesSpringStretch(x12, y1Curve,y1CurveInv, y2Curve,y2CurveInv)
 
 %calcBezierYFcnXDerivative(

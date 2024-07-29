@@ -1,11 +1,17 @@
-flag_outerLoopMode=1;
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
+flag_outerLoopMode=0;
 
 if(flag_outerLoopMode==0)
     clc;
     clear all;
     close all;
     opengl('save','software');
-    simulationConfig.type='KBR1994';
+    simulationConfig.type='HL1997';
     %0 fal
     %1 HL1997
     %2 HL2002
@@ -39,27 +45,27 @@ greyB = [1,1,1].*0.5;
 dataColorA=greyA;
 dataColorB=greyB;
 
-models(3) = struct('id',0,'name','');
+models(1) = struct('id',0,'name','');
 
 % indexVIVA              = 1;
 % models(indexVIVA).id   = 1;
 % models(indexVIVA).name ='viva';
 % models(indexVIVA).colors= [greenA;greenB]; 
  
-indexMat56                = 1;
-models(indexMat56).id     = 1;
-models(indexMat56).name   ='mat156';
-models(indexMat56).colors = [cs.red;cs.red];
+% indexMat56                = 1;
+% models(indexMat56).id     = 1;
+% models(indexMat56).name   ='mat156';
+% models(indexMat56).colors = [cs.red;cs.red];
 
-indexUmat41              = 2;
-models(indexUmat41).id   = 2;
+indexUmat41              = 1;
+models(indexUmat41).id   = 1;
 models(indexUmat41).name ='umat41';
 models(indexUmat41).colors= [cs.yellow;cs.yellow];
  
-indexUmat43              = 3;
-models(indexUmat43).id   = 3;
-models(indexUmat43).name ='umat43';
-models(indexUmat43).colors= [cs.blue;cs.blue];
+% indexUmat43              = 3;
+% models(indexUmat43).id   = 3;
+% models(indexUmat43).name ='umat43';
+% models(indexUmat43).colors= [cs.blue;cs.blue];
 
 flag_preProcessSimulationData       = 0; 
 %Setting this to 1 will perform any preprocessing needed of the enabled 

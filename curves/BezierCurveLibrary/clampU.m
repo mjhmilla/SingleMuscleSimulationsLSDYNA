@@ -1,3 +1,8 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
 function uC = clampU(u)
 %%
 % This is used to ensure that the argument for the Bezier curve's Bernstein

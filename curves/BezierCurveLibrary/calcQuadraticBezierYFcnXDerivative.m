@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function val = calcQuadraticBezierYFcnXDerivative(x, curveParams, der)
 %%
 % This function takes the control points for the Bezier curves

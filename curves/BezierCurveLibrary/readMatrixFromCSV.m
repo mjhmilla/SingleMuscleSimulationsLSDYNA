@@ -1,3 +1,8 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
 function [matrix, lastLine] = readMatrixFromCSV(fid,terminatingStr)
 %%
 % This function assumes that different matrices are separated by a row with

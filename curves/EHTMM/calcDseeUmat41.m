@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function  dsee = calcDseeUmat41(q,cm,A_rel,B_rel,F_SEE,F_PEE,F_isom,
      1 dot_l_MTC,D0,C2,C1,C0,d_SE_max)
 

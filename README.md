@@ -15,6 +15,7 @@ record/826209
 - Run `main_comparisonUmat.m`
 - The output plots will appear in the `output` folder.
 
+
 # Simulations of experiments
 
 Numerical simulations of experiments appear in the folders SMP_931, which refers to a Single core Multiple Processor version of LS-DYNA version 9.31. The list of experiments currently includes:
@@ -27,6 +28,14 @@ Numerical simulations of experiments appear in the folders SMP_931, which refers
 
 The LS-DYNA scripts necessary to run the experiments appear in SMP_931/ while the data from the experiments appears in ReferenceExperiments/. 
 
+
+# Licensing
+
+All of the code and files in this repository are covered by the license mentioned in the SPDX file header which makes it possible to audit the licenses in this code base using the ```reuse lint``` command from https://api.reuse.software/. A full copy of the license can be found in the LICENSES folder. To keep the reuse tool happy even this file has a license:
+
+ SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+
+ SPDX-License-Identifier: MIT
 
 ## References
 

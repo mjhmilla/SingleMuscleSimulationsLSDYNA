@@ -1,3 +1,8 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%%
 function output = calcWormLikeChainModelInvDer(fstar,L,Tkb_div_A,Tkb_div_ASq,derOrder)
 %%
 %

@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function fv = calcFvUmat41(vce,lce,lceOpt,Fmax,Fisom,q,Arel0,Brel0,Fecc,Secc)
 
 LArel   = 1; 

@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function dydx = calcCentralDifferenceDataSeries(x, y)
 %%
 %This function will compute a numerical central difference for dy/dx. The

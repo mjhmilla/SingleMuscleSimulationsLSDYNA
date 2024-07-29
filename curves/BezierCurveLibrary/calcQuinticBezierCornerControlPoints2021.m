@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: Copyright (c) 2005-2012 Stanford University and the Authors, Author(s): Matthew Millard 
+%
+% SPDX-License-Identifier: Apache-2.0
+%
+%%
 % --------------------------------------------------------------------------%
 %                OpenSim:  SegmentedQuinticBezierToolkit.cpp                %
 % --------------------------------------------------------------------------%

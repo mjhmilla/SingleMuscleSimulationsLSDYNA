@@ -1,3 +1,8 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%%
 function fpeN = calcSiebert2015ForceLengthCurve(lengthInMM, fpeParameters)
 
 fpeN = 0;

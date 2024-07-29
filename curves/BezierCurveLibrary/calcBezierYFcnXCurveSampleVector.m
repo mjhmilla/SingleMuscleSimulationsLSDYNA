@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function curveValues = calcBezierYFcnXCurveSampleVector(curveParams, npts, domain)
 %%
 % This function evaluates a Bezier spline curve (x(u), y(u)) across its

@@ -15,9 +15,7 @@ musout  = struct('data',[],'columnNames','','PartID','',...
                 'indexLce',0,...
                 'indexLmtDot',0,...
                 'indexLceDot',0,...
-                'indexLceRef',0,...
-                'indexLceDelay',0,...
-                'indexLceStrain',0);
+                'indexLceDelay',0);
 
 %         time     stim_tot            q''
 %     1       ''        f_mtc         f_ce        f_pee        f_see''
@@ -33,8 +31,12 @@ tag = '(PartID):';
 idx = strfind(line,tag)+length(tag);
 musout.PartID = cell2mat(textscan(line(idx:end),'%f'));
 
-%Count the number of column headers
+%Keep reading the file until you get to the column header
 line=fgetl(fid);
+while(~contains(line,' time '))
+    line=fgetl(fid);
+end
+
 numberOfColumns=0;
 headerFormat = '';
 dataFormat = '';
@@ -67,17 +69,15 @@ fclose(fid);
     musout.indexTime        = getColumnIndex('time',musout.columnNames);
     musout.indexExcitation  = getColumnIndex('stim_tot',musout.columnNames);
     musout.indexActivation  = getColumnIndex('q',musout.columnNames); %activation
-    musout.indexFmt         = getColumnIndex('f_mtc',musout.columnNames);
+    musout.indexFmt         = getColumnIndex('f_mtu',musout.columnNames);
     musout.indexFce         = getColumnIndex('f_ce',musout.columnNames);
     musout.indexFpee        = getColumnIndex('f_pee',musout.columnNames);
     musout.indexFsee        = getColumnIndex('f_see',musout.columnNames);
     musout.indexFsde        = getColumnIndex('f_sde',musout.columnNames);
-    musout.indexLmt         = getColumnIndex('l_mtc',musout.columnNames);
+    musout.indexLmt         = getColumnIndex('l_mtu',musout.columnNames);
     musout.indexLce         = getColumnIndex('l_ce',musout.columnNames);
-    musout.indexLmtDot      = getColumnIndex('dot_l_mtc',musout.columnNames);
+    musout.indexLmtDot      = getColumnIndex('dot_l_mtu',musout.columnNames);
     musout.indexLceDot      = getColumnIndex('dot_l_ce',musout.columnNames);    
-    musout.indexLceRef      = getColumnIndex('l_ce_ref',musout.columnNames);
     musout.indexLceDelay    = getColumnIndex('del_l_ce',musout.columnNames);
-    musout.indexLceStrain   = getColumnIndex('e_ce',musout.columnNames);
 
 success   = 1;

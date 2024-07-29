@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function fsee = calcFseeUmat41(l_SEE,lSEE0,dUSEEnll,dUSEEl,dFSEE0)
 
 l_SEE_nll = (1.0+dUSEEnll)*lSEE0;

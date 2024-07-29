@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function [y f] = calc5thOrderInterp(t, tsol,ysol,fsol, gsol)
 %%
 % This function interpolates the results the function value using a quintic
