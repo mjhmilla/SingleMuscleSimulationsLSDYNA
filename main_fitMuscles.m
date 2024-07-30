@@ -13,15 +13,17 @@ if(flag_outerLoopMode==0)
     flag_enablePlotting=1;    
     expData = 'HL2002';
     flag_fitFromScratch=1;
-
+    flag_writeLSDYNAFiles=0;
 else
     switch simMode
         case 'run'
             flag_enablePlotting=0;    
             flag_fitFromScratch=1;                           
+            flag_writeLSDYNAFiles=1;
         case 'plot'
             flag_enablePlotting=1;    
             flag_fitFromScratch=0;
+            flag_writeLSDYNAFiles=0;
         otherwise
             assert(0,'Error: simMode must be either run/plot');
     end
@@ -59,7 +61,7 @@ end
 %2. Use the average of 1 and 2
 %
 
-flag_writeLSDYNAFiles=1;
+
 
 flag_addTendonLengthChangeToMat156    = 0;
 flag_plotMAT156Curves                 = 1*flag_enablePlotting;

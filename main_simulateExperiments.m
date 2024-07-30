@@ -21,6 +21,13 @@ if(flag_outerLoopMode==0)
     %1 plot
 end
 
+lsdynaBin_MPP_931 = fullfile( filesep,  'scratch','tmp','mmillard',...
+                                'Millard2024VEXATMuscleLSDYNA','MPP_R931','mppdyna');
+
+lsdynaBin_SMP_931 = fullfile( filesep,  'scratch','tmp','mmillard',...
+                                'Milard2024VEXATMuscleLSDYNA','SMP_R931','lsdyna');
+
+
 %% This script performs the validation tests isometric, concentric and quick release 
 %% for different release version of the referenceDataPath EHTMM
 
@@ -164,11 +171,7 @@ else
     end
 end
 
-lsdynaBin_SMP_931 = fullfile( filesep,  'scratch','tmp','mmillard',...
-                                'Milard2024VEXATMuscleLSDYNA','SMP_R931','lsdyna');
 
-lsdynaBin_MPP_931 = fullfile( filesep,  'scratch','tmp','mmillard',...
-                                'Millard2024VEXATMuscleLSDYNA','MPP_R931','mppdyna');
 
 addpath(matlabScriptPath);
 cd(matlabScriptPath);
