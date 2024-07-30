@@ -392,12 +392,14 @@ if(flag_addSimulationData==1)
         %%Read in the passive force length data
         cd(passiveFolder)
         musoutFpe = [];
-        musoutName='musout.0000000002';
+        
         switch lsdynaMuscleUniform.name
             case 'umat41'
+                musoutName='musout.0000000002.0';
                 [musoutFpe,success] = ...
                     readUmat41MusoutData(musoutName);  
             case 'umat43'
+                musoutName='musout.0000000002';
                 [musoutFpe,success] = ...
                     readUmat43MusoutData(musoutName); 
             case 'mat156'
