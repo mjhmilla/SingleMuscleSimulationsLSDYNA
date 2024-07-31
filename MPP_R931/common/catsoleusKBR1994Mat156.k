@@ -1,7 +1,7 @@
 $
 $ SPDX-FileCopyrightText: 2019 I Putu A Putra <putra@chalmers.se>, 2024 Matthew Millard <millard.matthew@gmail.com>
 $
-$ SPDX-License-Identifier: LGPL3
+$ SPDX-License-Identifier: LGPL-3.0-only
 $
 $ Combined work
 $
