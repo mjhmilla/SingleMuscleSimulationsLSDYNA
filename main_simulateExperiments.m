@@ -115,6 +115,13 @@ flag_enableForceVelocityExperimentViva              = 0;
 flag_enableActivePassiveForceLengthExperiment       = 0;
 flag_enableForceVelocityExperiment                  = 0;
 
+assert(flag_enableIsometricExperiment == 0,...
+        'Error: the LS-DYNA files for this simulation are not in the public domain');
+assert(flag_enableConcentricExperiment == 0,...
+        'Error: the LS-DYNA files for this simulation are not in the public domain');
+assert(flag_enableQuickReleaseExperiment == 0,...
+        'Error: the LS-DYNA files for this simulation are not in the public domain');
+
 switch simulationConfig.type
     case 'fal'
         flag_enableActivePassiveForceLengthExperiment=1;

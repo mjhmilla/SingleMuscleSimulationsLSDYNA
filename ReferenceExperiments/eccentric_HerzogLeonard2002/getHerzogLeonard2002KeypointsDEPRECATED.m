@@ -1,3 +1,8 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%%
 function dataHL2002 = getHerzogLeonard2002Keypoints()
 
 lceOpt = 42.8571; %The optimal fiber length is indirectly reported in

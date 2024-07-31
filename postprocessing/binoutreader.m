@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Institute of Engineering and Computational Mechanics
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  Syntax

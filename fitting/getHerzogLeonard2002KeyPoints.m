@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function keyPointsHL2002 = getHerzogLeonard2002KeyPoints(matlabScriptPath,...
                     refExperimentFolder,flag_plotAnnotationData)
 

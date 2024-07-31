@@ -1,3 +1,8 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%%
 function success = writeForceVelocityLSDYNAFile(fname, excitation,...
                         length0,length1,lceOpt,time0,time1,...
                         flag_lengthsNormalized)

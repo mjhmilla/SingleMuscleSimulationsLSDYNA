@@ -1,3 +1,8 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%%
 function musclePropertiesHL1997 = getHerzogLeonard1997MuscleProperties()
 
 % Graphically measured from Herzog and Leonard 1997 Fig. 1A    

@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function success = writeAllLSDYNAMuscleParameterFiles(...
                         commonParameterFolder,expAbbrv,...
                         mat156,umat41,umat43,...

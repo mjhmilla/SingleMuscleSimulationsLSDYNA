@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function figH = addHerzogLeonard2002KeyPoints(...
                     figH,subplotFl,labelSeries,expColor,...
                     muscleArchitecture,...

@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function [fig,umat41Curves,umat43Curves] = ...
     addFittedPassiveForceLengthPlot(fig,umat41,umat43,...
                                     umat43QuadraticBezierCurves,...

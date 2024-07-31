@@ -1,3 +1,9 @@
+$
+$ SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+$
+$ SPDX-License-Identifier: MIT
+$
+$
 *KEYWORD
 *MAT_156
 $#     mid        ro       sno       srm       pis       ssm       cer       dmp

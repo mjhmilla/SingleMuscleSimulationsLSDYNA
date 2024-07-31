@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function lt = calcEHTMMTendonLength(fmt,lSEE0,dUSEEnll,duSEEl,dFSEE0)
 
 lt = zeros(size(fmt));

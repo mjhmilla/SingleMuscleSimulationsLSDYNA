@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function [umat41, fittingError,ehtmmCurves] = ...
     fitEHTMMTendon(umat41, keyPointsTendon,ehtmmCurves)
 

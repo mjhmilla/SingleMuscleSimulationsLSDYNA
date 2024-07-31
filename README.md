@@ -3,6 +3,14 @@
 This collection of Matlab and LS-DYNA files will run a series of benchmark simulations on three different muscle models in LS-DYNA: MAT_156 [2], EHTM [3], and the VEXAT [4]. The benchmarks include simulations of the active and passive force-length relation [5], the (isokinetic) force-velocity relation [6], active-lengthening on the descending limb of the force-length relation [7], and the response of active muscle to vibration [8].
 
 
+All of the code and files in this repository are covered by the license mentioned in the SPDX file header which makes it possible to audit the licenses in this code base using the ```reuse lint``` command from https://api.reuse.software/. A full copy of the license can be found in the LICENSES folder. To keep the reuse tool happy even this file has a license:
+
+ SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+
+ SPDX-License-Identifier: MIT
+
+Please note that automatically generated LS-DYNA files (with an extension k) do not have license headers though these files are also offered under the MIT license.
+
 ## System Configurations Tested
 
 To date this benchmark has been run on Ubuntu 22.04.4 LTS and 20.04.6 LTS. While I have taken care to use system-independent functions for file paths, you may encounter difficulty running these scripts on Windows. For example, on another project, I found the Matlab function pinv behaved differently on Windows and Ubuntu. While this was easy to fix, since I haven't run the benchmark code on a Windows machine I cannot yet guarantee that it will run without error.
@@ -151,14 +159,6 @@ models(indexUmat43).id   = 2; </code>
     - LICENSES
         - Contains the license files employed in this project
 
-
-## Licensing
-
-All of the code and files in this repository are covered by the license mentioned in the SPDX file header which makes it possible to audit the licenses in this code base using the ```reuse lint``` command from https://api.reuse.software/. A full copy of the license can be found in the LICENSES folder. To keep the reuse tool happy even this file has a license:
-
- SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
-
- SPDX-License-Identifier: MIT
 
 ## References
 

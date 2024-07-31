@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function figH = addScottBrownLoeb1996ForceVelocity(...
                 figH,subplotPosition, labelData, ...
                 expColor,...

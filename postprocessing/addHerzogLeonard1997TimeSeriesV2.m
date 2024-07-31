@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function [figH,dataFvSample]= addHerzogLeonard1997TimeSeriesV2(...
     figH,subplotPosition,labelHL1997,...
     expColorA, expColorB, expMarkerColor,...

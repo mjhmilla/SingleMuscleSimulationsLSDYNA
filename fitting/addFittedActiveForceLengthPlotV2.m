@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function [figH]= addFittedActiveForceLengthPlotV2(...
                     figH,vexatCurves,ehtmmCurves,... 
                     umat41,umat43,...

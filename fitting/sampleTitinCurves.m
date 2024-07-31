@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function [curveSampleECMHalf, curveSampleTitin, curveSampleTitinActive,...
           curveSampleIgp, curveSamplePevk,curveSampleIgd,...
           curveSampleProximal, curveSampleDistal] = ...

@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function success = fittingSimulationHL2002(typeOfFitting, modelName, ...
                     lsdynaBin,releaseName, rootFolderPath, flag_testing,...
                     maxIterations)

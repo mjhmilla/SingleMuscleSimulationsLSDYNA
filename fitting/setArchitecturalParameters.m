@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function modelParams = setArchitecturalParameters(modelParams,...
            expData,keyPointsHL1997,keyPointsHL2002,...
            flag_zeroMAT156TendonSlackLength)

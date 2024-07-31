@@ -1,3 +1,8 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%%
 function cs = getPaulTolColourSchemes(nameOfColourScheme)
 %%
 % Returns the colour-blind safe colour schemes that are described in

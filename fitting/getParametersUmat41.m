@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function umat41 = getParametersUmat41(umat41ParameterFile)
 
 umat41.lceOpt     = getParameterFieldValue(umat41ParameterFile,'lceOpt');

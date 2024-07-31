@@ -1,3 +1,8 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%%
 function musclePropertiesKBR1994 = getKirsch1994MuscleProperties()
 
 %Fitted to Herzog & Leonard 2002

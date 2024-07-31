@@ -1,3 +1,9 @@
+%%
+% SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+%
+% SPDX-License-Identifier: MIT
+%
+%%
 function [cZToPEVKp, cZToPEVKd] = fitLinearModelToTitinSegmentElongation(...
 	fileTrombitas1998Figure5, numDomainsIgP, numResiduesPevk, numDomainsIgD,...
   halfMyosinLength, lT12, flag_assumeUniformIgDomainLength)
