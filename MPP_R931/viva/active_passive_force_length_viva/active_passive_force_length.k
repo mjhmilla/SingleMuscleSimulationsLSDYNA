@@ -1,6 +1,8 @@
 $
-$ Matthew Millard
-$ 16/1/2023
+$ SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+$
+$ SPDX-License-Identifier: MIT
+$
 $
 *KEYWORD
 *PARAMETER

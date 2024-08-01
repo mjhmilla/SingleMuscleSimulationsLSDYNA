@@ -1,3 +1,9 @@
+$
+$ SPDX-FileCopyrightText: 2024 Matthew Millard <millard.matthew@gmail.com>
+$
+$ SPDX-License-Identifier: MIT
+$
+$
 *MAT_MUSCLE
 $#     mid        ro       sno       srm       pis       ssm       cer       dmp
          1 1.0000E-9  1.000000  4.000000      &pis  0.375000  6.000000 0.0000e-2

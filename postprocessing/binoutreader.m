@@ -1,7 +1,7 @@
 %%
-% SPDX-FileCopyrightText: 2024 Institute of Engineering and Computational Mechanics
+% SPDX-FileCopyrightText: 2014 Jorg Fehr (joerg.fehr@itm.uni-stuttgart.de)
 %
-% SPDX-License-Identifier: MIT
+% SPDX-License-Identifier: BSD-3-Clause
 %
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -145,7 +145,7 @@ expVals = {'dynaOutputFile',[],@(x) exist(x,'file'),'outputFile,fileName';
     'characterEncoding', 'ISO-8859-1', @ischar, ''};
 
 % Parse the input
-inpt = mmParseInput(expVals,varargin,1);
+inpt = binoutParseInput(expVals,varargin,1);
 
 % init
 verbose = inpt.verbose;
@@ -1678,4 +1678,98 @@ switch importance
         disp(dispString);
 end
 end
+
+function parsedInput = binoutParseInput(expdVals,optArgin,allowAdditionalInpt)
+%binoutParseInput parses input parameters supplied to MatMorembs
+%
+% Syntax
+% ======
+%   parsedInput = binoutParseInput(expdVals,optArgin,allowAdditionalInpt)
+%
+%  Be careful 
+%--------------------------------------------------------------------------
+
+% History
+% =======
+% Derived from mmParseInput Written by P.Holzwarth, Dec. 2013
+%   Modification by J.Fehr August 2024
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Check if additional information about the function is wanted
+% ------------------------------------------------------------
+
+
+% default values
+if nargin<3
+    allowAdditionalInpt = 0; % are additional inputs allowed in the structure?
+end
+nAddArgin = 1; % set counter to one
+indAddArgin = []; % indices for additional arguments
+
+
+% settings for Matlab input parser
+p = inputParser;
+p.CaseSensitive = false;
+p.FunctionName = mfilename;
+p.StructExpand = false;
+
+% check for wrong sorting order
+try
+    if any(~cellfun(@ischar,optArgin(1:2:end)))
+        error('Possibly wrong pairwise passing! Please check the sorting.');
+    end
+catch me
+    throwAsCaller(me);
+end
+
+% check if input arguments are valid and delete '[ _-]'
+for k = 1:2:numel(optArgin)-1
+    try
+        % with this function writing error are found and everything is put
+        % to a lower case
+        temp = ~cellfun(@isempty,strfind(lower([expdVals(:,4);expdVals(:,1)]),...
+            lower(regexprep(optArgin{k},'[ _-]',''))));
+        if numel(find(temp(1:size(expdVals,1))))==1 && ...
+                numel(find(temp(size(expdVals,1)+1:end)))==0
+            optArgin{k} = expdVals{temp,1};
+        else
+            optArgin{k} = validatestring(regexprep(optArgin{k},'[ _-]',''),...
+                expdVals(:,1),mfilename,'');
+        end
+    catch me
+        if ~allowAdditionalInpt
+            throwAsCaller(me);
+        else
+            addArgin(nAddArgin:nAddArgin+1) = optArgin(k:k+1);
+            indAddArgin = [indAddArgin k k+1]; %#ok<AGROW>
+            nAddArgin = nAddArgin+2;
+        end
+    end
+end
+% clear of additional arguments
+optArgin(indAddArgin) = [];
+
+% add parameter values
+for k = 1:size(expdVals,1)
+    addParamValue(p,expdVals{k,1},expdVals{k,2},expdVals{k,3});
+end
+
+% parse it for me by using the Matlab Parser
+try
+    p.parse(optArgin{:});
+catch me
+    throwAsCaller(me);
+end
+parsedInput = p.Results;
+
+if allowAdditionalInpt && exist('addArgin','var')
+    parsedInput.addArgin = addArgin;
+else
+    parsedInput.addArgin = [];
+end
+
+
+end %binoutParseInput
+
+
 
