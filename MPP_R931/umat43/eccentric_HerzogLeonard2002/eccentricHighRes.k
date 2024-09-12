@@ -8,7 +8,7 @@ $
 ../../../common/
 $
 *INCLUDE
-catsoleusHL2002Umat43ParametersHighRes.k
+catsoleusHL2002Umat43Parameters.k
 $
 *KEYWORD
 *PARAMETER

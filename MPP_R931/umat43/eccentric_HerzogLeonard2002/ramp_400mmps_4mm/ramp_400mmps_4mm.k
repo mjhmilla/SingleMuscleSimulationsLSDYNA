@@ -9,6 +9,6 @@ R dT           0.000
 ../
 $
 *INCLUDE
-../eccentric.k
+../eccentricHighRes.k
 $
 *END

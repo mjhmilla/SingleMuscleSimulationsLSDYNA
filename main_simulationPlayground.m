@@ -4,7 +4,7 @@
 % SPDX-License-Identifier: MIT
 %
 %%
-flag_outerLoopMode=1;
+flag_outerLoopMode=0;
 
 if(flag_outerLoopMode==0)
     clc;
@@ -52,22 +52,22 @@ greyB = [1,1,1].*0.5;
 dataColorA=greyA;
 dataColorB=greyB;
 
-models(3) = struct('id',0,'name','');
+models(1) = struct('id',0,'name','');
 
 % indexVIVA              = 1;
 % models(indexVIVA).id   = 1;
 % models(indexVIVA).name ='viva';
 % models(indexVIVA).colors= [greenA;greenB]; 
  
-indexMat56                = 1;
-models(indexMat56).id     = 1;
-models(indexMat56).name   ='mat156';
-models(indexMat56).colors = [cs.red;cs.red];
+%indexMat56                = 1;
+%models(indexMat56).id     = 1;
+%models(indexMat56).name   ='mat156';
+%models(indexMat56).colors = [cs.red;cs.red];
 
-indexUmat41              = 2;
-models(indexUmat41).id   = 2;
-models(indexUmat41).name ='umat41';
-models(indexUmat41).colors= [cs.yellow;cs.yellow];
+%indexUmat41              = 2;
+%models(indexUmat41).id   = 2;
+%models(indexUmat41).name ='umat41';
+%models(indexUmat41).colors= [cs.yellow;cs.yellow];
  
 indexUmat43              = 1;
 models(indexUmat43).id   = 3;
@@ -145,7 +145,7 @@ if(flag_enableForceVelocityExperimentViva ...
     disp('         a publication.');
 end
 
-runOneTrial = [];
+runOneTrial = ['ramp_400mmps_4mm'];
 
 flag_sinusoid_aniType = 0; 
 % This is only relevant when post-processing SinusoidExperiment

@@ -3,27 +3,27 @@
 $#   prmr1      val1     prmr2      val2     prmr3      val3     prmr4      val4
 R   lceOpt 0.0489606
 R   fceOpt 21.638090
-R lceOptAT 0.0485957
+R lceOptAT 0.0485956
 R fceOptAT 21.476803
 R lmtOptAT 0.0733083
 R   penOpt 0.1221730
 R  penOptD 7.0000000
 R    ltSlk 0.0345285
 R       et 0.0458333
-R   vceMax 2.7153955
+R   vceMax 2.7225130
 R shiftPEE -0.017209
-R scalePEE 1.0211200
+R scalePEE 1.0211201
 RlambdaECM 0.5600000
 R lPevkPtN 0.5925293
 RlceHNLb1A 0.4276200
-R beta1AHN 55.093994
+R beta1AHN 55.100708
 R   kxIsoN 49.100000
 R   dxIsoN 0.3470000
 R    dtInt 0.0000500
 R    dtOut 0.0100000
 R  tdnToCe 0.7052300
-Rlp0HL2002 0.0817025
-R lp0K1994 0.0847456
-Rlp0HL1997 0.0738613
-R fitTimeE 3.4700000
+Rlp0HL2002 0.0817024
+R lp0K1994 0.0847455
+Rlp0HL1997 0.0736666
+R fitTimeE 8.4100000
 *END
