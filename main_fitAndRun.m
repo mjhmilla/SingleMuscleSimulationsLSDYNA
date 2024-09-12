@@ -8,7 +8,7 @@ clc;
 close all;
 clear all;
 
-simMode = 'run';%
+simMode = 'plot';%
 %'run' : run the simulations
 %'plot': generate the plots
 
