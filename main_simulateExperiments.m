@@ -4,7 +4,7 @@
 % SPDX-License-Identifier: MIT
 %
 %%
-flag_outerLoopMode=0;
+flag_outerLoopMode=1;
 
 if(flag_outerLoopMode==0)
     clc;
@@ -145,7 +145,7 @@ if(flag_enableForceVelocityExperimentViva ...
     disp('         a publication.');
 end
 
-runOneTrial = ['ramp_400mmps_4mm'];
+runOneTrial = [];
 
 flag_sinusoid_aniType = 0; 
 % This is only relevant when post-processing SinusoidExperiment
